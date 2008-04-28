@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export GEOMERATIVE_VER=11
+export GEOMERATIVE_VER=12
 
 #### Build documentation
 linuxGenerateDoc
