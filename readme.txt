@@ -1,0 +1,139 @@
+INSTALL
+---------------
+Unzip the geomerative-XX.zip in the Processing libraries directory.
+The result shoul look like this:
+/path/to/processing/libraries/geomerative/library/geomerative.jar
+
+USAGE
+---------------
+In the Processing IDE Sketch > Import Library > geomerative
+
+DOCUMENTATION
+---------------
+The documentation is in the documentation folder.  Just open the index.html with any web browser.
+
+MINI-TUTORIAL
+---------------
+This geometry library consists of three main classes:
+
+RShape		- Contains subshapes formed of commands (move,lines,beziers,...)
+RPolygon	- Contains contours formed of points
+RMesh		- Contains strips formed of vertices
+
+There are several uses of the library:
+
++ Draw shapes with holes, in order to do so, we create a new shape and add commands to it.  Once the shape is created we can:
+	- draw it using draw(g) (note the use of g in order to draw the shape to the main PGraphics object)
+	- convert it to a polygon using toPolygon()
+	- acces its subshapes' commands or the points of these commands, accesing its attribute subshapes and the RSubshape methods
+
++ Draw polygons with holes, in order to do so, we create a new polygon and add points (addPoint(x,y)) or contours (addContour()) to it.  Once the polygon is created we can:
+	- draw it using draw(g)
+	- convert it to a mesh using toMesh()
+	- acces its contours' points, accesing its attribute contours and the RContour methods
+	- do binary operations over two polygons, using the methods diff(), union(), xor() and intersection()
+
+EXAMPLE
+--------------
+
+/// Example to draw a simple shape with a hole
+/// Converting the shape to a mesh in the setup() avoids having to tesselate it for each frame, therefore the use of RMesh
+import geomerative.*;
+
+RPolygon p;
+RShape s;
+RMesh m;
+int t = 0;
+
+void setup(){
+  size(100,100,P3D);
+  framerate(34);
+  background(255);
+  fill(0);
+  //noFill();
+  stroke(255,0,0);
+  
+  s = new RShape();
+  
+  s.addMoveTo(-30,250);
+  s.addLineTo(30,150);
+  s.addArcTo(50,75,100,30);
+  s.addBezierTo(130,90,75,100,90,150);
+  s.addLineTo(130,250);
+  s.addBezierTo(80,200,70,200,-30,250);
+  
+  s.addMoveTo(60,120);
+  s.addBezierTo(75,110,85,130,75,140);
+  s.addBezierTo(70,150,65,140,60,120);
+  
+  p = s.toPolygon(100);
+  m = p.toMesh();
+}
+
+void draw(){
+  scale(0.25);
+  translate(200,50);
+  background(255);
+  
+  rotateY(PI/65*t);
+  fill(0);
+  m.draw(g);
+  
+  rotateY(PI/64*t);
+  noFill();
+  p.draw(g);
+  t++;
+}
+/// End of example
+
+
+/// Example calculating the difference of two polygons
+/// Note the use of predefined polygons (createStar(), createCircle(), createRing(),...)
+import geomerative.*;
+
+RMesh m;
+RPolygon p = RPolygon.createStar(120,70,6);
+RPolygon p2 = RPolygon.createStar(60,50,30);
+
+float t=0;
+
+void setup(){
+  size(400,400,P3D);
+  framerate(24);
+  //smooth();
+  noStroke();
+  fill(0);
+  
+  p=p.diff(p2);
+  m = p.toMesh();
+}
+
+void draw(){ 
+  background(255);
+  translate(width/2,height/2);
+
+  rotateX(t/39);
+  m.draw(g);
+  
+  rotateY(-t/5);
+  scale(0.3);
+  m.draw(g);
+  
+  t++;
+}
+/// End of example
+
+
+
+KNOWN ISSUES
+-------------
+
+- Under certain renderers there's a big loss of precision, resulting in really ugly renderings of fonts and polygons in general.
+- When we decrease the font size we get bad results, bad shapes.  This must have to do with the font fixed point arithmetics, haven't studied any of that yet.
+
+TODO
+-------------
+
+- Uniform a bit more the methods for the different GeomElements, try treating the se same way a Shape, Polygon, Mesh, Contour, Subshape,... or at least have many common methods.  Maybe rewrite the library from scratch when I get some freetime!!!
+- Add color and stroke weight infromation to the vertices.
+- Adding the methods drawFromTo(PGraphics g, float t0, float t1) in the RShape, RSubshape and RCommand

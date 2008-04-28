@@ -1,0 +1,40 @@
+#!/bin/bash
+
+export GEOMERATIVE_VER=11
+
+#### Build documentation
+linuxGenerateDoc
+
+#### Build library
+linuxCompile
+
+####  Bundle for distribution
+rm -fr ./distribution &&
+mkdir ./distribution &&
+mkdir ./distribution/geomerative/ &&
+mkdir -p ./distribution/geomerative/library &&
+
+##  Copy libs
+cp ./library/geomerative.jar ./distribution/geomerative/library &&
+cp ./external/batikfont.jar ./distribution/geomerative/library &&
+
+##  Copy docs
+cp ./readme.txt ./distribution/geomerative/ &&
+cp -r ./documentation/ ./distribution/geomerative/ &&
+
+##  Copy examples
+cp -r ./examples/ ./distribution/geomerative/ &&
+
+##  Copy tutorial
+cp -r ./tutorial/ ./distribution/geomerative/ &&
+
+##  Copy sources
+cp -r ./src ./distribution/geomerative/
+
+
+##  Zip up
+cd distribution
+rm -f geomerative-$GEOMERATIVE_VER.zip
+zip -r ./geomerative-$GEOMERATIVE_VER.zip ./geomerative/documentation/ ./geomerative/readme.txt ./geomerative/examples/ ./geomerative/src/ ./geomerative/tutorial/
+cd ..
+

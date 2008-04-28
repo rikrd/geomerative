@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>d and d men</title>
+  <meta name="GENERATOR" content="Quanta Plus" />
+  <meta name="AUTHOR" content="D.Reddish" />
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <style type="text/css">
+  /* <![CDATA[ */
+  .move	{
+	width:100%;
+	background-color:#acd2ff;
+	border-bottom:1px solid black;
+	font-size:14px;
+	font-family:vardana;
+	font-color:black;
+	text-align:center;
+	}
+
+.info	{
+	width:100%;
+	background-color:#acd2ff;
+	border-top:1px solid black;else {
+ob.pixelLeft = event.clientX-X + document.body.scrollLeft;
+ob.pixelTop = event.clientY-Y + document.body.scrollTop;
+return false;
+}
+	font-size:13px;
+	font-family:vardana;
+	font-color:"#33CCAA";
+	}
+	
+.panel	{
+	width:150;
+	position:absolute;
+	border:1px solid black;
+	left:350;
+	top:200;
+	font-size:13px;
+	font-family:vardana;
+	}
+
+.panel a:visited{color:blue;}
+
+.panel a{text-decoration:none;color:black}
+
+.panel a:hover{text-decoration:none;}
+
+
+#panel a.visited{text-decoration:none;}
+
+.menu	{
+	width:100%;
+	background-color:#eae9e8;
+	font-size:13px;
+	font-family:vardana;
+	}
+  /* ]]> */
+  </style>
+  <script language="javascript" type="text/javascript">
+  /* <![CDATA[ */
+N = (document.all) ? 0 : 1;
+var ob;
+var over = false;
+
+	function MD(e) {
+	if (over)
+	{
+	if (N) {
+	ob = document.getElementById("panel");
+	X=e.layerX;
+	Y=e.layerY;
+	return false;
+	}
+		else {
+		ob = document.getElementById("panel");
+		ob = ob.style;
+		X=event.offsetX;
+		Y=event.offsetY;
+		}
+	}
+}
+
+function MM(e) {
+if (ob) {
+if (N) {
+ob.style.top = e.pageY-Y;
+ob.style.left = e.pageX-X;
+	}
+	else {
+	ob.pixelLeft = event.clientX-X + document.body.scrollLeft;
+	ob.pixelTop = event.clientY-Y + document.body.scrollTop;
+	return false;
+	}
+   }
+}
+
+function MU() {
+ob = null;
+	}
+
+if (N) {
+document.captureEvents(Event.MOUSEDOWN | Event.MOUSEMOVE | Event.MOUSEUP);
+}
+
+document.onmousedown = MD;
+document.onmousemove = MM;
+document.onmouseup = MU;
+  /* ]]> */
+  </script>
+</head>
+<body>
+<div id="panel"  class="panel" >
+<script language="JavaScript" type="text/javascript">
+function getArray(id)
+{
+  var splitarray = link[id].split("|");
+  return splitarray;
+}
+
+function info(i,obj,col)
+{
+ sublink = getArray(i);
+ infobar = document.getElementById("infob");
+ infobar.innerHTML = "<img src='quanta_icon.png'>  "+sublink[2];
+ obj.style.backgroundColor=col;
+}
+
+function endi(obj,col)
+{
+ obj.style.backgroundColor=col;
+ infobar = document.getElementById("infob");
+ infobar.innerHTML = "<img src='quanta_icon.png'> <br>";
+}
+
+var link = new Array();
+link[0] = "&nbsp; Quanta|http://kdewebdev.org |Quanta Home";
+link[1] = "&nbsp; KDE|http://www.javascripts.com|Visit KDE.org";
+link[2] = "&nbsp; null link|http://# |null link";
+link[3] = "&nbsp; null link|http://# |null link";
+link[4] = "&nbsp; null link|http://#|null link";
+link[5] = "&nbsp; null link|http://# |null link";
+
+document.write("<div class='move' onmouseover='over=true;' onmouseout='over=false;' style='cursor:move'><b>Quanta Rocks!!!</b></div><div class='menu'><br></div>");
+for(i=0;i<link.length;i++)
+{
+sublink = getArray(i);
+document.write("<a href='"+sublink[1]+"'><div class='menu' onmouseover=\"info("+i+",this,'#acd2ff')\" onmouseout=\"endi(this,'#eae9e8')\" style='cursor:hand'>  "+ sublink[0] +"</div></a>");
+}
+document.write("<div class='menu'><br></div><div class='info' id='infob' name='infob'><img src='pointer2.gif'> <br></div>");
+</script>
+</div>
+</body>
+</html>

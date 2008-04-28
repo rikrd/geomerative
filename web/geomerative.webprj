@@ -1,0 +1,74 @@
+<!DOCTYPE webproject>
+<webproject>
+  <project type="Local" name="Geomerative" encoding="utf8" >
+    <upload/>
+    <author>Ricard Marxer Piñón</author>
+    <email/>
+    <defaultDTD>-//W3C//DTD HTML 4.01//EN</defaultDTD>
+    <item url="" uploadstatus="1" />
+    <annotations/>
+    <templates>templates/</templates>
+    <toolbars>toolbars/</toolbars>
+    <item url="geomerative.session" uploadstatus="1" />
+    <item url="geomerative.webprj" uploadstatus="1" />
+    <item url="templates/" uploadstatus="1" />
+    <item url="toolbars/" uploadstatus="1" />
+    <item url="templates/binaries/" uploadstatus="1" />
+    <item url="templates/documents/" uploadstatus="1" />
+    <item url="templates/images/" uploadstatus="1" />
+    <item url="templates/pages/" uploadstatus="1" />
+    <item url="templates/scripts/" uploadstatus="1" />
+    <item url="templates/text/" uploadstatus="1" />
+    <item url="templates/binaries/images/" uploadstatus="1" />
+    <item url="templates/binaries/others/" uploadstatus="1" />
+    <item url="templates/binaries/images/jpg/" uploadstatus="1" />
+    <item url="templates/binaries/images/others/" uploadstatus="1" />
+    <item url="templates/binaries/images/png/" uploadstatus="1" />
+    <item url="templates/binaries/images/jpg/demo.jpg" uploadstatus="1" />
+    <item url="templates/binaries/images/others/demo.tif" uploadstatus="1" />
+    <item url="templates/binaries/images/png/demo.png" uploadstatus="1" />
+    <item url="templates/binaries/others/print.pdf" uploadstatus="1" />
+    <item url="templates/documents/html/" uploadstatus="1" />
+    <item url="templates/documents/others/" uploadstatus="1" />
+    <item url="templates/documents/scripts/" uploadstatus="1" />
+    <item url="templates/documents/html/demo.html" uploadstatus="1" />
+    <item url="templates/documents/others/demo.txt" uploadstatus="1" />
+    <item url="templates/documents/scripts/demo.script" uploadstatus="1" />
+    <item url="templates/images/jpg/" uploadstatus="1" />
+    <item url="templates/images/others/" uploadstatus="1" />
+    <item url="templates/images/png/" uploadstatus="1" />
+    <item url="templates/images/jpg/demo.jpg" uploadstatus="1" />
+    <item url="templates/images/others/demo.tif" uploadstatus="1" />
+    <item url="templates/images/png/demo.png" uploadstatus="1" />
+    <item url="templates/pages/docbook/" uploadstatus="1" />
+    <item url="templates/pages/html_4.0.1/" uploadstatus="1" />
+    <item url="templates/pages/php/" uploadstatus="1" />
+    <item url="templates/pages/special/" uploadstatus="1" />
+    <item url="templates/pages/xhtml/" uploadstatus="1" />
+    <item url="templates/pages/docbook/kde-doc-template.docbook" uploadstatus="1" />
+    <item url="templates/pages/html_4.0.1/basic.html" uploadstatus="1" />
+    <item url="templates/pages/php/demo.php" uploadstatus="1" />
+    <item url="templates/pages/special/drag_n_drop_men.html" uploadstatus="1" />
+    <item url="templates/pages/xhtml/leftMen_BB.html" uploadstatus="1" />
+    <item url="templates/pages/xhtml/leftMen_Quanta.html" uploadstatus="1" />
+    <item url="templates/pages/xhtml/Quanta_Times.html" uploadstatus="1" />
+    <item url="templates/pages/xhtml/rightMen_BB.html" uploadstatus="1" />
+    <item url="templates/pages/xhtml/rightMen_Quanta.html" uploadstatus="1" />
+    <item url="templates/pages/xhtml/twoSideMen_BB.html" uploadstatus="1" />
+    <item url="templates/pages/xhtml/twoSideMen_Quanta.html" uploadstatus="1" />
+    <item url="templates/scripts/javascript/" uploadstatus="1" />
+    <item url="templates/scripts/perl/" uploadstatus="1" />
+    <item url="templates/scripts/php/" uploadstatus="1" />
+    <item url="templates/scripts/javascript/email_validate.js" uploadstatus="1" />
+    <item url="templates/scripts/javascript/overlib.js" uploadstatus="1" />
+    <item url="templates/scripts/javascript/preload.js" uploadstatus="1" />
+    <item url="templates/scripts/perl/demo.perl" uploadstatus="1" />
+    <item url="templates/scripts/php/demo.php" uploadstatus="1" />
+    <item url="templates/text/html/" uploadstatus="1" />
+    <item url="templates/text/others/" uploadstatus="1" />
+    <item url="templates/text/scripts/" uploadstatus="1" />
+    <item url="templates/text/html/demo.html" uploadstatus="1" />
+    <item url="templates/text/others/demo.txt" uploadstatus="1" />
+    <item url="templates/text/scripts/demo.php" uploadstatus="1" />
+  </project>
+</webproject>
