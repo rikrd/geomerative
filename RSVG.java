@@ -93,7 +93,6 @@ public class RSVG
 
       // If the geometrical element has been correctly created
       if((geomElem != null)){
-        /*
         // Transform geometrical element
         if(element.hasAttribute("transform")){
           String transformString = element.getStringAttribute("transform");
@@ -105,13 +104,13 @@ public class RSVG
         if(element.hasAttribute("id")){    
           geomElem.id = element.getStringAttribute("id");
         }
-        */
+        
         // Get the style for the geometrical element
         grp.addElement(geomElem);      
       }
     }
 
-    
+    /*
     // Transform geometrical element
     if(elem.hasAttribute("transform")){    
       String transformString = elem.getStringAttribute("transform");
@@ -123,7 +122,7 @@ public class RSVG
     if(elem.hasAttribute("id")){    
       grp.id = elem.getStringAttribute("id");
     }
-    
+    */
     // Get the style for the geometrical element    
     return grp;
   }

@@ -92,6 +92,7 @@ public class RSubshape extends RGeomElem
     if(numCommands == 0){
       return null;
     }
+
     
     RPoint[] result=null;
     RPoint[] newresult=null;
