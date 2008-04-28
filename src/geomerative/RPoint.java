@@ -24,7 +24,7 @@ public class RPoint
    * @related x
    */
   public float y;
-
+  
   /**
    * Use this to create a new point.
    * @eexample RPoint_constructor
@@ -37,28 +37,28 @@ public class RPoint
    */
   public RPoint()
   {
-  	x = 0;
-  	y = 0;
+    x = 0;
+    y = 0;
   }
   
   public RPoint(float x,float y)
   {
-  	this.x = x;
-  	this.y = y;
+    this.x = x;
+    this.y = y;
   }
   
   public RPoint(RPoint p)
   {
-  	this.x = p.x;
-  	this.y = p.y;
+    this.x = p.x;
+    this.y = p.y;
   }
-
+  
   /**
    * @invisible
    */
   float getX()
   {
-  	return this.x;
+    return this.x;
   }
   
   /**
@@ -66,19 +66,19 @@ public class RPoint
    */
   float getY()
   {
-  	return this.y;
+    return this.y;
   }
-
+  
   
   /**
    * @invisible
    */
   void setLocation(float nx, float ny)
   {
-  	this.x = nx;
-  	this.y = ny;
+    this.x = nx;
+    this.y = ny;
   }
-
+  
   /**
    * Use this to apply a transformation to the point.
    * @eexample RPoint_transform
@@ -90,13 +90,13 @@ public class RPoint
    */
   public void transform(RMatrix m)
   {
-	float tempx = m.m00*x + m.m01*y + m.m02;
-	float tempy = m.m10*x + m.m11*y + m.m12;
-
-	x = tempx;
-	y = tempy;
+    float tempx = m.m00*x + m.m01*y + m.m02;
+    float tempy = m.m10*x + m.m11*y + m.m12;
+    
+    x = tempx;
+    y = tempy;
   }
-
+  
   /**
    * Use this to apply a translation to the point.
    * @eexample RPoint_translate
@@ -110,16 +110,16 @@ public class RPoint
    */
   public void translate(float tx, float ty)
   {
-	x += tx;
-	y += ty;
+    x += tx;
+    y += ty;
   }
-
+  
   public void translate(RPoint t)
   {
-	x += t.x;
-	y += t.y;
+    x += t.x;
+    y += t.y;
   }
-
+  
   /**
    * Use this to apply a rotation to the point.
    * @eexample RPoint_rotate
@@ -134,52 +134,52 @@ public class RPoint
    */
   public void rotate(float angle)
   {
-	float c = (float)Math.cos(angle);
-	float s = (float)Math.sin(angle);
-
-	float tempx = x;
-	float tempy = y;
-
-	x = tempx*c - tempy*s;
-	y = tempx*s + tempy*c;
+    float c = (float)Math.cos(angle);
+    float s = (float)Math.sin(angle);
+    
+    float tempx = x;
+    float tempy = y;
+    
+    x = tempx*c - tempy*s;
+    y = tempx*s + tempy*c;
   }
-
+  
   public void rotate(float angle, float vx, float vy)
   {
-	float c = (float)Math.cos(angle);
-	float s = (float)Math.sin(angle);
-
-	x -= vx;
-	y -= vy;
-
-	float tempx = x;
-	float tempy = y;
-
-	x = tempx*c - tempy*s;
-	y = tempx*s + tempy*c;
-
-	x += vx;
-	y += vy;
+    float c = (float)Math.cos(angle);
+    float s = (float)Math.sin(angle);
+    
+    x -= vx;
+    y -= vy;
+    
+    float tempx = x;
+    float tempy = y;
+    
+    x = tempx*c - tempy*s;
+    y = tempx*s + tempy*c;
+    
+    x += vx;
+    y += vy;
   }
-
+  
   public void rotate(float angle, RPoint v)
   {
-	float c = (float)Math.cos(angle);
-	float s = (float)Math.sin(angle);
-
-	x -= v.x;
-	y -= v.y;
-
-	float tempx = x;
-	float tempy = y;
-
-	x = tempx*c - tempy*s;
-	y = tempx*s + tempy*c;
-
-	x += v.x;
-	y += v.y;
+    float c = (float)Math.cos(angle);
+    float s = (float)Math.sin(angle);
+    
+    x -= v.x;
+    y -= v.y;
+    
+    float tempx = x;
+    float tempy = y;
+    
+    x = tempx*c - tempy*s;
+    y = tempx*s + tempy*c;
+    
+    x += v.x;
+    y += v.y;
   }
-
+  
   /**
    * Use this to scale the point.
    * @eexample RPoint_scale
@@ -194,22 +194,22 @@ public class RPoint
    */
   public void scale (float sx, float sy)
   {
-	x *= sx;
-	y *= sy;
+    x *= sx;
+    y *= sy;
   }
-
+  
   public void scale (float s)
   {
-	x *= s;
-	y *= s;
+    x *= s;
+    y *= s;
   }
-
+  
   public void scale (RPoint s)
   {
-	x *= s.x;
-	y *= s.y;
+    x *= s.x;
+    y *= s.y;
   }
-
+  
   
   /**
    * Use this to normalize the point. This means that after applying, it's norm will be equal to 1.
@@ -222,10 +222,10 @@ public class RPoint
    */
   public void normalize ()
   {
-	float norma = norm();
-	if(norma!=0) scale(1/norma);
+    float norma = norm();
+    if(norma!=0) scale(1/norma);
   }
-
+  
   /**
    * Use this to substract a vector to this point.
    * @eexample RPoint_sub
@@ -237,10 +237,10 @@ public class RPoint
    */
   public void sub (RPoint p)
   {
-	x -= p.x;
-	y -= p.y;
+    x -= p.x;
+    y -= p.y;
   }
-
+  
   /**
    * Use this to add a vector to this point.
    * @eexample RPoint_add
@@ -252,10 +252,10 @@ public class RPoint
    */
   public void add (RPoint p)
   {
-	x += p.x;
-       	y += p.y;
+    x += p.x;
+    y += p.y;
   }
-
+  
   /**
    * Use this to multiply a vector to this point. This returns a float corresponding to the scalar product of both vectors.
    * @eexample RPoint_mult
@@ -268,9 +268,9 @@ public class RPoint
    */
   public float mult (RPoint p)
   {
-	return (x * p.x + y * p.y);
+    return (x * p.x + y * p.y);
   }
-
+  
   /**
    * Use this to perform a cross product of the point with another point.  This returns a RPoint corresponding to the cross product of both vectors.
    * @eexample RPoint_cross
@@ -283,7 +283,7 @@ public class RPoint
    */
   public RPoint cross (RPoint p)
   {
-	return new RPoint(x * p.y - p.x * y, y * p.x - p.y * x);
+    return new RPoint(x * p.y - p.x * y, y * p.x - p.y * x);
   }
   
   /**
@@ -295,9 +295,9 @@ public class RPoint
    */
   public float norm ()
   {
-	return (float)Math.sqrt(mult(this));
+    return (float)Math.sqrt(mult(this));
   }
-
+  
   /**
    * Use this to obtain the angle between the vector and another vector
    * @eexample RPoint_angle
@@ -308,11 +308,11 @@ public class RPoint
    */
   public float angle (RPoint p)
   {
-	float normp = p.norm();
-	float normthis = norm();
-	return (float)Math.acos(mult(p)/(normp*normthis));
+    float normp = p.norm();
+    float normthis = norm();
+    return (float)Math.acos(mult(p)/(normp*normthis));
   }
-
+  
   public void print(){
     System.out.print("("+x+","+y+")");
   }

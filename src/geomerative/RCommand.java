@@ -505,7 +505,7 @@ public class RCommand
     
     return -1F;
   }
-
+  
   /**
    * Use this to return arc length of a curve.  It returns the float representing the length given the value of the advancement parameter t on the curve. The current implementation of this function is very slow, not recommended for using during frame draw.
    * @eexample RCommand_getCurveLength
@@ -534,7 +534,7 @@ public class RCommand
     
     return -1F;
   }
-
+  
   
   /**
    * Use this method to draw the command. 
@@ -1007,7 +1007,7 @@ public class RCommand
     
     // This holds the amount of steps used to calculate segment lengths
     float dt = 1F/steps;
-
+    
     // This holds how much length has to bee advanced until adding a point
     float untilPoint = RCommand.segmentAccOffset;
     
@@ -1088,7 +1088,7 @@ public class RCommand
     //addCurvePoint(new RPoint(endPoint));
     RCommand.segmentAccOffset = untilPoint;
   }
-
+  
   // Use Horner's method to advance
   //----------------------  
   private void cubicBezierUniformLength(){
@@ -1156,7 +1156,7 @@ public class RCommand
     //addCurvePoint(new RPoint(endPoint));
     RCommand.segmentAccOffset = untilPoint;
   }
-
+  
   private float quadBezierLength(){
     
     float dx1 = controlPoints[0].x - startPoint.x;
@@ -1200,7 +1200,7 @@ public class RCommand
     
     return totallen;
   }
-
+  
   
   private float cubicBezierLength(){
     
@@ -1268,16 +1268,16 @@ public class RCommand
    * @param g PGraphics, the graphics object on which to apply an affine transformation to the command
    */
   /*
-  public void transform(RMatrix m){
+    public void transform(RMatrix m){
     int numControlPoints = countControlPoints();
     if(numControlPoints!=0){
-      for(int i=0;i<numControlPoints;i++){
-        controlPoints[i].transform(m);
-      }
+    for(int i=0;i<numControlPoints;i++){
+    controlPoints[i].transform(m);
+    }
     }
     startPoint.transform(m);
     endPoint.transform(m);
-  }
+    }
   */
   void append(RPoint nextcontrolpoint)
   {

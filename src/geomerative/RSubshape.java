@@ -78,7 +78,7 @@ public class RSubshape extends RGeomElem
     if(this.commands==null){
       return 0;
     }
-
+    
     return this.commands.length;
   }
   
@@ -92,7 +92,7 @@ public class RSubshape extends RGeomElem
     if(numCommands == 0){
       return null;
     }
-
+    
     
     RPoint[] result=null;
     RPoint[] newresult=null;
@@ -158,7 +158,7 @@ public class RSubshape extends RGeomElem
         }
       }
     }
-
+    
     // Always add last point
     newresult = new RPoint[result.length + 1];
     System.arraycopy(result,0,newresult,0,result.length);
@@ -187,10 +187,10 @@ public class RSubshape extends RGeomElem
         lenSubshape += lenCommands[i];
       }
     }
-
+    
     return lenCommands;
   }
-
+  
   /**
    * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
    * @eexample getCurveLength
@@ -206,7 +206,7 @@ public class RSubshape extends RGeomElem
     if(lenSubshape == -1F){
       getCurveLengths();
     }
-
+    
     return lenSubshape;    
   }
   
@@ -259,10 +259,10 @@ public class RSubshape extends RGeomElem
     
     if(t==0.0F){ return commands[0].getCurvePoint(0F); }
     if(t==1.0F){ return commands[numCommands-1].getCurvePoint(1F); }
-
+    
     float[] lengthsCommands = getCurveLengths();
     float lengthSubshape = getCurveLength();
-
+    
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
@@ -276,16 +276,16 @@ public class RSubshape extends RGeomElem
     int indCommand = 0;
     float accumulatedAdvancement = lengthsCommands[indCommand] / lengthSubshape;
     float prevAccumulatedAdvancement = 0F;
-
+    
     /* Find in what command the advancement point is  */
     while(t > accumulatedAdvancement){
       indCommand++;
       prevAccumulatedAdvancement = accumulatedAdvancement;
       accumulatedAdvancement += (lengthsCommands[indCommand] / lengthSubshape);
     }
-
+    
     advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
-
+    
     return commands[indCommand].getCurvePoint(advOfCommand);
   }
   
@@ -296,7 +296,7 @@ public class RSubshape extends RGeomElem
    * @return RPoint, the vertice returned.
    * */
   public RPoint getCurveTangent(float t){
-
+    
     float advOfCommand;
     int numCommands = countCommands();
     if(numCommands == 0){
@@ -308,9 +308,9 @@ public class RSubshape extends RGeomElem
     
     float[] lengthsCommands = getCurveLengths();
     float lengthSubshape = getCurveLength();
-
+    
     //System.out.println("Length of subshape = " + lenSubshape);
-
+    
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
@@ -320,18 +320,18 @@ public class RSubshape extends RGeomElem
        indCommand = (int)(Math.floor(t / advPerCommand)) % numCommands;
        advOfCommand = (t*numCommands - indCommand);
     */
-
+    
     int indCommand = 0;
     float accumulatedAdvancement = lengthsCommands[indCommand] / lengthSubshape;
     float prevAccumulatedAdvancement = 0F;
-
+    
     /* Find in what command the advancement point is  */
     while(t > accumulatedAdvancement){
       indCommand++;
       prevAccumulatedAdvancement = accumulatedAdvancement;
       accumulatedAdvancement += (lengthsCommands[indCommand] / lengthSubshape);
     }
-
+    
     advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
     
     
@@ -363,13 +363,13 @@ public class RSubshape extends RGeomElem
    */
   public void draw(PGraphics g){
     int numCommands = countCommands();
-
+    
     // By default always draw with an adaptative segmentator
     int lastSegmentator = RCommand.segmentType;
     RCommand.setSegmentator(RCommand.ADAPTATIVE);
-
+    
     RPoint[] points = getCurvePoints();
-
+    
     if(points == null){
       return;
     }
@@ -378,18 +378,18 @@ public class RSubshape extends RGeomElem
       g.vertex(points[i].x,points[i].y);
     }
     g.endShape();
-
+    
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);
   }
   
   public void draw(PApplet g){
     int numCommands = countCommands();
-
+    
     // By default always draw with an adaptative segmentator
     int lastSegmentator = RCommand.segmentType;
     RCommand.setSegmentator(RCommand.ADAPTATIVE);
-
+    
     RPoint[] points = getCurvePoints();
     RCommand.setSegmentator(lastSegmentator);
     if(points == null){
@@ -400,7 +400,7 @@ public class RSubshape extends RGeomElem
       g.vertex(points[i].x,points[i].y);
     }
     g.endShape();
-
+    
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);
   }
@@ -511,7 +511,7 @@ public class RSubshape extends RGeomElem
     if(commands == null){
       return;
     }
-
+    
     if((commands[commands.length-1].endPoint.x == commands[0].startPoint.x) && (commands[commands.length-1].endPoint.y == commands[0].startPoint.y))
       {
         commands[commands.length-1].endPoint = new RPoint(commands[0].startPoint.x, commands[0].startPoint.y);
@@ -521,7 +521,7 @@ public class RSubshape extends RGeomElem
     
     lastPoint = commands[commands.length-1].endPoint;
   }
-
+  
   /**
    * @invisible
    */
@@ -558,19 +558,19 @@ public class RSubshape extends RGeomElem
       String commandType = "";
       switch(commands[i].commandType)
         {
-          case RCommand.LINETO:
+        case RCommand.LINETO:
           commandType = "LINETO";
           break;
-
-          case RCommand.CUBICBEZIERTO:
+          
+        case RCommand.CUBICBEZIERTO:
           commandType = "BEZIERTO";
           break;
-
-          case RCommand.QUADBEZIERTO:
+          
+        case RCommand.QUADBEZIERTO:
           commandType = "QUADBEZIERTO";
           break;
         }
-
+      
       System.out.println("cmd type: " + commandType);
       System.out.print("start point: ");
       commands[i].startPoint.print();
@@ -599,26 +599,26 @@ public class RSubshape extends RGeomElem
    */
   // OPT: not transform the EndPoint since it's equal to the next StartPoint
   /*
-  public void transform(RMatrix m){
+    public void transform(RMatrix m){
     RPoint[] ps = getPoints();
     if(ps!=null){
-      for(int i=0;i<ps.length;i++){
-        ps[i].transform(m);
-      }
+    for(int i=0;i<ps.length;i++){
+    ps[i].transform(m);
+    }
     }
     
-      int numCommands = countCommands();
-      if(numCommands!=0){
-      commands[0].startPoint.transform(m);
-      for(int i=0;i<numCommands-1;i++){
-      for(int j=0;j<commands[i].countControlPoints();j++){
-      commands[i].controlPoints[j].transform(m);
-      }
-      commands[i].endPoint.transform(m);
-      }
-      }
+    int numCommands = countCommands();
+    if(numCommands!=0){
+    commands[0].startPoint.transform(m);
+    for(int i=0;i<numCommands-1;i++){
+    for(int j=0;j<commands[i].countControlPoints();j++){
+    commands[i].controlPoints[j].transform(m);
+    }
+    commands[i].endPoint.transform(m);
+    }
+    }
     
-  }
+    }
   */
   
   void append(RCommand nextcommand)

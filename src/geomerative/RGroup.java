@@ -63,7 +63,7 @@ public class RGroup extends RGeomElem
       case RGeomElem.MESH:
         this.addElement(new RMesh((RMesh)grp.elements[i]));
         break;
-
+        
       case RGeomElem.GROUP:
         this.addElement(new RGroup((RGroup)grp.elements[i]));
         break;
@@ -103,7 +103,7 @@ public class RGroup extends RGeomElem
     }
     return null;
   }
-
+  
   /**
    * Use this method to count the number of elements in the group.
    * @eexample RGroup_countElements
@@ -115,7 +115,7 @@ public class RGroup extends RGeomElem
     if(elements==null) return 0;
     return elements.length;
   }
-
+  
   public void print(){
     System.out.println("group: ");
     for(int i=0;i<countElements();i++)
@@ -179,11 +179,11 @@ public class RGroup extends RGeomElem
    * @related draw ( )
    */
   /*
-  public void transform(RMatrix m){
+    public void transform(RMatrix m){
     for(int i=0; i<countElements(); i++){
-      elements[i].transform(m);
+    elements[i].transform(m);
     }
-  }
+    }
   */
   
   /**
@@ -387,7 +387,7 @@ public class RGroup extends RGeomElem
     }
     return result;
   }  
-
+  
   /**
    * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
    * @eexample RGroup_getPoints
@@ -493,15 +493,15 @@ public class RGroup extends RGeomElem
       break;
       
     case BYELEMENTINDEX:
-
-       for(int i=0;i<numElements;i++){
+      
+      for(int i=0;i<numElements;i++){
         RGeomElem elem = result.elements[i];
         RContour elemc = elem.getBounds();
-
+        
         float px = (elemc.points[2].x + elemc.points[0].x) / 2;
         float py = elemc.points[2].y;
         float t = ((float)i/(float)numElements + lngthOffset ) % 1F;
-
+        
         RPoint tg = sshp.getCurveTangent(t);
         RPoint p = sshp.getCurvePoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
@@ -517,7 +517,7 @@ public class RGroup extends RGeomElem
         elem.transform(mtx);
       }
       break;
-
+      
     default:
       throw new RuntimeException("Unknown adaptor type : "+adaptorType+". The method setAdaptor() only accepts RGroup.BYPOINT or RGroup.BYELEMENT as parameter values.");
     }

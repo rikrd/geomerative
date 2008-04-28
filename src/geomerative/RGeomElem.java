@@ -53,7 +53,7 @@ public abstract class RGeomElem
   // They must be overrided
   public abstract void draw(PGraphics g);
   public abstract void draw(PApplet g);
-
+  
   public void draw(){
     this.draw(RGeomerative.parent);
   }
@@ -164,7 +164,7 @@ public abstract class RGeomElem
         areaAcc += ps[i].x*ps[i+1].y - ps[i+1].x*ps[i].y;
       }
     areaAcc /= 2.0f;
-		return areaAcc;
+    return areaAcc;
   }
   
   /**
@@ -173,10 +173,10 @@ public abstract class RGeomElem
    * @return RMatrix, the transformation matrix
    * @param PGraphics g, the canvas to which to fit and center the path
    * @param float margin, the margin to take into account when fitting
-	* @param float sclDamping, a value from 0 to 1. The damping coefficient for the scale, if the value is 0, then no scaling is applied.
-	* @param float trnsDamping, a value from 0 to 1. The damping coefficient for the translation, if the value is 0, then no translation is applied.
- 	* @related getBounds ( )
- 	*/
+   * @param float sclDamping, a value from 0 to 1. The damping coefficient for the scale, if the value is 0, then no scaling is applied.
+   * @param float trnsDamping, a value from 0 to 1. The damping coefficient for the translation, if the value is 0, then no translation is applied.
+   * @related getBounds ( )
+   */
   public RMatrix getCenteringTransf(PGraphics g, float margin, float sclDamping, float trnsDamping) throws RuntimeException{
     RMatrix transf;
     
@@ -230,13 +230,13 @@ public abstract class RGeomElem
     transf.translate(tx, ty);
     transform(transf);
   }
-
+  
   public void translate(RPoint t)
   {
     RMatrix transf = new RMatrix();
     transf.translate(t);
     transform(transf);  }
-
+  
   /**
    * Use this to apply a rotation to the point.
    * @eexample RPoint_rotate
@@ -255,21 +255,21 @@ public abstract class RGeomElem
     transf.rotate(angle);
     transform(transf);
   }
-
+  
   public void rotate(float angle, float vx, float vy)
   {
     RMatrix transf = new RMatrix();
     transf.rotate(angle, vx, vy);
     transform(transf);
   }
-
+  
   public void rotate(float angle, RPoint v)
   {
     RMatrix transf = new RMatrix();
     transf.rotate(angle, v);
     transform(transf);
   }
-
+  
   /**
    * Use this to scale the point.
    * @eexample RPoint_scale
@@ -288,7 +288,7 @@ public abstract class RGeomElem
     transf.scale(sx, sy);
     transform(transf);
   }
-
+  
   public void scale (float s)
   {
     RMatrix transf = new RMatrix();
