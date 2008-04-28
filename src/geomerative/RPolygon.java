@@ -116,7 +116,7 @@ public class RPolygon extends RGeomElem
 		
 	/**
 	* Use this method to create a new starform polygon. 
- 	* @example createStar
+ 	* @eexample createStar
  	* @param radiusBig float, the outter radius of the star polygon
  	* @param radiusSmall float, the inner radius of the star polygon
  	* @param spikes int, the amount of spikes on the star polygon
@@ -138,7 +138,7 @@ public class RPolygon extends RGeomElem
 	
 	/**
 	* Use this method to create a new ring polygon. 
- 	* @example createRing
+ 	* @eexample createRing
  	* @param radiusBig float, the outter radius of the ring polygon
  	* @param radiusSmall float, the inner radius of the ring polygon
  	* @param detail int, the number of vertices on each contour of the ring
