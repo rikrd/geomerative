@@ -101,7 +101,7 @@ public class RSVG
         }
         
         // Get the id for the geometrical element
-        if(element.hasAttribute("id")){    
+        if(element.hasAttribute("id")){
           geomElem.id = element.getStringAttribute("id");
         }
         
@@ -110,20 +110,6 @@ public class RSVG
       }
     }
 
-    /*
-    // Transform geometrical element
-    if(elem.hasAttribute("transform")){    
-      String transformString = elem.getStringAttribute("transform");
-      RMatrix transf = new RMatrix(transformString);
-      grp.transform(transf);
-    }
-
-    // Get the id for the geometrical element
-    if(elem.hasAttribute("id")){    
-      grp.id = elem.getStringAttribute("id");
-    }
-    */
-    // Get the style for the geometrical element    
     return grp;
   }
 
