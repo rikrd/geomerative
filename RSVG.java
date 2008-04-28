@@ -83,6 +83,9 @@ public class RSVG
       }else if(name.equals("rect")){
         geomElem = elemToRect(element);
 
+      }else if(name.equals("line")){
+        geomElem = elemToLine(element);
+
       }else{
         RGeomerative.parent.println("Element '"+name+"' not know. Ignoring it.");
 
@@ -90,34 +93,20 @@ public class RSVG
 
       // If the geometrical element has been correctly created
       if((geomElem != null)){
+        /*
         // Transform geometrical element
         if(element.hasAttribute("transform")){
-          /*
-          if(name.equals("path")){
-            RGeomerative.parent.println("Path before transform");
-            geomElem.print();
-            RGeomerative.parent.println("+++");
-          }
-          */
           String transformString = element.getStringAttribute("transform");
           RMatrix transf = new RMatrix(transformString);
           geomElem.transform(transf);
-          /*
-          if(name.equals("path")){
-            RGeomerative.parent.println("Path after transform");
-            geomElem.print();
-            RGeomerative.parent.println("***");
-          }
-          */
         }
         
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){    
           geomElem.id = element.getStringAttribute("id");
         }
-        
+        */
         // Get the style for the geometrical element
-        
         grp.addElement(geomElem);      
       }
     }
@@ -134,9 +123,8 @@ public class RSVG
     if(elem.hasAttribute("id")){    
       grp.id = elem.getStringAttribute("id");
     }
-
-    // Get the style for the geometrical element
     
+    // Get the style for the geometrical element    
     return grp;
   }
 
@@ -166,6 +154,14 @@ public class RSVG
   public RShape elemToRect(XMLElement elem)
   {
     return getRect(elem.getFloatAttribute("x"), elem.getFloatAttribute("y"), elem.getFloatAttribute("width"), elem.getFloatAttribute("height"));
+  }
+
+  /**
+   * @invisible
+   */
+  public RShape elemToLine(XMLElement elem)
+  {
+    return getRect(elem.getFloatAttribute("x1"), elem.getFloatAttribute("y1"), elem.getFloatAttribute("x2"), elem.getFloatAttribute("y2"));
   }
 
 
@@ -201,6 +197,19 @@ public class RSVG
   private RShape getRect(float x, float y, float w, float h)
   {
     return RShape.createRect(x, y, w, h);
+  }
+
+  /**
+   * @invisible
+   */
+  private RShape getLine(float x1, float y1, float x2, float y2)
+  {
+    RShape shp = new RShape();
+
+    shp.addMoveTo(x1, y1);
+    shp.addLineTo(x2, y2);
+    
+    return shp;
   }
 
 

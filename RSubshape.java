@@ -99,7 +99,12 @@ public class RSubshape extends RGeomElem
       RPoint[] newPoints = commands[i].getPoints();
       if(newPoints!=null){
         if(newPoints.length!=1){
-          int overlap = 1;
+          int overlap = 0;
+          if(result != null){
+            if(newPoints[0] == result[result.length-1]){
+              overlap = 1;
+            }
+          }
           if(result==null){
             result = new RPoint[newPoints.length];
             System.arraycopy(newPoints,0,result,0,newPoints.length);
