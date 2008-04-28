@@ -57,7 +57,7 @@ public class RSVG
     
     XMLElement elems[] = elem.getChildren();
     for (int i = 0; i < elems.length; i++) {
-      String name = elems[i].getName();
+      String name = elems[i].getName().toLowerCase();
       XMLElement element = elems[i];
       
       // Parse and create the geometrical element
@@ -87,8 +87,7 @@ public class RSVG
         geomElem = elemToLine(element);
         
       }else{
-        RGeomerative.parent.println("Element '"+name+"' not know. Ignoring it.");
-        
+        RGeomerative.parent.println("Element '" + name + "' not know. Ignoring it.");
       }
       
       // If the geometrical element has been correctly created
@@ -99,6 +98,7 @@ public class RSVG
           RMatrix transf = new RMatrix(transformString);
           geomElem.transform(transf);
         }
+
         
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){
@@ -250,8 +250,8 @@ public class RSVG
     RShape shp = new RShape();
     
     //format string to usable format
-    char charline[]=s.toCharArray();
-    for(int i=0;i<charline.length;i++)
+    char charline[] = s.toCharArray();
+    for( int i = 0 ; i < charline.length ; i++)
       {
         switch(charline[i])
           {
@@ -269,25 +269,28 @@ public class RSVG
           case 'h':
           case 'V':
           case 'v':
-            charline=RGeomerative.parent.splice(charline,' ',i);
-            i++;
-            charline=RGeomerative.parent.splice(charline,' ',i+1);
-            i++;      
+            charline = RGeomerative.parent.splice(charline,' ',i);
+            i ++;
+            charline = RGeomerative.parent.splice(charline,' ',i+1);
+            i ++;      
             break;
+            
           case '-':
-            charline=RGeomerative.parent.splice(charline,' ',i);
-            i++;
-            break;   
+            charline = RGeomerative.parent.splice(charline,' ',i);
+            i ++;
+            break;
+            
           case ',':
           case '\n':
           case '\r':
           case '\t':
-            charline[i]=' ';
+            charline[i] = ' ';
             break;
+            
           }
       }
-    String formatted=new String(charline);
-    String tags[]=RGeomerative.parent.splitTokens(formatted);   
+    String formatted = new String(charline);
+    String[] tags = RGeomerative.parent.splitTokens(formatted);
     
     //build points
     RPoint curp = new RPoint();
@@ -299,19 +302,19 @@ public class RSVG
     
     for(int i=0;i<tags.length;i++)
       {
-        relp=new RPoint(0f,0f);
+        relp = new RPoint(0f,0f);
         switch(tags[i].charAt(0))
           {
           case 'm':
-            relp=new RPoint(curp.x,curp.y);
+            relp = new RPoint(curp.x,curp.y);
           case 'M':
             // new subshape
-            numSubshape++;
+            numSubshape ++;
             shp.addMoveTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
             curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
             refp = new RPoint(curp.x,curp.y);
             strp = new RPoint(curp.x,curp.y);
-            i+=2;
+            i += 2;
             break;
             
           case 'z':
@@ -321,49 +324,49 @@ public class RSVG
             break;
             
           case 'c':
-            relp=new RPoint(curp.x,curp.y);
+            relp = new RPoint(curp.x,curp.y);
           case 'C':
             shp.addBezierTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y,RGeomerative.parent.parseFloat(tags[i+3])+relp.x,RGeomerative.parent.parseFloat(tags[i+4])+relp.y,RGeomerative.parent.parseFloat(tags[i+5])+relp.x,RGeomerative.parent.parseFloat(tags[i+6])+relp.y);
             
-            curp=new RPoint(RGeomerative.parent.parseFloat(tags[i+5])+relp.x,RGeomerative.parent.parseFloat(tags[i+6])+relp.y);
-            refp=new RPoint(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i+3])+relp.x),2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+4])+relp.y));
-            i+=6;
+            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+5])+relp.x,RGeomerative.parent.parseFloat(tags[i+6])+relp.y);
+            refp = new RPoint(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i+3])+relp.x),2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+4])+relp.y));
+            i += 6;
             break;
             
           case 's':
-            relp=new RPoint(curp.x,curp.y);
+            relp = new RPoint(curp.x,curp.y);
           case 'S':
             shp.addBezierTo(refp.x,refp.y,RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y,RGeomerative.parent.parseFloat(tags[i+3])+relp.x,RGeomerative.parent.parseFloat(tags[i+4])+relp.y);
-            curp=new RPoint(RGeomerative.parent.parseFloat(tags[i+3])+relp.x,RGeomerative.parent.parseFloat(tags[i+4])+relp.y);
-            refp=new RPoint(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i+1])+relp.x),2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+2])+relp.y));
-            i+=4;
+            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+3])+relp.x,RGeomerative.parent.parseFloat(tags[i+4])+relp.y);
+            refp = new RPoint(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i+1])+relp.x),2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+2])+relp.y));
+            i += 4;
             break;
             
           case 'l':
-            relp=new RPoint(curp.x,curp.y);
+            relp = new RPoint(curp.x,curp.y);
           case 'L':
             shp.addLineTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
-            curp=new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
-            refp=new RPoint(curp.x,curp.y);
-            i+=2;
+            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
+            refp = new RPoint(curp.x,curp.y);
+            i += 2;
             break;
             
           case 'h':
-            relp=new RPoint(curp.x,curp.y);
+            relp = new RPoint(curp.x,curp.y);
           case 'H':
             shp.addLineTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,curp.y);
-            curp=new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,curp.y);
-            refp=new RPoint(curp.x,curp.y);
-            i+=1;
+            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,curp.y);
+            refp = new RPoint(curp.x,curp.y);
+            i += 1;
             break;
             
           case 'v':
-            relp=new RPoint(curp.x,curp.y);
+            relp = new RPoint(curp.x,curp.y);
           case 'V':
             shp.addLineTo(curp.x,RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
-            curp=new RPoint(curp.x,RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
-            refp=new RPoint(curp.x,curp.y);
-            i+=1;
+            curp = new RPoint(curp.x,RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
+            refp = new RPoint(curp.x,curp.y);
+            i += 1;
             break;
           }
       }

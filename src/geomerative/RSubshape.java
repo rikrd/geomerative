@@ -93,13 +93,12 @@ public class RSubshape extends RGeomElem
       return null;
     }
     
-    
-    RPoint[] result=null;
-    RPoint[] newresult=null;
-    for(int i=0;i<numCommands;i++){
+    RPoint[] result = null;
+    RPoint[] newresult = null;
+    for( int i = 0; i < numCommands ; i++ ){
       RPoint[] newPoints = commands[i].getPoints();
-      if(newPoints!=null){
-        if(result==null){
+      if(newPoints != null){
+        if(result == null){
           result = new RPoint[newPoints.length];
           System.arraycopy(newPoints,0,result,0,newPoints.length);
         }else{
@@ -114,7 +113,7 @@ public class RSubshape extends RGeomElem
         }
       }
     }
-    return newresult;
+    return result;
   }
   
   /**
