@@ -213,7 +213,7 @@ public abstract class RGeomElem
   }
 
   protected void setStyle(String styleString){
-    RGeomerative.parent.println("Style parsing: " + styleString);
+    //RGeomerative.parent.println("Style parsing: " + styleString);
     String[] styleTokens = RGeomerative.parent.splitTokens(styleString, ";");
     
     for(int i = 0; i < styleTokens.length; i++){
@@ -243,7 +243,7 @@ public abstract class RGeomElem
   }
 
   public void setFill(String str){
-    RGeomerative.parent.println("  set fill: " + str);
+    //RGeomerative.parent.println("  set fill: " + str);
     fillDef = true;
     if(str.equals("none")){
       fill = false;
@@ -264,7 +264,7 @@ public abstract class RGeomElem
   }
 
   public void setStroke(String str){
-    RGeomerative.parent.println("  set stroke: " + str);
+    //RGeomerative.parent.println("  set stroke: " + str);
     strokeDef = true;
     if(str.equals("none")){
       stroke = false;
@@ -275,7 +275,7 @@ public abstract class RGeomElem
   }
 
   public void setStrokeWeight(String str){
-    RGeomerative.parent.println("  set stroke-width: " + str);
+    //RGeomerative.parent.println("  set stroke-width: " + str);
     strokeWeightDef = true;
     strokeWeight = RGeomerative.parent.parseFloat(str);
   }
