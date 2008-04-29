@@ -130,23 +130,6 @@ public class RMesh extends RGeomElem
    * @param g PGraphics, the graphics object on which to draw the mesh
    */
   public void draw(PGraphics g){
-    /*
-      float maxx = Float.NEGATIVE_INFINITY;
-      float minx = Float.POSITIVE_INFINITY;
-      float maxy = Float.NEGATIVE_INFINITY;
-      float miny = Float.POSITIVE_INFINITY;
-      
-      if(this.texture != null){
-      RPoint[] ps = this.getPoints();          
-      for(int j=0;j<ps.length;j++)
-      {
-      maxx = Math.max(maxx, ps[j].x);
-      minx = Math.min(minx, ps[j].x);
-      maxy = Math.max(maxx, ps[j].y);
-      miny = Math.min(minx, ps[j].y);
-      }
-      }
-    */
     for(int i=0;i<this.countStrips();i++){
       g.beginShape(g.TRIANGLE_STRIP);
       if(this.texture != null)
@@ -171,7 +154,7 @@ public class RMesh extends RGeomElem
             g.vertex(x, y);
           }
       }
-      g.endShape(g.CLOSE);
+      g.endShape();
     }
     
     
@@ -187,7 +170,7 @@ public class RMesh extends RGeomElem
       for(int j=0;j<this.strips[i].vertices.length;j++){
         g.vertex(this.strips[i].vertices[j].x,this.strips[i].vertices[j].y);
       }
-      g.endShape(g.CLOSE);
+      g.endShape();
     }
   }		
   

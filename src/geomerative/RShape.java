@@ -521,8 +521,12 @@ public class RShape extends RGeomElem
           // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
           
           // Save the information about the current stroke color and turn off
-          boolean stroking = g.g.stroke;
-          g.noStroke();
+          boolean strokeBefore = g.g.stroke;
+          int strokeColorBefore = g.g.strokeColor;
+          float strokeWeightBefore = g.g.strokeWeight;
+          g.stroke(g.g.fillColor);
+          g.strokeWeight(1F);         
+          //g.noStroke();
           
           // Save smoothing state and turn off
           boolean smoothing = g.g.smooth;
@@ -536,8 +540,12 @@ public class RShape extends RGeomElem
           RMesh tempMesh = this.toMesh();
           tempMesh.draw(g);
           
-          // Restore the old stroke color
-          if(stroking) g.stroke(g.g.strokeColor);
+          // Restore the old stroke color and weight
+          g.stroke(strokeColorBefore);
+          g.strokeWeight(strokeWeightBefore);
+          if(!strokeBefore){
+            g.noStroke();
+          }
           
           // Restore the old smoothing state
           try{
@@ -547,13 +555,16 @@ public class RShape extends RGeomElem
           }catch(Exception e){
           }
         }
+        
         // Check whether to draw the stroke or not
         if(g.g.stroke){
           boolean beforeFill = g.g.fill;
           g.noFill();
+
           for(int i=0;i<numSubshapes;i++){
             subshapes[i].draw(g);
           }
+
           if(beforeFill)
             g.fill(g.g.fillColor);
         }

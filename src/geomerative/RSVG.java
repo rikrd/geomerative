@@ -167,7 +167,7 @@ public class RSVG
    */
   public RShape elemToLine(XMLElement elem)
   {
-    return getRect(elem.getFloatAttribute("x1"), elem.getFloatAttribute("y1"), elem.getFloatAttribute("x2"), elem.getFloatAttribute("y2"));
+    return getLine(elem.getFloatAttribute("x1"), elem.getFloatAttribute("y1"), elem.getFloatAttribute("x2"), elem.getFloatAttribute("y2"));
   }
   
   
@@ -214,7 +214,7 @@ public class RSVG
     
     shp.addMoveTo(x1, y1);
     shp.addLineTo(x2, y2);
-    
+
     return shp;
   }
   
