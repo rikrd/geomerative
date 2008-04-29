@@ -369,6 +369,7 @@ public class RSubshape extends RGeomElem
     if(points == null){
       return;
     }
+
     g.beginShape();
     for(int i=0;i<points.length;i++){
       g.vertex(points[i].x,points[i].y);

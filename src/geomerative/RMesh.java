@@ -154,7 +154,7 @@ public class RMesh extends RGeomElem
             g.vertex(x, y);
           }
       }
-      g.endShape();
+      g.endShape(g.CLOSE);
     }
     
     
@@ -170,7 +170,7 @@ public class RMesh extends RGeomElem
       for(int j=0;j<this.strips[i].vertices.length;j++){
         g.vertex(this.strips[i].vertices[j].x,this.strips[i].vertices[j].y);
       }
-      g.endShape();
+      g.endShape(g.CLOSE);
     }
   }		
   

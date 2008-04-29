@@ -105,6 +105,16 @@ public class RSVG
           geomElem.id = element.getStringAttribute("id");
         }
         
+        // Set the defaults styles
+        geomElem.setFill(0);  // By default in SVG it's black
+        geomElem.setFillAlpha(255);  // By default in SVG it's 1
+        geomElem.setStroke(false);  // By default in SVG it's none
+        geomElem.setStrokeWeight(1F);  // By default in SVG it's none
+        geomElem.setStrokeCap("butt");  // By default in SVG it's 'butt'
+        geomElem.setStrokeJoin("miter");  // By default in SVG it's 'miter'
+        geomElem.setStrokeAlpha(255);  // By default in SVG it's 1
+        geomElem.setAlpha(255);  // By default in SVG it's 1F
+        
         // Get the style for the geometrical element
         if(element.hasAttribute("style")){
           geomElem.setStyle(element.getStringAttribute("style"));
@@ -113,6 +123,11 @@ public class RSVG
         // Get the fill for the geometrical element
         if(element.hasAttribute("fill")){
           geomElem.setFill(element.getStringAttribute("fill"));
+        }
+
+        // Get the fill-linejoin for the geometrical element
+        if(element.hasAttribute("fill-opacity")){
+          geomElem.setFillAlpha(element.getStringAttribute("fill-opacity"));
         }
 
         // Get the stroke for the geometrical element
@@ -125,6 +140,25 @@ public class RSVG
           geomElem.setStrokeWeight(element.getStringAttribute("stroke-width"));
         }
 
+        // Get the stroke-linecap for the geometrical element
+        if(element.hasAttribute("stroke-linecap")){
+          geomElem.setStrokeCap(element.getStringAttribute("stroke-linecap"));
+        }
+
+        // Get the stroke-linejoin for the geometrical element
+        if(element.hasAttribute("stroke-linejoin")){
+          geomElem.setStrokeJoin(element.getStringAttribute("stroke-linejoin"));
+        }
+
+        // Get the stroke-linejoin for the geometrical element
+        if(element.hasAttribute("stroke-opacity")){
+          geomElem.setStrokeAlpha(element.getStringAttribute("stroke-opacity"));
+        }
+
+        // Get the opacity for the geometrical element
+        if(element.hasAttribute("opacity")){
+          geomElem.setAlpha(element.getStringAttribute("opacity"));
+        }
         
         // Get the style for the geometrical element
         grp.addElement(geomElem);      

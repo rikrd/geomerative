@@ -441,132 +441,71 @@ public class RShape extends RGeomElem
     
     if(numSubshapes!=0){
       if(isIn(g)) {
-        saveContext(g);
-        setContext(g);
-        
-        // By default always drawy with an ADAPTATIVE segmentator
-        int lastSegmentator = RCommand.segmentType;
-        RCommand.setSegmentator(RCommand.ADAPTATIVE);            
-        
-        // Check whether to draw the fill or not
-        if(g.fill){
-          // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
-          // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
-          
-          // Save the information about the current stroke color and turn off
-          boolean stroking = g.stroke;
-          g.noStroke();
-          
-          // Save smoothing state and turn off
-          boolean smoothing = g.smooth;
-          try{
-            if(smoothing){
-              g.noSmooth();
-            }
-          }catch(Exception e){
-          }
-
-          RMesh tempMesh = this.toMesh();
-          tempMesh.draw(g);
-          
-          // Restore the old stroke color
-          if(stroking) g.stroke(g.strokeColor);
-          
-          // Restore the old smoothing state
-          try{
-            if(smoothing){
-              g.smooth();
-            }
-          }catch(Exception e){
-          }
-        }
-        // Check whether to draw the stroke or not
-        if(g.stroke){
-          
-          boolean beforeFill = g.fill;
-          g.noFill();
-          
-          for(int i=0;i<numSubshapes;i++){
-            subshapes[i].draw(g);
-          }
-          
-          if(beforeFill)
-            g.fill(g.fillColor);
-        }
-        
-        // Restore the user set segmentator
-        RCommand.setSegmentator(lastSegmentator);                    
-        restoreContext(g);
-      }            
-    }
-  }
-  
-  public void draw(PApplet g){
-    int numSubshapes = countSubshapes();
-    
-    if(numSubshapes!=0){
-      if(isIn(g)) {
         if(!RGeomerative.ignoreStyles){
           saveContext(g);
           setContext(g);
         }
+
+        // Save the information about the current context
+        boolean strokeBefore = g.stroke;
+        int strokeColorBefore = g.strokeColor;
+        float strokeWeightBefore = g.strokeWeight;      
+        boolean smoothBefore = g.smooth;
+        boolean fillBefore = g.fill;
+        int fillColorBefore = g.fillColor;
 
         // By default always drawy with an ADAPTATIVE segmentator
         int lastSegmentator = RCommand.segmentType;
         RCommand.setSegmentator(RCommand.ADAPTATIVE);
         
         // Check whether to draw the fill or not
-        if(g.g.fill){
+        if(g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
           // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
-          
-          // Save the information about the current stroke color and turn off
-          boolean strokeBefore = g.g.stroke;
-          int strokeColorBefore = g.g.strokeColor;
-          float strokeWeightBefore = g.g.strokeWeight;
-          g.stroke(g.g.fillColor);
-          g.strokeWeight(1F);         
-          //g.noStroke();
-          
-          // Save smoothing state and turn off
-          boolean smoothing = g.g.smooth;
+
+          // This is here because when rendering meshes we get unwanted lines between the triangles
+          g.noStroke();
           try{
-            if(smoothing){
-              g.noSmooth();
-            }
-          }catch(Exception e){
-          }
+            g.noSmooth();
+          }catch(Exception e){}
           
           RMesh tempMesh = this.toMesh();
           tempMesh.draw(g);
           
-          // Restore the old stroke color and weight
+          // Restore the old context
           g.stroke(strokeColorBefore);
-          g.strokeWeight(strokeWeightBefore);
           if(!strokeBefore){
             g.noStroke();
           }
           
-          // Restore the old smoothing state
           try{
-            if(smoothing){
+            if(smoothBefore){
               g.smooth();
             }
-          }catch(Exception e){
-          }
+          }catch(Exception e){}
         }
         
-        // Check whether to draw the stroke or not
-        if(g.g.stroke){
-          boolean beforeFill = g.g.fill;
-          g.noFill();
+        // Check whether to draw the stroke
+        g.noFill();
+        if(!strokeBefore){
+          // If there is no stroke to draw
+          // we will still draw one the color of the fill in order to have antialiasing
+          g.stroke(g.fillColor);
+          g.strokeWeight(1F);
+        }
+          
+        for(int i=0;i<numSubshapes;i++){
+          subshapes[i].draw(g);
+        }
 
-          for(int i=0;i<numSubshapes;i++){
-            subshapes[i].draw(g);
-          }
-
-          if(beforeFill)
-            g.fill(g.g.fillColor);
+        // Restore the fill state and stroke state and color
+        if(fillBefore){
+          g.fill(g.fillColor);
+        }
+        g.strokeWeight(strokeWeightBefore);
+        g.stroke(strokeColorBefore);
+        if(!strokeBefore){
+          g.noStroke();
         }
         
         // Restore the user set segmentator
@@ -574,6 +513,93 @@ public class RShape extends RGeomElem
 
         if(!RGeomerative.ignoreStyles){
           restoreContext(g);
+        }
+      }
+    }
+  }
+  
+  public void draw(PApplet p){
+    int numSubshapes = countSubshapes();
+    
+    if(numSubshapes!=0){
+      if(isIn(p)) {
+        if(!RGeomerative.ignoreStyles){
+          saveContext(p);
+          setContext(p);
+        }
+
+        // Save the information about the current context
+        boolean strokeBefore = p.g.stroke;
+        int strokeColorBefore = p.g.strokeColor;
+        float strokeWeightBefore = p.g.strokeWeight;      
+        boolean smoothBefore = p.g.smooth;
+        boolean fillBefore = p.g.fill;
+        int fillColorBefore = p.g.fillColor;
+
+        // By default always drawy with an ADAPTATIVE segmentator
+        int lastSegmentator = RCommand.segmentType;
+        RCommand.setSegmentator(RCommand.ADAPTATIVE);
+        
+        // Check whether to draw the fill or not
+        if(p.g.fill){
+          // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
+          // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
+
+          // This is here because when rendering meshes we get unwanted lines between the triangles
+          p.noStroke();
+          try{
+            p.noSmooth();
+          }catch(Exception e){}
+          
+          RMesh tempMesh = this.toMesh();
+          tempMesh.draw(p);
+          
+          // Restore the old context
+          p.stroke(strokeColorBefore);
+          p.strokeWeight(strokeWeightBefore);
+          if(!strokeBefore){
+            p.noStroke();
+          }
+          
+          try{
+            if(smoothBefore){
+              p.smooth();
+            }
+          }catch(Exception e){}
+        }
+        
+        
+        // Check whether to draw the stroke
+        p.noFill();
+        if((smoothBefore && fillBefore) || strokeBefore){
+          if(!strokeBefore){
+            // If there is no stroke to draw
+            // we will still draw one the color 
+            // of the fill in order to have antialiasing
+            p.stroke(fillColorBefore);
+            p.strokeWeight(1F);
+          }
+          
+          for(int i=0;i<numSubshapes;i++){
+            subshapes[i].draw(p);
+          }
+          
+          // Restore the old context
+          if(fillBefore){
+            p.fill(fillColorBefore);
+          }
+          p.strokeWeight(strokeWeightBefore);
+          p.stroke(strokeColorBefore);
+          if(!strokeBefore){
+            p.noStroke();
+          }
+        }
+        
+        // Restore the user set segmentator
+        RCommand.setSegmentator(lastSegmentator);
+
+        if(!RGeomerative.ignoreStyles){
+          restoreContext(p);
         }
       }
     }
