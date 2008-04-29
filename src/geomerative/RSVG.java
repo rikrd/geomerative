@@ -106,6 +106,27 @@ public class RSVG
         }
         
         // Get the style for the geometrical element
+        if(element.hasAttribute("style")){
+          geomElem.setStyle(element.getStringAttribute("style"));
+        }
+
+        // Get the fill for the geometrical element
+        if(element.hasAttribute("fill")){
+          geomElem.setFill(element.getStringAttribute("fill"));
+        }
+
+        // Get the stroke for the geometrical element
+        if(element.hasAttribute("stroke")){
+          geomElem.setStroke(element.getStringAttribute("stroke"));
+        }
+
+        // Get the stroke-width for the geometrical element
+        if(element.hasAttribute("stroke-width")){
+          geomElem.setStrokeWeight(element.getStringAttribute("stroke-width"));
+        }
+
+        
+        // Get the style for the geometrical element
         grp.addElement(geomElem);      
       }
     }

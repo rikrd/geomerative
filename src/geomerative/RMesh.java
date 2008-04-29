@@ -43,6 +43,8 @@ public class RMesh extends RGeomElem
       this.append(new RStrip(m.strips[i]));
     }
     type = RGeomElem.MESH;
+
+    setStyle(m);
   }
   
   /**

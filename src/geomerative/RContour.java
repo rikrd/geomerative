@@ -57,10 +57,8 @@ public class RContour extends RGeomElem
     }
     isHole = c.isHole;
     isContributing = c.isContributing;
-    this.id = c.id;
-    this.texture = c.texture;
-    this.fillColour = c.fillColour;
-    this.strokeColour = c.strokeColour;
+    
+    setStyle(c);
   }
   
   

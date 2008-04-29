@@ -48,11 +48,8 @@ public class RShape extends RGeomElem
       this.append(new RSubshape(s.subshapes[i]));
     }
     type = RGeomElem.SHAPE;
-    this.id = s.id;
-    this.texture = s.texture;
-    this.fillColour = s.fillColour;
-    this.strokeColour = s.strokeColour;
-    
+
+    setStyle(s);
   }
   
   /**
@@ -444,6 +441,9 @@ public class RShape extends RGeomElem
     
     if(numSubshapes!=0){
       if(isIn(g)) {
+        saveContext(g);
+        setContext(g);
+        
         // By default always drawy with an ADAPTATIVE segmentator
         int lastSegmentator = RCommand.segmentType;
         RCommand.setSegmentator(RCommand.ADAPTATIVE);            
@@ -465,7 +465,7 @@ public class RShape extends RGeomElem
             }
           }catch(Exception e){
           }
-          
+
           RMesh tempMesh = this.toMesh();
           tempMesh.draw(g);
           
@@ -482,17 +482,21 @@ public class RShape extends RGeomElem
         }
         // Check whether to draw the stroke or not
         if(g.stroke){
+          
           boolean beforeFill = g.fill;
           g.noFill();
+          
           for(int i=0;i<numSubshapes;i++){
             subshapes[i].draw(g);
           }
+          
           if(beforeFill)
             g.fill(g.fillColor);
         }
         
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);                    
+        restoreContext(g);
       }            
     }
   }
@@ -502,6 +506,11 @@ public class RShape extends RGeomElem
     
     if(numSubshapes!=0){
       if(isIn(g)) {
+        if(!RGeomerative.ignoreStyles){
+          saveContext(g);
+          setContext(g);
+        }
+
         // By default always drawy with an ADAPTATIVE segmentator
         int lastSegmentator = RCommand.segmentType;
         RCommand.setSegmentator(RCommand.ADAPTATIVE);
@@ -551,6 +560,10 @@ public class RShape extends RGeomElem
         
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
+
+        if(!RGeomerative.ignoreStyles){
+          restoreContext(g);
+        }
       }
     }
   }

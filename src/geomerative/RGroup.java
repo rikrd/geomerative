@@ -172,6 +172,7 @@ public class RGroup extends RGeomElem
       elements[i].draw(a);
     }
   }
+
   /**
    * Use this method to transform the group.
    * @eexample RGroup_transform

@@ -62,11 +62,8 @@ public class RSubshape extends RGeomElem
         lastPoint = commands[i].endPoint;
       }
     }
-    this.id = s.id;
-    this.texture = s.texture;
-    this.fillColour = s.fillColour;
-    this.strokeColour = s.strokeColour;
-    //addClose();
+
+    setStyle(s);
   }
   
   /**

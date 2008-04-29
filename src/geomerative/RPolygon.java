@@ -58,10 +58,8 @@ public class RPolygon extends RGeomElem
       this.append(new RContour(p.contours[i]));
     }
     type = RGeomElem.POLYGON;
-    this.id = p.id;
-    this.texture = p.texture;
-    this.fillColour = p.fillColour;
-    this.strokeColour = p.strokeColour;
+
+    setStyle(p);
   }
   
   /**
@@ -458,6 +456,11 @@ public class RPolygon extends RGeomElem
     int numContours = countContours();
     if(numContours!=0){
       if(isIn(g)){
+        if(!RGeomerative.ignoreStyles){
+          saveContext(g);
+          setContext(g);
+        }
+
         // Check whether to draw the fill or not
         if(g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
@@ -497,6 +500,10 @@ public class RPolygon extends RGeomElem
             contours[i].draw(g);
           }
         }
+
+        if(!RGeomerative.ignoreStyles){
+          restoreContext(g);
+        }
       }
     }
   }
@@ -505,6 +512,11 @@ public class RPolygon extends RGeomElem
     int numContours = countContours();
     if(numContours!=0){
       if(isIn(g)){
+        if(!RGeomerative.ignoreStyles){
+          saveContext(g);
+          setContext(g);
+        }
+        
         // Check whether to draw the fill or not
         if(g.g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
@@ -543,6 +555,10 @@ public class RPolygon extends RGeomElem
           for(int i=0;i<numContours;i++){
             contours[i].draw(g);
           }
+        }
+
+        if(!RGeomerative.ignoreStyles){
+          restoreContext(g);
         }
       }
     }
