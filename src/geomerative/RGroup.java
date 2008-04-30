@@ -162,14 +162,32 @@ public class RGroup extends RGeomElem
    * @param g PGraphics, the graphics object on which to draw the group
    */
   public void draw(PGraphics g){
+    if(!RGeomerative.ignoreStyles){
+      saveContext(g);
+      setContext(g);
+    }
+
     for(int i=0; i<countElements(); i++){
       elements[i].draw(g);
+    }
+
+    if(!RGeomerative.ignoreStyles){
+      restoreContext(g);
     }
   }
   
   public void draw(PApplet a){
+    if(!RGeomerative.ignoreStyles){
+      saveContext(a);
+      setContext(a);
+    }
+
     for(int i=0; i<countElements(); i++){
       elements[i].draw(a);
+    }
+    
+    if(!RGeomerative.ignoreStyles){
+      restoreContext(a);
     }
   }
 

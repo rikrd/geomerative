@@ -104,17 +104,7 @@ public class RSVG
         if(element.hasAttribute("id")){
           geomElem.id = element.getStringAttribute("id");
         }
-        
-        // Set the defaults styles
-        geomElem.setFill(0);  // By default in SVG it's black
-        geomElem.setFillAlpha(255);  // By default in SVG it's 1
-        geomElem.setStroke(false);  // By default in SVG it's none
-        geomElem.setStrokeWeight(1F);  // By default in SVG it's none
-        geomElem.setStrokeCap("butt");  // By default in SVG it's 'butt'
-        geomElem.setStrokeJoin("miter");  // By default in SVG it's 'miter'
-        geomElem.setStrokeAlpha(255);  // By default in SVG it's 1
-        geomElem.setAlpha(255);  // By default in SVG it's 1F
-        
+                
         // Get the style for the geometrical element
         if(element.hasAttribute("style")){
           geomElem.setStyle(element.getStringAttribute("style"));
@@ -164,6 +154,16 @@ public class RSVG
         grp.addElement(geomElem);      
       }
     }
+
+    // Set the defaults styles
+    grp.setFill(0);  // By default in SVG it's black
+    grp.setFillAlpha(255);  // By default in SVG it's 1
+    grp.setStroke(false);  // By default in SVG it's none
+    grp.setStrokeWeight(1F);  // By default in SVG it's none
+    grp.setStrokeCap("butt");  // By default in SVG it's 'butt'
+    grp.setStrokeJoin("miter");  // By default in SVG it's 'miter'
+    grp.setStrokeAlpha(255);  // By default in SVG it's 1
+    grp.setAlpha(255);  // By default in SVG it's 1F
     
     return grp;
   }
