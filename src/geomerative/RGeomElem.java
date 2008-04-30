@@ -293,6 +293,8 @@ public abstract class RGeomElem
       }else if(tokens[0].equals("opacity")){
         setAlpha(tokens[1]);
         
+      }else{
+        RGeomerative.parent.println("Attribute '" + tokens[0] + "' not known.  Ignoring it.");
       }
     }
   }
@@ -303,11 +305,13 @@ public abstract class RGeomElem
   }
 
   public void setFill(int _fillColor){
+    //RGeomerative.parent.println("Setting fill by int: " + RGeomerative.parent.hex(_fillColor));
     setFill(true);
     fillColor = (fillColor & 0xff000000) | (_fillColor & 0x00ffffff);
   }
 
   public void setFill(String str){
+    //RGeomerative.parent.println("id: " + id);
     //RGeomerative.parent.println("  set fill: " + str);
     if(str.equals("none")){
       setFill(false);
@@ -316,6 +320,7 @@ public abstract class RGeomElem
       setFill(getColor(str));
 
     }
+    //RGeomerative.parent.println("  fillColor after: " + RGeomerative.parent.hex(fillColor));
   }
 
   public void setStroke(boolean _stroke){
@@ -340,13 +345,20 @@ public abstract class RGeomElem
   }
 
   public void setStrokeWeight(float value){
+    //RGeomerative.parent.println("  set strokeWeight by float: " + value);
     strokeWeightDef = true;
     strokeWeight = value;
   }
 
   public void setStrokeWeight(String str){
-    //RGeomerative.parent.println("  set stroke-width: " + str);
-    setStrokeWeight(RGeomerative.parent.parseFloat(str));
+    //RGeomerative.parent.println("  set strokeWeight by String: " + str);
+    if(str.endsWith("px")){
+      setStrokeWeight(RGeomerative.parent.parseFloat(str.substring(0, str.length() - 2)));
+    }else{
+      setStrokeWeight(RGeomerative.parent.parseFloat(str));
+    }
+
+    
   }
 
   public void setStrokeCap(String str){
@@ -390,35 +402,39 @@ public abstract class RGeomElem
   }
 
   public void setFillAlpha(int opacity){
-    fillColor = ((opacity << 24) & 0xff) | (fillColor & 0x00ffffff);
+    fillColor = ((opacity << 24) & 0xff000000) | (fillColor & 0x00ffffff);
   }
 
   public void setFillAlpha(String str){
+    //RGeomerative.parent.println("  set fillOpacity: " + str);
     setFillAlpha((int)(RGeomerative.parent.parseFloat(str) * 255F));
+    //RGeomerative.parent.println("  fillColor after: " + RGeomerative.parent.hex(fillColor));
   }  
 
   public void setAlpha(float opacity){
+    //RGeomerative.parent.println("Setting float opacity: " + opacity);
     setAlpha((int)(opacity * 255F));
   }
 
   public void setAlpha(int opacity){
     /*
-      RGeomerative.parent.println("setting opacity: " + RGeomerative.parent.hex(opacity));    
-
-      RGeomerative.parent.println("  fillColor before: " + RGeomerative.parent.hex(fillColor));
-      RGeomerative.parent.println("  strokeColor before: " + RGeomerative.parent.hex(fillColor));
+    RGeomerative.parent.println("setting opacity: " + RGeomerative.parent.hex(opacity));    
+    
+    RGeomerative.parent.println("  fillColor before: " + RGeomerative.parent.hex(fillColor));
+    RGeomerative.parent.println("  strokeColor before: " + RGeomerative.parent.hex(fillColor));
     */
 
     fillColor = ((opacity << 24) & 0xff000000) | (fillColor & 0x00ffffff);
     strokeColor = ((opacity << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
 
-    /*
-      RGeomerative.parent.println("  fillColor now: " + RGeomerative.parent.hex(fillColor));
-      RGeomerative.parent.println("  strokeColor now: " + RGeomerative.parent.hex(fillColor));
+    /*    
+    RGeomerative.parent.println("  fillColor now: " + RGeomerative.parent.hex(fillColor));
+    RGeomerative.parent.println("  strokeColor now: " + RGeomerative.parent.hex(fillColor));
     */
   }
 
   public void setAlpha(String str){
+    //RGeomerative.parent.println("Setting string opacity: " + str);
     setAlpha(RGeomerative.parent.parseFloat(str));
   }
   
