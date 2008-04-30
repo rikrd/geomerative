@@ -442,6 +442,9 @@ public abstract class RGeomElem
   private int getColor(String colorString){
     if(colorString.startsWith("#")){
       return RGeomerative.parent.unhex("FF"+colorString.substring(1));
+    }else if(colorString.startsWith("rgb")){
+      String[] rgb = RGeomerative.parent.splitTokens(colorString, "rgb( , )");
+      return (int)RGeomerative.parent.color(RGeomerative.parent.parseInt(rgb[0]), RGeomerative.parent.parseInt(rgb[1]), RGeomerative.parent.parseInt(rgb[2]));
     }else{
       if(colorString.equals("black")){
         return 0;
