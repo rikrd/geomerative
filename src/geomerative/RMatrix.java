@@ -74,6 +74,8 @@ public class RMatrix
         fparams[j] = RGeomerative.parent.parseFloat(params[j]);
       }
       
+      transf[0] = RGeomerative.parent.trim(transf[0]);
+      
       if(transf[0].equals("translate")){
         if(params.length == 1){
           this.translate(fparams[0]);
@@ -109,7 +111,7 @@ public class RMatrix
         this.apply(fparams[0], fparams[2], fparams[4], fparams[1], fparams[3], fparams[5]);
         
       }else{
-        throw new RuntimeException("Transformation unknown.");
+        throw new RuntimeException("Transformation unknown. '"+ transf[0]  +"'");
       }
     }
   }
