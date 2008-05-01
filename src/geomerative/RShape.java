@@ -291,8 +291,7 @@ public class RShape extends RGeomElem
       RPoint[] newpoints = this.subshapes[i].getCurvePoints();
       result.addContour(new RContour(newpoints));
     }
-    result.texture = this.texture;
-    result.id = this.id;
+    result.setStyle(this);
     return result;
   }
   

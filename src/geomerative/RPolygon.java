@@ -286,8 +286,7 @@ public class RPolygon extends RGeomElem
       return new RMesh();
     }
     RMesh mesh = RClip.polygonToMesh( this );
-    mesh.texture = this.texture;
-    mesh.id = this.id;
+    mesh.setStyle(this);
     return mesh;
   }
   

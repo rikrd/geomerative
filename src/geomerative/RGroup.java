@@ -295,8 +295,7 @@ public class RGroup extends RGeomElem
         result.addStrip(currentMesh.strips[j]);
       }
     }
-    result.texture = this.texture;
-    result.id = this.id;
+    result.setStyle(this);
     return result;
   }
   
@@ -313,8 +312,7 @@ public class RGroup extends RGeomElem
         result.addContour(currentPolygon.contours[j]);
       }
     }
-    result.texture = this.texture;
-    result.id = this.id;
+    result.setStyle(this);
     return result;
   }
   
@@ -331,8 +329,7 @@ public class RGroup extends RGeomElem
         result.addSubshape(currentShape.subshapes[j]);
       }
     }
-    result.texture = this.texture;
-    result.id = this.id;
+    result.setStyle(this);
     return result;
   }
   

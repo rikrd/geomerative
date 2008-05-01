@@ -69,8 +69,8 @@ class RClip
   private static final boolean DEBUG = false ;
   
   // Maximum precision for floats
-  //private static final double GPC_EPSILON = 2.2204460492503131e-016 ;
-  private static final float GPC_EPSILON = 1.192092896e-07F;
+  private static final double GPC_EPSILON = 2.2204460492503131e-016 ;
+  //private static final float GPC_EPSILON = 1.192092896e-07F;
   //private static final float GPC_EPSILON = 1F;
   private static final String GPC_VERSION = "2.31" ;
   
