@@ -269,6 +269,8 @@ public abstract class RGeomElem
     for(int i = 0; i < styleTokens.length; i++){
       String[] tokens = RGeomerative.parent.splitTokens(styleTokens[i], ":");
       
+      tokens[0] = RGeomerative.parent.trim(tokens[0]);
+      
       if(tokens[0].equals("fill")){
         setFill(tokens[1]);
         

@@ -54,6 +54,18 @@ public class RSVG
   public RGroup elemToGroup(XMLElement elem)
   {
     RGroup grp = new RGroup();
+
+    // Set the defaults SVG styles for the root
+    if(elem.getName().toLowerCase().equals("svg")){
+      grp.setFill(0);  // By default in SVG it's black
+      grp.setFillAlpha(255);  // By default in SVG it's 1
+      grp.setStroke(false);  // By default in SVG it's none
+      grp.setStrokeWeight(1F);  // By default in SVG it's none
+      grp.setStrokeCap("butt");  // By default in SVG it's 'butt'
+      grp.setStrokeJoin("miter");  // By default in SVG it's 'miter'
+      grp.setStrokeAlpha(255);  // By default in SVG it's 1
+      grp.setAlpha(255);  // By default in SVG it's 1F
+    }
     
     XMLElement elems[] = elem.getChildren();
     for (int i = 0; i < elems.length; i++) {
@@ -98,7 +110,6 @@ public class RSVG
           RMatrix transf = new RMatrix(transformString);
           geomElem.transform(transf);
         }
-
         
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){
@@ -155,16 +166,6 @@ public class RSVG
       }
     }
 
-    // Set the defaults styles
-    grp.setFill(0);  // By default in SVG it's black
-    grp.setFillAlpha(255);  // By default in SVG it's 1
-    grp.setStroke(false);  // By default in SVG it's none
-    grp.setStrokeWeight(1F);  // By default in SVG it's none
-    grp.setStrokeCap("butt");  // By default in SVG it's 'butt'
-    grp.setStrokeJoin("miter");  // By default in SVG it's 'miter'
-    grp.setStrokeAlpha(255);  // By default in SVG it's 1
-    grp.setAlpha(255);  // By default in SVG it's 1F
-    
     return grp;
   }
   
@@ -304,6 +305,10 @@ public class RSVG
   {
     RShape shp = new RShape();
     
+    if(s == null){
+      return shp;
+    }
+
     //format string to usable format
     char charline[] = s.toCharArray();
     for( int i = 0 ; i < charline.length ; i++)
