@@ -73,9 +73,15 @@ public abstract class RGeomElem
   public boolean fill = false;
   public int fillColor = 0xff000000;
 
+  public boolean fillAlphaDef = false;
+  public int fillAlpha = 0xff000000;
+
   public boolean strokeDef = false;
   public boolean stroke = false;
   public int strokeColor = 0xff000000;
+
+  public boolean strokeAlphaDef = false;
+  public int strokeAlpha = 0xff000000;
   
   public boolean strokeWeightDef = false;
   public float strokeWeight = 1F;
@@ -177,6 +183,17 @@ public abstract class RGeomElem
     RGeomerative.parent.println("  strokeWeight: ");
     RGeomerative.parent.println(strokeWeight);
     */
+
+    if(fillAlphaDef){
+      if(fillDef){
+        fillColor = ((fillAlpha << 24) & 0xff000000) | (fillColor & 0x00ffffff);
+      }else{
+        if(g.fill){
+          g.fill(((fillAlpha << 24) & 0xff000000) | (g.fillColor & 0x00ffffff));
+        }
+      }
+    }
+
     if(fillDef){
       g.fill(fillColor);
       if(!fill){
@@ -197,6 +214,16 @@ public abstract class RGeomElem
         g.strokeJoin(strokeJoin);
       }
     }catch(RuntimeException e){}
+
+    if(strokeAlphaDef){
+      if(strokeDef){
+        strokeColor = ((strokeAlpha << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
+      }else{
+        if(g.stroke){
+          g.stroke(((strokeAlpha << 24) & 0xff000000) | (g.strokeColor & 0x00ffffff));
+        }
+      }
+    }
     
     if(strokeDef){      
       g.stroke(strokeColor);
@@ -207,6 +234,17 @@ public abstract class RGeomElem
   }
 
   protected void setContext(PApplet p){
+    
+    if(fillAlphaDef){
+      if(fillDef){
+        fillColor = ((fillAlpha << 24) & 0xff000000) | (fillColor & 0x00ffffff);
+      }else{
+        if(p.g.fill){
+          p.fill(((fillAlpha << 24) & 0xff000000) | (p.g.fillColor & 0x00ffffff));
+        }
+      }
+    }
+    
     if(fillDef){
       p.fill(fillColor);
       if(!fill){
@@ -228,7 +266,17 @@ public abstract class RGeomElem
       }
     }catch(RuntimeException e){}
 
-    if(strokeDef){      
+    if(strokeAlphaDef){
+      if(strokeDef){
+        strokeColor = ((strokeAlpha << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
+      }else{
+        if(p.g.stroke){
+          p.stroke(((strokeAlpha << 24) & 0xff000000) | (p.g.strokeColor & 0x00ffffff));
+        }
+      }
+    }
+
+    if(strokeDef){
       p.stroke(strokeColor);
       if(!stroke){
         p.noStroke();
@@ -247,10 +295,14 @@ public abstract class RGeomElem
     fillDef = p.fillDef;
     fill = p.fill;
     fillColor = p.fillColor;
-
+    fillAlphaDef = p.fillAlphaDef;
+    fillAlpha = p.fillAlpha;
+    
     strokeDef = p.strokeDef;
     stroke = p.stroke;
     strokeColor = p.strokeColor;
+    strokeAlphaDef = p.strokeAlphaDef;
+    strokeAlpha = p.strokeAlpha;
 
     strokeWeightDef = p.strokeWeightDef;
     strokeWeight = p.strokeWeight;
@@ -396,7 +448,8 @@ public abstract class RGeomElem
   }
 
   public void setStrokeAlpha(int opacity){
-    strokeColor = ((opacity << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
+    strokeAlphaDef = true;
+    strokeAlpha = opacity;
   }
 
   public void setStrokeAlpha(String str){
@@ -404,7 +457,8 @@ public abstract class RGeomElem
   }
 
   public void setFillAlpha(int opacity){
-    fillColor = ((opacity << 24) & 0xff000000) | (fillColor & 0x00ffffff);
+    fillAlphaDef = true;
+    fillAlpha = opacity;
   }
 
   public void setFillAlpha(String str){
@@ -426,8 +480,11 @@ public abstract class RGeomElem
     RGeomerative.parent.println("  strokeColor before: " + RGeomerative.parent.hex(fillColor));
     */
 
-    fillColor = ((opacity << 24) & 0xff000000) | (fillColor & 0x00ffffff);
-    strokeColor = ((opacity << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
+    setFillAlpha(opacity);
+    setStrokeAlpha(opacity);
+
+    //fillColor = ((opacity << 24) & 0xff000000) | (fillColor & 0x00ffffff);
+    //strokeColor = ((opacity << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
 
     /*    
     RGeomerative.parent.println("  fillColor now: " + RGeomerative.parent.hex(fillColor));
@@ -442,6 +499,8 @@ public abstract class RGeomElem
   
 
   private int getColor(String colorString){
+    colorString = RGeomerative.parent.trim(colorString);
+    
     if(colorString.startsWith("#")){
       return RGeomerative.parent.unhex("FF"+colorString.substring(1));
     }else if(colorString.startsWith("rgb")){
@@ -459,6 +518,10 @@ public abstract class RGeomElem
 
       }else if(colorString.equals("blue")){
         return RGeomerative.parent.color(0, 0, 255);
+
+      }else if(colorString.equals("yellow")){
+        return RGeomerative.parent.color(0, 255, 255);
+
       }
     }
     return 0;
@@ -466,7 +529,7 @@ public abstract class RGeomElem
 
   // Functions independent of the type of element
   // No need of being overrided
-  public void transform(RMatrix m){
+  public void transform(RMatrix m){   
     RPoint[] ps = getPoints();
     if(ps != null){
       for(int i=0; i<ps.length; i++){

@@ -242,7 +242,7 @@ public class RMatrix
   
   public void scale(float s)
   {
-    apply(s, 0, 0,  0, s, 0);
+    scale(s, s);
   }
   
   public void scale(float sx, float sy, float vx, float vy)
