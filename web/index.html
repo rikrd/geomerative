@@ -8,29 +8,270 @@ This library exposes the shapes (such as vector drawings or typographies) in a m
 
 <div>
 <h1>Download</h1>
-<p><A href="geomerative-11.zip" name="Geomerative library for Processing (rev 11)">Geomerative library for Processing (rev 11)</A> (April 27 2008)</p>
+<p><A href="geomerative-12.zip">Geomerative library for Processing (rev 12)</A> (April 27 2008)</p>
 <p>unzip the contents of this file to /path/to/processing/libraries</p>
 </div>
 
-<div>
 <h1>Overview</h1>
+The library is composed of 4 basic elements (RShape, RPolygon, RMesh and RGroup) all of which support a set of common methods such as: accessing (getCurvePoints, getPoints,...), transforming (translate, rotate, scale,...), styling (setStroke, setStrokeColor, setStrokeWeight, setFill, setFillColor,...) and drawing (draw).
 
+Additionally the library has 2 interpreters that will allow the user to import shapes from TTF fonts and SVG vector drawings into the library's classes.
 <h2>Elements</h2>
-<h3>RGroup</h3>
-<pre>
-
-</pre>
 <h3>RShape</h3>
+<pre>
+/*
+*    geomerative example
+*    http://www.ricardmarxer.com/processing/geomerative/documentation/
+ *
+ *    fjenett 20080417
+ */
+
+import geomerative.*;
+
+RShape shp;
+
+void setup()
+{
+    size(400,400);
+    smooth();
+    
+    RGeomerative.init(this);
+    
+    shp = new RShape();
+    
+    shp.addMoveTo( 0 , 141 );        // zeichenbefehle, vergleiche beginShape, vertex, bezierVertex
+    shp.addLineTo( 2 , 133 );
+    shp.addLineTo( 34 , 133 );
+    shp.addLineTo( 60 , 9 );
+    shp.addLineTo( 38 , 9 );
+    shp.addBezierTo( 20 , 9 , 16 , 12 , 12 , 30 );
+    shp.addLineTo( 9 , 46 );
+    shp.addLineTo( 0 , 46 );
+    shp.addLineTo( 10 , 0 );
+    shp.addLineTo( 123 , 0 );
+    shp.addLineTo( 113 , 46 );
+    shp.addLineTo( 104 , 46 );
+    shp.addLineTo( 107 , 30 );
+    shp.addBezierTo( 111 , 12 , 109 , 9 , 91 , 9 );
+    shp.addLineTo( 69 , 9 );
+    shp.addLineTo( 43 , 133 );
+    shp.addLineTo( 75 , 133 );
+    shp.addLineTo( 73 , 141 );
+    shp.addLineTo( 0 , 141 );
+    shp.addClose();
+}
+
+void draw()
+{
+    background(255);
+    translate(140,120);
+    
+    stroke( 120 );
+    strokeWeight( 3 );
+    fill( 220 );
+
+    shp.draw();
+}
+</pre>
 
 <h3>RPolygon</h3>
+<pre>
+/*
+*    geomerative example
+*    http://www.ricardmarxer.com/processing/geomerative/documentation/
+*
+*    fjenett 20080417
+*/
+
+import geomerative.*;
+
+RPolygon ply;
+
+void setup()
+{
+    size(400,400);
+    
+    RGeomerative.init(this);
+    
+    ply = new RPolygon();
+    
+    for ( int i=0; i<360; i++ )
+    {
+        float rad = radians(i);
+        float rad2 = radians(i*12);
+        ply.addPoint( sin(rad)*120+sin(rad2)*20, cos(rad)*120+cos(rad2)*20 );
+    }
+}
+
+void draw()
+{
+    background(255);
+    translate(width/2,height/2);
+    
+    stroke( 120 );
+    strokeWeight( 3 );
+    fill( 220 );
+
+    ply.draw();
+}
+</pre>
 
 <h3>RMesh</h3>
+<pre>
+/*
+*    geomerative example
+*    http://www.ricardmarxer.com/processing/geomerative/documentation/
+*
+*    fjenett 20080419
+*/
 
+import geomerative.*;
+
+RMesh msh;
+
+void setup()
+{
+    size(400,400);
+    frameRate( 2 );
+    
+    RGeomerative.init(this);
+    
+    strokeWeight( 1.2 );
+}
+
+void draw()
+{
+    background(130);
+    
+    RPolygon pl = RPolygon.createRing( random(80,160), random(10,50), int(random(5,15)) ).toPolygon();
+    msh = pl.toMesh();
+    
+    translate( width/2, height/2 );
+    msh.draw( );
+}
+</pre>
+
+<h3>RGroup</h3>
+<pre>
+/*
+*    geomerative example
+*    http://www.ricardmarxer.com/processing/geomerative/documentation/
+*
+*    glyphen eines fonts auslesen
+*
+*    fjenett 20080417
+*/
+
+import geomerative.*;
+
+RFont font;
+
+void setup()
+{
+    size(400,400);
+    smooth();
+    
+    RGeomerative.init(this);
+
+    font = new RFont( "lucon.ttf", 100, RFont.CENTER);
+}
+
+void draw()
+{
+    background(255);
+    translate(width/2,height/2);
+    
+    RGroup grp = font.toGroup("Hello?");                                // text in ein gruppen-objekt umwandeln
+    
+    for ( int i = 0; i < grp.elements.length; i++ )                     // elemente durchlaufen
+    {
+        RShape shp = grp.elements[i].toShape();                         // gruppen-element in shape-objekt umwandeln
+        
+        for ( int ii = 0; ii < shp.subshapes.length; ii++ )             // shapes durchlaufen
+        {
+            RSubshape sushp = shp.subshapes[ii];                        // subshape-objekt
+            
+            for ( int iii = 0; iii < sushp.commands.length; iii++ )     // zeichen-kommando-objekte durchlaufen
+            {
+                RPoint[] pnts = sushp.commands[iii].getPoints();        // punkte des kommando-objekts
+                
+                switch( sushp.commands[iii].getCommandType() )          // je nach kommando-art anderern befehl ausfhren
+                {
+                    case RCommand.LINETO:
+                        line( pnts[0].x, pnts[0].y, pnts[1].x, pnts[1].y );
+                        break;
+                    case RCommand.QUADBEZIERTO:    // eigentlich falsch, denn bezier() ist kubisch
+                        bezier( pnts[0].x, pnts[0].y, pnts[1].x, pnts[1].y, pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y );
+                       break;
+                    case RCommand.CUBICBEZIERTO:
+                        bezier( pnts[0].x, pnts[0].y, pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[3].x, pnts[3].y );
+                       break;
+                }
+            }
+        }
+    }
+}
+</pre>
 <h2>Interpreters</h2>
 <h3>RFont</h3>
+<pre>
+/*
+*    geomerative example
+*    http://www.ricardmarxer.com/processing/geomerative/documentation/
+*
+*    fjenett 20080417
+*/
 
+import geomerative.*;
+
+RFont font;
+
+void setup()
+{
+    size(400,400);
+    
+    RGeomerative.init(this);
+
+    font = new RFont( "lucon.ttf", 72, RFont.LEFT);
+}
+
+void draw()
+{
+    background(0,100,50);
+    translate(width/2-200,height/2-100);
+    
+    font.draw("Hello?");
+}
+</pre>
 <h3>RSVG</h3>
+<pre>
+/*
+*    geomerative example
+*    http://www.ricardmarxer.com/processing/geomerative/documentation/
+*
+*    fjenett 20080417
+*/
 
+import geomerative.*;
+
+RSVG svg;
+
+void setup()
+{
+    size(800,800);
+    frameRate( 30 );
+    
+    RGeomerative.init(this);
+    
+    svg = new RSVG( );
+}
+
+void draw()
+{
+    background(255);
+    svg.draw("hello.svg");
+}
+</pre>
 </div>
 
 <div>
@@ -41,15 +282,39 @@ This library exposes the shapes (such as vector drawings or typographies) in a m
 
 <div>
 <h1>Changelog</h1>
-
+<dl>
+<dt>rev 12 (05 - March - 2008):</dt><dd>
+<ul>
+   <li> Partial support for SVG styles </li>
+   <li> Fixes in SVG commands: line, polyline, path, etc... </li>
+ </ul>
+</dd>
+<dt>rev 11 (28 - April - 2008):</dt><dd>
+<ul>
+   <li> Partial support for SVG transformations </li>
+   <li> Partial support for SVG commands: line, polyline, path, etc... </li>
+   <li> Introduction of RGeomerative.init(PApplet applet) </li>
+ </ul>
+</dd>
+</dl>
 </div>
 
 <div>
 <h1>Credits</h1>
 
+<dl>
+<dt>Creator:</dt><dd><A href="http://www.ricardmarxer.com">Ricard Marxer</A></dd>
+<dt>Examples:</dt><dd><A href="http://www.florianjenett.de">Florian Jenett</A></dd>
+</dl>
+
 </div>
 
 <div>
 <h1>Works</h1>
-
+Geomerative has been used in the following projects:
+<ul>
+<li><A href="http://www.caligraft.com">Caligraft</A></li>
+<li><A href="http://www.trsp.net/cow/">Cascade on Wheels</A></li>
+<li><A href="http://casastristes.org/">Casas Tristes</A></li>
+</ul>
 </div>
