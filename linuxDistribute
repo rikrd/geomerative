@@ -35,6 +35,6 @@ cp -r ./src ./distribution/geomerative/
 ##  Zip up
 cd distribution
 rm -f geomerative-$GEOMERATIVE_VER.zip
-zip -r ./geomerative-$GEOMERATIVE_VER.zip ./geomerative/documentation/ ./geomerative/readme.txt ./geomerative/examples/ ./geomerative/src/ ./geomerative/tutorial/
+zip -r ./geomerative-$GEOMERATIVE_VER.zip ./geomerative/library ./geomerative/documentation/ ./geomerative/readme.txt ./geomerative/examples/ ./geomerative/src/ ./geomerative/tutorial/
 cd ..
 
