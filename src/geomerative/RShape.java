@@ -286,11 +286,13 @@ public class RShape extends RGeomElem
    */
   public RPolygon toPolygon(){
     int numSubshapes = countSubshapes();
+
     RPolygon result = new RPolygon();
     for(int i=0;i<numSubshapes;i++){
       RPoint[] newpoints = this.subshapes[i].getCurvePoints();
       result.addContour(new RContour(newpoints));
     }
+    
     result.setStyle(this);
     return result;
   }

@@ -262,8 +262,16 @@ public class RGroup extends RGeomElem
   public RGroup toPolygonGroup() throws RuntimeException{
     RGroup result = new RGroup();
     for(int i=0;i<countElements();i++){
-      result.addElement(elements[i].toPolygon());
+      RGeomElem element = elements[i];
+      if(element.getType() == RGeomElem.GROUP){
+        RGeomElem newElement = ((RGroup)(element)).toPolygonGroup();
+        newElement.setStyle(element);
+        result.addElement(newElement);
+      }else{
+        result.addElement(element.toPolygon());
+      }
     }
+    result.setStyle(this);
     return result;
   }
   

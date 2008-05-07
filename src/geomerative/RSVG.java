@@ -172,7 +172,7 @@ public class RSVG
   /**
    * @invisible
    */
-  public RPolygon elemToPolyline(XMLElement elem)
+  public RShape elemToPolyline(XMLElement elem)
   {
     return getPolyline(elem.getStringAttribute("points").trim());
   }
@@ -180,9 +180,9 @@ public class RSVG
   /**
    * @invisible
    */
-  public RPolygon elemToPolygon(XMLElement elem)
+  public RShape elemToPolygon(XMLElement elem)
   {
-    RPolygon poly = elemToPolyline(elem);
+    RShape poly = elemToPolyline(elem);
     
     poly.addClose();
     
@@ -265,10 +265,11 @@ public class RSVG
   /**
    * @invisible
    */
-  private RPolygon getPolyline(String s)
+  private RShape getPolyline(String s)
   {
-    RPolygon poly = new RPolygon();
-    
+    RShape poly = new RShape();
+    boolean first = true;
+
     //format string to usable format
     char charline[]=s.toCharArray();
     for(int i=0;i<charline.length;i++)
@@ -293,7 +294,12 @@ public class RSVG
       float x = RGeomerative.parent.parseFloat(tags[i]);
       float y = RGeomerative.parent.parseFloat(tags[i+1]);
       i++;
-      poly.addPoint(x,y);
+      if(first){
+        poly.addMoveTo(x,y);
+        first = false;
+      }else{
+        poly.addLineTo(x,y);
+      }
     }
     return poly;
   }
