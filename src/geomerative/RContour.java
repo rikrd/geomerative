@@ -190,6 +190,16 @@ public class RContour extends RGeomElem
     }
     }
   */
+
+  public void print(){
+    System.out.println("contour: ");
+    for(int i=0;i<countPoints();i++)
+      {
+        System.out.println("---  point "+i+" ---");
+        points[i].print();
+        System.out.println("---------------");
+      }
+  }
   
   public void addClose(){
     if(points == null){

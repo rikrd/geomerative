@@ -290,11 +290,40 @@ public class RPolygon extends RGeomElem
     return mesh;
   }
   
+  public void print(){
+    System.out.println("polygon: ");
+    for(int i=0;i<countContours();i++)
+      {
+        System.out.println("---  contour "+i+" ---");
+        contours[i].print();
+        System.out.println("---------------");
+      }
+  }
+
+
+  /**
+   * Removes contours with less than 3 points.  These are contours that are open.
+   * Since close polygons have points[0] == points[-1] and two more points to form a triangle at least.
+   * This is useful to avoid the clipping algorithm from breaking.
+   * @invisible
+   */
+  protected RPolygon removeOpenContours(){
+    RPolygon clean = new RPolygon();
+    for(int i=0;i<countContours();i++)
+      {
+        if(contours[i].countPoints() > 3){
+          clean.addContour(contours[i]);
+        }
+      }
+    clean.setStyle(this);
+    return clean;
+  }
+
   /**
    * @invisible
    */
   public RPolygon toPolygon(){
-    return this;
+    return new RPolygon(this);
   }
   
   /**

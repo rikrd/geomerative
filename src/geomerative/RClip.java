@@ -1632,7 +1632,8 @@ class RClip
   public static RMesh polygonToMesh(RPolygon s)
   {
     RPolygon c = new RPolygon();
-    return clip(OperationType.GPC_UNION, s, c);
+    RPolygon s_clean = s.removeOpenContours();
+    return clip(OperationType.GPC_UNION, s_clean, c);
   }
   
   private static boolean EQ(float a, float b)

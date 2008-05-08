@@ -314,6 +314,6 @@ public class RPoint
   }
   
   public void print(){
-    System.out.print("("+x+","+y+")");
+    System.out.print("("+x+","+y+")\n");
   }
 }
