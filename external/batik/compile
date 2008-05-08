@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir -p library
 javac -source 1.3 -target 1.1 -d ./library/ ./src/org/apache/batik/svggen/font/*.java ./src/org/apache/batik/svggen/font/table/*.java &&
 cd library &&
 jar -cf batikfont.jar org	&&
