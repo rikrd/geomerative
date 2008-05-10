@@ -34,12 +34,5 @@ void draw(){
   translate(mouseX, mouseY);
   
   // We draw the polygonized group with the SVG styles
-  RGeomerative.ignoreStyles(false);  
   polyGrp.draw();
-
-  // We draw the outlines with our own style  
-  RGeomerative.ignoreStyles();
-  noFill();
-  stroke(0, 100);
-  grp.draw();
 }

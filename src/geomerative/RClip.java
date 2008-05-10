@@ -4,6 +4,7 @@
  * Copyright (c) 2004, Solution Engineering, Inc.
  * All rights reserved.
  *
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -860,53 +861,9 @@ class RClip
     return result ;
   }
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
+  /**
+   * Clipper to output tristrips
+   */
   private static RMesh clip( OperationType op, RPolygon subj, RPolygon clip )
   {
     PolygonNode tlist=null, tnn, tn;
