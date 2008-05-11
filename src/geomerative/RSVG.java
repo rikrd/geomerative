@@ -376,85 +376,141 @@ public class RSVG
       }
     String formatted = new String(charline);
     String[] tags = RGeomerative.parent.splitTokens(formatted);
-    
+
+    //RGeomerative.parent.println("formatted: " + formatted);
+    //RGeomerative.parent.println("tags: ");
+    //RGeomerative.parent.println(tags);
+
     //build points
     RPoint curp = new RPoint();
     RPoint relp = new RPoint();
     RPoint refp = new RPoint();
     RPoint strp = new RPoint();
     
-    int numSubshape = 0;
-    
+    char command = 'a';
+
     for(int i=0;i<tags.length;i++)
       {
-        relp = new RPoint(0f,0f);
-        switch(tags[i].charAt(0))
+        
+        char nextChar = tags[i].charAt(0);
+        switch(nextChar)
           {
           case 'm':
-            relp = new RPoint(curp.x,curp.y);
           case 'M':
-            // new subshape
-            numSubshape ++;
-            shp.addMoveTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
-            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
-            refp = new RPoint(curp.x,curp.y);
-            strp = new RPoint(curp.x,curp.y);
-            i += 2;
+          case 'c':
+          case 'C':
+          case 's':
+          case 'S':
+          case 'l':
+          case 'L':
+          case 'h':
+          case 'H':
+          case 'v':
+          case 'V':
+            i += 1;
+          case 'z':
+          case 'Z':
+            command = nextChar;
+            break;
+        }
+        
+        relp.setLocation(0F, 0F);
+
+        switch(command)
+          {
+          case 'm':
+            relp.setLocation(curp.x, curp.y);
+          case 'M':            
+            i = move(shp, curp, relp, refp, strp, tags, i);
             break;
             
           case 'z':
+            relp.setLocation(curp.x, curp.y);
           case 'Z':
-            // close the path
-            shp.addLineTo(strp.x,strp.y);
+            shp.addClose();
             break;
             
           case 'c':
-            relp = new RPoint(curp.x,curp.y);
+            relp.setLocation(curp.x, curp.y);
           case 'C':
-            shp.addBezierTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y,RGeomerative.parent.parseFloat(tags[i+3])+relp.x,RGeomerative.parent.parseFloat(tags[i+4])+relp.y,RGeomerative.parent.parseFloat(tags[i+5])+relp.x,RGeomerative.parent.parseFloat(tags[i+6])+relp.y);
-            
-            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+5])+relp.x,RGeomerative.parent.parseFloat(tags[i+6])+relp.y);
-            refp = new RPoint(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i+3])+relp.x),2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+4])+relp.y));
-            i += 6;
+            i = curve(shp, curp, relp, refp, strp, tags, i);
             break;
             
           case 's':
-            relp = new RPoint(curp.x,curp.y);
+            relp.setLocation(curp.x, curp.y);
           case 'S':
-            shp.addBezierTo(refp.x,refp.y,RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y,RGeomerative.parent.parseFloat(tags[i+3])+relp.x,RGeomerative.parent.parseFloat(tags[i+4])+relp.y);
-            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+3])+relp.x,RGeomerative.parent.parseFloat(tags[i+4])+relp.y);
-            refp = new RPoint(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i+1])+relp.x),2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+2])+relp.y));
-            i += 4;
+            i = smooth(shp, curp, relp, refp, strp, tags, i);
             break;
             
           case 'l':
-            relp = new RPoint(curp.x,curp.y);
+            relp.setLocation(curp.x, curp.y);
           case 'L':
-            shp.addLineTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
-            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,RGeomerative.parent.parseFloat(tags[i+2])+relp.y);
-            refp = new RPoint(curp.x,curp.y);
-            i += 2;
+            i = line(shp, curp, relp, refp, strp, tags, i);
             break;
             
           case 'h':
-            relp = new RPoint(curp.x,curp.y);
+            relp.setLocation(curp.x, curp.y);
           case 'H':
-            shp.addLineTo(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,curp.y);
-            curp = new RPoint(RGeomerative.parent.parseFloat(tags[i+1])+relp.x,curp.y);
-            refp = new RPoint(curp.x,curp.y);
-            i += 1;
+            i = horizontal(shp, curp, relp, refp, strp, tags, i);
             break;
             
           case 'v':
-            relp = new RPoint(curp.x,curp.y);
+            relp.setLocation(curp.x, curp.y);
           case 'V':
-            shp.addLineTo(curp.x,RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
-            curp = new RPoint(curp.x,RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
-            refp = new RPoint(curp.x,curp.y);
-            i += 1;
+            i = vertical(shp, curp, relp, refp, strp, tags, i);
             break;
           }
       }
     return shp;
   }  
+
+  private int move(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+    shp.addMoveTo(RGeomerative.parent.parseFloat(tags[i])+relp.x, RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
+
+    curp.setLocation(RGeomerative.parent.parseFloat(tags[i])+relp.x, RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
+    refp.setLocation(curp.x,curp.y);
+    strp.setLocation(curp.x,curp.y);
+    //relp.setLocation(0F, 0F);
+    return i + 1;
+  }
+
+  private int curve(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+    shp.addBezierTo(RGeomerative.parent.parseFloat(tags[i])+relp.x, RGeomerative.parent.parseFloat(tags[i+1])+relp.y, RGeomerative.parent.parseFloat(tags[i+2])+relp.x, RGeomerative.parent.parseFloat(tags[i+3])+relp.y, RGeomerative.parent.parseFloat(tags[i+4])+relp.x, RGeomerative.parent.parseFloat(tags[i+5])+relp.y);
+
+    curp.setLocation(RGeomerative.parent.parseFloat(tags[i+4])+relp.x, RGeomerative.parent.parseFloat(tags[i+5])+relp.y);
+    refp.setLocation(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i+2])+relp.x), 2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+3])+relp.y));
+    return i + 5;
+  }
+
+  private int smooth(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+    shp.addBezierTo(refp.x, refp.y, RGeomerative.parent.parseFloat(tags[i])+relp.x, RGeomerative.parent.parseFloat(tags[i+1])+relp.y, RGeomerative.parent.parseFloat(tags[i+2])+relp.x, RGeomerative.parent.parseFloat(tags[i+3])+relp.y);
+
+    curp.setLocation(RGeomerative.parent.parseFloat(tags[i+2])+relp.x, RGeomerative.parent.parseFloat(tags[i+3])+relp.y);
+    refp.setLocation(2.0f*curp.x-(RGeomerative.parent.parseFloat(tags[i])+relp.x), 2.0f*curp.y-(RGeomerative.parent.parseFloat(tags[i+1])+relp.y));
+    return i + 3;
+  }
+
+  private int line(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+    shp.addLineTo(RGeomerative.parent.parseFloat(tags[i])+relp.x, RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
+
+    curp.setLocation(RGeomerative.parent.parseFloat(tags[i])+relp.x, RGeomerative.parent.parseFloat(tags[i+1])+relp.y);
+    refp.setLocation(curp.x, curp.y);
+    return i + 1;        
+  }
+
+  private int horizontal(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+    shp.addLineTo(RGeomerative.parent.parseFloat(tags[i])+relp.x, curp.y);
+
+    curp.setLocation(RGeomerative.parent.parseFloat(tags[i])+relp.x, curp.y);
+    refp.setLocation(curp.x, curp.y);
+    return i;
+  }
+
+  private int vertical(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+    shp.addLineTo(curp.x, RGeomerative.parent.parseFloat(tags[i])+relp.y);
+
+    curp.setLocation(curp.x, RGeomerative.parent.parseFloat(tags[i])+relp.y);
+    refp.setLocation(curp.x, curp.y);
+    return i;
+  }
 }
