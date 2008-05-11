@@ -214,6 +214,7 @@ public class RShape extends RGeomElem
     }else if(subshapes[currentSubshape].countCommands() == 0){
       this.subshapes[currentSubshape].lastPoint = new RPoint(endx,endy);
     }else{
+      this.addClose();
       this.append(new RSubshape(endx,endy));
     }
   }
@@ -441,7 +442,7 @@ public class RShape extends RGeomElem
   }
   
   public void print(){
-    System.out.println("subshapes [count " + this.countSubshapes() + "]: ");
+    System.out.println("subshapes: ");
     for(int i=0;i<subshapes.length;i++)
       {
         System.out.println("--- subshape "+i+" ---");
