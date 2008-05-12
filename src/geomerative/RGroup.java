@@ -331,10 +331,10 @@ public class RGroup extends RGeomElem
    */
   public RPolygon toPolygon() throws RuntimeException{
     //throw new RuntimeException("Transforming a Group to a Polygon is not yet implemented.");
-    RGroup polygonGroup = toPolygonGroup();
+    //RGroup polygonGroup = toPolygonGroup();
     RPolygon result = new RPolygon();
     for(int i=0;i<countElements();i++){
-      RPolygon currentPolygon = (RPolygon)(polygonGroup.elements[i]);
+      RPolygon currentPolygon = elements[i].toPolygon();
       for(int j=0;j<currentPolygon.countContours();j++){
         result.addContour(currentPolygon.contours[j]);
       }
@@ -348,10 +348,9 @@ public class RGroup extends RGeomElem
    */
   public RShape toShape() throws RuntimeException{
     //throw new RuntimeException("Transforming a Group to a Shape is not yet implemented.");
-    RGroup shapeGroup = toShapeGroup();
     RShape result = new RShape();
     for(int i=0;i<countElements();i++){
-      RShape currentShape = (RShape)(shapeGroup.elements[i]);
+      RShape currentShape = elements[i].toShape();
       for(int j=0;j<currentShape.countSubshapes();j++){
         result.addSubshape(currentShape.subshapes[j]);
       }

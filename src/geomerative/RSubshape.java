@@ -110,10 +110,7 @@ public class RSubshape extends RGeomElem
    * */
   public RPoint[] getPoints(){
     int numCommands = countCommands();
-    if(numCommands == 0){
-      return null;
-    }
-    
+
     RPoint[] result = null;
     RPoint[] newresult = null;
     for( int i = 0; i < numCommands ; i++ ){
@@ -442,16 +439,16 @@ public class RSubshape extends RGeomElem
 
     result[0] = new RSubshape();
     for(int i = 0; i<indCommand; i++){
-      result[0].addCommand(commands[i]);
+      result[0].addCommand(new RCommand(commands[i]));
     }
-    result[0].addCommand(splittedCommands[0]);
+    result[0].addCommand(new RCommand(splittedCommands[0]));
     result[0].setStyle(this);
     
     result[1] = new RSubshape();
     for(int i = indCommand + 1; i < countCommands(); i++){
-      result[1].addCommand(commands[i]);
+      result[1].addCommand(new RCommand(commands[i]));
     }
-    result[1].addCommand(splittedCommands[1]);
+    result[1].addCommand(new RCommand(splittedCommands[1]));
     result[1].setStyle(this);
 
     return result;
@@ -656,7 +653,7 @@ public class RSubshape extends RGeomElem
   
   
   public void print(){
-    for(int i=0;i<commands.length;i++){
+    for(int i=0;i<countCommands();i++){
       String commandType = "";
       switch(commands[i].commandType)
         {
