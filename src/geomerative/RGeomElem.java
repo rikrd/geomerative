@@ -80,8 +80,8 @@ public abstract class RGeomElem
   public abstract RPoint[] getPoints();
   public abstract RPoint[] getCurvePoints();
   public abstract int getType();
-  public abstract RMesh toMesh();
-  public abstract RPolygon toPolygon();
+  //public abstract RMesh toMesh();
+  //public abstract RPolygon toPolygon();
   public abstract RShape toShape();
   public void print(){};
   
@@ -515,7 +515,18 @@ public abstract class RGeomElem
     //RGeomerative.parent.println("Setting string opacity: " + str);
     setAlpha(RGeomerative.parent.parseFloat(str));
   }
-  
+
+  public void setId(String str){
+    this.id = str;
+  }
+
+  public RPolygon toPolygon(){
+    return toShape().toPolygon();
+  }
+
+  public RMesh toMesh(){
+    return toShape().toPolygon().toMesh();
+  }
 
   private int getColor(String colorString){
     colorString = RGeomerative.parent.trim(colorString);

@@ -20,7 +20,7 @@
 package geomerative ;
 import processing.core.*;
 
-public class RCommand
+public class RCommand extends RGeomElem
 {
   /**
    * @invisible
@@ -84,6 +84,30 @@ public class RCommand
   /* Parameters for UNIFORMSTEP */
   static int segmentSteps = 0;
   static boolean segmentLines = false;
+
+  int oldSegmentType = UNIFORMLENGTH;
+
+  /* Parameters for ADAPTATIVE (dependent of the PGraphics on which drawing) */
+  float oldSegmentCollinearityEpsilon = 1.192092896e-07F;
+  float oldSegmentAngleTolEpsilon = 0.01F;
+  
+  float oldSegmentGfxStrokeWeight = 1.0F;
+  float oldSegmentGfxScale = 1.0F;
+  float oldSegmentApproxScale = 1.0F;
+  float oldSegmentDistTolSqr = 0.25F;
+  float oldSegmentDistTolMnhttn = 4.0F;
+  float oldSegmentAngleTol = 0.0F;
+  float oldSegmentCuspLimit = 0.0F;
+  
+  /* Parameters for UNIFORMLENGTH (dependent of the PGraphics on which drawing) */
+  float oldSegmentLength = 4.0F;
+  float oldSegmentOffset = 0.0F;
+  float oldSegmentAccOffset = 0.0F;
+  
+  /* Parameters for UNIFORMSTEP */
+  int oldSegmentSteps = 0;
+  boolean oldSegmentLines = false;
+
   
   
   static RCommand createLine(RPoint start, RPoint end){
@@ -151,7 +175,53 @@ public class RCommand
     this.endPoint = new RPoint(c.endPoint);
     this.commandType = c.commandType;
   }
-  
+
+  public RCommand(RPoint sp, RPoint ep){
+    this.startPoint = sp;
+    this.endPoint = ep;
+    this.commandType = LINETO;
+  }
+
+  public RCommand(float spx, float spy, float epx, float epy){
+    this(new RPoint(spx, spy), new RPoint(epx, epy));
+  }
+
+  public RCommand(RPoint sp, RPoint cp1, RPoint ep){
+    this.startPoint = sp;
+    this.append(cp1);
+    this.endPoint = ep;
+    this.commandType = QUADBEZIERTO;
+  }
+
+  public RCommand(float spx, float spy, float cp1x, float cp1y, float epx, float epy){
+    this(new RPoint(spx, spy), new RPoint(cp1x, cp1y), new RPoint(epx, epy));
+  }
+
+
+  public RCommand(RPoint sp, RPoint cp1, RPoint cp2, RPoint ep){
+    this.startPoint = sp;
+    this.append(cp1);
+    this.append(cp2);
+    this.endPoint = ep;
+    this.commandType = CUBICBEZIERTO;
+  }
+
+  public RCommand(float spx, float spy, float cp1x, float cp1y, float cp2x, float cp2y, float epx, float epy){
+    this(new RPoint(spx, spy), new RPoint(cp1x, cp1y), new RPoint(cp2x, cp2y), new RPoint(epx, epy));
+  }
+
+  /**
+   * @invisible
+   */
+  public RShape toShape(){
+    return new RShape(new RSubshape(this));
+  }
+
+  public int getType(){
+    return this.type;
+  }
+
+
   /**
    * Use this to set the segmentator type.  ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.  This can be useful when using or drawing a lot the same Polygon or Mesh deriving from this Shape.  UNIFORMLENGTH segmentator is the slowest segmentator and it segments the curve on segments of equal length.  This can be useful for very specific applications when for example drawing incrementaly a shape with a uniform speed.  UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
    * @eexample setSegment
@@ -244,8 +314,49 @@ public class RCommand
   }
   
   
+  protected void saveSegmentatorContext(){
+    oldSegmentType = RCommand.segmentType;
+
+    /* Parameters for ADAPTATIVE (dependent of the PGraphics on which drawing) */  
+    oldSegmentGfxStrokeWeight = RCommand.segmentGfxStrokeWeight;
+    oldSegmentGfxScale = RCommand.segmentGfxScale;
+    oldSegmentApproxScale = RCommand.segmentApproxScale;
+    oldSegmentDistTolSqr = RCommand.segmentDistTolSqr;
+    oldSegmentDistTolMnhttn = RCommand.segmentDistTolMnhttn;
+    oldSegmentAngleTol = RCommand.segmentAngleTol;
+    oldSegmentCuspLimit = RCommand.segmentCuspLimit;
+    
+    /* Parameters for UNIFORMLENGTH (dependent of the PGraphics on which drawing) */
+    oldSegmentLength = RCommand.segmentLength;
+    oldSegmentOffset = RCommand.segmentOffset;
+    oldSegmentAccOffset = RCommand.segmentAccOffset;
+    
+    /* Parameters for UNIFORMSTEP */
+    oldSegmentSteps = RCommand.segmentSteps;
+    oldSegmentLines = RCommand.segmentLines;
+  }
   
-  
+  protected void restoreSegmentatorContext(){
+    RCommand.segmentType = oldSegmentType;
+
+    /* Parameters for ADAPTATIVE (dependent of the PGraphics on which drawing) */  
+    RCommand.segmentGfxStrokeWeight = oldSegmentGfxStrokeWeight;
+    RCommand.segmentGfxScale = oldSegmentGfxScale;
+    RCommand.segmentApproxScale = oldSegmentApproxScale;
+    RCommand.segmentDistTolSqr = oldSegmentDistTolSqr;
+    RCommand.segmentDistTolMnhttn = oldSegmentDistTolMnhttn;
+    RCommand.segmentAngleTol = oldSegmentAngleTol;
+    RCommand.segmentCuspLimit = oldSegmentCuspLimit;
+    
+    /* Parameters for UNIFORMLENGTH (dependent of the PGraphics on which drawing) */
+    RCommand.segmentLength = oldSegmentLength;
+    RCommand.segmentOffset = oldSegmentOffset;
+    RCommand.segmentAccOffset = oldSegmentAccOffset;
+    
+    /* Parameters for UNIFORMSTEP */
+    RCommand.segmentSteps = oldSegmentSteps;
+    RCommand.segmentLines = oldSegmentLines;
+  }
   
   /**
    * Use this to return the number of control points of the curve.
@@ -305,7 +416,19 @@ public class RCommand
    * @return RPoint[], the vertices returned in an array.
    * */
   public RPoint[] getCurvePoints(){
-    RPoint[] result;
+    return getCurvePoints(true);
+  }
+  
+  protected RPoint[] getCurvePoints(boolean resetSegmentator){
+    
+    if(resetSegmentator){
+      saveSegmentatorContext();
+      RCommand.segmentOffset = 0F;
+      RCommand.segmentAccOffset = 0F;
+    }
+    
+
+    RPoint[] result = null;
     switch(segmentType){
     case ADAPTATIVE:
       switch(commandType){
@@ -313,36 +436,44 @@ public class RCommand
         result = new RPoint[2];
         result[0] = startPoint;
         result[1] = endPoint;
-        return result;
+        break;
+
       case QUADBEZIERTO:
         quadBezierAdaptative();
         result = curvePoints;
         curvePoints = null;
-        return result;
+        break;
+
       case CUBICBEZIERTO:
         cubicBezierAdaptative();
         result = curvePoints;
         curvePoints = null;
-        return result;
+        break;
       }
+      break;
+
     case UNIFORMLENGTH:
       switch(commandType){
       case LINETO:
         lineUniformLength();
         result = curvePoints;
         curvePoints = null;
-        return result;
+        break;
+
       case QUADBEZIERTO:
         quadBezierUniformLength();
         result = curvePoints;
         curvePoints = null;
-        return result;
+        break;
+
       case CUBICBEZIERTO:
         cubicBezierUniformLength();
         result = curvePoints;
         curvePoints = null;
-        return result;
+        break;
       }
+      break;
+
     case UNIFORMSTEP:
       switch(commandType){
       case LINETO:
@@ -355,22 +486,31 @@ public class RCommand
           result[0] = startPoint;
           result[1] = endPoint;
         }
-        return result;
+        break;
+
       case QUADBEZIERTO:
         quadBezierUniformStep();
         result = curvePoints;
         curvePoints = null;
-        return result;
+        break;
+
       case CUBICBEZIERTO:
         cubicBezierUniformStep();
         result = curvePoints;
         curvePoints = null;
-        return result;
+        break;
       }
+      break;
     }
-    return null;
+
+    
+    if(resetSegmentator){
+      restoreSegmentatorContext();
+    }
+    
+    return result;
   }
-  
+
   /**
    * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
    * @eexample getCurvePoint
@@ -429,23 +569,24 @@ public class RCommand
    * */
   public RPoint[] getCurveTangents(int segments){
     RPoint[] result;
-    switch(commandType){
-    case LINETO:
-      result = new RPoint[2];
-      result[0] = startPoint;
-      result[1] = endPoint;
-      return result;
-    case QUADBEZIERTO:
-    case CUBICBEZIERTO:
-      result = new RPoint[segments];
-      float dt = 1F / segments;
-      float t = 0F;
-      for(int i=0;i<segments;i++){
-        result[i]=getCurveTangent(t);
-        t += dt;
+    switch(commandType)
+      {
+      case LINETO:
+        result = new RPoint[2];
+        result[0] = startPoint;
+        result[1] = endPoint;
+        return result;
+      case QUADBEZIERTO:
+      case CUBICBEZIERTO:
+        result = new RPoint[segments];
+        float dt = 1F / segments;
+        float t = 0F;
+        for(int i=0;i<segments;i++){
+          result[i]=getCurveTangent(t);
+          t += dt;
+        }
+        return result;
       }
-      return result;
-    }
     return null;
   }
   
@@ -567,10 +708,29 @@ public class RCommand
     }
     g.beginShape();
     for(int i=0;i<points.length;i++){
-      g.vertex(points[i].x,points[i].y);
+      g.vertex(points[i].x, points[i].y);
     }
     g.endShape();
   }
+
+  /**
+   * Use this method to draw the command. 
+   * @eexample drawCommand
+   * @param g PGraphics, the graphics object on which to draw the command
+   */
+  public void draw(PApplet a){
+    RPoint[] points = getCurvePoints();
+    if(points == null){
+      return;
+    }
+
+    a.beginShape();
+    for(int i=0;i<points.length;i++){
+      a.vertex(points[i].x, points[i].y);
+    }
+    a.endShape();
+  }
+
   
   
   /**
@@ -703,7 +863,126 @@ public class RCommand
     cubicBezierAdaptativeRecursive(startPoint.x, startPoint.y, controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, endPoint.x, endPoint.y, 0);
     addCurvePoint(new RPoint(endPoint));
   }
-  
+
+  /**
+   * Returns two commands resulting of splitting the command.
+   * @eexample split
+   * @param segments int, the number of segments in which to divide the curve.
+   * @return RPoint[], the tangent vectors returned in an array.
+   * */  
+  public RCommand[] split(float t){
+    RCommand[] result;
+    switch(commandType)
+      {
+      case LINETO:
+        return splitLine(t);
+
+      case QUADBEZIERTO:
+        return splitQuadBezier(t);
+
+      case CUBICBEZIERTO:
+        return splitCubicBezier(t);
+
+      }
+    return null;
+  }
+
+  /**
+   * Taken from:
+   * http://steve.hollasch.net/cgindex/curves/cbezarclen.html
+   * 
+   * who took it from:
+   * Schneider's Bezier curve-fitter
+   *
+   */
+  private RCommand[] splitCubicBezier(float t){
+    RPoint[][] triangleMatrix = new RPoint[4][4];
+    for(int i=0; i<=3; i++){
+      for(int j=0; j<=3; j++){
+        triangleMatrix[i][j] = new RPoint();
+      }
+    }
+
+    RPoint[] controlPoints = this.getPoints();
+
+    // Copy control points to triangle matrix
+    for(int i = 0; i <= 3; i++){
+      triangleMatrix[0][i].x = controlPoints[i].x;
+      triangleMatrix[0][i].y = controlPoints[i].y;
+    }
+    
+    // Triangle computation
+    for(int i = 1; i <= 3; i++){
+      for(int j = 0; j <= 3 - i; j++){
+        triangleMatrix[i][j].x = (1-t) * triangleMatrix[i-1][j].x + t * triangleMatrix[i-1][j+1].x;
+        triangleMatrix[i][j].y = (1-t) * triangleMatrix[i-1][j].y + t * triangleMatrix[i-1][j+1].y;
+      }
+    }
+
+    RCommand[] result = new RCommand[2];
+    result[0] = createBezier4(triangleMatrix[0][0], triangleMatrix[1][0], triangleMatrix[2][0], triangleMatrix[3][0]);
+    result[1] = createBezier4(triangleMatrix[3][0], triangleMatrix[2][1], triangleMatrix[1][2], triangleMatrix[0][3]);
+    return result;
+  }
+
+  private RCommand[] splitQuadBezier(float t){
+    RPoint[][] triangleMatrix = new RPoint[3][3];
+    for(int i=0; i<=2; i++){
+      for(int j=0; j<=2; j++){
+        triangleMatrix[i][j] = new RPoint();
+      }
+    }
+    
+    RPoint[] controlPoints = this.getPoints();
+
+    // Copy control points to triangle matrix
+    for(int i = 0; i <= 2; i++){
+      triangleMatrix[0][i] = controlPoints[i];
+    }
+    
+    // Triangle computation
+    for(int i = 1; i <= 2; i++){
+      for(int j = 0; j <= 2 - i; j++){
+        triangleMatrix[i][j].x = (1-t) * triangleMatrix[i-1][j].x + t * triangleMatrix[i-1][j+1].x;
+        triangleMatrix[i][j].y = (1-t) * triangleMatrix[i-1][j].y + t * triangleMatrix[i-1][j+1].y;
+      }
+    }
+
+    RCommand[] result = new RCommand[2];
+    result[0] = createBezier3(triangleMatrix[0][0], triangleMatrix[1][0], triangleMatrix[2][0]);
+    result[1] = createBezier3(triangleMatrix[2][0], triangleMatrix[1][1], triangleMatrix[0][2]);
+    return result;
+  }
+
+  private RCommand[] splitLine(float t){
+    RPoint[][] triangleMatrix = new RPoint[2][2];
+    for(int i=0; i<=1; i++){
+      for(int j=0; j<=1; j++){
+        triangleMatrix[i][j] = new RPoint();
+      }
+    }
+
+    RPoint[] controlPoints = this.getPoints();
+
+    // Copy control points to triangle matrix
+    for(int i = 0; i <= 1; i++){
+      triangleMatrix[0][i] = controlPoints[i];
+    }
+    
+    // Triangle computation
+    for(int i = 1; i <= 1; i++){
+      for(int j = 0; j <= 1 - i; j++){
+        triangleMatrix[i][j].x = (1-t) * triangleMatrix[i-1][j].x + t * triangleMatrix[i-1][j+1].x;
+        triangleMatrix[i][j].y = (1-t) * triangleMatrix[i-1][j].y + t * triangleMatrix[i-1][j+1].y;
+      }
+    }
+
+    RCommand[] result = new RCommand[2];
+    result[0] = createLine(triangleMatrix[0][0], triangleMatrix[1][0]);
+    result[1] = createLine(triangleMatrix[1][0], triangleMatrix[0][1]);
+    return result;
+  }
+
   private void cubicBezierAdaptativeRecursive(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, int level){
     if(level > segmentRecursionLimit)
       {

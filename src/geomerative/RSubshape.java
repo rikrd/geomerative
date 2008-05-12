@@ -85,6 +85,11 @@ public class RSubshape extends RGeomElem
     setStyle(s);
   }
   
+  public RSubshape(RCommand c){
+    this();
+    this.addCommand(c);
+  }
+
   /**
    * Use this method to count the number of commands in the contour. 
    * @eexample countCommands
@@ -150,7 +155,7 @@ public class RSubshape extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numCommands;i++){
-      RPoint[] newPoints = commands[i].getCurvePoints();
+      RPoint[] newPoints = commands[i].getCurvePoints(false);
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
