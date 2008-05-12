@@ -430,7 +430,24 @@ public class RShape extends RGeomElem
     return result;
   }
   
-  
+  public RShape[] split(float t){
+    RShape[] result = new RShape[2];
+    result[0] = new RShape();
+    result[1] = new RShape();
+    
+    for(int i=0; i<countSubshapes(); i++){
+      RSubshape[] splittedSubshapes = subshapes[i].split(t);
+      if(splittedSubshapes != null){
+        result[0].addSubshape(splittedSubshapes[0]);
+        result[1].addSubshape(splittedSubshapes[1]);
+      }
+    }
+    
+    result[0].setStyle(this);
+    result[1].setStyle(this);
+    return result;
+  }
+
   /**
    * Use this method to get the type of element this is.
    * @eexample RShape_getType

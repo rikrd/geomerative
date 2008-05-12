@@ -469,6 +469,38 @@ public class RGroup extends RGeomElem
   public int getType(){
     return type;
   }
+
+  public RGroup[] split(float t){
+    RGroup[] result = new RGroup[2];
+    result[0] = new RGroup();
+    result[1] = new RGroup();
+    for(int i = 0; i<this.countElements(); i++){
+      RGeomElem element = this.elements[i];
+      
+      switch(element.getType())
+        {
+        case RGeomElem.GROUP:
+          RGroup[] splittedGroups = ((RGroup)element).split(t);
+          if( splittedGroups != null ){
+            result[0].addElement(splittedGroups[0]);
+            result[1].addElement(splittedGroups[1]);
+          }
+          break;
+          
+        case RGeomElem.SHAPE:
+          RShape[] splittedShapes = ((RShape)element).split(t);
+          if( splittedShapes != null ){
+            result[0].addElement(splittedShapes[0]);
+            result[1].addElement(splittedShapes[1]);
+          }
+          break;
+        }
+    }
+    result[0].setStyle(this);
+    result[1].setStyle(this);
+
+    return result;
+  }
   
   /**
    * Use this method to adapt a group of of figures to a shape.

@@ -652,7 +652,7 @@ public abstract class RGeomElem
     areaAcc /= 2.0f;
     return areaAcc;
   }
-  
+
   /**
    * Use this method to get the transformation matrix in order to fit and center the element on the canvas. Scaling and translation damping parameters are available, in order to create animations.
    * @eexample RGeomElem_getCenteringTransf

@@ -375,6 +375,76 @@ public class RSubshape extends RGeomElem
     
     return commands[indCommand].getCurveTangent(advOfCommand);
   }
+
+  /**
+   * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
+   * @eexample getCurvePoint
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * @return RPoint, the vertice returned.
+   * */
+  public RSubshape[] split(float t){
+    RSubshape[] result = new RSubshape[2];
+
+    float advOfCommand;
+    int numCommands = countCommands();
+    if(numCommands == 0){
+      return null;
+    }
+    
+    if(t==0.0F){ 
+      //return commands[0].split(0F); 
+      t=0.01F;
+    }
+    
+    if(t==1.0F){
+      //return commands[numCommands-1].split(1F); 
+      t=0.99F;
+    }
+    
+    float[] lengthsCommands = getCurveLengths();
+    float lengthSubshape = getCurveLength();
+    
+    /* Calculate the amount of advancement t mapped to each command */
+    /* We use a simple algorithm where we give to each command the same amount of advancement */
+    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
+    /* Old method with uniform advancement per command
+       float advPerCommand;
+       advPerCommand = 1F / numCommands;
+       indCommand = (int)(Math.floor(t / advPerCommand)) % numCommands;
+       advOfCommand = (t*numCommands - indCommand);
+    */
+    
+    int indCommand = 0;
+    float accumulatedAdvancement = lengthsCommands[indCommand] / lengthSubshape;
+    float prevAccumulatedAdvancement = 0F;
+    
+    /* Find in what command the advancement point is  */
+    while(t > accumulatedAdvancement){
+      indCommand++;
+      prevAccumulatedAdvancement = accumulatedAdvancement;
+      accumulatedAdvancement += (lengthsCommands[indCommand] / lengthSubshape);
+    }
+    
+    advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
+
+    RCommand[] splittedCommands = commands[indCommand].split(advOfCommand);
+
+    result[0] = new RSubshape();
+    for(int i = 0; i<indCommand; i++){
+      result[0].addCommand(commands[i]);
+    }
+    result[0].addCommand(splittedCommands[0]);
+    result[0].setStyle(this);
+    
+    result[1] = new RSubshape();
+    for(int i = indCommand + 1; i < countCommands(); i++){
+      result[1].addCommand(commands[i]);
+    }
+    result[1].addCommand(splittedCommands[1]);
+    result[1].setStyle(this);
+
+    return result;
+  }
   
   /**
    * Use this method to draw the subshape. 
