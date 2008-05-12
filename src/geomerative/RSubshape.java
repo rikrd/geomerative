@@ -393,12 +393,12 @@ public class RSubshape extends RGeomElem
     
     if(t==0.0F){ 
       //return commands[0].split(0F); 
-      t=0.01F;
+      t=0.0001F;
     }
     
     if(t==1.0F){
       //return commands[numCommands-1].split(1F); 
-      t=0.99F;
+      t=0.9999F;
     }
     
     float[] lengthsCommands = getCurveLengths();
