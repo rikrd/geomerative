@@ -1,9 +1,9 @@
 import processing.opengl.*;
 import geomerative.*;
 
-//RCommand curva = new RCommand(0 , 0, -200, 200, 400, -300, 0, -300);
-//RCommand curva = new RCommand(0 , 0, 400, 300, 0, -200);
-RCommand curva = new RCommand(-200 , -300, 200, 300);
+//RCommand curva = new RCommand(0 , 0, -200, -200, 200, -200, 0, -100);
+//RCommand curva = new RCommand(0 , 0, 200, 300, 0, -200);
+RCommand curva = new RCommand(-200 , -100, 200, 200);
 RCommand[] piezas = new RCommand[2];
 
 void setup(){
@@ -26,8 +26,9 @@ void draw(){
   
   stroke(255, 0, 0, 255);
   piezas[0].draw();
+  ellipse(piezas[0].endPoint.x, piezas[0].endPoint.y, 10, 10);
   
   stroke(0, 255, 0, 255);
   piezas[1].draw();
-
+  ellipse(piezas[1].endPoint.x, piezas[1].endPoint.y, 10, 10);
 }
