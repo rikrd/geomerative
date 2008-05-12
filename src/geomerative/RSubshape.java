@@ -392,17 +392,27 @@ public class RSubshape extends RGeomElem
     }
     
     if(t==0.0F){ 
-      //return commands[0].split(0F); 
-      t=0.0001F;
+      result[0] = new RSubshape();
+      result[1] = new RSubshape(this);
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+
+      return result;
     }
     
     if(t==1.0F){
-      //return commands[numCommands-1].split(1F); 
-      t=0.9999F;
+      result[0] = new RSubshape(this);
+      result[1] = new RSubshape();
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+
+      return result;
     }
     
     float[] lengthsCommands = getCurveLengths();
     float lengthSubshape = getCurveLength();
+
+    int indCommand = 0;
     
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
@@ -414,7 +424,6 @@ public class RSubshape extends RGeomElem
        advOfCommand = (t*numCommands - indCommand);
     */
     
-    int indCommand = 0;
     float accumulatedAdvancement = lengthsCommands[indCommand] / lengthSubshape;
     float prevAccumulatedAdvancement = 0F;
     
@@ -427,6 +436,8 @@ public class RSubshape extends RGeomElem
     
     advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
 
+
+    // Split the affected command and reconstruct each of the shapes
     RCommand[] splittedCommands = commands[indCommand].split(advOfCommand);
 
     result[0] = new RSubshape();
