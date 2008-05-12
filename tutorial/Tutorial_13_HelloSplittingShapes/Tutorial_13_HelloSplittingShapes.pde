@@ -27,6 +27,7 @@ void draw(){
   noFill();
   stroke(255, 200);
   RGroup[] splittedGroups = grp.split(map(mouseX, 0, width, 0, 1));
+  splittedGroups[0].rotate(cos(frameCount*0.1));
   splittedGroups[0].draw();
 }
 
