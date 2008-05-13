@@ -1590,6 +1590,17 @@ class RClip
   {
     RPolygon c = new RPolygon();
     RPolygon s_clean = s.removeOpenContours();
+    /*
+    for(int i=0; i<s_clean.countContours(); i++)
+      {
+        System.out.println("  " + s_clean.contours[i]);
+        System.out.println("Contour " + (i + 1) + "/" + s_clean.countContours() + ":");
+        for(int j=0;j<s_clean.contours[i].countPoints();j++)
+          {
+            System.out.println("  Point " + (j + 1) + "/" + s_clean.contours[i].countPoints() + ":" + "(" + s_clean.contours[i].points[j].x + ", " + s_clean.contours[i].points[j].y + ")");
+          }
+      }
+    */
     return clip(OperationType.GPC_UNION, s_clean, c);
   }
   

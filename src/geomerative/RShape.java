@@ -292,8 +292,7 @@ public class RShape extends RGeomElem
    * @related draw ( )
    */
   public RMesh toMesh(){
-    RPolygon p = this.toPolygon();
-    return p.toMesh();
+    return toPolygon().toMesh();
   }
   
   /**
@@ -304,7 +303,7 @@ public class RShape extends RGeomElem
    */
   public RPolygon toPolygon(){
     int numSubshapes = countSubshapes();
-
+    
     RPolygon result = new RPolygon();
     for(int i=0;i<numSubshapes;i++){
       RPoint[] newpoints = this.subshapes[i].getCurvePoints();
@@ -430,7 +429,7 @@ public class RShape extends RGeomElem
     return result;
   }
   
-  public RShape[] split(float t){
+  public RShape[] splitAll(float t){
     RShape[] result = new RShape[2];
     result[0] = new RShape();
     result[1] = new RShape();
@@ -448,6 +447,81 @@ public class RShape extends RGeomElem
     return result;
   }
 
+  public RShape[] split(float t){
+    RShape[] result = new RShape[2];
+    result[0] = new RShape();
+    result[1] = new RShape();
+
+    float advOfCommand;
+    int numSubshapes = countSubshapes();
+    if(numSubshapes == 0){
+      return null;
+    }
+
+    if(t==0.0F){ 
+      result[0] = new RShape();
+      result[1] = new RShape(this);
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+
+      return result;
+    }
+    
+    if(t==1.0F){
+      result[0] = new RShape(this);
+      result[1] = new RShape();
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+
+      return result;
+    }
+    
+    float[] lengthsSubshapes = getCurveLengths();
+    float lengthSubshape = getCurveLength();
+
+    int indSubshape = 0;
+    
+    /* Calculate the amount of advancement t mapped to each command */
+    /* We use a simple algorithm where we give to each command the same amount of advancement */
+    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
+    /* Old method with uniform advancement per command
+       float advPerCommand;
+       advPerCommand = 1F / numSubshapes;
+       indCommand = (int)(Math.floor(t / advPerCommand)) % numSubshapes;
+       advOfCommand = (t*numSubshapes - indCommand);
+    */
+    
+    float accumulatedAdvancement = lengthsSubshapes[indSubshape] / lengthSubshape;
+    float prevAccumulatedAdvancement = 0F;
+    
+    /* Find in what command the advancement point is  */
+    while(t > accumulatedAdvancement){
+      indSubshape++;
+      prevAccumulatedAdvancement = accumulatedAdvancement;
+      accumulatedAdvancement += (lengthsSubshapes[indSubshape] / lengthSubshape);
+    }
+    
+    float advOfSubshape = (t-prevAccumulatedAdvancement) / (lengthsSubshapes[indSubshape] / lengthSubshape);
+
+    RSubshape[] splittedShapes = subshapes[indSubshape].split(advOfSubshape);
+    
+    result[0] = new RShape();
+    for(int i = 0; i<indSubshape; i++){
+      result[0].addSubshape(new RSubshape(subshapes[i]));
+    }
+    result[0].addSubshape(new RSubshape(splittedShapes[0]));
+    result[0].setStyle(this);
+
+    result[1] = new RShape();
+    result[1].addSubshape(new RSubshape(splittedShapes[1]));
+    for(int i = indSubshape + 1; i < countSubshapes(); i++){
+      result[1].addSubshape(new RSubshape(subshapes[i]));
+    }
+    result[1].setStyle(this);
+    
+    return result;
+  }
+
   /**
    * Use this method to get the type of element this is.
    * @eexample RShape_getType
@@ -456,10 +530,19 @@ public class RShape extends RGeomElem
   public int getType(){
     return type;
   }
+
+  protected void calculateCurveLengths(){
+    lenCurves = new float[countSubshapes()];
+    lenCurve = 0F;
+    for(int i=0;i<countSubshapes();i++){
+      lenCurves[i] = subshapes[i].getCurveLength();
+      lenCurve += lenCurves[i];
+    }  
+  }
   
   public void print(){
     System.out.println("subshapes [count " + this.countSubshapes() + "]: ");
-    for(int i=0;i<subshapes.length;i++)
+    for(int i=0;i<countSubshapes();i++)
       {
         System.out.println("--- subshape "+i+" ---");
         subshapes[i].print();

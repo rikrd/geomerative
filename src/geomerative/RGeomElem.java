@@ -80,11 +80,15 @@ public abstract class RGeomElem
   public abstract RPoint[] getPoints();
   public abstract RPoint[] getCurvePoints();
   public abstract int getType();
+
   //public abstract RMesh toMesh();
   //public abstract RPolygon toPolygon();
   public abstract RShape toShape();
   public void print(){};
   
+  protected float[] lenCurves;
+  protected float lenCurve = -1F;
+
   public String id = "";
   public PImage texture = null;
   
@@ -119,7 +123,6 @@ public abstract class RGeomElem
   private float oldStrokeWeight = 1F;
   private int oldStrokeCap = RGeomerative.parent.PROJECT;
   private int oldStrokeJoin = RGeomerative.parent.MITER;
-
 
   protected void saveContext(PGraphics g){
     oldFill = g.fill;
@@ -518,6 +521,38 @@ public abstract class RGeomElem
 
   public void setId(String str){
     this.id = str;
+  }
+
+  protected void calculateCurveLengths(){
+    RGeomerative.parent.println("Feature not yet implemented for this class.");
+  }
+
+  /**
+   * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
+   * @eexample getCurveLength
+   * @return float[], the arclengths of each command of the subshape.
+   * */
+  public float[] getCurveLengths(){
+    /* If the cache with the commands lengths is empty, we fill it up */
+    if(lenCurves == null){
+      calculateCurveLengths();
+    }
+    
+    return lenCurves;
+  }
+  
+  /**
+   * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
+   * @eexample getCurveLength
+   * @return float, the arclength of the subshape.
+   * */
+  public float getCurveLength(){    
+    /* If the cache with the commands lengths is empty, we fill it up */
+    if(lenCurve == -1F){
+      getCurveLengths();
+    }
+    
+    return lenCurve;
   }
 
   public RPolygon toPolygon(){

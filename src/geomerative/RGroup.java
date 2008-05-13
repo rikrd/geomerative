@@ -70,7 +70,7 @@ public class RGroup extends RGeomElem
   public RGroup(){
     elements = null;
   }
-  
+
   /**
    * Use this method to create a copy of a group.
    * @eexample RGroup
@@ -97,7 +97,10 @@ public class RGroup extends RGeomElem
         
       }
     }
+    
+    setStyle(grp);
   }
+  
   
   /**
    * Use this method to get the centroid of the element.
@@ -471,6 +474,112 @@ public class RGroup extends RGeomElem
 
   public RGroup[] split(float t){
     RGroup[] result = new RGroup[2];
+
+    float[] lengthsCurves = getCurveLengths();
+    float lengthCurve = getCurveLength();
+
+    int indElement = 0;
+    
+    /* Calculate the amount of advancement t mapped to each command */
+    /* We use a simple algorithm where we give to each command the same amount of advancement */
+    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
+    /* Old method with uniform advancement per command
+       float advPerCommand;
+       advPerCommand = 1F / numSubshapes;
+       indCommand = (int)(Math.floor(t / advPerCommand)) % numSubshapes;
+       advOfCommand = (t*numSubshapes - indCommand);
+    */
+    
+    float accumulatedAdvancement = lengthsCurves[indElement] / lengthCurve;
+    float prevAccumulatedAdvancement = 0F;
+    
+    /* Find in what command the advancement point is  */
+    while(t > accumulatedAdvancement){
+      indElement++;
+      prevAccumulatedAdvancement = accumulatedAdvancement;
+      accumulatedAdvancement += (lengthsCurves[indElement] / lengthCurve);
+    }
+    
+    float advOfElement = (t-prevAccumulatedAdvancement) / (lengthsCurves[indElement] / lengthCurve);
+    
+    result[0] = new RGroup();
+    result[1] = new RGroup();
+
+    // Add the elements before the cut point
+    for(int i=0; i<indElement; i++){
+      switch(elements[i].getType()){
+      case RGeomElem.MESH:
+        result[0].addElement(new RMesh((RMesh)elements[i]));
+        break;
+        
+      case RGeomElem.GROUP:
+        result[0].addElement(new RGroup((RGroup)elements[i]));
+        break;
+        
+      case RGeomElem.POLYGON:
+        result[0].addElement(new RPolygon((RPolygon)elements[i]));
+        break;
+        
+      case RGeomElem.SHAPE:
+        result[0].addElement(new RShape((RShape)elements[i]));
+        break;
+      }
+    }
+
+    // Add the cut point element cutted
+    RGeomElem element = this.elements[indElement];
+    switch(element.getType())
+      {
+      case RGeomElem.GROUP:
+        RGroup[] splittedGroups = ((RGroup)element).split(advOfElement);
+        if( splittedGroups != null ){
+          result[0].addElement(new RGroup(splittedGroups[0]));
+          result[1].addElement(new RGroup(splittedGroups[1]));
+        }else{
+          RGeomerative.parent.println("Group problem");
+        }
+        break;
+        
+      case RGeomElem.SHAPE:
+        RShape[] splittedShapes = ((RShape)element).split(advOfElement);
+        if( splittedShapes != null ){
+          result[0].addElement(new RShape(splittedShapes[0]));
+          result[1].addElement(new RShape(splittedShapes[1]));
+        }else{
+          RGeomerative.parent.println("Shape problem");
+        }
+        break;
+      }
+
+    // Add the elements after the cut point    
+    for(int i=indElement+1; i<countElements(); i++){
+      switch(elements[i].getType()){
+      case RGeomElem.MESH:
+        result[1].addElement(new RMesh((RMesh)elements[i]));
+        break;
+        
+      case RGeomElem.GROUP:
+        result[1].addElement(new RGroup((RGroup)elements[i]));
+        break;
+        
+      case RGeomElem.POLYGON:
+        result[1].addElement(new RPolygon((RPolygon)elements[i]));
+        break;
+        
+      case RGeomElem.SHAPE:
+        result[1].addElement(new RShape((RShape)elements[i]));
+        break;
+      }
+    }
+    
+    result[0].setStyle(this);
+    result[1].setStyle(this);
+    
+    return result;
+  }
+
+  public RGroup[] splitAll(float t){
+    RGroup[] result = new RGroup[2];
     result[0] = new RGroup();
     result[1] = new RGroup();
     for(int i = 0; i<this.countElements(); i++){
@@ -479,7 +588,7 @@ public class RGroup extends RGeomElem
       switch(element.getType())
         {
         case RGeomElem.GROUP:
-          RGroup[] splittedGroups = ((RGroup)element).split(t);
+          RGroup[] splittedGroups = ((RGroup)element).splitAll(t);
           if( splittedGroups != null ){
             result[0].addElement(splittedGroups[0]);
             result[1].addElement(splittedGroups[1]);
@@ -487,7 +596,7 @@ public class RGroup extends RGeomElem
           break;
           
         case RGeomElem.SHAPE:
-          RShape[] splittedShapes = ((RShape)element).split(t);
+          RShape[] splittedShapes = ((RShape)element).splitAll(t);
           if( splittedShapes != null ){
             result[0].addElement(splittedShapes[0]);
             result[1].addElement(splittedShapes[1]);
@@ -500,6 +609,16 @@ public class RGroup extends RGeomElem
 
     return result;
   }
+
+  protected void calculateCurveLengths(){
+    lenCurves = new float[countElements()];
+    lenCurve = 0F;
+    for(int i=0;i<countElements();i++){
+      lenCurves[i] = elements[i].getCurveLength();
+      lenCurve += lenCurves[i];
+    }
+  }
+  
   
   /**
    * Use this method to adapt a group of of figures to a shape.

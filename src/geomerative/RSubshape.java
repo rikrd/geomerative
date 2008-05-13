@@ -33,8 +33,6 @@ public class RSubshape extends RGeomElem
    * @invisible
    */
   public int type = RGeomElem.SUBSHAPE;
-  private float[] lenCommands;
-  private float lenSubshape = -1F;
   
   /**
    * Array of RCommand objects holding the commands of the subshape.
@@ -184,47 +182,13 @@ public class RSubshape extends RGeomElem
     return newresult;
   }
   
-  /**
-   * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
-   * @eexample getCurveLength
-   * @return float[], the arclengths of each command of the subshape.
-   * */
-  public float[] getCurveLengths(){
-    int numCommands = countCommands();
-    if(numCommands == 0){
-      return null;
+  protected void calculateCurveLengths(){
+    lenCurves = new float[countCommands()];
+    lenCurve = 0F;
+    for(int i=0;i<countCommands();i++){
+      lenCurves[i] = commands[i].getCurveLength();
+      lenCurve += lenCurves[i];
     }
-    
-    /* If the cache with the commands lengths is empty, we fill it up */
-    if(lenCommands == null){
-      lenCommands = new float[numCommands];
-      lenSubshape = 0F;
-      for(int i=0;i<numCommands;i++){
-        lenCommands[i] = commands[i].getCurveLength();
-        lenSubshape += lenCommands[i];
-      }
-    }
-    
-    return lenCommands;
-  }
-  
-  /**
-   * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
-   * @eexample getCurveLength
-   * @return float, the arclength of the subshape.
-   * */
-  public float getCurveLength(){
-    int numCommands = countCommands();
-    if(numCommands == 0){
-      return 0F;
-    }
-    
-    /* If the cache with the commands lengths is empty, we fill it up */
-    if(lenSubshape == -1F){
-      getCurveLengths();
-    }
-    
-    return lenSubshape;    
   }
   
   /**
@@ -326,7 +290,7 @@ public class RSubshape extends RGeomElem
     float[] lengthsCommands = getCurveLengths();
     float lengthSubshape = getCurveLength();
     
-    //System.out.println("Length of subshape = " + lenSubshape);
+    //System.out.println("Length of subshape = " + lenCurve);
     
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
@@ -381,8 +345,7 @@ public class RSubshape extends RGeomElem
    * */
   public RSubshape[] split(float t){
     RSubshape[] result = new RSubshape[2];
-
-    float advOfCommand;
+    
     int numCommands = countCommands();
     if(numCommands == 0){
       return null;
@@ -431,8 +394,8 @@ public class RSubshape extends RGeomElem
       accumulatedAdvancement += (lengthsCommands[indCommand] / lengthSubshape);
     }
     
-    advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
-
+    float advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
+    
 
     // Split the affected command and reconstruct each of the shapes
     RCommand[] splittedCommands = commands[indCommand].split(advOfCommand);
