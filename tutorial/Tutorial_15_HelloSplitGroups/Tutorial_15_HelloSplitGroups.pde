@@ -17,7 +17,7 @@ void setup(){
   RCommand.setSegmentator(RCommand.ADAPTATIVE);
   
   RSVG svgLoader = new RSVG();
-  grp = svgLoader.toGroup("tiger.svg");
+  grp = svgLoader.toGroup("bot1.svg");
   grp.centerIn(g);
   
 }
@@ -28,10 +28,10 @@ void draw(){
 
   noFill();
   stroke(255, 200);
-  //shp.draw();
-  float t = map(mouseX, 0, width, 0, 1);
+  
+  float t = constrain(map(mouseX, 10, width-10, 0, 1), 0, 1);
   RGroup[] splittedGroups = grp.split(t); 
-  splittedGroups[1].draw();
+  splittedGroups[0].draw();
   
 }
 
