@@ -117,6 +117,9 @@ public class RSVG
       }else if(name.equals("line")){
         geomElem = elemToLine(element);
         
+      }else if(name.equals("defs")){
+        // Do nothing normally we should make a hashmap 
+        // to apply everytime they are called in the actual objects
       }else{
         RGeomerative.parent.println("Element '" + name + "' not know. Ignoring it.");
       }
