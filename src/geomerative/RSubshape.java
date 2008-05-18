@@ -81,7 +81,8 @@ public class RSubshape extends RGeomElem
         lastPoint = commands[i].endPoint;
       }
     }
-
+    
+    closed = s.closed;
     setStyle(s);
   }
   

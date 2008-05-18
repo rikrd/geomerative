@@ -307,7 +307,10 @@ public class RShape extends RGeomElem
     RPolygon result = new RPolygon();
     for(int i=0;i<numSubshapes;i++){
       RPoint[] newpoints = this.subshapes[i].getCurvePoints();
-      result.addContour(new RContour(newpoints));
+      RContour c = new RContour(newpoints);
+      c.closed = subshapes[i].closed;
+      c.setStyle(subshapes[i]);
+      result.addContour(c);
     }
     
     result.setStyle(this);

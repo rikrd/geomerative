@@ -42,9 +42,9 @@ public class RContour extends RGeomElem
    * @related addPoint ( )
    */
   public RPoint[] points;
-  boolean isContributing=true;
-  boolean isHole=false;
-  
+  boolean isContributing = true;
+  boolean isHole = false;
+  boolean closed = true;
   /**
    * Use this method to count the number of points in the contour. 
    * @eexample countPoints
@@ -94,7 +94,7 @@ public class RContour extends RGeomElem
     for(int i=0;i<numPoints;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape();
+    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
     if(beforeFill)
       g.fill(g.fillColor);
   }
@@ -107,7 +107,7 @@ public class RContour extends RGeomElem
     for(int i=0;i<numPoints;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape();
+    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
     if(beforeFill)
       g.fill(g.g.fillColor);
   }
@@ -231,6 +231,7 @@ public class RContour extends RGeomElem
       }
     
     addPoint(new RPoint(points[0].x, points[0].y));
+    closed = true;
   }
   
   /**

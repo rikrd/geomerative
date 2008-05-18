@@ -41,6 +41,7 @@ public class RPolygon extends RGeomElem
    */
   public int type = RGeomElem.POLYGON;
   public static int defaultDetail = 50;
+
   
   /**
    * Array of RContour objects holding the contours of the polygon. 
@@ -554,34 +555,8 @@ public class RPolygon extends RGeomElem
       }
     }
   }
-  
+
   public void draw(PApplet g){
-    int numContours = countContours();
-    if(numContours!=0){
-      if(isIn(g)){
-        if(!RGeomerative.ignoreStyles){
-          saveContext(g);
-          setContext(g);
-        }
-        
-        RGeomerative.parent.beginShape();
-        for(int i=0;i<numContours;i++){
-          RGeomerative.parent.breakShape();
-          int numPoints = contours[i].countPoints();
-          for(int j=0; j<numPoints; j++){
-            RGeomerative.parent.vertex(contours[i].points[j].x, contours[i].points[j].y);
-          }
-        }
-        RGeomerative.parent.endShape();
-
-        if(!RGeomerative.ignoreStyles){
-          restoreContext(g);
-        }
-      }
-    }
-  }
-
-  public void drawOld(PApplet g){
     int numContours = countContours();
     if(numContours!=0){
       if(isIn(g)){
