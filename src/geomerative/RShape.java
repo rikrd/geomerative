@@ -749,7 +749,7 @@ public class RShape extends RGeomElem
                 g.vertex( pnts[1].x, pnts[1].y );
                 break;
               case RCommand.QUADBEZIERTO:
-                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y );
+                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[2].x, pnts[2].y );
                 break;
               case RCommand.CUBICBEZIERTO:
                 g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[3].x, pnts[3].y );
@@ -795,7 +795,7 @@ public class RShape extends RGeomElem
                 g.vertex( pnts[1].x, pnts[1].y );
                 break;
               case RCommand.QUADBEZIERTO:
-                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y );
+                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[2].x, pnts[2].y );
                 break;
               case RCommand.CUBICBEZIERTO:
                 g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[3].x, pnts[3].y );
