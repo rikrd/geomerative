@@ -49,6 +49,8 @@ public class RSubshape extends RGeomElem
    * @invisible
    */
   public RPoint lastPoint;
+
+  boolean closed = false;
   
   /**
    * Use this method to create a new subshape.
@@ -439,7 +441,7 @@ public class RSubshape extends RGeomElem
     for(int i=0;i<points.length;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape();
+    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
     
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);
@@ -461,7 +463,7 @@ public class RSubshape extends RGeomElem
     for(int i=0;i<points.length;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape();
+    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
     
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);
@@ -582,6 +584,8 @@ public class RSubshape extends RGeomElem
     }
     
     lastPoint = commands[commands.length-1].endPoint;
+
+    closed = true;
   }
   
   /**

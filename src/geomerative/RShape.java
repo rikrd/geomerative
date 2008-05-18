@@ -723,7 +723,7 @@ public class RShape extends RGeomElem
       }
     }
   }
-
+  
   public void drawUsingBreakShape(PGraphics g){
     int numSubshapes = countSubshapes();
     if(numSubshapes!=0){
@@ -732,20 +732,36 @@ public class RShape extends RGeomElem
           saveContext(g);
           setContext(g);
         }
-        
-        RGeomerative.parent.beginShape();
+
+        boolean closed = false;
+        g.beginShape();
         for(int i=0;i<numSubshapes;i++){
-          RPoint[] points = subshapes[i].getCurvePoints();
-          if(points != null){
-            for(int j=0; j<points.length; j++){
-              RGeomerative.parent.vertex(points[j].x, points[j].y);
+          RSubshape subshape = subshapes[i];
+          closed |= subshape.closed;
+          for(int j = 0; j < subshape.countCommands(); j++ ){
+            RPoint[] pnts = subshape.commands[j].getPoints();
+            if(j==0){
+              g.vertex(pnts[0].x, pnts[0].y);
             }
-            if(i!=numSubshapes-1){
-              RGeomerative.parent.breakShape();
-            }
+            switch( subshape.commands[j].getCommandType() )
+              {
+              case RCommand.LINETO:
+                g.vertex( pnts[1].x, pnts[1].y );
+                break;
+              case RCommand.QUADBEZIERTO:
+                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y );
+                break;
+              case RCommand.CUBICBEZIERTO:
+                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[3].x, pnts[3].y );
+                break;
+              }
           }
+          if(i < (numSubshapes - 1)){
+            g.breakShape();
+          }
+
         }
-        RGeomerative.parent.endShape(RGeomerative.parent.CLOSE);
+        g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
 
         if(!RGeomerative.ignoreStyles){
           restoreContext(g);
@@ -762,22 +778,36 @@ public class RShape extends RGeomElem
           saveContext(g);
           setContext(g);
         }
-        
-        RGeomerative.parent.beginShape();
+
         boolean closed = false;
+        g.beginShape();
         for(int i=0;i<numSubshapes;i++){
-          RCommand.setSegmentator(RCommand.ADAPTATIVE);
-          RPoint[] points = subshapes[i].getCurvePoints();
-          if(points != null){
-            for(int j=0; j<points.length; j++){
-              RGeomerative.parent.vertex(points[j].x, points[j].y);
+          RSubshape subshape = subshapes[i];
+          closed |= subshape.closed;
+          for(int j = 0; j < subshape.countCommands(); j++ ){
+            RPoint[] pnts = subshape.commands[j].getPoints();
+            if(j==0){
+              g.vertex(pnts[0].x, pnts[0].y);
             }
-            if(i!=numSubshapes-1){
-              RGeomerative.parent.breakShape();
-            }
+            switch( subshape.commands[j].getCommandType() )
+              {
+              case RCommand.LINETO:
+                g.vertex( pnts[1].x, pnts[1].y );
+                break;
+              case RCommand.QUADBEZIERTO:
+                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y );
+                break;
+              case RCommand.CUBICBEZIERTO:
+                g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[3].x, pnts[3].y );
+                break;
+              }
           }
+          if(i < (numSubshapes - 1)){
+            g.breakShape();
+          }
+
         }
-        RGeomerative.parent.endShape();
+        g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
 
         if(!RGeomerative.ignoreStyles){
           restoreContext(g);
