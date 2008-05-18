@@ -19,7 +19,7 @@
 
 package geomerative ;
 import processing.core.*;
-
+import java.lang.reflect.Method;
 
 /**
  * RShape is a reduced interface for creating, holding and drawing complex Shapes. Shapes are groups of one or more subshapes (RSubshape).  Shapes can be selfintersecting and can contain holes.  This interface also allows you to transform shapes into polygons by segmenting the curves forming the shape.
@@ -555,7 +555,7 @@ public class RShape extends RGeomElem
    * @eexample drawShape
    * @param g PGraphics, the graphics object on which to draw the shape
    */
-  public void draw(PGraphics g){
+  public void drawUsingInternalTesselator(PGraphics g){
     int numSubshapes = countSubshapes();
     
     if(numSubshapes!=0){
@@ -636,8 +636,8 @@ public class RShape extends RGeomElem
       }
     }
   }
-  
-  public void draw(PApplet p){
+
+  public void drawUsingInternalTesselator(PApplet p){
     int numSubshapes = countSubshapes();
     
     if(numSubshapes!=0){
@@ -723,7 +723,98 @@ public class RShape extends RGeomElem
       }
     }
   }
+
+  public void drawUsingBreakShape(PGraphics g){
+    int numSubshapes = countSubshapes();
+    if(numSubshapes!=0){
+      if(isIn(g)){
+        if(!RGeomerative.ignoreStyles){
+          saveContext(g);
+          setContext(g);
+        }
+        
+        RGeomerative.parent.beginShape();
+        for(int i=0;i<numSubshapes;i++){
+          RPoint[] points = subshapes[i].getCurvePoints();
+          if(points != null){
+            for(int j=0; j<points.length; j++){
+              RGeomerative.parent.vertex(points[j].x, points[j].y);
+            }
+            if(i!=numSubshapes-1){
+              RGeomerative.parent.breakShape();
+            }
+          }
+        }
+        RGeomerative.parent.endShape(RGeomerative.parent.CLOSE);
+
+        if(!RGeomerative.ignoreStyles){
+          restoreContext(g);
+        }
+      }
+    }
+  }
   
+  public void drawUsingBreakShape(PApplet g){
+    int numSubshapes = countSubshapes();
+    if(numSubshapes!=0){
+      if(isIn(g)){
+        if(!RGeomerative.ignoreStyles){
+          saveContext(g);
+          setContext(g);
+        }
+        
+        RGeomerative.parent.beginShape();
+        boolean closed = false;
+        for(int i=0;i<numSubshapes;i++){
+          RCommand.setSegmentator(RCommand.ADAPTATIVE);
+          RPoint[] points = subshapes[i].getCurvePoints();
+          if(points != null){
+            for(int j=0; j<points.length; j++){
+              RGeomerative.parent.vertex(points[j].x, points[j].y);
+            }
+            if(i!=numSubshapes-1){
+              RGeomerative.parent.breakShape();
+            }
+          }
+        }
+        RGeomerative.parent.endShape();
+
+        if(!RGeomerative.ignoreStyles){
+          restoreContext(g);
+        }
+      }
+    }
+  }
+  
+
+  public void draw(PGraphics g){
+    try{
+      Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
+      if(declaringClass != g.getClass()){
+        // The backend does not implement breakShape
+        drawUsingInternalTesselator(g);
+      }else{
+        // The backend does implement breakShape
+        drawUsingBreakShape(g);        
+      }
+    }catch(NoSuchMethodException e){   
+    }
+  }
+
+  public void draw(PApplet g){
+    try{
+      Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
+      if(declaringClass != g.g.getClass()){
+        // The backend does not implement breakShape
+        drawUsingInternalTesselator(g);
+      }else{
+        // The backend does implement breakShape
+        drawUsingBreakShape(g);        
+      }
+    }catch(NoSuchMethodException e){   
+    }
+  }
+
   /**
    * Use this method to know if the shape is inside a graphics object. This might be useful if we want to delete objects that go offscreen.
    * @eexample RShape_isIn

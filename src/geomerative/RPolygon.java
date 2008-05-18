@@ -564,6 +564,32 @@ public class RPolygon extends RGeomElem
           setContext(g);
         }
         
+        RGeomerative.parent.beginShape();
+        for(int i=0;i<numContours;i++){
+          RGeomerative.parent.breakShape();
+          int numPoints = contours[i].countPoints();
+          for(int j=0; j<numPoints; j++){
+            RGeomerative.parent.vertex(contours[i].points[j].x, contours[i].points[j].y);
+          }
+        }
+        RGeomerative.parent.endShape();
+
+        if(!RGeomerative.ignoreStyles){
+          restoreContext(g);
+        }
+      }
+    }
+  }
+
+  public void drawOld(PApplet g){
+    int numContours = countContours();
+    if(numContours!=0){
+      if(isIn(g)){
+        if(!RGeomerative.ignoreStyles){
+          saveContext(g);
+          setContext(g);
+        }
+        
         // Check whether to draw the fill or not
         if(g.g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
@@ -610,6 +636,7 @@ public class RPolygon extends RGeomElem
       }
     }
   }
+
   
   /**
    * Use this method to know if the polygon is inside a graphics object. This might be useful if we want to delete objects that go offscreen.
