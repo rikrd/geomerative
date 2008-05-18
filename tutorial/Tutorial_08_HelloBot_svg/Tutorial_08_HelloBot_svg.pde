@@ -1,9 +1,14 @@
+import processing.opengl.*;
+
 import geomerative.*;
 
 RSVG svgLoader;
 
 void setup(){
-  size(300, 300);
+  size(400, 400, OPENGL);
+  
+  smooth();
+  g.smooth = true;
   
   // VERY IMPORTANT: Allways initialize the library before using it
   RGeomerative.init(this);
@@ -13,6 +18,7 @@ void setup(){
 
 void draw(){
   background(255);
-
+  translate(mouseX, mouseY);
+  scale(0.5);
   svgLoader.draw("bot1.svg");
 }

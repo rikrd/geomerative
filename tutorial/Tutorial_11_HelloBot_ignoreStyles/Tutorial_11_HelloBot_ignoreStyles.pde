@@ -1,3 +1,4 @@
+import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
@@ -7,7 +8,7 @@ RGroup grp;
 RGroup newGrp;
 
 void setup(){
-  size(800, 600, OPENGL);
+  size(800, 600);
   smooth();
   g.smooth = true;
 

@@ -1,3 +1,4 @@
+import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
@@ -5,7 +6,7 @@ RSVG svgLoader;
 RGroup grp;
 
 void setup(){
-  size(800, 600, OPENGL);
+  size(800, 600);
   smooth();
   g.smooth = true;
 

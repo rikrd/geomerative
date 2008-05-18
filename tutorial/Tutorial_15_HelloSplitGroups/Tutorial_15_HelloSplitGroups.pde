@@ -1,3 +1,4 @@
+import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
@@ -6,7 +7,7 @@ RGroup grp;
 boolean ignoringStyles = false;
 
 void setup(){
-  size(600, 600, OPENGL);
+  size(600, 600);
   smooth();
   g.smooth = true; 
 
@@ -30,6 +31,7 @@ void draw(){
   stroke(255, 200);
   
   float t = constrain(map(mouseX, 10, width-10, 0, 1), 0, 1);
+  //println(t);
   RGroup[] splittedGroups = grp.split(t); 
   splittedGroups[0].draw();
   

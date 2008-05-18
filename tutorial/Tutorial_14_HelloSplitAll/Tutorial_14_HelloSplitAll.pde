@@ -1,7 +1,8 @@
+import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RShape shp;
+RGroup grp;
 
 boolean ignoringStyles = false;
 
@@ -17,9 +18,9 @@ void setup(){
   RCommand.setSegmentator(RCommand.ADAPTATIVE);
   
   RSVG svgLoader = new RSVG();
-  shp = svgLoader.toShape("bot1.svg");
+  grp = svgLoader.toGroup("bot1.svg");
   
-  shp.centerIn(g);
+  grp.centerIn(g);
 }
 
 void draw(){
@@ -28,17 +29,9 @@ void draw(){
 
   noFill();
   stroke(255, 200);
-  //shp.draw();
   float t = map(mouseX, 0, width, 0, 1);
-  RShape[] splittedShapes = shp.split(0.2);
-  //splittedShapes[0].rotate(cos(frameCount*0.01));
-  //splittedShapes[0].print();
-  RPolygon poly = splittedShapes[0].toPolygon();
-  
-  for(int i = 0; i<poly.countContours();i++){
-    poly.contours[i].draw();
-  }
-  splittedShapes[0].draw();
+  RGroup[] splittedGroups = grp.splitAll(t);
+  splittedGroups[0].draw();
   
 }
 

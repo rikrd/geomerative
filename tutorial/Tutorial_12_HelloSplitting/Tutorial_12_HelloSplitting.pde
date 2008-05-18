@@ -1,9 +1,9 @@
 import processing.opengl.*;
 import geomerative.*;
 
-//RCommand curva = new RCommand(0 , 0, -200, -200, 200, -200, 0, -100);
+RCommand curva = new RCommand(0 , 0, -200, -200, 200, -200, 0, -100);
 //RCommand curva = new RCommand(0 , 0, 200, 300, 0, -200);
-RCommand curva = new RCommand(-200 , -100, 200, 200);
+//RCommand curva = new RCommand(-200 , -100, 200, 200);
 RCommand[] piezas = new RCommand[2];
 
 void setup(){
