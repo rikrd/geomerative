@@ -225,57 +225,6 @@ public class RFont{
       throw new RuntimeException("Cannot find a suitable cmap table");
     }
     
-    
-    
-  /*
-  public RGroup toGroup(String text)  throws RuntimeException{
-    RGroup result = new RGroup();
-    
-    // Decide upon a cmap table to use for our character to glyph look-up
-    CmapFormat cmapFmt = null;
-    boolean forceAscii = false;
-    if (forceAscii) {
-      // We've been asked to use the ASCII/Macintosh cmap format
-      cmapFmt = f.getCmapTable().getCmapFormat(
-                                               Table.platformMacintosh,
-                                               Table.encodingRoman );
-      
-      //System.out.println("Forced ASCII.  Loading ASCII/Macintosh cmap format...");
-    } else {
-      // The default behaviour is to use the Unicode cmap encoding
-      cmapFmt = f.getCmapTable().getCmapFormat(
-                                               Table.platformMicrosoft,
-                                               Table.encodingUGL );
-      
-      if(cmapFmt != null) {}//System.out.println("Loading Unicode cmap format...");
-      
-      if (cmapFmt == null){
-        cmapFmt = f.getCmapTable().getCmapFormat(
-                                                 Table.platformMicrosoft,
-                                                 Table.encodingKorean );
-        
-        if(cmapFmt != null) {}//System.out.println("Loading Microsoft/Korean cmap format...");
-      }
-      if (cmapFmt == null){
-        cmapFmt = f.getCmapTable().getCmapFormat(
-                                                 Table.platformMicrosoft,
-                                                 Table.encodingHebrew );
-        
-        if(cmapFmt != null) {}//System.out.println("Loading Microsoft/Hebrew cmap format...");
-      }
-      if (cmapFmt == null) {
-        // This might be a symbol font, so we'll look for an "undefined" encoding
-        cmapFmt = f.getCmapTable().getCmapFormat(
-                                                 Table.platformMicrosoft,
-                                                 Table.encodingUndefined );
-	
-        if(cmapFmt != null) {}//System.out.println("Loading Undefined cmap format...");
-      }
-    }
-    if (cmapFmt == null) {
-      throw new RuntimeException("Cannot find a suitable cmap table");
-    }
-  */
     // If this font includes arabic script, we want to specify
     // substitutions for initial, medial, terminal & isolated
     // cases.
