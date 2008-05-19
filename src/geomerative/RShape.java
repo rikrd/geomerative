@@ -70,6 +70,49 @@ public class RShape extends RGeomElem
 
     setStyle(s);
   }
+
+  /**
+   * Use this method to create a new ring polygon. 
+   * @eexample createRing
+   * @param radiusBig float, the outter radius of the ring polygon
+   * @param radiusSmall float, the inner radius of the ring polygon
+   * @param detail int, the number of vertices on each contour of the ring
+   * @return RShape, the ring polygon newly created
+   */
+  static public RShape createRing(float x, float y, float radiusBig, float radiusSmall){
+    RShape ring = new RShape();
+    RShape outer = RShape.createCircle(x, y, radiusBig);
+    RShape inner = RShape.createCircle(x, y, -radiusSmall);
+    
+    ring.addSubshape(outer.subshapes[0]);
+    ring.addSubshape(inner.subshapes[0]);
+
+    return ring;
+  }
+
+  /**
+   * Use this method to create a new starform polygon. 
+   * @eexample createStar
+   * @param radiusBig float, the outter radius of the star polygon
+   * @param radiusSmall float, the inner radius of the star polygon
+   * @param spikes int, the amount of spikes on the star polygon
+   * @return RShape, the starform polygon newly created
+   */
+  static public RShape createStar(float x, float y, float radiusBig, float radiusSmall, int spikes){
+    RShape star = new RShape();
+
+    star.addMoveTo( x - radiusBig, y );
+    star.addLineTo( x - (float)(radiusSmall*Math.cos(Math.PI/spikes)), y - (float)(radiusSmall*Math.sin(Math.PI/spikes)));
+
+    for(int i=2;i<2*spikes;i+=2){
+      star.addLineTo( x - (float)(radiusBig*Math.cos(Math.PI*i/spikes)), y - (float)(radiusBig*Math.sin(Math.PI*i/spikes)));
+      star.addLineTo( x - (float)(radiusSmall*Math.cos(Math.PI*(i+1)/spikes)), y - (float)(radiusSmall*Math.sin(Math.PI*(i+1)/spikes)));
+    }
+
+    star.addClose();
+
+    return star;
+  }
   
   /**
    * Use this method to create a new circle shape. 
@@ -112,7 +155,7 @@ public class RShape extends RGeomElem
     circle.addClose();
     return circle;
   }
-  
+
   static public RShape createCircle(float x, float y, float r){
     return createEllipse(x, y, r, r);
   }
@@ -217,6 +260,10 @@ public class RShape extends RGeomElem
       this.append(new RSubshape(endx,endy));
     }
   }
+
+  public void addMoveTo(RPoint p){
+    addMoveTo(p.x, p.y);
+  }
   
   /**
    * Use this method to add a new lineTo command to the current subshape.  This will add a line from the last point added to the point passed as argument.
@@ -234,6 +281,10 @@ public class RShape extends RGeomElem
       this.append(new RSubshape());
     }
     this.subshapes[currentSubshape].addLineTo(endx, endy);
+  }
+
+  public void addLineTo(RPoint p){
+    addLineTo(p.x, p.y);
   }
   
   /**
@@ -254,6 +305,10 @@ public class RShape extends RGeomElem
       this.append(new RSubshape());
     }
     this.subshapes[currentSubshape].addQuadTo(cp1x,cp1y,endx,endy);
+  }
+
+  public void addQuadTo(RPoint p1, RPoint p2){
+    addQuadTo(p1.x, p1.y, p2.x, p2.y);
   }
   
   /**
@@ -276,6 +331,10 @@ public class RShape extends RGeomElem
       this.append(new RSubshape());
     }
     this.subshapes[currentSubshape].addBezierTo(cp1x,cp1y,cp2x,cp2y,endx,endy);
+  }
+
+  public void addBezierTo(RPoint p1, RPoint p2, RPoint p3){
+    addBezierTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
   }
   
   public void addClose(){
@@ -323,6 +382,59 @@ public class RShape extends RGeomElem
   public RShape toShape(){
     return this;
   }
+
+  /**
+   * Use this method to get the intersection of the given polygon with the polygon passed as atribute.
+   * @eexample intersection
+   * @param p RShape, the polygon with which to perform the intersection
+   * @return RShape, the intersection of the two polygons
+   * @related union ( )
+   * @related xor ( )
+   * @related diff ( )
+   */
+  public RShape intersection( RShape p ){
+    return RClip.intersection( p.toPolygon(), this.toPolygon() ).toShape();
+  }
+  
+  /**
+   * Use this method to get the union of the given polygon with the polygon passed as atribute.
+   * @eexample union
+   * @param p RShape, the polygon with which to perform the union
+   * @return RShape, the union of the two polygons
+   * @related intersection ( )
+   * @related xor ( )
+   * @related diff ( )
+   */
+  public RShape union( RShape p ){
+    return RClip.union( p.toPolygon(), this.toPolygon() ).toShape();
+  }
+  
+  /**
+   * Use this method to get the xor of the given polygon with the polygon passed as atribute.
+   * @eexample xor
+   * @param p RShape, the polygon with which to perform the xor
+   * @return RShape, the xor of the two polygons
+   * @related union ( )
+   * @related intersection ( )
+   * @related diff ( )
+   */
+  public RShape xor( RShape p ){
+    return RClip.xor( p.toPolygon(), this.toPolygon() ).toShape();
+  }
+  
+  /**
+   * Use this method to get the difference of the given polygon with the polygon passed as atribute.
+   * @eexample diff
+   * @param p RShape, the polygon with which to perform the difference
+   * @return RShape, the difference of the two polygons
+   * @related union ( )
+   * @related xor ( )
+   * @related intersection ( )
+   */	
+  public RShape diff( RShape p ){
+    return RClip.diff( this.toPolygon(), p.toPolygon() ).toShape();
+  }
+
   
   /**
    * Use this method to get the bounding box of the shape. 

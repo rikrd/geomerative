@@ -442,7 +442,7 @@ public class RSubshape extends RGeomElem
     for(int i=0;i<points.length;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
     
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);
@@ -464,7 +464,7 @@ public class RSubshape extends RGeomElem
     for(int i=0;i<points.length;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
     
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);

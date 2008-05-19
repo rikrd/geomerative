@@ -349,8 +349,30 @@ public class RPolygon extends RGeomElem
   /**
    * @invisible
    */
-  public RShape toShape() throws RuntimeException{
-    throw new RuntimeException("Transforming a Polygon to a Shape is not yet implemented.");
+  public RShape toShape(){
+    int numContours = countContours();
+    
+    RShape result = new RShape();
+    for(int i=0;i<numContours;i++){
+      RPoint[] newpoints = this.contours[i].getPoints();
+      
+      if(newpoints != null){
+        result.addMoveTo(newpoints[0]);
+
+        for(int j = 1; j < newpoints.length; j++){
+          result.addLineTo(newpoints[j]);
+        }
+
+        if(contours[i].closed){
+          result.addClose();
+        }
+        
+        result.subshapes[i].setStyle(contours[i]);
+      }
+    }
+    
+    result.setStyle(this);
+    return result;
   }
   
   /**

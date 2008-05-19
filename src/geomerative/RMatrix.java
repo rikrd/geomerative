@@ -81,19 +81,19 @@ public class RMatrix
   }
   
   public RMatrix(String transformationString){
-    String[] transfTokens = RGeomerative.parent().splitTokens(transformationString, ")");
+    String[] transfTokens = RGeomerative.parent.splitTokens(transformationString, ")");
     
     // Loop through all transformations
     for(int i=0; i<transfTokens.length; i++){
       // Check the transformation and the parameters
-      String[] transf = RGeomerative.parent().splitTokens(transfTokens[i], "(");
-      String[] params = RGeomerative.parent().splitTokens(transf[1], ", ");
+      String[] transf = RGeomerative.parent.splitTokens(transfTokens[i], "(");
+      String[] params = RGeomerative.parent.splitTokens(transf[1], ", ");
       float[] fparams = new float[params.length];
       for(int j=0; j<params.length; j++){
-        fparams[j] = RGeomerative.parent().parseFloat(params[j]);
+        fparams[j] = RGeomerative.parent.parseFloat(params[j]);
       }
       
-      transf[0] = RGeomerative.parent().trim(transf[0]);
+      transf[0] = RGeomerative.parent.trim(transf[0]);
       
       if(transf[0].equals("translate")){
         if(params.length == 1){
@@ -105,10 +105,10 @@ public class RMatrix
         }
       }else if(transf[0].equals("rotate")){
         if(params.length == 1){
-          this.rotate(RGeomerative.parent().radians(fparams[0]));
+          this.rotate(RGeomerative.parent.radians(fparams[0]));
           
         }else if(params.length == 3){
-          this.rotate(RGeomerative.parent().radians(fparams[0]), fparams[1], fparams[2]);
+          this.rotate(RGeomerative.parent.radians(fparams[0]), fparams[1], fparams[2]);
           
         }
         
@@ -121,10 +121,10 @@ public class RMatrix
         }
         
       }else if(transf[0].equals("skewX")){
-        this.skewX(RGeomerative.parent().radians(fparams[0]));
+        this.skewX(RGeomerative.parent.radians(fparams[0]));
         
       }else if(transf[0].equals("skewY")){
-        this.skewY(RGeomerative.parent().radians(fparams[0]));
+        this.skewY(RGeomerative.parent.radians(fparams[0]));
         
       }else if(transf[0].equals("matrix")){
         this.apply(fparams[0], fparams[2], fparams[4], fparams[1], fparams[3], fparams[5]);
