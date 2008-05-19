@@ -92,11 +92,11 @@ public class RFont{
     // Try to find the font as font path
     /*
       if (!file.exists()) {
-      fontPathAlt = RGeomerative.parent.dataPath(fontPath);
+      fontPathAlt = RGeomerative.parent().dataPath(fontPath);
       file = new File(fontPathAlt);
       // Try to find the font in the data folder
       if(!file.exists()){
-      fontPathAlt = RGeomerative.parent.sketchPath(fontPath);
+      fontPathAlt = RGeomerative.parent().sketchPath(fontPath);
       file = new File(fontPathAlt);
       // Try to find the font in the applet folder
       if(!file.exists()){
@@ -105,10 +105,10 @@ public class RFont{
       }
       }
     */
-    //byte[] bs = RGeomerative.parent.loadBytes(fontPath);
-    //String fontPathAlt = RGeomerative.parent.dataPath(fontPath);
-    //RGeomerative.parent.println(fontPathAlt);
-    f = Font.create(RGeomerative.parent.loadBytes(fontPath));
+    //byte[] bs = RGeomerative.parent().loadBytes(fontPath);
+    //String fontPathAlt = RGeomerative.parent().dataPath(fontPath);
+    //RGeomerative.parent().println(fontPathAlt);
+    f = Font.create(RGeomerative.parent().loadBytes(fontPath));
     setSize(size);
     setAlign(align);
   }

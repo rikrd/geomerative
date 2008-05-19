@@ -536,7 +536,7 @@ public class RGroup extends RGeomElem
           result[0].addElement(new RGroup(splittedGroups[0]));
           result[1].addElement(new RGroup(splittedGroups[1]));
         }else{
-          RGeomerative.parent.println("Group problem");
+          RGeomerative.parent().println("Group problem");
         }
         break;
         
@@ -546,7 +546,7 @@ public class RGroup extends RGeomElem
           result[0].addElement(new RShape(splittedShapes[0]));
           result[1].addElement(new RShape(splittedShapes[1]));
         }else{
-          RGeomerative.parent.println("Shape problem");
+          RGeomerative.parent().println("Shape problem");
         }
         break;
       }
