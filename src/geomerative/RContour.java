@@ -94,7 +94,7 @@ public class RContour extends RGeomElem
     for(int i=0;i<numPoints;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
+    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
     if(beforeFill)
       g.fill(g.fillColor);
   }
@@ -107,7 +107,7 @@ public class RContour extends RGeomElem
     for(int i=0;i<numPoints;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
+    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
     if(beforeFill)
       g.fill(g.g.fillColor);
   }

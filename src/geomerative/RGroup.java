@@ -535,8 +535,6 @@ public class RGroup extends RGeomElem
         if( splittedGroups != null ){
           result[0].addElement(new RGroup(splittedGroups[0]));
           result[1].addElement(new RGroup(splittedGroups[1]));
-        }else{
-          RGeomerative.parent.println("Group problem");
         }
         break;
         
@@ -545,8 +543,6 @@ public class RGroup extends RGeomElem
         if( splittedShapes != null ){
           result[0].addElement(new RShape(splittedShapes[0]));
           result[1].addElement(new RShape(splittedShapes[1]));
-        }else{
-          RGeomerative.parent.println("Shape problem");
         }
         break;
       }

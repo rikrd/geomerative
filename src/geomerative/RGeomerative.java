@@ -24,11 +24,25 @@ import processing.core.*;
  * RGeomerative is a static class containing all the states, modes, etc..
  */
 public class RGeomerative{
-  static PApplet parent;
+  private static PApplet parent;
   static boolean ignoreStyles = false;
+
+  public static class LibraryNotInitializedException extends NullPointerException{
+    LibraryNotInitializedException(){
+      super("Must call Geomerative.init(this); before using this library.");
+    }
+  }
 
   public static void init(PApplet _parent){
     parent = _parent;
+  }
+
+  protected static PApplet parent(){
+    if(parent == null){
+      throw new LibraryNotInitializedException();
+    }
+    
+    return parent;
   }
 
   public static void ignoreStyles(){

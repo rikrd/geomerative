@@ -876,7 +876,7 @@ public class RShape extends RGeomElem
           }
 
         }
-        g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
+        g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
 
         if(!RGeomerative.ignoreStyles){
           restoreContext(g);
@@ -922,7 +922,7 @@ public class RShape extends RGeomElem
           }
 
         }
-        g.endShape(closed ? RGeomerative.parent.CLOSE : RGeomerative.parent.OPEN);
+        g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
 
         if(!RGeomerative.ignoreStyles){
           restoreContext(g);
