@@ -71,6 +71,11 @@ public class RFont{
   final static int DEFAULT_RESOLUTION = 72;
   final static int DEFAULT_ALIGN = RFont.LEFT;
   
+  /**
+   * Should we try to use ASCII, rather than Unicode?
+   */
+  public boolean forceAscii = false;
+  
   
   /**
    * The constructor of the RFont object.  Use this in order to create a Font with which we will be able to draw and obtain outlines of text.
@@ -85,30 +90,11 @@ public class RFont{
    * @related toMesh ( )
    * @related draw ( )
    */
-  public RFont(String fontPath, int size, int align) throws RuntimeException{
-    //String fontPathAlt = fontPath;
-    //File file = new File(fontPath);
-    
+  public RFont(String fontPath, int size, int align) throws RuntimeException{   
     // Try to find the font as font path
-    /*
-      if (!file.exists()) {
-      fontPathAlt = RGeomerative.parent.dataPath(fontPath);
-      file = new File(fontPathAlt);
-      // Try to find the font in the data folder
-      if(!file.exists()){
-      fontPathAlt = RGeomerative.parent.sketchPath(fontPath);
-      file = new File(fontPathAlt);
-      // Try to find the font in the applet folder
-      if(!file.exists()){
-      throw new RuntimeException("Cannot find the font file: "+fontPath+". Check that the filename is correct and that the file exists in the data or in the sketch folders.");
-      }
-      }
-      }
-    */
-    //byte[] bs = RGeomerative.parent.loadBytes(fontPath);
-    //String fontPathAlt = RGeomerative.parent.dataPath(fontPath);
-    //RGeomerative.parent.println(fontPathAlt);
-    f = Font.create(RGeomerative.parent.loadBytes(fontPath));
+    byte[] bs = RGeomerative.parent.loadBytes(fontPath);
+    f = Font.create(bs);
+    
     setSize(size);
     setAlign(align);
   }
@@ -120,26 +106,7 @@ public class RFont{
   public RFont(String fontPath) throws RuntimeException{
     this(fontPath, DEFAULT_SIZE, DEFAULT_ALIGN);
   }
-  /*
-    public RFont(String fontPath, int size, int align) throws RuntimeException{
-    File file = new File(fontPath);
-    if (!file.exists()) {
-    throw new RuntimeException("Cannot find the font file: "+fontPath+". Check that the filename is correct and that the file exists.");
-    }
-    
-    f = Font.create(fontPath);
-    setSize(size);
-    setAlign(align);
-    }
-    
-    public RFont(String fontPath, int size) throws RuntimeException{
-    this(fontPath, size, DEFAULT_ALIGN);
-    }
-    
-    public RFont(String fontPath) throws RuntimeException{
-    this(fontPath, DEFAULT_SIZE, DEFAULT_ALIGN);
-    }
-  */
+  
   /**
    * Use this method to reset the point size of the font.
    * @eexample setSize
@@ -201,9 +168,44 @@ public class RFont{
    * @related toShape ( )
    * @related draw ( )
    */
-  public RPolygon toPolygon(char character){
+  public RPolygon toPolygon(char character) {
     return toShape(character).toPolygon();
   }
+  
+  
+  private CmapFormat getCmapFormat() {
+    if (forceAscii) {
+      // We've been asked to use the ASCII/Macintosh cmap format
+      return f.getCmapTable().getCmapFormat(
+                                            Table.platformMacintosh,
+                                            Table.encodingRoman );
+    } else {
+      short[] platforms = new short[] {
+        Table.platformMicrosoft,
+        Table.platformAppleUnicode,
+        Table.platformMacintosh
+      };
+      short[] encodings = new short[] {
+        Table.encodingUGL,
+        Table.encodingKorean,
+        Table.encodingHebrew,
+        Table.encodingUndefined
+      };
+      
+      CmapFormat cmapFmt;
+      for(int i = 0; i < encodings.length; i++) {
+        for(int j = 0; j < platforms.length; j++) {
+          
+          cmapFmt = f.getCmapTable().getCmapFormat(platforms[j], encodings[i]);
+          if (cmapFmt != null) {
+            return cmapFmt;
+          }                    
+                }
+      }
+      return null;
+    }
+  }
+
   
   /**
    * Use this method to get the outlines of a string in the form of an RGroup.  All the elements of the group will be RShapes.
@@ -213,6 +215,19 @@ public class RFont{
    * @related toShape ( )
    * @related draw ( )
    */
+  public RGroup toGroup(String text)  throws RuntimeException{
+    RGroup result = new RGroup();
+    
+    // Decide upon a cmap table to use for our character to glyph look-up
+    CmapFormat cmapFmt = getCmapFormat();
+    
+    if (cmapFmt == null) {
+      throw new RuntimeException("Cannot find a suitable cmap table");
+    }
+    
+    
+    
+  /*
   public RGroup toGroup(String text)  throws RuntimeException{
     RGroup result = new RGroup();
     
@@ -260,7 +275,7 @@ public class RFont{
     if (cmapFmt == null) {
       throw new RuntimeException("Cannot find a suitable cmap table");
     }
-    
+  */
     // If this font includes arabic script, we want to specify
     // substitutions for initial, medial, terminal & isolated
     // cases.
