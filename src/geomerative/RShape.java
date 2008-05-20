@@ -644,7 +644,7 @@ public class RShape extends RGeomElem
   // --- Private Methods ---
   // ----------------------
 
-  private void calculateCurveLengths(){
+  protected void calculateCurveLengths(){
     lenCurves = new float[countSubshapes()];
     lenCurve = 0F;
     for(int i=0;i<countSubshapes();i++){

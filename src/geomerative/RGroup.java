@@ -551,11 +551,11 @@ public class RGroup extends RGeomElem
     return result;
   }
 
-  private void calculateCurveLengths(){
+  protected void calculateCurveLengths(){
     lenCurves = new float[countElements()];
     lenCurve = 0F;
     for(int i=0;i<countElements();i++){
-      lenCurves[i] = elements[i].getCurveLength();
+      lenCurves[i] = elements[i].getCurveLength();  
       lenCurve += lenCurves[i];
     }
   }

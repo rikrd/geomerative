@@ -673,26 +673,7 @@ public class RCommand extends RGeomElem
    * @invisible
    * */
   public float getCurveLength(){
-    float arclength = 0F;
-    
-    switch(commandType){
-    case LINETO:
-      float dx = endPoint.x - startPoint.x;
-      float dy = endPoint.y - startPoint.y;
-      float dx2 = dx*dx;
-      float dy2 = dy*dy;
-      return (float)Math.sqrt(dx2 + dy2);
-      
-    case QUADBEZIERTO:
-      /* calculate the curve point at parameter value t */
-      return quadBezierLength();
-      
-    case CUBICBEZIERTO:
-      /* calculate the curve point at parameter value t */
-      return cubicBezierLength();
-    }
-    
-    return -1F;
+    return getCurveLength(1F);
   }
   
   

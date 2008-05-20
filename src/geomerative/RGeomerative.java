@@ -23,7 +23,8 @@ import processing.core.*;
 /**
  * RGeomerative is a static class containing all the states, modes, etc..
  */
-public class RGeomerative{
+public class RGeomerative implements PConstants{
+  private static boolean initialized = false;
   private static PApplet parent;
   static boolean ignoreStyles = false;
 
@@ -35,6 +36,7 @@ public class RGeomerative{
 
   public static void init(PApplet _parent){
     parent = _parent;
+    initialized = true;
   }
 
   protected static PApplet parent(){

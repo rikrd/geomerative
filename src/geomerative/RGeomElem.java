@@ -110,10 +110,10 @@ public abstract class RGeomElem
   public float strokeWeight = 1F;
 
   public boolean strokeCapDef = false;
-  public int strokeCap = RGeomerative.parent().PROJECT;
+  public int strokeCap = RGeomerative.PROJECT;
 
   public boolean strokeJoinDef = false;
-  public int strokeJoin = RGeomerative.parent().MITER;
+  public int strokeJoin = RGeomerative.MITER;
   
   private boolean oldFill = false;
   private int oldFillColor = 0;
@@ -121,9 +121,9 @@ public abstract class RGeomElem
   private boolean oldStroke = false;
   private int oldStrokeColor = 0;
   private float oldStrokeWeight = 1F;
-  private int oldStrokeCap = RGeomerative.parent().PROJECT;
-  private int oldStrokeJoin = RGeomerative.parent().MITER;
-
+  private int oldStrokeCap = RGeomerative.PROJECT;
+  private int oldStrokeJoin = RGeomerative.MITER;
+  
   protected void saveContext(PGraphics g){
     oldFill = g.fill;
     oldFillColor = g.fillColor;
@@ -442,13 +442,13 @@ public abstract class RGeomElem
     strokeCapDef = true;
 
     if(str.equals("butt")){
-      strokeCap = RGeomerative.parent().PROJECT;
+      strokeCap = RGeomerative.PROJECT;
 
     }else if(str.equals("round")){
-      strokeCap = RGeomerative.parent().ROUND;
+      strokeCap = RGeomerative.ROUND;
 
     }else if(str.equals("square")){
-      strokeCap = RGeomerative.parent().SQUARE;
+      strokeCap = RGeomerative.SQUARE;
 
     }
   }
@@ -458,13 +458,13 @@ public abstract class RGeomElem
     strokeJoinDef = true;
 
     if(str.equals("miter")){
-      strokeJoin = RGeomerative.parent().MITER;
+      strokeJoin = RGeomerative.MITER;
 
     }else if(str.equals("round")){
-      strokeJoin = RGeomerative.parent().ROUND;
+      strokeJoin = RGeomerative.ROUND;
 
     }else if(str.equals("bevel")){
-      strokeJoin = RGeomerative.parent().BEVEL;
+      strokeJoin = RGeomerative.BEVEL;
 
     }
   }
@@ -523,7 +523,7 @@ public abstract class RGeomElem
     this.id = str;
   }
 
-  private void calculateCurveLengths(){
+  protected void calculateCurveLengths(){
     RGeomerative.parent().println("Feature not yet implemented for this class.");
   }
 
@@ -549,7 +549,7 @@ public abstract class RGeomElem
   public float getCurveLength(){    
     /* If the cache with the commands lengths is empty, we fill it up */
     if(lenCurve == -1F){
-      getCurveLengths();
+      calculateCurveLengths();
     }
     
     return lenCurve;
