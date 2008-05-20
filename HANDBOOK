@@ -1,0 +1,78 @@
+By now Geomerative will maintain its focus on trying to create an easy yet powerful API to generative geometry:
+
+* accessing points
+* accessing measures (centroids, area, inside points, holes,...)
+* transforming
+* performing geometric operations on shapes.
+
+
+
+1- Allways initialize the library before any use of it:
+
+void setup(){
+  size(300, 400);
+  RGeomerative.init(this);
+
+  // the rest
+}
+
+
+
+
+
+2- All classes with arrays such as elements[] in RGroup and subshapes[] in RShape) have a helper method starting with "count" that allow not to check for the validity of the array:
+
+for ( int i = 0 ; i < myGroup.countElements() ; i++ ) {
+  // do something with myShape.elements[i]
+}
+
+for ( int i = 0 ; i < myShape.countSubshapes() ; i++ ) {
+  // do something with myShape.subshapes[i]
+}
+
+
+
+
+
+
+3- All shapes geometric classes accept transformations methods like:
+
+myGroup.scale(1.2);
+
+myShape.rotate(PI_HALF);
+
+mySubshape.translate(20, 30);
+
+
+
+
+
+4- You may access the control points of a shape by using getPoints() and points on the curve by using getCurvePoints().  The arrays returned are the actual points so if the points get modified the shapes are modified aswell.
+
+RPoint[] myControlPoints = myShape.getPoints();
+RPoint[] myCurvePoints = myGroup.getCurvePoints();
+
+
+TODO:
+5- Sometimes it's useful to get points of the different contours separately, in that case we would use getPaths() and getCurvePaths().  These methods are similar to the others but return an array of arrays of RPoint.
+
+RPoint[][] myControlPaths = myShape.getPaths();
+RPoint[][] myCurvePaths = myShape.getCurvePaths();
+
+6- In some even more rare cases we might want to access the tangets of the curves.  In that case we use.
+
+RPoint[] myCurveTangents = myShape.getCurveTangents();
+RPoint[] myCurveTangents = myShape.getCurveTangents();
+
+---------------------------------------
+should be:
+
+getHandles(); or getControls();
+getPoints();
+getTangents();
+
+getHandlePaths(); or getControlPaths();
+getPointPaths();
+getTangentPaths();
+----------------------------------------
+
