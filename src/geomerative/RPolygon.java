@@ -245,7 +245,7 @@ public class RPolygon extends RGeomElem
    * @eexample addContour
    * @related addPoint ( )
    */
-  public void setCurrent(int indContour){
+  public void setContour(int indContour){
     this.currentContour = indContour;
   }
   
@@ -373,49 +373,6 @@ public class RPolygon extends RGeomElem
     
     result.setStyle(this);
     return result;
-  }
-  
-  /**
-   * Use this method to get the bounding box of the polygon. 
-   * @eexample getBounds
-   * @return RContour, the bounding box of the polygon in the form of a fourpoint contour
-   * @related getCenter ( )
-   */
-  public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
-    
-    for(int j=0;j<this.countContours();j++){
-      for( int i = 0 ; i < this.contours[j].countPoints() ; i++ )
-        {
-          float x = this.contours[j].points[i].x;
-          float y = this.contours[j].points[i].y;
-          if( x < xmin ) xmin = x;
-          if( x > xmax ) xmax = x;
-          if( y < ymin ) ymin = y;
-          if( y > ymax ) ymax = y;
-        }
-    }
-    
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
-    return c;
-  }
-  
-  /**
-   * Use this method to get the center point of the polygon. 
-   * @eexample RPolygon_getCenter
-   * @return RPoint, the center point of the polygon
-   * @related getBounds ( )
-   */
-  public RPoint getCenter(){
-    RContour c = getBounds();
-    return new RPoint((c.points[2].x + c.points[0].x)/2,(c.points[2].y + c.points[0].y)/2);
   }
   
   /**
@@ -636,50 +593,6 @@ public class RPolygon extends RGeomElem
 
   
   /**
-   * Use this method to know if the polygon is inside a graphics object. This might be useful if we want to delete objects that go offscreen.
-   * @eexample RPolygon_isIn
-   * @usage Geometry
-   * @param PGraphics g, the graphics object
-   * @return boolean, whether the polygon is in or not the graphics object
-   */
-  public boolean isIn(PGraphics g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
-    
-    float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
-    float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
-    float xmin = Math.min(Math.min(x0,x1),Math.min(x2,x3));
-    float ymin = Math.min(Math.min(y0,y1),Math.min(y2,y3));
-    
-    return !((xmax < 0 || xmin > g.width) && (ymax < 0 || ymin > g.height));
-  }
-  
-  public boolean isIn(PApplet g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
-    
-    float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
-    float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
-    float xmin = Math.min(Math.min(x0,x1),Math.min(x2,x3));
-    float ymin = Math.min(Math.min(y0,y1),Math.min(y2,y3));
-    
-    return !((xmax < 0 || xmin > g.width) && (ymax < 0 || ymin > g.height));
-  }
-  /**
    * Use this method to get the intersection of the given polygon with the polygon passed as atribute.
    * @eexample intersection
    * @param p RPolygon, the polygon with which to perform the intersection
@@ -767,14 +680,14 @@ public class RPolygon extends RGeomElem
   /**
    * Remove all of the points.  Creates an empty polygon.
    */
-  void clear(){
+  protected void clear(){
     this.contours = null;
   }
   
   /**
    * Add a point to the first inner polygon.
    */
-  void add( float x, float y ){
+  protected void add( float x, float y ){
     if (contours == null) {
       this.append(new RContour());
     }
@@ -784,7 +697,7 @@ public class RPolygon extends RGeomElem
   /**
    * Add a point to the first inner polygon.
    */
-  void add( RPoint p ){
+  protected void add( RPoint p ){
     if (contours == null) {
       this.append(new RContour());
     }
@@ -795,7 +708,7 @@ public class RPolygon extends RGeomElem
    * Add an inner polygon to this polygon - assumes that adding polygon does not
    * have any inner polygons.
    */
-  void add( RPolygon p ){
+  protected void add( RPolygon p ){
     /*if (this.contours.length > 0 && this.isHole){
       throw new IllegalStateException("Cannot add polys to something designated as a hole.");
       }*/
@@ -810,7 +723,7 @@ public class RPolygon extends RGeomElem
    * Add an inner polygon to this polygon - assumes that adding polygon does not
    * have any inner polygons.
    */
-  void add( RContour c ){
+  protected void add( RContour c ){
     /*if (this.contours.length > 0 && this.isHole){
       throw new IllegalStateException("Cannot add polys to something designated as a hole.");
       }*/
@@ -820,14 +733,14 @@ public class RPolygon extends RGeomElem
   /**
    * Return true if the polygon is empty
    */
-  boolean isEmpty(){
+  protected boolean isEmpty(){
     return (this.contours == null);
   }
   
   /**
    * Returns the bounding box of the polygon. 
    */
-  RRectangle getBBox(){
+  protected RRectangle getBBox(){
     if( this.contours == null )
       {
         return new RRectangle();
@@ -861,14 +774,14 @@ public class RPolygon extends RGeomElem
   /**
    * Returns the polygon at this index.
    */
-  RPolygon getInnerPoly( int polyIndex ){
+  protected RPolygon getInnerPoly( int polyIndex ){
     return new RPolygon(this.contours[polyIndex]);
   }
   
   /**
    * Returns the number of inner polygons - inner polygons are assumed to return one here.
    */
-  int getNumInnerPoly(){
+  protected int getNumInnerPoly(){
     if (this.contours == null){
       return 0;
     }
@@ -878,7 +791,7 @@ public class RPolygon extends RGeomElem
   /**
    * Return the number points of the first inner polygon
    */
-  int getNumPoints(){
+  protected int getNumPoints(){
     if (this.contours == null){
       return 0;
     }
@@ -891,7 +804,7 @@ public class RPolygon extends RGeomElem
   /**
    * Return the X value of the point at the index in the first inner polygon
    */
-  float getX( int index ){
+  protected float getX( int index ){
     if (this.contours == null){
       return 0;
     }
@@ -901,7 +814,7 @@ public class RPolygon extends RGeomElem
   /**
    * Return the Y value of the point at the index in the first inner polygon
    */
-  float getY( int index ){
+  protected float getY( int index ){
     if (this.contours == null){
       return 0;
     }
@@ -914,7 +827,7 @@ public class RPolygon extends RGeomElem
    *
    * @throws IllegalStateException if called on a complex polygon.
    */
-  boolean isHole(){
+  public boolean isHole(){
     if( this.contours == null || this.contours.length > 1 )
       {
         throw new IllegalStateException( "Cannot call on a poly made up of more than one poly." );
@@ -927,7 +840,7 @@ public class RPolygon extends RGeomElem
    *
    * @throws IllegalStateException if called on a complex polygon.
    */
-  void setIsHole( boolean isHole ){
+  protected void setIsHole( boolean isHole ){
     if( this.contours==null || this.contours.length > 1 )
       {
         throw new IllegalStateException( "Cannot call on a poly made up of more than one poly." );
@@ -939,7 +852,7 @@ public class RPolygon extends RGeomElem
    * Return true if the given inner polygon is contributing to the set operation.
    * This method should NOT be used outside the Clip algorithm.
    */
-  boolean isContributing( int polyIndex ){
+  protected boolean isContributing( int polyIndex ){
     return this.contours[polyIndex].isContributing;
   }
   
@@ -947,7 +860,7 @@ public class RPolygon extends RGeomElem
    * Set whether or not this inner polygon is constributing to the set operation.
    * This method should NOT be used outside the Clip algorithm.
    */
-  void setContributing( int polyIndex, boolean contributes ){
+  protected void setContributing( int polyIndex, boolean contributes ){
     if( this.contours.length != 1 )
       {
         throw new IllegalStateException( "Only applies to polys of size 1" );
@@ -955,7 +868,7 @@ public class RPolygon extends RGeomElem
     this.contours[polyIndex].isContributing = contributes;
   }
   
-  void append(RContour nextcontour)
+  private void append(RContour nextcontour)
   {
     RContour[] newcontours;
     if(contours==null){

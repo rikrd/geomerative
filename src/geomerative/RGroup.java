@@ -212,20 +212,6 @@ public class RGroup extends RGeomElem
       restoreContext(a);
     }
   }
-
-  /**
-   * Use this method to transform the group.
-   * @eexample RGroup_transform
-   * @param m RMatrix, the affine transformation to apply to the group
-   * @related draw ( )
-   */
-  /*
-    public void transform(RMatrix m){
-    for(int i=0; i<countElements(); i++){
-    elements[i].transform(m);
-    }
-    }
-  */
   
   /**
    * Use this method to add a new element.
@@ -360,47 +346,6 @@ public class RGroup extends RGeomElem
     }
     result.setStyle(this);
     return result;
-  }
-  
-  /**
-   * Use this method to get the bounding box of the group. 
-   * @eexample getBounds
-   * @return RContour, the bounding box of the group in the form of a fourpoint contour
-   * @related getCenter ( )
-   */
-  public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
-    for(int j=0;j<this.countElements();j++){
-      RContour bbox = this.elements[j].getBounds();
-      float tempxmin = bbox.points[0].x;
-      float tempxmax = bbox.points[2].x;
-      float tempymin = bbox.points[0].y;
-      float tempymax = bbox.points[2].y;
-      if( tempxmin < xmin ) xmin = tempxmin;
-      if( tempxmax > xmax ) xmax = tempxmax;
-      if( tempymin < ymin ) ymin = tempymin;
-      if( tempymax > ymax ) ymax = tempymax;
-    }
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
-    return c;
-  }
-  
-  /**
-   * Use this method to get the center point of the group.
-   * @eexample RGroup_getCenter
-   * @return RPoint, the center point of the group
-   * @related getBounds ( )
-   */
-  public RPoint getCenter(){
-    RContour c = getBounds();
-    return new RPoint((c.points[2].x + c.points[0].x)/2,(c.points[2].y + c.points[0].y)/2);
   }
   
   /**
@@ -606,7 +551,7 @@ public class RGroup extends RGeomElem
     return result;
   }
 
-  protected void calculateCurveLengths(){
+  private void calculateCurveLengths(){
     lenCurves = new float[countElements()];
     lenCurve = 0F;
     for(int i=0;i<countElements();i++){
@@ -622,7 +567,7 @@ public class RGroup extends RGeomElem
    * @param RSubshape sshp, the subshape to which to adapt
    * @return RGroup, the adapted group
    */
-  RGroup adaptTo(RSubshape sshp, float wght, float lngthOffset) throws RuntimeException{
+  public RGroup adaptTo(RSubshape sshp, float wght, float lngthOffset) throws RuntimeException{
     RGroup result = new RGroup(this);
     RContour c = result.getBounds();
     float xmin = c.points[0].x;
@@ -730,7 +675,7 @@ public class RGroup extends RGeomElem
     return result;
   }
   
-  void append(RGeomElem elem){
+  private void append(RGeomElem elem){
     RGeomElem[] newelements;
     if(elements==null){
       newelements = new RGeomElem[1];
@@ -743,7 +688,7 @@ public class RGroup extends RGeomElem
     this.elements=newelements;
   }
   
-  void extract(int i) throws RuntimeException{
+  private void extract(int i) throws RuntimeException{
     RGeomElem[] newelements;
     if(elements==null){
       throw new RuntimeException("The group is empty. No elements to remove.");
