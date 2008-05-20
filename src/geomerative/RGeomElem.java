@@ -523,7 +523,7 @@ public abstract class RGeomElem
     this.id = str;
   }
 
-  protected void calculateCurveLengths(){
+  private void calculateCurveLengths(){
     RGeomerative.parent().println("Feature not yet implemented for this class.");
   }
 
@@ -614,15 +614,31 @@ public abstract class RGeomElem
     float ymin =  Float.MAX_VALUE ;
     float xmax = -Float.MAX_VALUE ;
     float ymax = -Float.MAX_VALUE ;
+
     RPoint[] points = getPoints();
     if(points!=null){
       for(int i=0;i<points.length;i++){
         float tempx = points[i].x;
         float tempy = points[i].y;
-        if( tempx < xmin ){xmin = tempx;}else if( tempx > xmax ){xmax = tempx;}
-        if( tempy < ymin ){ymin = tempy;}else if( tempy > ymax ){ymax = tempy;}
+        if( tempx < xmin )
+          {
+            xmin = tempx;
+          }
+        else if( tempx > xmax )
+          {
+            xmax = tempx;
+          }
+        if( tempy < ymin )
+          {
+          ymin = tempy;
+          }
+        else if( tempy > ymax )
+          {
+            ymax = tempy;
+          }
       }
     }
+
     RContour c = new RContour();
     c.addPoint(xmin,ymin);
     c.addPoint(xmin,ymax);
@@ -687,6 +703,52 @@ public abstract class RGeomElem
     areaAcc /= 2.0f;
     return areaAcc;
   }
+
+  /**
+   * Use this method to know if the shape is inside a graphics object. This might be useful if we want to delete objects that go offscreen.
+   * @eexample RShape_isIn
+   * @usage Geometry
+   * @param PGraphics g, the graphics object
+   * @return boolean, whether the shape is in or not the graphics object
+   */
+  public boolean isIn(PGraphics g){
+    RContour c = getBounds();
+    float x0 = g.screenX(c.points[0].x,c.points[0].y);
+    float y0 = g.screenY(c.points[0].x,c.points[0].y);
+    float x1 = g.screenX(c.points[1].x,c.points[1].y);
+    float y1 = g.screenY(c.points[1].x,c.points[1].y);
+    float x2 = g.screenX(c.points[2].x,c.points[2].y);
+    float y2 = g.screenY(c.points[2].x,c.points[2].y);
+    float x3 = g.screenX(c.points[3].x,c.points[3].y);
+    float y3 = g.screenY(c.points[3].x,c.points[3].y);
+    
+    float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
+    float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
+    float xmin = Math.min(Math.min(x0,x1),Math.min(x2,x3));
+    float ymin = Math.min(Math.min(y0,y1),Math.min(y2,y3));
+    
+    return !((xmax < 0 || xmin > g.width) && (ymax < 0 || ymin > g.height));
+  }
+  
+  public boolean isIn(PApplet g){
+    RContour c = getBounds();
+    float x0 = g.screenX(c.points[0].x,c.points[0].y);
+    float y0 = g.screenY(c.points[0].x,c.points[0].y);
+    float x1 = g.screenX(c.points[1].x,c.points[1].y);
+    float y1 = g.screenY(c.points[1].x,c.points[1].y);
+    float x2 = g.screenX(c.points[2].x,c.points[2].y);
+    float y2 = g.screenY(c.points[2].x,c.points[2].y);
+    float x3 = g.screenX(c.points[3].x,c.points[3].y);
+    float y3 = g.screenY(c.points[3].x,c.points[3].y);
+    
+    float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
+    float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
+    float xmin = Math.min(Math.min(x0,x1),Math.min(x2,x3));
+    float ymin = Math.min(Math.min(y0,y1),Math.min(y2,y3));
+    
+    return !((xmax < 0 || xmin > g.width) && (ymax < 0 || ymin > g.height));
+  }
+
 
   /**
    * Use this method to get the transformation matrix in order to fit and center the element on the canvas. Scaling and translation damping parameters are available, in order to create animations.

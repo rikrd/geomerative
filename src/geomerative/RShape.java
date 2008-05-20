@@ -42,7 +42,7 @@ public class RShape extends RGeomElem
    * @related addSubshape ( )
    */
   public RSubshape[] subshapes;
-  int currentSubshape = 0;
+  protected int currentSubshape = 0;
   
   // ----------------------
   // --- Public Methods ---
@@ -116,14 +116,14 @@ public class RShape extends RGeomElem
   
   /**
    * Use this method to create a new circle shape. 
-   * @eexample createRect
+   * @eexample createRectangle
    * @param x float, the x position of the rectangle
    * @param y float, the y position of the rectangle
    * @param w float, the width of the rectangle
    * @param h float, the height of the rectangle
    * @return RShape, the rectangular shape just created
    */
-  static public RShape createRect(float x, float y, float w, float h){
+  static public RShape createRectangle(float x, float y, float w, float h){
     RShape rect = new RShape();
     rect.addMoveTo(x, y);
     rect.addLineTo(x+w, y);
@@ -434,56 +434,7 @@ public class RShape extends RGeomElem
   public RShape diff( RShape p ){
     return RClip.diff( this.toPolygon(), p.toPolygon() ).toShape();
   }
-
-  
-  /**
-   * Use this method to get the bounding box of the shape. 
-   * @eexample getBounds
-   * @return RContour, the bounding box of the shape in the form of a fourpoint contour
-   * @related getCenter ( )
-   */
-  public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
     
-    for(int j=0;j<this.countSubshapes();j++){
-      for( int i = 0 ; i < this.subshapes[j].countCommands() ; i++ )
-        {
-          RPoint[] points = this.subshapes[j].commands[i].getPoints();
-          if(points!=null){
-            for( int k = 0 ; k < points.length ; k++ ){
-              float x = points[k].x;
-              float y = points[k].y;
-              if( x < xmin ) xmin = x;
-              if( x > xmax ) xmax = x;
-              if( y < ymin ) ymin = y;
-              if( y > ymax ) ymax = y;
-            }
-          }
-        }
-    }
-    
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
-    return c;
-  }
-  
-  /**
-   * Use this method to get the center point of the shape. 
-   * @eexample RShape_getCenter
-   * @return RPoint, the center point of the shape
-   * @related getBounds ( )
-   */
-  public RPoint getCenter(){
-    RContour c = getBounds();
-    return new RPoint((c.points[2].x + c.points[0].x)/2,(c.points[2].y + c.points[0].y)/2);
-  }
-  
   /**
    * Use this to return the start, control and end points of the shape.  It returns the points in the way of an array of RPoint.
    * @eexample RShape_getPoints
@@ -645,15 +596,6 @@ public class RShape extends RGeomElem
   public int getType(){
     return type;
   }
-
-  protected void calculateCurveLengths(){
-    lenCurves = new float[countSubshapes()];
-    lenCurve = 0F;
-    for(int i=0;i<countSubshapes();i++){
-      lenCurves[i] = subshapes[i].getCurveLength();
-      lenCurve += lenCurves[i];
-    }  
-  }
   
   public void print(){
     System.out.println("subshapes [count " + this.countSubshapes() + "]: ");
@@ -670,7 +612,71 @@ public class RShape extends RGeomElem
    * @eexample drawShape
    * @param g PGraphics, the graphics object on which to draw the shape
    */
-  public void drawUsingInternalTesselator(PGraphics g){
+  public void draw(PGraphics g){
+    try{
+      Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
+      if(declaringClass != g.getClass()){
+        // The backend does not implement breakShape
+        drawUsingInternalTesselator(g);
+      }else{
+        // The backend does implement breakShape
+        drawUsingBreakShape(g);        
+      }
+    }catch(NoSuchMethodException e){   
+    }
+  }
+
+  public void draw(PApplet g){
+    try{
+      Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
+      if(declaringClass != g.g.getClass()){
+        // The backend does not implement breakShape
+        drawUsingInternalTesselator(g);
+      }else{
+        // The backend does implement breakShape
+        drawUsingBreakShape(g);        
+      }
+    }catch(NoSuchMethodException e){   
+    }
+  }
+  
+  // ----------------------
+  // --- Private Methods ---
+  // ----------------------
+
+  private void calculateCurveLengths(){
+    lenCurves = new float[countSubshapes()];
+    lenCurve = 0F;
+    for(int i=0;i<countSubshapes();i++){
+      lenCurves[i] = subshapes[i].getCurveLength();
+      lenCurve += lenCurves[i];
+    }  
+  }
+  
+  /**
+   * Remove all of the subshapes.  Creates an empty shape.
+   */
+  private void clear(){
+    this.subshapes = null;
+  }
+  
+  private void append(RSubshape nextsubshape)
+  {
+    RSubshape[] newsubshapes;
+    if(subshapes==null){
+      newsubshapes = new RSubshape[1];
+      newsubshapes[0] = nextsubshape;
+      currentSubshape = 0;
+    }else{
+      newsubshapes = new RSubshape[this.subshapes.length+1];
+      System.arraycopy(this.subshapes,0,newsubshapes,0,this.subshapes.length);
+      newsubshapes[this.subshapes.length]=nextsubshape;
+      currentSubshape++;
+    }
+    this.subshapes=newsubshapes;
+  }
+
+  private void drawUsingInternalTesselator(PGraphics g){
     int numSubshapes = countSubshapes();
     
     if(numSubshapes!=0){
@@ -752,7 +758,7 @@ public class RShape extends RGeomElem
     }
   }
 
-  public void drawUsingInternalTesselator(PApplet p){
+  private void drawUsingInternalTesselator(PApplet p){
     int numSubshapes = countSubshapes();
     
     if(numSubshapes!=0){
@@ -839,7 +845,7 @@ public class RShape extends RGeomElem
     }
   }
   
-  public void drawUsingBreakShape(PGraphics g){
+  private void drawUsingBreakShape(PGraphics g){
     int numSubshapes = countSubshapes();
     if(numSubshapes!=0){
       if(isIn(g)){
@@ -885,7 +891,7 @@ public class RShape extends RGeomElem
     }
   }
   
-  public void drawUsingBreakShape(PApplet g){
+  private void drawUsingBreakShape(PApplet g){
     int numSubshapes = countSubshapes();
     if(numSubshapes!=0){
       if(isIn(g)){
@@ -930,156 +936,5 @@ public class RShape extends RGeomElem
       }
     }
   }
-  
 
-  public void draw(PGraphics g){
-    try{
-      Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
-      if(declaringClass != g.getClass()){
-        // The backend does not implement breakShape
-        drawUsingInternalTesselator(g);
-      }else{
-        // The backend does implement breakShape
-        drawUsingBreakShape(g);        
-      }
-    }catch(NoSuchMethodException e){   
-    }
-  }
-
-  public void draw(PApplet g){
-    try{
-      Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
-      if(declaringClass != g.g.getClass()){
-        // The backend does not implement breakShape
-        drawUsingInternalTesselator(g);
-      }else{
-        // The backend does implement breakShape
-        drawUsingBreakShape(g);        
-      }
-    }catch(NoSuchMethodException e){   
-    }
-  }
-
-  /**
-   * Use this method to know if the shape is inside a graphics object. This might be useful if we want to delete objects that go offscreen.
-   * @eexample RShape_isIn
-   * @usage Geometry
-   * @param PGraphics g, the graphics object
-   * @return boolean, whether the shape is in or not the graphics object
-   */
-  public boolean isIn(PGraphics g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
-    
-    float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
-    float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
-    float xmin = Math.min(Math.min(x0,x1),Math.min(x2,x3));
-    float ymin = Math.min(Math.min(y0,y1),Math.min(y2,y3));
-    
-    return !((xmax < 0 || xmin > g.width) && (ymax < 0 || ymin > g.height));
-  }
-  
-  public boolean isIn(PApplet g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
-    
-    float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
-    float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
-    float xmin = Math.min(Math.min(x0,x1),Math.min(x2,x3));
-    float ymin = Math.min(Math.min(y0,y1),Math.min(y2,y3));
-    
-    return !((xmax < 0 || xmin > g.width) && (ymax < 0 || ymin > g.height));
-  }
-  /**
-   * Use this method to transform the shape.
-   * @eexample RShape_transform
-   * @param m RMatrix, the affine transformation to apply to the shape
-   * @related draw ( )
-   */
-  /*
-    public void transform(RMatrix m){
-    int numSubshapes = countSubshapes();
-    if(numSubshapes!=0){
-    for(int i=0;i<numSubshapes;i++){
-    subshapes[i].transform(m);
-    }
-    }
-    }
-  */
-  
-  // ----------------------
-  // --- Private Methods ---
-  // ----------------------
-  
-  /**
-   * Remove all of the subshapes.  Creates an empty shape.
-   */
-  void clear(){
-    this.subshapes = null;
-  }
-  
-  /**
-   * Returns the bounding box of the polygon. 
-   */
-  /*
-    RRectangle getBounds(){
-    if( this.subshapes == null )
-    {
-    return new RRectangle();
-    }
-    else if( this.subshapes.length == 1 )
-    {
-    
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
-    
-    for( int i = 0 ; i < this.subshapes[0].points.length ; i++ )
-    {
-    float x = this.subshapes[0].points[i].getX();
-    float y = this.subshapes[0].points[i].getY();
-    if( x < xmin ) xmin = x;
-    if( x > xmax ) xmax = x;
-    if( y < ymin ) ymin = y;
-    if( y > ymax ) ymax = y;
-    }
-    
-    return new RRectangle( xmin, ymin, (xmax-xmin), (ymax-ymin) );
-    }
-    else
-    {
-    throw new UnsupportedOperationException("getBounds not supported on complex poly.");
-    }
-    }
-  */
-  void append(RSubshape nextsubshape)
-  {
-    RSubshape[] newsubshapes;
-    if(subshapes==null){
-      newsubshapes = new RSubshape[1];
-      newsubshapes[0] = nextsubshape;
-      currentSubshape = 0;
-    }else{
-      newsubshapes = new RSubshape[this.subshapes.length+1];
-      System.arraycopy(this.subshapes,0,newsubshapes,0,this.subshapes.length);
-      newsubshapes[this.subshapes.length]=nextsubshape;
-      currentSubshape++;
-    }
-    this.subshapes=newsubshapes;
-  }
 }

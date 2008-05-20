@@ -259,7 +259,7 @@ public class RSVG
    */
   private RShape getRect(float x, float y, float w, float h)
   {
-    return RShape.createRect(x, y, w, h);
+    return RShape.createRectangle(x, y, w, h);
   }
   
   /**
