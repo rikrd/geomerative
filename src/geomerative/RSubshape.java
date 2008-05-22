@@ -230,19 +230,19 @@ public class RSubshape extends RGeomElem
   
   /**
    * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
-   * @eexample getCurvePoint
+   * @eexample getPoint
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPoint, the vertice returned.
    * */
-  public RPoint getCurvePoint(float t){
+  public RPoint getPoint(float t){
     float advOfCommand;
     int numCommands = countCommands();
     if(numCommands == 0){
       return new RPoint();
     }
     
-    if(t==0.0F){ return commands[0].getCurvePoint(0F); }
-    if(t==1.0F){ return commands[numCommands-1].getCurvePoint(1F); }
+    if(t==0.0F){ return commands[0].getPoint(0F); }
+    if(t==1.0F){ return commands[numCommands-1].getPoint(1F); }
     
     float[] lengthsCommands = getCurveLengths();
     float lengthSubshape = getCurveLength();
@@ -270,12 +270,12 @@ public class RSubshape extends RGeomElem
     
     advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
     
-    return commands[indCommand].getCurvePoint(advOfCommand);
+    return commands[indCommand].getPoint(advOfCommand);
   }
   
   /**
    * Use this to return a specific tangent on the curve.  It returns the RPoint tangent for a given advancement parameter t on the curve.
-   * @eexample getCurvePoint
+   * @eexample getPoint
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPoint, the vertice returned.
    * */
@@ -342,7 +342,7 @@ public class RSubshape extends RGeomElem
 
   /**
    * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
-   * @eexample getCurvePoint
+   * @eexample getPoint
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPoint, the vertice returned.
    * */

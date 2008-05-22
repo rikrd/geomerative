@@ -513,11 +513,11 @@ public class RCommand extends RGeomElem
 
   /**
    * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
-   * @eexample getCurvePoint
+   * @eexample getPoint
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPoint, the vertice returned.
    * */
-  public RPoint getCurvePoint(float t){
+  public RPoint getPoint(float t){
     /* limit the value of t between 0 and 1 */
     t = (t > 1F) ? 1F : t;
     t = (t < 0F) ? 0F : t;
