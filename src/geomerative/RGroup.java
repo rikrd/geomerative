@@ -380,7 +380,7 @@ public class RGroup extends RGeomElem
   
   /**
    * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
-   * @eexample RGroup_getHandles
+   * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
   public RPoint[] getPoints(){
