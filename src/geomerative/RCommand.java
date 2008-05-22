@@ -563,11 +563,11 @@ public class RCommand extends RGeomElem
   
   /**
    * Use this to return the tangents on the curve.  It returns the vectors in the form of an array of RPoint.
-   * @eexample getCurveTangents
+   * @eexample getTangents
    * @param segments int, the number of segments in which to divide the curve.
    * @return RPoint[], the tangent vectors returned in an array.
    * */
-  public RPoint[] getCurveTangents(int segments){
+  public RPoint[] getTangents(int segments){
     RPoint[] result;
     switch(commandType)
       {
@@ -582,7 +582,7 @@ public class RCommand extends RGeomElem
         float dt = 1F / segments;
         float t = 0F;
         for(int i=0;i<segments;i++){
-          result[i]=getCurveTangent(t);
+          result[i]=getTangent(t);
           t += dt;
         }
         return result;
@@ -590,18 +590,18 @@ public class RCommand extends RGeomElem
     return null;
   }
   
-  public RPoint[] getCurveTangents(){
+  public RPoint[] getTangents(){
     
-    return getCurveTangents(100);
+    return getTangents(100);
   }
   
   /**
    * Use this to return a specific tangent on the curve.  It returns the RPoint representing the tangent vector for a given value of the advancement parameter t on the curve.
-   * @eexample getCurveTangent
+   * @eexample getTangent
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPoint, the vertice returned.
    * */
-  public RPoint getCurveTangent(float t){
+  public RPoint getTangent(float t){
     /* limit the value of t between 0 and 1 */
     t = (t > 1F) ? 1F : t;
     t = (t < 0F) ? 0F : t;

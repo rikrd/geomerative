@@ -196,11 +196,11 @@ public class RSubshape extends RGeomElem
   
   /**
    * Use this to return the tangents on the curve.  It returns the vectors in the way of an array of RPoint.
-   * @eexample getCurveTangents
+   * @eexample getTangents
    * @param segments int, the number of segments in which to divide each command.
    * @return RPoint[], the tangent vectors returned in an array.
    * */
-  public RPoint[] getCurveTangents(){
+  public RPoint[] getTangents(){
     int numCommands = countCommands();
     if(numCommands == 0){
       return null;
@@ -209,7 +209,7 @@ public class RSubshape extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numCommands;i++){
-      RPoint[] newPoints = commands[i].getCurveTangents();
+      RPoint[] newPoints = commands[i].getTangents();
       if(newPoints!=null){
         if(newPoints.length!=1){
           int overlap = 1;
@@ -279,7 +279,7 @@ public class RSubshape extends RGeomElem
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPoint, the vertice returned.
    * */
-  public RPoint getCurveTangent(float t){
+  public RPoint getTangent(float t){
     
     float advOfCommand;
     int numCommands = countCommands();
@@ -287,8 +287,8 @@ public class RSubshape extends RGeomElem
       return new RPoint();
     }
     
-    if(t==0.0F){ return commands[0].getCurveTangent(0F); }
-    if(t==1.0F){ return commands[numCommands-1].getCurveTangent(1F); }
+    if(t==0.0F){ return commands[0].getTangent(0F); }
+    if(t==1.0F){ return commands[numCommands-1].getTangent(1F); }
     
     float[] lengthsCommands = getCurveLengths();
     float lengthSubshape = getCurveLength();
@@ -322,22 +322,22 @@ public class RSubshape extends RGeomElem
     /* This takes the medium between two intersecting commands, sometimes this is not wanted
        if(advOfCommand==1.0F){
        int indNextCommand = (indCommand + 1) % numCommands;
-       result = commands[indCommand].getCurveTangent(advOfCommand);
-       RPoint tngNext = commands[indNextCommand].getCurveTangent(0.0F);
+       result = commands[indCommand].getTangent(advOfCommand);
+       RPoint tngNext = commands[indNextCommand].getTangent(0.0F);
        result.add(tngNext);
        result.scale(0.5F);
        }else if (advOfCommand==0.0F){
        int indPrevCommand = (indCommand - 1 + numCommands) % numCommands;
-       result = commands[indCommand].getCurveTangent(advOfCommand);
-       RPoint tngPrev = commands[indPrevCommand].getCurveTangent(1.0F);
+       result = commands[indCommand].getTangent(advOfCommand);
+       RPoint tngPrev = commands[indPrevCommand].getTangent(1.0F);
        result.add(tngPrev);
        result.scale(0.5F);
        }else{
-       result = commands[indCommand].getCurveTangent(advOfCommand);
+       result = commands[indCommand].getTangent(advOfCommand);
        }
     */
     
-    return commands[indCommand].getCurveTangent(advOfCommand);
+    return commands[indCommand].getTangent(advOfCommand);
   }
 
   /**

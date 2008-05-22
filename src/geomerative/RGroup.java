@@ -590,7 +590,7 @@ public class RGroup extends RGeomElem
             float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
             float amp = (ymax-py);
             
-            RPoint tg = sshp.getCurveTangent(t);
+            RPoint tg = sshp.getTangent(t);
             RPoint p = sshp.getCurvePoint(t);
             float angle = (float)Math.atan2(tg.y, tg.x) - (float)Math.PI/2F;
             
@@ -610,7 +610,7 @@ public class RGroup extends RGeomElem
         float py = elemc.points[2].y;
         float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
         
-        RPoint tg = sshp.getCurveTangent(t);
+        RPoint tg = sshp.getTangent(t);
         RPoint p = sshp.getCurvePoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
@@ -636,7 +636,7 @@ public class RGroup extends RGeomElem
         float py = elemc.points[2].y;
         float t = ((float)i/(float)numElements + lngthOffset ) % 1F;
         
-        RPoint tg = sshp.getCurveTangent(t);
+        RPoint tg = sshp.getTangent(t);
         RPoint p = sshp.getCurvePoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
