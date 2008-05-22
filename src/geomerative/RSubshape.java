@@ -106,16 +106,16 @@ public class RSubshape extends RGeomElem
   
   /**
    * Use this to return the start, control and end points of the subshape.  It returns the points in the way of an array of RPoint.
-   * @eexample getPoints
+   * @eexample getHandles
    * @return RPoint[], the start, control and end points returned in an array.
    * */
-  public RPoint[] getPoints(){
+  public RPoint[] getHandles(){
     int numCommands = countCommands();
 
     RPoint[] result = null;
     RPoint[] newresult = null;
     for( int i = 0; i < numCommands ; i++ ){
-      RPoint[] newPoints = commands[i].getPoints();
+      RPoint[] newPoints = commands[i].getHandles();
       if(newPoints != null){
         if(result == null){
           result = new RPoint[newPoints.length];
@@ -483,7 +483,7 @@ public class RSubshape extends RGeomElem
     
     for( int i = 0 ; i < this.countCommands() ; i++ )
       {
-        RPoint[] points = this.commands[i].getPoints();
+        RPoint[] points = this.commands[i].getHandles();
         if(points!=null){
           for( int k = 0 ; k < points.length ; k++ ){
             float x = points[k].x;
@@ -667,7 +667,7 @@ public class RSubshape extends RGeomElem
   // OPT: not transform the EndPoint since it's equal to the next StartPoint
   /*
     public void transform(RMatrix m){
-    RPoint[] ps = getPoints();
+    RPoint[] ps = getHandles();
     if(ps!=null){
     for(int i=0;i<ps.length;i++){
     ps[i].transform(m);

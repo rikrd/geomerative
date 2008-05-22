@@ -77,7 +77,7 @@ public abstract class RGeomElem
     this.draw(RGeomerative.parent());
   }
   
-  public abstract RPoint[] getPoints();
+  public abstract RPoint[] getHandles();
   public abstract RPoint[] getCurvePoints();
   public abstract int getType();
 
@@ -595,7 +595,7 @@ public abstract class RGeomElem
   // Functions independent of the type of element
   // No need of being overrided
   public void transform(RMatrix m){   
-    RPoint[] ps = getPoints();
+    RPoint[] ps = getHandles();
     if(ps != null){
       for(int i=0; i<ps.length; i++){
         ps[i].transform(m);
@@ -615,7 +615,7 @@ public abstract class RGeomElem
     float xmax = -Float.MAX_VALUE ;
     float ymax = -Float.MAX_VALUE ;
 
-    RPoint[] points = getPoints();
+    RPoint[] points = getHandles();
     if(points!=null){
       for(int i=0;i<points.length;i++){
         float tempx = points[i].x;
@@ -667,7 +667,7 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public RPoint getCentroid(){
-    RPoint[] ps = getPoints();
+    RPoint[] ps = getHandles();
     
     float areaAcc = 0.0f;
     float xAcc = 0.0f;
@@ -693,7 +693,7 @@ public abstract class RGeomElem
    * @related getCentroid ( )
    */
   public float getArea(){
-    RPoint[] ps = getPoints();
+    RPoint[] ps = getHandles();
     
     float areaAcc = 0.0f;
     for(int i=0;i<ps.length-1;i++)

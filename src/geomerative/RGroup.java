@@ -350,10 +350,10 @@ public class RGroup extends RGeomElem
   
   /**
    * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
-   * @eexample RGroup_getPoints
+   * @eexample RGroup_getHandles
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[] getPoints(){
+  public RPoint[] getHandles(){
     int numElements = countElements();
     if(numElements == 0){
       return null;
@@ -362,7 +362,7 @@ public class RGroup extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numElements;i++){
-      RPoint[] newPoints = elements[i].getPoints();
+      RPoint[] newPoints = elements[i].getHandles();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -380,7 +380,7 @@ public class RGroup extends RGeomElem
   
   /**
    * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
-   * @eexample RGroup_getPoints
+   * @eexample RGroup_getHandles
    * @return RPoint[], the points returned in an array.
    * */
   public RPoint[] getCurvePoints(){
@@ -581,7 +581,7 @@ public class RGroup extends RGeomElem
     case BYPOINT:
       for(int i=0;i<numElements;i++){
         RGeomElem elem = result.elements[i];
-        RPoint[] ps = elem.getPoints();
+        RPoint[] ps = elem.getHandles();
         if(ps != null){
           for(int k=0;k<ps.length;k++){
             float px = ps[k].x;

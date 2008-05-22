@@ -749,10 +749,10 @@ public class RCommand extends RGeomElem
   
   /**
    * Use this to return the start, control and end points of the curve.  It returns the points in the way of an array of RPoint.
-   * @eexample getPoints
+   * @eexample getHandles
    * @return RPoint[], the vertices returned in an array.
    * */
-  public RPoint[] getPoints(){
+  public RPoint[] getHandles(){
     RPoint[] result;
     if(controlPoints==null){
       result = new RPoint[2];
@@ -884,7 +884,7 @@ public class RCommand extends RGeomElem
       }
     }
 
-    RPoint[] controlPoints = this.getPoints();
+    RPoint[] controlPoints = this.getHandles();
 
     // Copy control points to triangle matrix
     for(int i = 0; i <= 3; i++){
@@ -914,7 +914,7 @@ public class RCommand extends RGeomElem
       }
     }
     
-    RPoint[] controlPoints = this.getPoints();
+    RPoint[] controlPoints = this.getHandles();
 
     // Copy control points to triangle matrix
     for(int i = 0; i <= 2; i++){
@@ -943,7 +943,7 @@ public class RCommand extends RGeomElem
       }
     }
 
-    RPoint[] controlPoints = this.getPoints();
+    RPoint[] controlPoints = this.getHandles();
 
     // Copy control points to triangle matrix
     for(int i = 0; i <= 1; i++){

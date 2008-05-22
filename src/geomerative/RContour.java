@@ -167,10 +167,10 @@ public class RContour extends RGeomElem
   
   /**
    * Use this to return the points of the contour.  It returns the points in the way of an array of RPoint.
-   * @eexample RContour_getPoints
+   * @eexample RContour_getHandles
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[] getPoints(){
+  public RPoint[] getHandles(){
     return points;
   }
   

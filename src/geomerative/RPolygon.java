@@ -354,7 +354,7 @@ public class RPolygon extends RGeomElem
     
     RShape result = new RShape();
     for(int i=0;i<numContours;i++){
-      RPoint[] newpoints = this.contours[i].getPoints();
+      RPoint[] newpoints = this.contours[i].getHandles();
       
       if(newpoints != null){
         result.addMoveTo(newpoints[0]);
@@ -377,10 +377,10 @@ public class RPolygon extends RGeomElem
   
   /**
    * Use this to return the points of the polygon.  It returns the points in the way of an array of RPoint.
-   * @eexample RPolygon_getPoints
+   * @eexample RPolygon_getHandles
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[] getPoints(){
+  public RPoint[] getHandles(){
     int numContours = countContours();
     if(numContours == 0){
       return null;
@@ -389,7 +389,7 @@ public class RPolygon extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numContours;i++){
-      RPoint[] newPoints = contours[i].getPoints();
+      RPoint[] newPoints = contours[i].getHandles();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];

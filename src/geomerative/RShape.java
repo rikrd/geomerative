@@ -437,10 +437,10 @@ public class RShape extends RGeomElem
     
   /**
    * Use this to return the start, control and end points of the shape.  It returns the points in the way of an array of RPoint.
-   * @eexample RShape_getPoints
+   * @eexample RShape_getHandles
    * @return RPoint[], the start, control and end points returned in an array.
    * */
-  public RPoint[] getPoints(){
+  public RPoint[] getHandles(){
     int numSubshapes = countSubshapes();
     if(numSubshapes == 0){
       return null;
@@ -449,7 +449,7 @@ public class RShape extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numSubshapes;i++){
-      RPoint[] newPoints = subshapes[i].getPoints();
+      RPoint[] newPoints = subshapes[i].getHandles();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -860,7 +860,7 @@ public class RShape extends RGeomElem
           RSubshape subshape = subshapes[i];
           closed |= subshape.closed;
           for(int j = 0; j < subshape.countCommands(); j++ ){
-            RPoint[] pnts = subshape.commands[j].getPoints();
+            RPoint[] pnts = subshape.commands[j].getHandles();
             if(j==0){
               g.vertex(pnts[0].x, pnts[0].y);
             }
@@ -906,7 +906,7 @@ public class RShape extends RGeomElem
           RSubshape subshape = subshapes[i];
           closed |= subshape.closed;
           for(int j = 0; j < subshape.countCommands(); j++ ){
-            RPoint[] pnts = subshape.commands[j].getPoints();
+            RPoint[] pnts = subshape.commands[j].getHandles();
             if(j==0){
               g.vertex(pnts[0].x, pnts[0].y);
             }
