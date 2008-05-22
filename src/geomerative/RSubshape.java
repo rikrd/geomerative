@@ -137,10 +137,10 @@ public class RSubshape extends RGeomElem
   
   /**
    * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
-   * @eexample getCurvePoints
+   * @eexample getPoints
    * @return RPoint[], the vertices returned in an array.
    * */
-  public RPoint[] getCurvePoints(){
+  public RPoint[] getPoints(){
     int numCommands = countCommands();
     if(numCommands == 0){
       return null;
@@ -153,7 +153,7 @@ public class RSubshape extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numCommands;i++){
-      RPoint[] newPoints = commands[i].getCurvePoints(false);
+      RPoint[] newPoints = commands[i].getPoints(false);
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -432,7 +432,7 @@ public class RSubshape extends RGeomElem
     int lastSegmentator = RCommand.segmentType;
     RCommand.setSegmentator(RCommand.ADAPTATIVE);
     
-    RPoint[] points = getCurvePoints();
+    RPoint[] points = getPoints();
     
     if(points == null){
       return;
@@ -455,7 +455,7 @@ public class RSubshape extends RGeomElem
     int lastSegmentator = RCommand.segmentType;
     RCommand.setSegmentator(RCommand.ADAPTATIVE);
     
-    RPoint[] points = getCurvePoints();
+    RPoint[] points = getPoints();
     RCommand.setSegmentator(lastSegmentator);
     if(points == null){
       return;

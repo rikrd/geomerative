@@ -46,7 +46,7 @@ void draw(){
   
   RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
   RCommand.setSegmentLength(map(mouseY, 0, height, 3, 200));
-  points = grp.getCurvePoints();
+  points = grp.getPoints();
   
   // If there are any points
   if(points != null){

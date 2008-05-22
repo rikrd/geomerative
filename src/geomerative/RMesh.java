@@ -292,10 +292,10 @@ public class RMesh extends RGeomElem
   
   /**
    * Use this to get the vertices of the mesh.  It returns the points in the way of an array of RPoint.
-   * @eexample RMesh_getCurvePoints
+   * @eexample RMesh_getPoints
    * @return RPoint[], the vertices returned in an array.
    * */
-  public RPoint[] getCurvePoints(){
+  public RPoint[] getPoints(){
     int numStrips = countStrips();
     if(numStrips == 0){
       return null;
@@ -304,7 +304,7 @@ public class RMesh extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numStrips;i++){
-      RPoint[] newPoints = strips[i].getCurvePoints();
+      RPoint[] newPoints = strips[i].getPoints();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];

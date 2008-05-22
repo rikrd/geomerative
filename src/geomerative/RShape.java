@@ -365,7 +365,7 @@ public class RShape extends RGeomElem
     
     RPolygon result = new RPolygon();
     for(int i=0;i<numSubshapes;i++){
-      RPoint[] newpoints = this.subshapes[i].getCurvePoints();
+      RPoint[] newpoints = this.subshapes[i].getPoints();
       RContour c = new RContour(newpoints);
       c.closed = subshapes[i].closed;
       c.setStyle(subshapes[i]);
@@ -467,10 +467,10 @@ public class RShape extends RGeomElem
   
   /**
    * Use this to return the start, control and end points of the shape.  It returns the points in the way of an array of RPoint.
-   * @eexample RShape_getCurvePoints
+   * @eexample RShape_getPoints
    * @return RPoint[], the start, control and end points returned in an array.
    * */
-  public RPoint[] getCurvePoints(){
+  public RPoint[] getPoints(){
     int numSubshapes = countSubshapes();
     if(numSubshapes == 0){
       return null;
@@ -479,7 +479,7 @@ public class RShape extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numSubshapes;i++){
-      RPoint[] newPoints = subshapes[i].getCurvePoints();
+      RPoint[] newPoints = subshapes[i].getPoints();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];

@@ -143,10 +143,10 @@ public class RStrip
   
   /**
    * Use this to get the vertices of the strip.  It returns the points in the way of an array of RPoint.
-   * @eexample RStrip_getCurvePoints
+   * @eexample RStrip_getPoints
    * @return RPoint[], the vertices returned in an array.
    * */
-  public RPoint[] getCurvePoints(){
+  public RPoint[] getPoints(){
     return vertices;
   }
   

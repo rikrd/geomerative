@@ -411,15 +411,15 @@ public class RCommand extends RGeomElem
   
   /**
    * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
-   * @eexample getCurvePoints
+   * @eexample getPoints
    * @param segments int, the number of segments in which to divide the curve.
    * @return RPoint[], the vertices returned in an array.
    * */
-  public RPoint[] getCurvePoints(){
-    return getCurvePoints(true);
+  public RPoint[] getPoints(){
+    return getPoints(true);
   }
   
-  protected RPoint[] getCurvePoints(boolean resetSegmentator){
+  protected RPoint[] getPoints(boolean resetSegmentator){
     
     if(resetSegmentator){
       saveSegmentatorContext();
@@ -683,7 +683,7 @@ public class RCommand extends RGeomElem
    * @param g PGraphics, the graphics object on which to draw the command
    */
   public void draw(PGraphics g){
-    RPoint[] points = getCurvePoints();
+    RPoint[] points = getPoints();
     if(points == null){
       return;
     }
@@ -700,7 +700,7 @@ public class RCommand extends RGeomElem
    * @param g PGraphics, the graphics object on which to draw the command
    */
   public void draw(PApplet a){
-    RPoint[] points = getCurvePoints();
+    RPoint[] points = getPoints();
     if(points == null){
       return;
     }
@@ -726,7 +726,7 @@ public class RCommand extends RGeomElem
     float xmax = -Float.MAX_VALUE ;
     float ymax = -Float.MAX_VALUE ;
     
-    RPoint[] points = this.getCurvePoints();
+    RPoint[] points = this.getPoints();
     if(points!=null){
       for( int i = 0 ; i < points.length ; i++ )
         {

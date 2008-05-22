@@ -383,7 +383,7 @@ public class RGroup extends RGeomElem
    * @eexample RGroup_getHandles
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[] getCurvePoints(){
+  public RPoint[] getPoints(){
     int numElements = countElements();
     if(numElements == 0){
       return null;
@@ -392,7 +392,7 @@ public class RGroup extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numElements;i++){
-      RPoint[] newPoints = elements[i].getCurvePoints();
+      RPoint[] newPoints = elements[i].getPoints();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];

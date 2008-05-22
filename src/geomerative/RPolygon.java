@@ -407,10 +407,10 @@ public class RPolygon extends RGeomElem
   
   /**
    * Use this to return the points of the polygon.  It returns the points in the way of an array of RPoint.
-   * @eexample RPolygon_getCurvePoints
+   * @eexample RPolygon_getPoints
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[] getCurvePoints(){
+  public RPoint[] getPoints(){
     int numContours = countContours();
     if(numContours == 0){
       return null;
@@ -419,7 +419,7 @@ public class RPolygon extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numContours;i++){
-      RPoint[] newPoints = contours[i].getCurvePoints();
+      RPoint[] newPoints = contours[i].getPoints();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];

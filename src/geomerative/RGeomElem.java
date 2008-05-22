@@ -78,7 +78,7 @@ public abstract class RGeomElem
   }
   
   public abstract RPoint[] getHandles();
-  public abstract RPoint[] getCurvePoints();
+  public abstract RPoint[] getPoints();
   public abstract int getType();
 
   //public abstract RMesh toMesh();
