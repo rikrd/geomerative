@@ -320,6 +320,20 @@ public class RMesh extends RGeomElem
     return result;
   }
   
+  public RPoint getPoint(float t){
+    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint getTangent(float t){
+    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    return null;
+  }
+  
+  public RPoint[] getTangents(){
+    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    return null;
+  }
   
   /**
    * Use this method to get the type of element this is.

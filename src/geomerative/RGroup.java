@@ -378,6 +378,14 @@ public class RGroup extends RGeomElem
     return result;
   }  
   
+  public RPoint getPoint(float t){
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+
+    return elements[indOfElement].getPoint(advOfElement);
+  }
+
   /**
    * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
    * @eexample RGroup_getPoints
@@ -388,7 +396,8 @@ public class RGroup extends RGeomElem
     if(numElements == 0){
       return null;
     }
-    
+
+    RCommand.segmentAccOffset = RCommand.segmentOffset;    
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numElements;i++){
@@ -405,8 +414,49 @@ public class RGroup extends RGeomElem
         }
       }
     }
+    
     return result;
   }
+
+
+  public RPoint getTangent(float t){
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+
+    return elements[indOfElement].getTangent(advOfElement);
+  }
+
+  /**
+   * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
+   * @eexample RGroup_getPoints
+   * @return RPoint[], the points returned in an array.
+   * */
+  public RPoint[] getTangents(){
+    int numElements = countElements();
+    if(numElements == 0){
+      return null;
+    }
+    
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    for(int i=0;i<numElements;i++){
+      RPoint[] newPoints = elements[i].getTangents();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    return result;
+  }
+
   
   /**
    * Use this method to get the type of element this is.
@@ -417,14 +467,11 @@ public class RGroup extends RGeomElem
     return type;
   }
 
-  public RGroup[] split(float t){
-    RGroup[] result = new RGroup[2];
-
+  private float[] indAndAdvAt(float t){
+    int indOfElement = 0;
     float[] lengthsCurves = getCurveLengths();
     float lengthCurve = getCurveLength();
 
-    int indElement = 0;
-    
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
@@ -435,23 +482,56 @@ public class RGroup extends RGeomElem
        advOfCommand = (t*numSubshapes - indCommand);
     */
     
-    float accumulatedAdvancement = lengthsCurves[indElement] / lengthCurve;
+    float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
     float prevAccumulatedAdvancement = 0F;
     
     /* Find in what command the advancement point is  */
     while(t > accumulatedAdvancement){
-      indElement++;
+      indOfElement++;
       prevAccumulatedAdvancement = accumulatedAdvancement;
-      accumulatedAdvancement += (lengthsCurves[indElement] / lengthCurve);
+      accumulatedAdvancement += (lengthsCurves[indOfElement] / lengthCurve);
     }
     
-    float advOfElement = (t-prevAccumulatedAdvancement) / (lengthsCurves[indElement] / lengthCurve);
+    float advOfElement = (t-prevAccumulatedAdvancement) / (lengthsCurves[indOfElement] / lengthCurve);
+
+    float[] indAndAdv = new float[2];
+
+    indAndAdv[0] = indOfElement;
+    indAndAdv[1] = advOfElement;
     
+    return indAndAdv;
+  }
+
+  public RGroup[] split(float t){
+    RGroup[] result = new RGroup[2];
+
+    if(t == 0.0F){ 
+      result[0] = new RGroup();
+      result[1] = new RGroup(this);
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+
+      return result;
+    }
+    
+    if(t == 1.0F){
+      result[0] = new RGroup(this);
+      result[1] = new RGroup();
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+
+      return result;
+    }
+
     result[0] = new RGroup();
     result[1] = new RGroup();
 
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+
     // Add the elements before the cut point
-    for(int i=0; i<indElement; i++){
+    for(int i=0; i<indOfElement; i++){
       switch(elements[i].getType()){
       case RGeomElem.MESH:
         result[0].addElement(new RMesh((RMesh)elements[i]));
@@ -472,7 +552,7 @@ public class RGroup extends RGeomElem
     }
 
     // Add the cut point element cutted
-    RGeomElem element = this.elements[indElement];
+    RGeomElem element = this.elements[indOfElement];
     switch(element.getType())
       {
       case RGeomElem.GROUP:
@@ -493,7 +573,7 @@ public class RGroup extends RGeomElem
       }
 
     // Add the elements after the cut point    
-    for(int i=indElement+1; i<countElements(); i++){
+    for(int i=indOfElement+1; i<countElements(); i++){
       switch(elements[i].getType()){
       case RGeomElem.MESH:
         result[1].addElement(new RMesh((RMesh)elements[i]));

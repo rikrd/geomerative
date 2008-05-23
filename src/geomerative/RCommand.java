@@ -582,7 +582,7 @@ public class RCommand extends RGeomElem
         float dt = 1F / segments;
         float t = 0F;
         for(int i=0;i<segments;i++){
-          result[i]=getTangent(t);
+          result[i] = getTangent(t);
           t += dt;
         }
         return result;
@@ -767,84 +767,6 @@ public class RCommand extends RGeomElem
     return result;
   }
   
-  private void quadBezierAdaptative(){
-    addCurvePoint(new RPoint(startPoint));
-    quadBezierAdaptativeRecursive(startPoint.x, startPoint.y, controlPoints[0].x, controlPoints[0].y, endPoint.x, endPoint.y, 0);
-    addCurvePoint(new RPoint(endPoint));
-  }
-  
-  
-  
-  private void quadBezierAdaptativeRecursive(float x1, float y1, float x2, float y2, float x3, float y3, int level){
-    
-    if(level > segmentRecursionLimit)
-      {
-        return;
-      }
-    
-    // Calculate all the mid-points of the line segments
-    //----------------------
-    float x12   = (x1 + x2) / 2;
-    float y12   = (y1 + y2) / 2;
-    float x23   = (x2 + x3) / 2;
-    float y23   = (y2 + y3) / 2;
-    float x123  = (x12 + x23) / 2;
-    float y123  = (y12 + y23) / 2;
-    
-    float dx = x3-x1;
-    float dy = y3-y1;
-    float d = Math.abs(((x2 - x3) * dy - (y2 - y3) * dx));
-    
-    if(d > segmentCollinearityEpsilon)
-      { 
-        // Regular care
-        //-----------------
-        if(d * d <= segmentDistTolSqr * (dx*dx + dy*dy))
-          {
-            // If the curvature doesn't exceed the distance_tolerance value
-            // we tend to finish subdivisions.
-            //----------------------
-            if(segmentAngleTol < segmentAngleTolEpsilon)
-              {
-                addCurvePoint(new RPoint(x123, y123));
-                return;
-              }
-            
-            // Angle & Cusp Condition
-            //----------------------
-            float da = Math.abs((float)Math.atan2(y3 - y2, x3 - x2) - (float)Math.atan2(y2 - y1, x2 - x1));
-            if(da >= Math.PI) da = 2*(float)Math.PI - da;
-            
-            if(da < segmentAngleTol)
-              {
-                // Finally we can stop the recursion
-                //----------------------
-                addCurvePoint(new RPoint(x123, y123));
-                return;
-              }
-          }
-      }
-    else
-      {
-        if(Math.abs(x1 + x3 - x2 - x2) + Math.abs(y1 + y3 - y2 - y2) <= segmentDistTolMnhttn)
-          {
-            addCurvePoint(new RPoint(x123, y123));
-            return;
-          }
-      }
-    
-    // Continue subdivision
-    //----------------------
-    quadBezierAdaptativeRecursive(x1, y1, x12, y12, x123, y123, level + 1);
-    quadBezierAdaptativeRecursive(x123, y123, x23, y23, x3, y3, level + 1);
-  }
-  
-  private void cubicBezierAdaptative(){
-    addCurvePoint(new RPoint(startPoint));
-    cubicBezierAdaptativeRecursive(startPoint.x, startPoint.y, controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, endPoint.x, endPoint.y, 0);
-    addCurvePoint(new RPoint(endPoint));
-  }
-
   /**
    * Returns two commands resulting of splitting the command.
    * @eexample split
@@ -962,6 +884,82 @@ public class RCommand extends RGeomElem
     result[0] = createLine(triangleMatrix[0][0], triangleMatrix[1][0]);
     result[1] = createLine(triangleMatrix[1][0], triangleMatrix[0][1]);
     return result;
+  }
+
+  private void quadBezierAdaptative(){
+    addCurvePoint(new RPoint(startPoint));
+    quadBezierAdaptativeRecursive(startPoint.x, startPoint.y, controlPoints[0].x, controlPoints[0].y, endPoint.x, endPoint.y, 0);
+    addCurvePoint(new RPoint(endPoint));
+  }  
+  
+  private void quadBezierAdaptativeRecursive(float x1, float y1, float x2, float y2, float x3, float y3, int level){
+    
+    if(level > segmentRecursionLimit)
+      {
+        return;
+      }
+    
+    // Calculate all the mid-points of the line segments
+    //----------------------
+    float x12   = (x1 + x2) / 2;
+    float y12   = (y1 + y2) / 2;
+    float x23   = (x2 + x3) / 2;
+    float y23   = (y2 + y3) / 2;
+    float x123  = (x12 + x23) / 2;
+    float y123  = (y12 + y23) / 2;
+    
+    float dx = x3-x1;
+    float dy = y3-y1;
+    float d = Math.abs(((x2 - x3) * dy - (y2 - y3) * dx));
+    
+    if(d > segmentCollinearityEpsilon)
+      { 
+        // Regular care
+        //-----------------
+        if(d * d <= segmentDistTolSqr * (dx*dx + dy*dy))
+          {
+            // If the curvature doesn't exceed the distance_tolerance value
+            // we tend to finish subdivisions.
+            //----------------------
+            if(segmentAngleTol < segmentAngleTolEpsilon)
+              {
+                addCurvePoint(new RPoint(x123, y123));
+                return;
+              }
+            
+            // Angle & Cusp Condition
+            //----------------------
+            float da = Math.abs((float)Math.atan2(y3 - y2, x3 - x2) - (float)Math.atan2(y2 - y1, x2 - x1));
+            if(da >= Math.PI) da = 2*(float)Math.PI - da;
+            
+            if(da < segmentAngleTol)
+              {
+                // Finally we can stop the recursion
+                //----------------------
+                addCurvePoint(new RPoint(x123, y123));
+                return;
+              }
+          }
+      }
+    else
+      {
+        if(Math.abs(x1 + x3 - x2 - x2) + Math.abs(y1 + y3 - y2 - y2) <= segmentDistTolMnhttn)
+          {
+            addCurvePoint(new RPoint(x123, y123));
+            return;
+          }
+      }
+    
+    // Continue subdivision
+    //----------------------
+    quadBezierAdaptativeRecursive(x1, y1, x12, y12, x123, y123, level + 1);
+    quadBezierAdaptativeRecursive(x123, y123, x23, y23, x3, y3, level + 1);
+  }
+  
+  private void cubicBezierAdaptative(){
+    addCurvePoint(new RPoint(startPoint));
+    cubicBezierAdaptativeRecursive(startPoint.x, startPoint.y, controlPoints[0].x, controlPoints[0].y, controlPoints[1].x, controlPoints[1].y, endPoint.x, endPoint.y, 0);
+    addCurvePoint(new RPoint(endPoint));
   }
 
   private void cubicBezierAdaptativeRecursive(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, int level){
@@ -1199,7 +1197,6 @@ public class RCommand extends RGeomElem
     fdx = 3F * (controlPoints[0].x - startPoint.x) * dt;
     fdd_per_2x = 3F * (startPoint.x - 2F * controlPoints[0].x + controlPoints[1].x) * temp;
     fddd_per_2x = 3F * (3F * (controlPoints[0].x - controlPoints[1].x) + endPoint.x - startPoint.x) * temp * dt;
-    
     fdddx = fddd_per_2x + fddd_per_2x;
     fddx = fdd_per_2x + fdd_per_2x;
     fddd_per_6x = fddd_per_2x * (1.0F / 3F);
@@ -1207,8 +1204,7 @@ public class RCommand extends RGeomElem
     fy = startPoint.y;
     fdy = 3F * (controlPoints[0].y - startPoint.y) * dt;
     fdd_per_2y = 3F * (startPoint.y - 2F * controlPoints[0].y + controlPoints[1].y) * temp;
-    fddd_per_2y = 3F * (3F * (controlPoints[0].y - controlPoints[1].y) + endPoint.y - startPoint.y) * temp * dt;
-    
+    fddd_per_2y = 3F * (3F * (controlPoints[0].y - controlPoints[1].y) + endPoint.y - startPoint.y) * temp * dt;    
     fdddy = fddd_per_2y + fddd_per_2y;
     fddy = fdd_per_2y + fdd_per_2y;
     fddd_per_6y = fddd_per_2y * (1.0F / 3F);
@@ -1404,7 +1400,6 @@ public class RCommand extends RGeomElem
     fdy = 3F * (controlPoints[0].y - startPoint.y) * dt;
     fdd_per_2y = 3F * (startPoint.y - 2F * controlPoints[0].y + controlPoints[1].y) * temp;
     fddd_per_2y = 3F * (3F * (controlPoints[0].y - controlPoints[1].y) + endPoint.y - startPoint.y) * temp * dt;
-    
     fdddy = fddd_per_2y + fddd_per_2y;
     fddy = fdd_per_2y + fdd_per_2y;
     fddd_per_6y = fddd_per_2y * (1.0F / 3F);
@@ -1558,7 +1553,7 @@ public class RCommand extends RGeomElem
     endPoint.transform(m);
     }
   */
-  void append(RPoint nextcontrolpoint)
+  private void append(RPoint nextcontrolpoint)
   {
     RPoint[] newcontrolPoints;
     if(controlPoints==null){

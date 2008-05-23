@@ -466,11 +466,68 @@ public class RShape extends RGeomElem
   }
   
   /**
-   * Use this to return the start, control and end points of the shape.  It returns the points in the way of an array of RPoint.
+   * Use this to return a point on the curve given a certain advancement.  It returns the point in the way of an RPoint.
    * @eexample RShape_getPoints
-   * @return RPoint[], the start, control and end points returned in an array.
+   * @return RPoint[], the point on the curve.
+   * */
+  public RPoint getPoint(float t){
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+
+    return subshapes[indOfElement].getPoint(advOfElement);
+  }
+
+  /**
+   * Use this to return the points on the curve of the shape.  It returns the point in the way of an RPoint.
+   * @eexample RShape_getPoints
+   * @return RPoint[], the points returned in an array.
    * */
   public RPoint[] getPoints(){
+    int numSubshapes = countSubshapes();
+    if(numSubshapes == 0){
+      return null;
+    }
+
+    RCommand.segmentAccOffset = RCommand.segmentOffset;    
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    for(int i=0;i<numSubshapes;i++){
+      RPoint[] newPoints = subshapes[i].getPoints();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    return result;
+  }
+
+  /**
+   * Use this to return a point on the curve given a certain advancement.  It returns the point in the way of an RPoint.
+   * @eexample RShape_getTangents
+   * @return RPoint[], the point on the curve.
+   * */
+  public RPoint getTangent(float t){
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+
+    return subshapes[indOfElement].getTangent(advOfElement);
+  }
+
+  /**
+   * Use this to return the points on the curve of the shape.  It returns the point in the way of an RPoint.
+   * @eexample RShape_getTangents
+   * @return RPoint[], the points returned in an array.
+   * */
+  public RPoint[] getTangents(){
     int numSubshapes = countSubshapes();
     if(numSubshapes == 0){
       return null;
@@ -479,7 +536,7 @@ public class RShape extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numSubshapes;i++){
-      RPoint[] newPoints = subshapes[i].getPoints();
+      RPoint[] newPoints = subshapes[i].getTangents();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -518,13 +575,12 @@ public class RShape extends RGeomElem
     result[0] = new RShape();
     result[1] = new RShape();
 
-    float advOfCommand;
     int numSubshapes = countSubshapes();
     if(numSubshapes == 0){
       return null;
     }
 
-    if(t==0.0F){ 
+    if(t == 0.0F){ 
       result[0] = new RShape();
       result[1] = new RShape(this);
       result[0].setStyle(this);
@@ -533,7 +589,7 @@ public class RShape extends RGeomElem
       return result;
     }
     
-    if(t==1.0F){
+    if(t == 1.0F){
       result[0] = new RShape(this);
       result[1] = new RShape();
       result[0].setStyle(this);
@@ -542,37 +598,14 @@ public class RShape extends RGeomElem
       return result;
     }
     
-    float[] lengthsSubshapes = getCurveLengths();
-    float lengthSubshape = getCurveLength();
-
-    int indSubshape = 0;
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
     
-    /* Calculate the amount of advancement t mapped to each command */
-    /* We use a simple algorithm where we give to each command the same amount of advancement */
-    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    /* Old method with uniform advancement per command
-       float advPerCommand;
-       advPerCommand = 1F / numSubshapes;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numSubshapes;
-       advOfCommand = (t*numSubshapes - indCommand);
-    */
-    
-    float accumulatedAdvancement = lengthsSubshapes[indSubshape] / lengthSubshape;
-    float prevAccumulatedAdvancement = 0F;
-    
-    /* Find in what command the advancement point is  */
-    while(t > accumulatedAdvancement){
-      indSubshape++;
-      prevAccumulatedAdvancement = accumulatedAdvancement;
-      accumulatedAdvancement += (lengthsSubshapes[indSubshape] / lengthSubshape);
-    }
-    
-    float advOfSubshape = (t-prevAccumulatedAdvancement) / (lengthsSubshapes[indSubshape] / lengthSubshape);
-
-    RSubshape[] splittedShapes = subshapes[indSubshape].split(advOfSubshape);
+    RSubshape[] splittedShapes = subshapes[indOfElement].split(advOfElement);
     
     result[0] = new RShape();
-    for(int i = 0; i<indSubshape; i++){
+    for(int i = 0; i<indOfElement; i++){
       result[0].addSubshape(new RSubshape(subshapes[i]));
     }
     result[0].addSubshape(new RSubshape(splittedShapes[0]));
@@ -580,7 +613,7 @@ public class RShape extends RGeomElem
 
     result[1] = new RShape();
     result[1].addSubshape(new RSubshape(splittedShapes[1]));
-    for(int i = indSubshape + 1; i < countSubshapes(); i++){
+    for(int i = indOfElement + 1; i < countSubshapes(); i++){
       result[1].addSubshape(new RSubshape(subshapes[i]));
     }
     result[1].setStyle(this);
@@ -652,6 +685,42 @@ public class RShape extends RGeomElem
       lenCurve += lenCurves[i];
     }  
   }
+
+  private float[] indAndAdvAt(float t){
+    int indOfElement = 0;
+    float[] lengthsCurves = getCurveLengths();
+    float lengthCurve = getCurveLength();
+
+    /* Calculate the amount of advancement t mapped to each command */
+    /* We use a simple algorithm where we give to each command the same amount of advancement */
+    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
+    /* Old method with uniform advancement per command
+       float advPerCommand;
+       advPerCommand = 1F / numSubshapes;
+       indCommand = (int)(Math.floor(t / advPerCommand)) % numSubshapes;
+       advOfCommand = (t*numSubshapes - indCommand);
+    */
+    
+    float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
+    float prevAccumulatedAdvancement = 0F;
+    
+    /* Find in what command the advancement point is  */
+    while(t > accumulatedAdvancement){
+      indOfElement++;
+      prevAccumulatedAdvancement = accumulatedAdvancement;
+      accumulatedAdvancement += (lengthsCurves[indOfElement] / lengthCurve);
+    }
+    
+    float advOfElement = (t-prevAccumulatedAdvancement) / (lengthsCurves[indOfElement] / lengthCurve);
+
+    float[] indAndAdv = new float[2];
+
+    indAndAdv[0] = indOfElement;
+    indAndAdv[1] = advOfElement;
+    
+    return indAndAdv;
+  }
+  
   
   /**
    * Remove all of the subshapes.  Creates an empty shape.

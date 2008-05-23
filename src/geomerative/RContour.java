@@ -183,6 +183,20 @@ public class RContour extends RGeomElem
     return points;
   }
   
+  public RPoint getPoint(float t){
+    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint getTangent(float t){
+    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    return null;
+  }
+  
+  public RPoint[] getTangents(){
+    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    return null;
+  }
   
   /**
    * Use this method to know if the contour is a hole. Remember to use the method update() on the polygon before using this method.

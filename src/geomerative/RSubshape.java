@@ -235,7 +235,6 @@ public class RSubshape extends RGeomElem
    * @return RPoint, the vertice returned.
    * */
   public RPoint getPoint(float t){
-    float advOfCommand;
     int numCommands = countCommands();
     if(numCommands == 0){
       return new RPoint();
@@ -243,34 +242,12 @@ public class RSubshape extends RGeomElem
     
     if(t==0.0F){ return commands[0].getPoint(0F); }
     if(t==1.0F){ return commands[numCommands-1].getPoint(1F); }
+
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
     
-    float[] lengthsCommands = getCurveLengths();
-    float lengthSubshape = getCurveLength();
-    
-    /* Calculate the amount of advancement t mapped to each command */
-    /* We use a simple algorithm where we give to each command the same amount of advancement */
-    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    /* Old method with uniform advancement per command
-       float advPerCommand;
-       advPerCommand = 1F / numCommands;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numCommands;
-       advOfCommand = (t*numCommands - indCommand);
-    */
-    
-    int indCommand = 0;
-    float accumulatedAdvancement = lengthsCommands[indCommand] / lengthSubshape;
-    float prevAccumulatedAdvancement = 0F;
-    
-    /* Find in what command the advancement point is  */
-    while(t > accumulatedAdvancement){
-      indCommand++;
-      prevAccumulatedAdvancement = accumulatedAdvancement;
-      accumulatedAdvancement += (lengthsCommands[indCommand] / lengthSubshape);
-    }
-    
-    advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
-    
-    return commands[indCommand].getPoint(advOfCommand);
+    return commands[indOfElement].getPoint(advOfElement);
   }
   
   /**
@@ -280,8 +257,6 @@ public class RSubshape extends RGeomElem
    * @return RPoint, the vertice returned.
    * */
   public RPoint getTangent(float t){
-    
-    float advOfCommand;
     int numCommands = countCommands();
     if(numCommands == 0){
       return new RPoint();
@@ -290,54 +265,29 @@ public class RSubshape extends RGeomElem
     if(t==0.0F){ return commands[0].getTangent(0F); }
     if(t==1.0F){ return commands[numCommands-1].getTangent(1F); }
     
-    float[] lengthsCommands = getCurveLengths();
-    float lengthSubshape = getCurveLength();
-    
-    //System.out.println("Length of subshape = " + lenCurve);
-    
-    /* Calculate the amount of advancement t mapped to each command */
-    /* We use a simple algorithm where we give to each command the same amount of advancement */
-    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    /* Old method with uniform advancement per command
-       float advPerCommand;
-       advPerCommand = 1F / numCommands;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numCommands;
-       advOfCommand = (t*numCommands - indCommand);
-    */
-    
-    int indCommand = 0;
-    float accumulatedAdvancement = lengthsCommands[indCommand] / lengthSubshape;
-    float prevAccumulatedAdvancement = 0F;
-    
-    /* Find in what command the advancement point is  */
-    while(t > accumulatedAdvancement){
-      indCommand++;
-      prevAccumulatedAdvancement = accumulatedAdvancement;
-      accumulatedAdvancement += (lengthsCommands[indCommand] / lengthSubshape);
-    }
-    
-    advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
-    
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];    
     
     /* This takes the medium between two intersecting commands, sometimes this is not wanted
-       if(advOfCommand==1.0F){
-       int indNextCommand = (indCommand + 1) % numCommands;
-       result = commands[indCommand].getTangent(advOfCommand);
+       if(advOfElement==1.0F){
+       int indNextCommand = (indOfElement + 1) % numCommands;
+       result = commands[indOfElement].getTangent(advOfElement);
        RPoint tngNext = commands[indNextCommand].getTangent(0.0F);
        result.add(tngNext);
        result.scale(0.5F);
-       }else if (advOfCommand==0.0F){
-       int indPrevCommand = (indCommand - 1 + numCommands) % numCommands;
-       result = commands[indCommand].getTangent(advOfCommand);
+       }else if (advOfElement==0.0F){
+       int indPrevCommand = (indOfElement - 1 + numCommands) % numCommands;
+       result = commands[indOfElement].getTangent(advOfElement);
        RPoint tngPrev = commands[indPrevCommand].getTangent(1.0F);
        result.add(tngPrev);
        result.scale(0.5F);
        }else{
-       result = commands[indCommand].getTangent(advOfCommand);
+       result = commands[indOfElement].getTangent(advOfElement);
        }
     */
     
-    return commands[indCommand].getTangent(advOfCommand);
+    return commands[indOfElement].getTangent(advOfElement);
   }
 
   /**
@@ -372,46 +322,23 @@ public class RSubshape extends RGeomElem
       return result;
     }
     
-    float[] lengthsCommands = getCurveLengths();
-    float lengthSubshape = getCurveLength();
-
-    int indCommand = 0;
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
     
-    /* Calculate the amount of advancement t mapped to each command */
-    /* We use a simple algorithm where we give to each command the same amount of advancement */
-    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    /* Old method with uniform advancement per command
-       float advPerCommand;
-       advPerCommand = 1F / numCommands;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numCommands;
-       advOfCommand = (t*numCommands - indCommand);
-    */
     
-    float accumulatedAdvancement = lengthsCommands[indCommand] / lengthSubshape;
-    float prevAccumulatedAdvancement = 0F;
-    
-    /* Find in what command the advancement point is  */
-    while(t > accumulatedAdvancement){
-      indCommand++;
-      prevAccumulatedAdvancement = accumulatedAdvancement;
-      accumulatedAdvancement += (lengthsCommands[indCommand] / lengthSubshape);
-    }
-    
-    float advOfCommand = (t-prevAccumulatedAdvancement) / (lengthsCommands[indCommand] / lengthSubshape);
-    
-
     // Split the affected command and reconstruct each of the shapes
-    RCommand[] splittedCommands = commands[indCommand].split(advOfCommand);
+    RCommand[] splittedCommands = commands[indOfElement].split(advOfElement);
 
     result[0] = new RSubshape();
-    for(int i = 0; i<indCommand; i++){
+    for(int i = 0; i<indOfElement; i++){
       result[0].addCommand(new RCommand(commands[i]));
     }
     result[0].addCommand(new RCommand(splittedCommands[0]));
     result[0].setStyle(this);
     
     result[1] = new RSubshape();
-    for(int i = indCommand + 1; i < countCommands(); i++){
+    for(int i = indOfElement + 1; i < countCommands(); i++){
       result[1].addCommand(new RCommand(commands[i]));
     }
     result[1].addCommand(new RCommand(splittedCommands[1]));
@@ -468,40 +395,6 @@ public class RSubshape extends RGeomElem
     
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);
-  }
-  /**
-   * Use this method to get the bounding box of the subshape. 
-   * @eexample getBounds
-   * @return RContour, the bounding box of the subshape in the form of a fourpoint contour
-   * @related draw ( )
-   */
-  public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
-    
-    for( int i = 0 ; i < this.countCommands() ; i++ )
-      {
-        RPoint[] points = this.commands[i].getHandles();
-        if(points!=null){
-          for( int k = 0 ; k < points.length ; k++ ){
-            float x = points[k].x;
-            float y = points[k].y;
-            if( x < xmin ) xmin = x;
-            if( x > xmax ) xmax = x;
-            if( y < ymin ) ymin = y;
-            if( y > ymax ) ymax = y;
-          }
-        }
-      }
-    
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
-    return c;
   }
   
   /**
@@ -688,7 +581,42 @@ public class RSubshape extends RGeomElem
     }
   */
   
-  void append(RCommand nextcommand)
+  private float[] indAndAdvAt(float t){
+    int indOfElement = 0;
+    float[] lengthsCurves = getCurveLengths();
+    float lengthCurve = getCurveLength();
+
+    /* Calculate the amount of advancement t mapped to each command */
+    /* We use a simple algorithm where we give to each command the same amount of advancement */
+    /* A more useful way would be to give to each command an advancement proportional to the length of the command */
+    /* Old method with uniform advancement per command
+       float advPerCommand;
+       advPerCommand = 1F / numSubshapes;
+       indOfElement = (int)(Math.floor(t / advPerCommand)) % numSubshapes;
+       advOfElement = (t*numSubshapes - indOfElement);
+    */
+    
+    float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
+    float prevAccumulatedAdvancement = 0F;
+    
+    /* Find in what command the advancement point is  */
+    while(t > accumulatedAdvancement){
+      indOfElement++;
+      prevAccumulatedAdvancement = accumulatedAdvancement;
+      accumulatedAdvancement += (lengthsCurves[indOfElement] / lengthCurve);
+    }
+    
+    float advOfElement = (t-prevAccumulatedAdvancement) / (lengthsCurves[indOfElement] / lengthCurve);
+
+    float[] indAndAdv = new float[2];
+
+    indAndAdv[0] = indOfElement;
+    indAndAdv[1] = advOfElement;
+    
+    return indAndAdv;
+  }
+
+  private void append(RCommand nextcommand)
   {
     RCommand[] newcommands;
     if(commands==null){

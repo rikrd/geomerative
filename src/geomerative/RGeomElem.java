@@ -76,9 +76,18 @@ public abstract class RGeomElem
   public void draw(){
     this.draw(RGeomerative.parent());
   }
-  
+
+
+  public abstract RPoint getPoint(float t);
+
+  public abstract RPoint getTangent(float t);
+
   public abstract RPoint[] getHandles();
+
   public abstract RPoint[] getPoints();
+
+  public abstract RPoint[] getTangents();
+
   public abstract int getType();
 
   //public abstract RMesh toMesh();
