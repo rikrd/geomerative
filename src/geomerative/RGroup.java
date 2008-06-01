@@ -31,26 +31,7 @@ public class RGroup extends RGeomElem
    * @invisible
    */
   public int type = RGeomElem.GROUP;
-  
-  /**
-   * @invisible
-   */
-  public final static int BYPOINT = 0;
-  
-  /**
-   * @invisible
-   */
-  public final static int BYELEMENTPOSITION = 1;
-  
-  /**
-   * @invisible
-   */
-  public final static int BYELEMENTINDEX = 2;
-  
-  static int adaptorType = BYELEMENTPOSITION;
-  static float adaptorScale = 1F;
-  static float adaptorLengthOffset = 0F;
-  
+    
   /**
    * Array of RGeomElem objects holding the elements of the group. When accessing theses elements we must cast them to their class in order to get all the functionalities of each representation. e.g. RShape s = group.elements[i].toShape()  If the element cannot be converted to the target class it will throw a RuntimeException, to ignore these, use try-catch syntax.
    * @eexample RGroup_elements
@@ -147,37 +128,7 @@ public class RGroup extends RGeomElem
         System.out.println("---------------");
       }
   }
-  
-  /**
-   * Use this to set the adaptor type.  RGroup.BYPOINT adaptor adapts the group to a particular shape by adapting each of the groups points.  This can cause deformations of the individual elements in the group.  RGroup.BYELEMENT adaptor adapts the group to a particular shape by adapting each of the groups elements.  This mantains the proportions of the shapes.
-   * @eexample RGroup_setAdaptor
-   * @param int adptorType, it can take the values RGroup.BYPOINT and RGroup.BYELEMENT
-   * */
-  public static void setAdaptor(int adptorType){
-    adaptorType = adptorType;
-  }
-  
-  /**
-   * Use this to set the adaptor scaling.  This scales the transformation of the adaptor.
-   * @eexample RGroup_setAdaptor
-   * @param float adptorScale, the scaling coefficient
-   * */
-  public static void setAdaptorScale(float adptorScale){
-    adaptorScale = adptorScale;
-  }
-  
-  /**
-   * Use this to set the adaptor length offset.  This specifies where to start adapting the group to the shape.
-   * @eexample RGroup_setAdaptorLengthOffset
-   * @param float adptorLengthOffst, the offset along the curve of the shape. Must be a value between 0 and 1;
-   * */
-  public static void setAdaptorLengthOffset(float adptorLengthOffset) throws RuntimeException{
-    if(adptorLengthOffset>=0F && adptorLengthOffset<=1F)
-      adaptorLengthOffset = adptorLengthOffset;
-    else
-      throw new RuntimeException("The adaptor length offset must take a value between 0 and 1.");
-  }
-  
+    
   /**
    * Use this method to draw the group.  This will draw each element at a time, without worrying about intersections or holes.  This is the main difference between having a shape with multiple subshapes and having a group with multiple shapes.
    * @eexample RGroup_draw
@@ -563,24 +514,23 @@ public class RGroup extends RGeomElem
   
   /**
    * Use this method to adapt a group of of figures to a shape.
-   * @eexample RGroup_adaptTo
+   * @eexample RGroup_adapt
    * @param RSubshape sshp, the subshape to which to adapt
    * @return RGroup, the adapted group
    */
-  public RGroup adaptTo(RSubshape sshp, float wght, float lngthOffset) throws RuntimeException{
-    RGroup result = new RGroup(this);
-    RContour c = result.getBounds();
+  public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{
+    RContour c = this.getBounds();
     float xmin = c.points[0].x;
     float xmax = c.points[2].x;
     float ymin = c.points[0].y;
     float ymax = c.points[2].y;
     
-    int numElements = result.countElements();
+    int numElements = this.countElements();
     
-    switch(adaptorType){
-    case BYPOINT:
+    switch(RGeomerative.adaptorType){
+    case RGeomerative.BYPOINT:
       for(int i=0;i<numElements;i++){
-        RGeomElem elem = result.elements[i];
+        RGeomElem elem = this.elements[i];
         RPoint[] ps = elem.getHandles();
         if(ps != null){
           for(int k=0;k<ps.length;k++){
@@ -590,8 +540,8 @@ public class RGroup extends RGeomElem
             float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
             float amp = (ymax-py);
             
-            RPoint tg = sshp.getTangent(t);
-            RPoint p = sshp.getPoint(t);
+            RPoint tg = shp.getTangent(t);
+            RPoint p = shp.getPoint(t);
             float angle = (float)Math.atan2(tg.y, tg.x) - (float)Math.PI/2F;
             
             ps[k].x = p.x + wght*amp*(float)Math.cos(angle);
@@ -600,18 +550,18 @@ public class RGroup extends RGeomElem
         }
       }
       break;
-    case BYELEMENTPOSITION:
+    case RGeomerative.BYELEMENTPOSITION:
       
       for(int i=0;i<numElements;i++){
-        RGeomElem elem = result.elements[i];
+        RGeomElem elem = this.elements[i];
         RContour elemc = elem.getBounds();
         
         float px = (elemc.points[2].x + elemc.points[0].x) / 2;
         float py = elemc.points[2].y;
         float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
         
-        RPoint tg = sshp.getTangent(t);
-        RPoint p = sshp.getPoint(t);
+        RPoint tg = shp.getTangent(t);
+        RPoint p = shp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
         RPoint pletter = new RPoint(px,0);
@@ -626,18 +576,18 @@ public class RGroup extends RGeomElem
       }
       break;
       
-    case BYELEMENTINDEX:
+    case RGeomerative.BYELEMENTINDEX:
       
       for(int i=0;i<numElements;i++){
-        RGeomElem elem = result.elements[i];
+        RGeomElem elem = this.elements[i];
         RContour elemc = elem.getBounds();
         
         float px = (elemc.points[2].x + elemc.points[0].x) / 2;
         float py = elemc.points[2].y;
         float t = ((float)i/(float)numElements + lngthOffset ) % 1F;
         
-        RPoint tg = sshp.getTangent(t);
-        RPoint p = sshp.getPoint(t);
+        RPoint tg = shp.getTangent(t);
+        RPoint p = shp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
         RPoint pletter = new RPoint(px,0);
@@ -653,20 +603,20 @@ public class RGroup extends RGeomElem
       break;
       
     default:
-      throw new RuntimeException("Unknown adaptor type : "+adaptorType+". The method setAdaptor() only accepts RGroup.BYPOINT or RGroup.BYELEMENT as parameter values.");
+      throw new RuntimeException("Unknown adaptor type : "+RGeomerative.adaptorType+". The method RGeomerative.setAdaptor() only accepts RGeomerative.BYPOINT or RGeomerative.BYELEMENT as parameter values.");
     }
-    return result;
   }
   
-  public RGroup adaptTo(RSubshape sshp) throws RuntimeException{
-    return adaptTo(sshp, adaptorScale, adaptorLengthOffset);
+  public void adapt(RShape shp) throws RuntimeException{
+    adapt(shp, RGeomerative.adaptorScale, RGeomerative.adaptorLengthOffset);
   }
   
-  public RGroup adaptTo(RShape shp) throws RuntimeException{
+  public RGroup adaptAll(RShape shp) throws RuntimeException{
     RGroup result = new RGroup();
     int numSubshapes = shp.countSubshapes();
     for(int i=0;i<numSubshapes;i++){
-      RGroup tempresult = adaptTo(shp.subshapes[i]);
+      RGroup tempresult = new RGroup(this);
+      tempresult.adapt(shp.subshapes[i].toShape());
       int numElements = tempresult.countElements();
       for(int j=0;j<numElements;j++){
         result.addElement(tempresult.elements[j]);

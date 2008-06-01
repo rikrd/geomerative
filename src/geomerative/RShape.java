@@ -494,6 +494,44 @@ public class RShape extends RGeomElem
     }
     return result;
   }
+
+  /**
+   * Use this to return a specific tangent on the curve.  It returns the RPoint tangent for a given advancement parameter t on the curve.
+   * @eexample getPoint
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * @return RPoint, the vertice returned.
+   * */
+  public RPoint getTangent(float t){
+    
+    float advOfCommand;
+    int numSubshapes = countSubshapes();
+    if(numSubshapes == 0){
+      return null;
+    }
+
+    if(t==0.0F){ return subshapes[0].getTangent(0F); }
+    
+    if(t==1.0F){ return subshapes[1].getTangent(1F); }
+    
+    float[] lengthsSubshapes = getCurveLengths();
+    float lengthSubshape = getCurveLength();
+
+    int indSubshape = 0;
+      
+    float accumulatedAdvancement = lengthsSubshapes[indSubshape] / lengthSubshape;
+    float prevAccumulatedAdvancement = 0F;
+    
+    /* Find in what command the advancement point is  */
+    while(t > accumulatedAdvancement){
+      indSubshape++;
+      prevAccumulatedAdvancement = accumulatedAdvancement;
+      accumulatedAdvancement += (lengthsSubshapes[indSubshape] / lengthSubshape);
+    }
+    
+    float advOfSubshape = (t-prevAccumulatedAdvancement) / (lengthsSubshapes[indSubshape] / lengthSubshape);
+
+    return subshapes[indSubshape].getTangent(advOfSubshape);
+  }
   
   public RShape[] splitAll(float t){
     RShape[] result = new RShape[2];
