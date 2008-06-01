@@ -349,10 +349,6 @@ public class RSVG
           case 'z':
           case 'C':
           case 'c':
-          case 'Q':
-          case 'q':
-          case 'T':
-          case 't':
           case 'S':
           case 's':
           case 'L':
@@ -406,10 +402,6 @@ public class RSVG
           case 'M':
           case 'c':
           case 'C':
-          case 'q':
-          case 'Q':
-          case 't':
-          case 'T':
           case 's':
           case 'S':
           case 'l':
@@ -444,25 +436,13 @@ public class RSVG
           case 'c':
             relp.setLocation(curp.x, curp.y);
           case 'C':
-            i = cubic(shp, curp, relp, refp, strp, tags, i);
-            break;
-
-          case 'q':
-            relp.setLocation(curp.x, curp.y);
-          case 'Q':
-            i = quad(shp, curp, relp, refp, strp, tags, i);
-            break;
-
-          case 't':
-            relp.setLocation(curp.x, curp.y);
-          case 'T':
-            i = smoothQuad(shp, curp, relp, refp, strp, tags, i);
+            i = curve(shp, curp, relp, refp, strp, tags, i);
             break;
             
           case 's':
             relp.setLocation(curp.x, curp.y);
           case 'S':
-            i = smoothCubic(shp, curp, relp, refp, strp, tags, i);
+            i = smooth(shp, curp, relp, refp, strp, tags, i);
             break;
             
           case 'l':
@@ -497,23 +477,7 @@ public class RSVG
     return i + 1;
   }
 
-  private int quad(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
-    shp.addQuadTo(RGeomerative.parent().parseFloat(tags[i])+relp.x, RGeomerative.parent().parseFloat(tags[i+1])+relp.y, RGeomerative.parent().parseFloat(tags[i+2])+relp.x, RGeomerative.parent().parseFloat(tags[i+3])+relp.y);
-
-    curp.setLocation(RGeomerative.parent().parseFloat(tags[i+2])+relp.x, RGeomerative.parent().parseFloat(tags[i+3])+relp.y);
-    refp.setLocation(2.0f*curp.x-(RGeomerative.parent().parseFloat(tags[i])+relp.x), 2.0f*curp.y-(RGeomerative.parent().parseFloat(tags[i+1])+relp.y));
-    return i + 3;
-  }
-
-  private int smoothQuad(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
-    shp.addQuadTo(refp.x, refp.y, RGeomerative.parent().parseFloat(tags[i])+relp.x, RGeomerative.parent().parseFloat(tags[i+1])+relp.y);
-
-    curp.setLocation(RGeomerative.parent().parseFloat(tags[i])+relp.x, RGeomerative.parent().parseFloat(tags[i+1])+relp.y);
-    refp.setLocation(2.0f*curp.x-(RGeomerative.parent().parseFloat(tags[i])+relp.x), 2.0f*curp.y-(RGeomerative.parent().parseFloat(tags[i+1])+relp.y));
-    return i + 1;
-  }
-
-  private int cubic(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+  private int curve(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
     shp.addBezierTo(RGeomerative.parent().parseFloat(tags[i])+relp.x, RGeomerative.parent().parseFloat(tags[i+1])+relp.y, RGeomerative.parent().parseFloat(tags[i+2])+relp.x, RGeomerative.parent().parseFloat(tags[i+3])+relp.y, RGeomerative.parent().parseFloat(tags[i+4])+relp.x, RGeomerative.parent().parseFloat(tags[i+5])+relp.y);
 
     curp.setLocation(RGeomerative.parent().parseFloat(tags[i+4])+relp.x, RGeomerative.parent().parseFloat(tags[i+5])+relp.y);
@@ -521,7 +485,7 @@ public class RSVG
     return i + 5;
   }
 
-  private int smoothCubic(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
+  private int smooth(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
     shp.addBezierTo(refp.x, refp.y, RGeomerative.parent().parseFloat(tags[i])+relp.x, RGeomerative.parent().parseFloat(tags[i+1])+relp.y, RGeomerative.parent().parseFloat(tags[i+2])+relp.x, RGeomerative.parent().parseFloat(tags[i+3])+relp.y);
 
     curp.setLocation(RGeomerative.parent().parseFloat(tags[i+2])+relp.x, RGeomerative.parent().parseFloat(tags[i+3])+relp.y);
