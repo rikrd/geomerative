@@ -183,7 +183,7 @@ public class RSVG
           geomElem.setAlpha(element.getStringAttribute("opacity"));
         }
         
-        // Add the elements to the group
+        // Get the style for the geometrical element
         grp.addElement(geomElem);      
       }
     }
