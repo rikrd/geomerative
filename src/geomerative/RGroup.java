@@ -602,7 +602,7 @@ public class RGroup extends RGeomElem
           break;
           
         case RGeomElem.SHAPE:
-          ((RGroup)element).insertSplitAll(t);
+          ((RShape)element).insertSplitAll(t);
           break;
         }
     }
