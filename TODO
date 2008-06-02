@@ -1,0 +1,3 @@
+* Implement methods of RShape and RGroup
+** segment(): should return a segmentated RShape or RGroup
+*** must determine how the segmentator sould split the commands (force the splitted commands to LINETO s)
