@@ -570,6 +570,11 @@ public class RShape extends RGeomElem
     return result;
   }
 
+  /**
+   * Use this to insert a split point into the shape.
+   * @eexample insertSplit
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * */
   public void insertSplit(float t){
     if((t == 0F) || (t == 1F)){
       return;
@@ -584,6 +589,11 @@ public class RShape extends RGeomElem
     return;
   }
 
+  /**
+   * Use this to insert a split point into each command of the shape.
+   * @eexample insertSplitAll
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * */
   public void insertSplitAll(float t){
     if((t == 0F) || (t == 1F)){
       return;
@@ -591,11 +601,11 @@ public class RShape extends RGeomElem
     
     int numSubshapes = countSubshapes();
     if(numSubshapes == 0){
-      return null;
+      return;
     }
     
     for( int i = 0 ; i < numSubshapes; i++ ) {
-      subshapes[indOfElement].insertSplit(advOfElement);
+      subshapes[i].insertSplitAll(t);
     }
 
     return;
