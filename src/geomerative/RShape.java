@@ -622,6 +622,71 @@ public class RShape extends RGeomElem
   }
 
   /**
+   * Use this method to adapt a group of of figures to a shape.
+   * @eexample RGroup_adapt
+   * @param RSubshape sshp, the subshape to which to adapt
+   * @return RGroup, the adapted group
+   */
+  public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{
+    RContour c = this.getBounds();
+    float xmin = c.points[0].x;
+    float xmax = c.points[2].x;
+    float ymin = c.points[0].y;
+    float ymax = c.points[2].y;
+    
+    switch(RGeomerative.adaptorType){
+    case RGeomerative.BYPOINT:
+      RPoint[] ps = this.getHandles();
+      if(ps != null){
+        for(int k=0;k<ps.length;k++){
+          float px = ps[k].x;
+          float py = ps[k].y;
+          
+          float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
+          float amp = (ymax-py);
+          
+          RPoint tg = shp.getTangent(t);
+          RPoint p = shp.getPoint(t);
+          float angle = (float)Math.atan2(tg.y, tg.x) - (float)Math.PI/2F;
+          
+          ps[k].x = p.x + wght*amp*(float)Math.cos(angle);
+          ps[k].y = p.y + wght*amp*(float)Math.sin(angle);
+        }
+      }
+      break;
+    case RGeomerative.BYELEMENTINDEX:
+    case RGeomerative.BYELEMENTPOSITION:
+      RContour elemc = shp.getBounds();
+      
+      float px = (elemc.points[2].x + elemc.points[0].x) / 2F;
+      float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
+      float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
+      
+      RPoint tg = shp.getTangent(t);
+      RPoint p = shp.getPoint(t);
+      float angle = (float)Math.atan2(tg.y, tg.x);
+      
+      RPoint pletter = new RPoint(px,py);
+      p.sub(pletter);
+      
+      RMatrix mtx = new RMatrix();
+      mtx.translate(p);
+      mtx.rotate(angle,pletter);
+      mtx.scale(wght,pletter);
+      
+      this.transform(mtx);
+      break;
+      
+    default:
+      throw new RuntimeException("Unknown adaptor type : "+RGeomerative.adaptorType+". The method RGeomerative.setAdaptor() only accepts RGeomerative.BYPOINT or RGeomerative.BYELEMENT as parameter values.");
+    }
+  }
+  
+  public void adapt(RShape shp) throws RuntimeException{
+    adapt(shp, RGeomerative.adaptorScale, RGeomerative.adaptorLengthOffset);
+  }
+
+  /**
    * Use this method to get the type of element this is.
    * @eexample RShape_getType
    * @return int, will allways return RGeomElem.SHAPE
