@@ -642,8 +642,8 @@ public class RShape extends RGeomElem
           float px = ps[k].x;
           float py = ps[k].y;
           
-          float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
-          float amp = (ymax-py);
+          float t = ((px-xmin)/(xmax-xmin) + lngthOffset) % 1.001F;
+          float amp = (py);
           
           RPoint tg = shp.getTangent(t);
           RPoint p = shp.getPoint(t);

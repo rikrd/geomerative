@@ -617,7 +617,7 @@ public class RGroup extends RGeomElem
             float px = ps[k].x;
             float py = ps[k].y;
             
-            float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
+            float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1.001F;
             float amp = (ymax-py);
             
             RPoint tg = shp.getTangent(t);
