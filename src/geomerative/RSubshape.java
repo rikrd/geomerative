@@ -290,6 +290,19 @@ public class RSubshape extends RGeomElem
     return commands[indOfElement].getTangent(advOfElement);
   }
 
+  public void insertSplit(float t){
+    if((t == 0F) || (t == 1F)){
+      return;
+    }
+
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+    
+    // Split the affected command and reconstruct each of the shapes
+    RCommand[] splittedCommands = commands[indOfElement].split(advOfElement);
+  }
+
   /**
    * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
    * @eexample getPoint
