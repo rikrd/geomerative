@@ -224,7 +224,6 @@ public class RGroup extends RGeomElem
       RGeomElem element = elements[i];
       if(element.getType() == RGeomElem.GROUP){
         RGeomElem newElement = ((RGroup)(element)).toPolygonGroup();
-        newElement.setStyle(element);
         result.addElement(newElement);
       }else{
         result.addElement(element.toPolygon());
@@ -244,8 +243,15 @@ public class RGroup extends RGeomElem
   public RGroup toShapeGroup() throws RuntimeException{
     RGroup result = new RGroup();
     for(int i=0;i<countElements();i++){
-      result.addElement(elements[i].toShape());
+      RGeomElem element = elements[i];
+      if(element.getType() == RGeomElem.GROUP){
+        RGeomElem newElement = ((RGroup)(element)).toShapeGroup();
+        result.addElement(newElement);
+      }else{
+        result.addElement(element.toShape());
+      }
     }
+    result.setStyle(this);
     return result;
   }
   
