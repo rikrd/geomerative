@@ -585,6 +585,10 @@ public class RShape extends RGeomElem
     float advOfElement = indAndAdv[1];
 
     subshapes[indOfElement].insertSplit(advOfElement);
+    
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = 0F;
 
     return;
   }
@@ -608,6 +612,10 @@ public class RShape extends RGeomElem
       subshapes[i].insertSplitAll(t);
     }
 
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = 0F;
+    
     return;
   }
 

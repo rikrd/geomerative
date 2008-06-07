@@ -318,6 +318,10 @@ public class RSubshape extends RGeomElem
     insert( splittedCommands[1], indOfElement );
     insert( splittedCommands[0], indOfElement );
 
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = 0F;
+
     return;
   }
 
@@ -348,6 +352,11 @@ public class RSubshape extends RGeomElem
       insert( splittedCommands[1], i );
       insert( splittedCommands[0], i );
     }
+
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = 0F;
+    
     return;
   }
 
