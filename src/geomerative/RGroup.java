@@ -623,7 +623,7 @@ public class RGroup extends RGeomElem
             float px = ps[k].x;
             float py = ps[k].y;
             
-            float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
+            float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1.001F;
             float amp = (ymax-py);
             
             RPoint tg = shp.getTangent(t);
@@ -642,15 +642,15 @@ public class RGroup extends RGeomElem
         RGeomElem elem = this.elements[i];
         RContour elemc = elem.getBounds();
         
-        float px = (elemc.points[2].x + elemc.points[0].x) / 2;
-        float py = elemc.points[2].y;
+        float px = (elemc.points[2].x + elemc.points[0].x) / 2F;
+        float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
         float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
         
         RPoint tg = shp.getTangent(t);
         RPoint p = shp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
-        RPoint pletter = new RPoint(px,0);
+        RPoint pletter = new RPoint(px,py);
         p.sub(pletter);
         
         RMatrix mtx = new RMatrix();
@@ -668,15 +668,15 @@ public class RGroup extends RGeomElem
         RGeomElem elem = this.elements[i];
         RContour elemc = elem.getBounds();
         
-        float px = (elemc.points[2].x + elemc.points[0].x) / 2;
-        float py = elemc.points[2].y;
+        float px = (elemc.points[2].x + elemc.points[0].x) / 2F;
+        float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
         float t = ((float)i/(float)numElements + lngthOffset ) % 1F;
         
         RPoint tg = shp.getTangent(t);
         RPoint p = shp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
-        RPoint pletter = new RPoint(px,0);
+        RPoint pletter = new RPoint(px,py);
         p.sub(pletter);
         
         RMatrix mtx = new RMatrix();
@@ -695,20 +695,6 @@ public class RGroup extends RGeomElem
   
   public void adapt(RShape shp) throws RuntimeException{
     adapt(shp, RGeomerative.adaptorScale, RGeomerative.adaptorLengthOffset);
-  }
-  
-  public RGroup adaptAll(RShape shp) throws RuntimeException{
-    RGroup result = new RGroup();
-    int numSubshapes = shp.countSubshapes();
-    for(int i=0;i<numSubshapes;i++){
-      RGroup tempresult = new RGroup(this);
-      tempresult.adapt(shp.subshapes[i].toShape());
-      int numElements = tempresult.countElements();
-      for(int j=0;j<numElements;j++){
-        result.addElement(tempresult.elements[j]);
-      }
-    }
-    return result;
   }
   
   private void append(RGeomElem elem){
