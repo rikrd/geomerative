@@ -570,6 +570,55 @@ public class RShape extends RGeomElem
     return result;
   }
 
+  /**
+   * Use this to insert a split point into the shape.
+   * @eexample insertHandle
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * */
+  public void insertHandle(float t){
+    if((t == 0F) || (t == 1F)){
+      return;
+    }
+
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+
+    subshapes[indOfElement].insertHandle(advOfElement);
+    
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = -1F;
+
+    return;
+  }
+
+  /**
+   * Use this to insert a split point into each command of the shape.
+   * @eexample insertHandleAll
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * */
+  public void insertHandleAll(float t){
+    if((t == 0F) || (t == 1F)){
+      return;
+    }
+    
+    int numSubshapes = countSubshapes();
+    if(numSubshapes == 0){
+      return;
+    }
+    
+    for( int i = 0 ; i < numSubshapes; i++ ) {
+      subshapes[i].insertHandleAll(t);
+    }
+
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = -1F;
+    
+    return;
+  }
+
   public RShape[] split(float t){
     RShape[] result = new RShape[2];
     result[0] = new RShape();
@@ -582,8 +631,9 @@ public class RShape extends RGeomElem
 
     if(t == 0.0F){ 
       result[0] = new RShape();
-      result[1] = new RShape(this);
       result[0].setStyle(this);
+
+      result[1] = new RShape(this);
       result[1].setStyle(this);
 
       return result;
@@ -591,8 +641,9 @@ public class RShape extends RGeomElem
     
     if(t == 1.0F){
       result[0] = new RShape(this);
-      result[1] = new RShape();
       result[0].setStyle(this);
+    
+      result[1] = new RShape();
       result[1].setStyle(this);
 
       return result;

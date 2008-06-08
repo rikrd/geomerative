@@ -291,10 +291,80 @@ public class RSubshape extends RGeomElem
   }
 
   /**
-   * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
-   * @eexample getPoint
+   * Use this to insert a split point into the subshape.
+   * @eexample insertHandle
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
-   * @return RPoint, the vertice returned.
+   * */
+  public void insertHandle(float t){
+    if((t == 0F) || (t == 1F)){
+      return;
+    }
+
+    float[] indAndAdv = indAndAdvAt(t);
+    int indOfElement = (int)(indAndAdv[0]);
+    float advOfElement = indAndAdv[1];
+    
+    // Split the affected command and reconstruct each of the shapes
+    RCommand[] splittedCommands = commands[indOfElement].split(advOfElement);
+
+    if(splittedCommands[0] == null || splittedCommands[1] == null) {
+      return;
+    }
+
+    // Extract the splitted command
+    extract( indOfElement );
+
+    // Insert the splittedCommands
+    insert( splittedCommands[1], indOfElement );
+    insert( splittedCommands[0], indOfElement );
+
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = -1F;
+
+    return;
+  }
+
+  /**
+   * Use this to insert a split point into each command of the subshape.
+   * @eexample insertHandleAll
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * */
+  public void insertHandleAll(float t){
+    if((t == 0F) || (t == 1F)){
+      return;
+    }
+
+    int numCommands = countCommands();
+    
+    for ( int i = 0; i<numCommands*2; i+=2 ) {
+      // Split the affected command and reconstruct each of the shapes
+      RCommand[] splittedCommands = commands[i].split(t);
+      
+      if(splittedCommands[0] == null || splittedCommands[1] == null) {
+        return;
+      }
+      
+      // Extract the splitted command
+      extract( i );
+      
+      // Insert the splittedCommands
+      insert( splittedCommands[1], i );
+      insert( splittedCommands[0], i );
+    }
+
+    // Clear the cache
+    lenCurves = null;
+    lenCurve = -1F;
+    
+    return;
+  }
+
+  /**
+   * Use this to split a subshape into two separate new subshapes.
+   * @eexample split
+   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * @return RSubshape[], an array of two RSubshape.
    * */
   public RSubshape[] split(float t){
     RSubshape[] result = new RSubshape[2];
@@ -628,5 +698,55 @@ public class RSubshape extends RGeomElem
       newcommands[this.commands.length]=nextcommand;
     }
     this.commands=newcommands; 
+  }
+
+  private void insert(RCommand newcommand, int i) throws RuntimeException{
+    if( i < 0 ){
+      throw new RuntimeException("Negative values for indexes are not valid.");
+    }
+
+    RCommand[] newcommands;
+    if( commands == null ){
+      newcommands = new RCommand[1];
+      newcommands[0] = newcommand;
+    }else{
+      if( i > commands.length ){
+        throw new RuntimeException("Index out of the bounds.  You are trying to insert an element with an index higher than the number of commands in the group.");        
+      }
+
+      newcommands = new RCommand[this.commands.length + 1];
+      System.arraycopy( this.commands , 0 , newcommands , 0 , i );
+      newcommands[i] = newcommand;
+      System.arraycopy( this.commands , i , newcommands , i + 1 , this.commands.length - i);
+    }
+    this.commands = newcommands;    
+  }
+
+  private void extract(int i) throws RuntimeException{
+    RCommand[] newcommands;
+    if(commands==null){
+      throw new RuntimeException("The group is empty. No commands to remove.");
+    }else{
+      if(i<0){
+        throw new RuntimeException("Negative values for indexes are not valid.");
+      }
+      if(i>commands.length-1){
+        throw new RuntimeException("Index out of the bounds of the group.  You are trying to erase an element with an index higher than the number of commands in the group.");
+      }
+      if(commands.length==1){
+        newcommands = null;
+      }else if(i==0){
+        newcommands = new RCommand[this.commands.length-1];
+        System.arraycopy(this.commands,1,newcommands,0,this.commands.length-1);
+      }else if(i==commands.length-1){
+        newcommands = new RCommand[this.commands.length-1];
+        System.arraycopy(this.commands,0,newcommands,0,this.commands.length-1);
+      }else{
+        newcommands = new RCommand[this.commands.length-1];
+        System.arraycopy(this.commands,0,newcommands,0,i);
+        System.arraycopy(this.commands,i+1,newcommands,i,this.commands.length-i-1);
+      }
+    }
+    this.commands=newcommands;
   }
 }
