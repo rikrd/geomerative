@@ -320,7 +320,7 @@ public class RSubshape extends RGeomElem
 
     // Clear the cache
     lenCurves = null;
-    lenCurve = 0F;
+    lenCurve = -1F;
 
     return;
   }
@@ -355,7 +355,7 @@ public class RSubshape extends RGeomElem
 
     // Clear the cache
     lenCurves = null;
-    lenCurve = 0F;
+    lenCurve = -1F;
     
     return;
   }
