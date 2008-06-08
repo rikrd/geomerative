@@ -823,8 +823,8 @@ public class RCommand extends RGeomElem
     }
 
     RCommand[] result = new RCommand[2];
-    result[0] = createBezier4(triangleMatrix[0][0], triangleMatrix[1][0], triangleMatrix[2][0], triangleMatrix[3][0]);
-    result[1] = createBezier4(triangleMatrix[3][0], triangleMatrix[2][1], triangleMatrix[1][2], triangleMatrix[0][3]);
+    result[0] = createBezier4(startPoint, triangleMatrix[1][0], triangleMatrix[2][0], triangleMatrix[3][0]);
+    result[1] = createBezier4(triangleMatrix[3][0], triangleMatrix[2][1], triangleMatrix[1][2], endPoint);
     return result;
   }
 
@@ -852,8 +852,8 @@ public class RCommand extends RGeomElem
     }
 
     RCommand[] result = new RCommand[2];
-    result[0] = createBezier3(triangleMatrix[0][0], triangleMatrix[1][0], triangleMatrix[2][0]);
-    result[1] = createBezier3(triangleMatrix[2][0], triangleMatrix[1][1], triangleMatrix[0][2]);
+    result[0] = createBezier3(startPoint, triangleMatrix[1][0], triangleMatrix[2][0]);
+    result[1] = createBezier3(triangleMatrix[2][0], triangleMatrix[1][1], endPoint);
     return result;
   }
 
@@ -881,8 +881,8 @@ public class RCommand extends RGeomElem
     }
 
     RCommand[] result = new RCommand[2];
-    result[0] = createLine(triangleMatrix[0][0], triangleMatrix[1][0]);
-    result[1] = createLine(triangleMatrix[1][0], triangleMatrix[0][1]);
+    result[0] = createLine(startPoint, triangleMatrix[1][0]);
+    result[1] = createLine(triangleMatrix[1][0], endPoint);
     return result;
   }
 
