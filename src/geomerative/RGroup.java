@@ -224,6 +224,7 @@ public class RGroup extends RGeomElem
       RGeomElem element = elements[i];
       if(element.getType() == RGeomElem.GROUP){
         RGeomElem newElement = ((RGroup)(element)).toPolygonGroup();
+        newElement.setStyle(element);
         result.addElement(newElement);
       }else{
         result.addElement(element.toPolygon());
@@ -243,15 +244,8 @@ public class RGroup extends RGeomElem
   public RGroup toShapeGroup() throws RuntimeException{
     RGroup result = new RGroup();
     for(int i=0;i<countElements();i++){
-      RGeomElem element = elements[i];
-      if(element.getType() == RGeomElem.GROUP){
-        RGeomElem newElement = ((RGroup)(element)).toShapeGroup();
-        result.addElement(newElement);
-      }else{
-        result.addElement(element.toShape());
-      }
+      result.addElement(elements[i].toShape());
     }
-    result.setStyle(this);
     return result;
   }
   
@@ -623,7 +617,7 @@ public class RGroup extends RGeomElem
             float px = ps[k].x;
             float py = ps[k].y;
             
-            float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1.001F;
+            float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1.001F; // FIX: Ugly and not safe
             float amp = (ymax-py);
             
             RPoint tg = shp.getTangent(t);
