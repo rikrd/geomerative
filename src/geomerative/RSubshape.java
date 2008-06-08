@@ -292,10 +292,10 @@ public class RSubshape extends RGeomElem
 
   /**
    * Use this to insert a split point into the subshape.
-   * @eexample insertSplit
+   * @eexample insertHandle
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
-  public void insertSplit(float t){
+  public void insertHandle(float t){
     if((t == 0F) || (t == 1F)){
       return;
     }
@@ -327,10 +327,10 @@ public class RSubshape extends RGeomElem
 
   /**
    * Use this to insert a split point into each command of the subshape.
-   * @eexample insertSplitAll
+   * @eexample insertHandleAll
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
-  public void insertSplitAll(float t){
+  public void insertHandleAll(float t){
     if((t == 0F) || (t == 1F)){
       return;
     }

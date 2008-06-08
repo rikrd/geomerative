@@ -584,10 +584,10 @@ public class RGroup extends RGeomElem
   
   /**
    * Use this to insert a split point into each command of the group.
-   * @eexample insertSplitAll
+   * @eexample insertHandleAll
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
-  public void insertSplitAll(float t){
+  public void insertHandleAll(float t){
     if((t == 0F) || (t == 1F)){
       return;
     }
@@ -598,11 +598,11 @@ public class RGroup extends RGeomElem
       switch(element.getType())
         {
         case RGeomElem.GROUP:
-          ((RGroup)element).insertSplitAll(t);
+          ((RGroup)element).insertHandleAll(t);
           break;
           
         case RGeomElem.SHAPE:
-          ((RShape)element).insertSplitAll(t);
+          ((RShape)element).insertHandleAll(t);
           break;
         }
     }
