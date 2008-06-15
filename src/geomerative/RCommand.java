@@ -524,11 +524,12 @@ public class RCommand extends RGeomElem
     float ax, bx, cx;
     float ay, by, cy;
     float tSquared, tDoubled, tCubed;
+    float dx, dy;
     
     switch(commandType){
     case LINETO:
-      float dx = endPoint.x - startPoint.x;
-      float dy = endPoint.y - startPoint.y;
+      dx = endPoint.x - startPoint.x;
+      dy = endPoint.y - startPoint.y;
       return new RPoint(startPoint.x + dx * t, startPoint.y + dy * t);
       
     case QUADBEZIERTO:
@@ -569,6 +570,7 @@ public class RCommand extends RGeomElem
    * */
   public RPoint[] getTangents(int segments){
     RPoint[] result;
+    float dt, t;
     switch(commandType)
       {
       case LINETO:
@@ -579,8 +581,8 @@ public class RCommand extends RGeomElem
       case QUADBEZIERTO:
       case CUBICBEZIERTO:
         result = new RPoint[segments];
-        float dt = 1F / segments;
-        float t = 0F;
+        dt = 1F / segments;
+        t = 0F;
         for(int i=0;i<segments;i++){
           result[i] = getTangent(t);
           t += dt;
@@ -606,24 +608,27 @@ public class RCommand extends RGeomElem
     t = (t > 1F) ? 1F : t;
     t = (t < 0F) ? 0F : t;
     
+    float dx, dy, tx, ty, t2, t_1, t_12;
+
     switch(commandType){
     case LINETO:
-      float dx = endPoint.x - startPoint.x;
-      float dy = endPoint.y - startPoint.y;
+      dx = endPoint.x - startPoint.x;
+      dy = endPoint.y - startPoint.y;
       return new RPoint(dx, dy);
       
     case QUADBEZIERTO:
       /* calculate the curve point at parameter value t */
-      float tx = 2F * ((startPoint.x - 2*controlPoints[0].x + endPoint.x) * t + (controlPoints[0].x - startPoint.x));
-      float ty = 2F * ((startPoint.y - 2*controlPoints[0].y + endPoint.y) * t + (controlPoints[0].y - startPoint.y));
-      float norm = (float)Math.sqrt(tx*tx + ty*ty);
-      return new RPoint(tx/norm,ty/norm);
+      tx = 2F * ((startPoint.x - 2*controlPoints[0].x + endPoint.x) * t + (controlPoints[0].x - startPoint.x));
+      ty = 2F * ((startPoint.y - 2*controlPoints[0].y + endPoint.y) * t + (controlPoints[0].y - startPoint.y));
+      //float norm = (float)Math.sqrt(tx*tx + ty*ty);
+      //return new RPoint(tx/norm,ty/norm);
+      return new RPoint(tx, ty);
       
     case CUBICBEZIERTO:
       /* calculate the curve point at parameter value t */
-      float t2 = t*t;
-      float t_1 = 1-t;
-      float t_12 = t_1*t_1;
+      t2 = t*t;
+      t_1 = 1-t;
+      t_12 = t_1*t_1;
       
       return new RPoint(-3F*t_12*startPoint.x + 3F*(3F*t2 - 4F*t +1F)*controlPoints[0].x + 3F*t*(2F-3F*t)*controlPoints[1].x + 3F*t2*endPoint.x, -3F*t_12*startPoint.y + 3F*(3F*t2 - 4F*t +1F)*controlPoints[0].y + 3F*t*(2F-3F*t)*controlPoints[1].y + 3F*t2*endPoint.y);
     }
@@ -645,13 +650,16 @@ public class RCommand extends RGeomElem
     t = (t > 1F) ? 1F : t;
     t = (t < 0F) ? 0F : t;
     
+    float dx, dy, dx2, dy2, t2;
+    float result;
     switch(commandType){
     case LINETO:
-      float dx = endPoint.x - startPoint.x;
-      float dy = endPoint.y - startPoint.y;
-      float dx2 = dx*dx;
-      float dy2 = dy*dy;
-      float t2 = t*t;
+      dx = endPoint.x - startPoint.x;
+      dy = endPoint.y - startPoint.y;
+      dx2 = dx*dx;
+      dy2 = dy*dy;
+      t2 = t*t;
+      //RGeomerative.parent().println("RCommand/LINETO::: getCurveLength: " + (float)Math.sqrt(dx2*t2 + dy2*t2));
       return (float)Math.sqrt(dx2*t2 + dy2*t2);
       
     case QUADBEZIERTO:
