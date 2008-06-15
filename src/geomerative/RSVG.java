@@ -299,9 +299,11 @@ public class RSVG
         switch(charline[i])
           {
           case '-':
-            charline=RGeomerative.parent().splice(charline,' ',i);
-            i++;
-            break;   
+            if(charline[i-1] != 'e' && charline[i-1] != 'E'){
+              charline=RGeomerative.parent().splice(charline,' ',i);
+              i++;
+            }
+            break;
           case ',':
           case '\n':
           case '\r':
@@ -364,10 +366,11 @@ public class RSVG
             break;
             
           case '-':
-            charline = RGeomerative.parent().splice(charline,' ',i);
-            i ++;
-            break;
-            
+            if(charline[i-1] != 'e' && charline[i-1] != 'E'){
+              charline=RGeomerative.parent().splice(charline,' ',i);
+              i++;
+            }
+            break;            
           case ',':
           case '\n':
           case '\r':
