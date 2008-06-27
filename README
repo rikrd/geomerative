@@ -140,10 +140,3 @@ KNOWN ISSUES
 
 - Under certain renderers there's a big loss of precision, resulting in really ugly renderings of fonts and polygons in general.
 - When we decrease the font size we get bad results, bad shapes.  This must have to do with the font fixed point arithmetics, haven't studied any of that yet.
-
-TODO
--------------
-
-- Uniform a bit more the methods for the different GeomElements, try treating the se same way a Shape, Polygon, Mesh, Contour, Subshape,... or at least have many common methods.  Maybe rewrite the library from scratch when I get some freetime!!!
-- Add color and stroke weight infromation to the vertices.
-- Adding the methods drawFromTo(PGraphics g, float t0, float t1) in the RShape, RSubshape and RCommand
