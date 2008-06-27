@@ -5,20 +5,14 @@
 *** insertNode()
 *** insertNodes()
 *** insertNodesAll()
-
 ** segment*() methods: should return a segmentated result
 *** segment()
 *** segmentMode()
 **** must determine how the segmentator sould split the commands (force the splitted commands to LINETO s)
-
 ** adapt*(): should return an adapted result
-
 ** split*(): should return the two resulting sides fo the split
-
 ** simplify( int n = numNodes / 3 ): return a simplified version removing n nodes
-
 ** polygonize(): return a polygon version (like toPolygon)
-
 ** skeleton(): return the skeleton of the shape or group
 
 
@@ -28,8 +22,8 @@
 ** Object hierarchy revision
 *** RCommand -> RCubicBezier, RQuadBezier, RLine, RArc should all inherit from RCommand
 *** RGeomElem -> RGroup, RShape, RSubShape, RCommand should all inherit from RGeomElem
-
 ** Cache of polygons, meshes, etc 
+** Add color and stroke weight infromation to the vertices.
 
 
 * API
@@ -40,6 +34,7 @@
 ** Rename setAdaptor -> adaptMode
 ** Move createEllipse, createStar, createRectangle... into RGeomerative.*
 ** Move segmentMode, adaptMode... into RGeomerative.*
+** Uniform a bit more the methods for the different GeomElements, try treating the se same way a Shape, Polygon, Mesh, Contour, Subshape,... or at least have many common methods.  Maybe rewrite the library from scratch when I get some freetime!!!
 
 
 * Documentation
