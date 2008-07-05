@@ -17,7 +17,7 @@
     along with Geomerative.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package geomerative ;
+package geomerative;
 
 /**
  * RPoint is a very simple interface for creating, holding and drawing 2D points.
@@ -64,6 +64,12 @@ public class RPoint
   {
     this.x = x;
     this.y = y;
+  }
+  
+  public RPoint(double x, double y)
+  {
+    this.x = (float)x;
+    this.y = (float)y;
   }
   
   public RPoint(RPoint p)

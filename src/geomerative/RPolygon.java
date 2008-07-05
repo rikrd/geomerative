@@ -17,7 +17,7 @@
     along with Geomerative.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-package geomerative ;
+package geomerative;
 import processing.core.*;
 
 
@@ -94,11 +94,15 @@ public class RPolygon extends RGeomElem
    * @return RPolygon, the circular polygon newly created
    */
   static public RPolygon createCircle(float x, float y, float radius,int detail){
-    RPolygon circle = new RPolygon();
+    RPoint[] points = new RPoint[detail];
+    double radiansPerStep = 2*Math.PI/detail;
     for(int i=0;i<detail;i++){
-      circle.addPoint((float)(radius*Math.cos(2*Math.PI*i/detail)) + x ,(float)(radius*Math.sin(2*Math.PI*i/detail)) + y);
+      points[i] = new RPoint(
+        radius*Math.cos(i*radiansPerStep) + x,
+        radius*Math.sin(i*radiansPerStep) + y
+      );
     }
-    return circle;
+    return new RPolygon(points);
   }
   
   static public RPolygon createCircle(float radius, int detail){
@@ -145,13 +149,20 @@ public class RPolygon extends RGeomElem
    * @return RPolygon, the starform polygon newly created
    */
   static public RPolygon createStar(float x, float y, float radiusBig, float radiusSmall, int spikes){
-    RPolygon star = new RPolygon();
-    for(int i=0;i<2*spikes;i+=2){
-      star.addPoint((float)(radiusBig*Math.cos(Math.PI*i/spikes))+x,(float)(radiusBig*Math.sin(Math.PI*i/spikes))+y);
-      star.addPoint((float)(radiusSmall*Math.cos(Math.PI*(i+1)/spikes))+x,(float)(radiusSmall*Math.sin(Math.PI*(i+1)/spikes))+y);
+    int numPoints = spikes*2;
+    RPoint[] points = new RPoint[numPoints];
+    double radiansPerStep = Math.PI/spikes;
+    for(int i=0;i<numPoints;i+=2){
+      points[i] = new RPoint(
+        radiusBig*Math.cos(i*radiansPerStep) + x,
+        radiusBig*Math.sin(i*radiansPerStep) + y
+      );
+      points[i+1] = new RPoint(
+        radiusSmall*Math.cos(i*radiansPerStep) + x,
+        radiusSmall*Math.sin(i*radiansPerStep) + y
+      );
     }
-    star.addClose();
-    return star;
+    return new RPolygon(points);
   }
   
   static public RPolygon createStar(float radiusBig, float radiusSmall, int spikes){
@@ -167,16 +178,22 @@ public class RPolygon extends RGeomElem
    * @return RPolygon, the ring polygon newly created
    */
   static public RPolygon createRing(float x, float y, float radiusBig, float radiusSmall, int detail){
+    RPoint[] inner = new RPoint[detail];
+    RPoint[] outer = new RPoint[detail];
+    double radiansPerStep = 2*Math.PI/detail;
+    for(int i=0;i<detail;i++){
+      inner[i] = new RPoint(
+        radiusSmall*Math.cos(i*radiansPerStep) + x,
+        radiusSmall*Math.sin(i*radiansPerStep) + y
+      );
+      outer[i] = new RPoint(
+        radiusBig*Math.cos(i*radiansPerStep) + x,
+        radiusBig*Math.sin(i*radiansPerStep) + y
+      );
+    }
     RPolygon ring = new RPolygon();
-    for(int i=0;i<detail;i++){
-      ring.addPoint((float)(radiusBig*Math.cos(2*Math.PI*i/detail))+x,(float)(radiusBig*Math.sin(2*Math.PI*i/detail))+y);
-    }
-    ring.addClose();
-    ring.addContour();
-    for(int i=0;i<detail;i++){
-      ring.addPoint((float)(radiusSmall*Math.cos(2*Math.PI*i/detail))+x,(float)(radiusSmall*Math.sin(2*Math.PI*i/detail))+y);
-    }
-    ring.addClose();
+    ring.addContour(outer);
+    ring.addContour(inner);
     return ring;
   }
   
@@ -238,6 +255,10 @@ public class RPolygon extends RGeomElem
    */
   public void addContour(){
     this.append(new RContour());
+  }
+  
+  public void addContour(RPoint[] points){
+    this.append(new RContour(points));
   }
   
   public void addContour(RContour c){
