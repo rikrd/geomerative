@@ -68,6 +68,10 @@ public class RPolygon extends RGeomElem
     type = RGeomElem.POLYGON;
   }
   
+  public RPolygon(RPoint[] points){
+    this(new RContour(points));
+  }
+  
   public RPolygon(RContour newcontour){
     this.append(newcontour);
     type = RGeomElem.POLYGON;

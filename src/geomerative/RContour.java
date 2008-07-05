@@ -19,6 +19,7 @@
 
 package geomerative ;
 import processing.core.*;
+import java.util.List;
 
 /**
  * RContour is a reduced interface for creating, holding and drawing contours. Contours are ordered lists of points (RPoint) which define the outlines of polygons.  Contours can be self-intersecting.
@@ -123,6 +124,41 @@ public class RContour extends RGeomElem
   public void addPoint(float x, float y){
     this.append(new RPoint(x,y));
   }
+  
+  /**
+   *  Efficiently add an array of points to the contour.
+   */
+  public void addPoints(RPoint[] morePoints) {
+    if(points == null) {
+      this.points = morePoints;
+    } else {
+      RPoint[] newPoints = new RPoint[this.points.length+morePoints.length];
+      System.arraycopy(this.points,0,newPoints,0,this.points.length);
+      System.arraycopy(morePoints,0,newPoints,this.points.length,morePoints.length);
+      this.points = newPoints;
+    }
+  }
+  
+  /**
+   *  Efficiently add a list of points to the contour.
+   */
+  public void addPoints(List morePoints) {
+    int start = 0;
+    if(points == null) {
+      this.points = new RPoint[morePoints.size()];
+    } else {
+      RPoint[] newPoints = new RPoint[this.points.length+morePoints.size()];
+      System.arraycopy(this.points,0,newPoints,0,this.points.length);
+      this.points = newPoints;
+      start = morePoints.size();
+    }
+    // it would be nice to be able to access the ArrayList's internal array!
+    for(int i = start, j = 0; i < points.length; i++) {
+      points[i] = (RPoint)morePoints.get(j);
+      j++;
+    }
+  }
+  
   
   /**
    * Use this method to get the bounding box of the contour. 
