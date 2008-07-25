@@ -14,7 +14,8 @@ library/geomerative.jar: src/geomerative/*.java
 	mkdir -p build
 	mkdir -p library
 	javac $(JAVAC_ARGS) src/geomerative/*.java -d build -cp $(CLASSPATH)
-	jar cvf library/geomerative.jar -C build geomerative
+	cp external/batikfont.jar library/geomerative.jar
+	jar uvf library/geomerative.jar -C build geomerative
 
 
 test: library/geomerative.jar test/geomerative/*.java
