@@ -68,13 +68,11 @@ class FastRClip
   // -----------------
   // --- Constants ---
   // -----------------
-  private static final boolean DEBUG = false;
   
   // Maximum precision for floats
   private static final double GPC_EPSILON = 2.2204460492503131e-016;
   //private static final float GPC_EPSILON = 1.192092896e-07F;
-  //private static final float GPC_EPSILON = 1F;
-  private static final String GPC_VERSION = "2.31";
+  static final String GPC_VERSION = "2.31";
   
   private static final int LEFT  = 0;
   private static final int RIGHT = 1;
@@ -150,15 +148,13 @@ class FastRClip
     /* Build LMT */
     LmtTable lmt_table = new LmtTable();
     ScanBeamTreeEntries sbte = new ScanBeamTreeEntries();
-    EdgeTable s_heap = null;
-    EdgeTable c_heap = null;
     if (!subj.isEmpty())
       {
-        s_heap = build_lmt(lmt_table, sbte, subj, SUBJ, op);
+        build_lmt(lmt_table, sbte, subj, SUBJ, op);
       }
     if (!clip.isEmpty())
       {
-        c_heap = build_lmt(lmt_table, sbte, clip, CLIP, op);
+        build_lmt(lmt_table, sbte, clip, CLIP, op);
       }
     
     /* Return a NULL result if no contours contribute */
@@ -742,15 +738,13 @@ class FastRClip
     /* Build LMT */
     LmtTable lmt_table = new LmtTable();
     ScanBeamTreeEntries sbte = new ScanBeamTreeEntries();
-    EdgeTable s_heap = null;
-    EdgeTable c_heap = null;
     if (!subj.isEmpty())
       {
-        s_heap = build_lmt(lmt_table, sbte, subj, SUBJ, op);
+        build_lmt(lmt_table, sbte, subj, SUBJ, op);
       }
     if (!clip.isEmpty())
       {
-        c_heap = build_lmt(lmt_table, sbte, clip, CLIP, op);
+        build_lmt(lmt_table, sbte, clip, CLIP, op);
       }
     
     /* Return a NULL result if no contours contribute */
@@ -2185,7 +2179,7 @@ class FastRClip
   private static class BundleState
   {
     private String state;
-    private BundleState( String state ) { state = state; }
+    private BundleState( String state ) { this.state = state; }
     
     public static final BundleState UNBUNDLED   = new BundleState( "UNBUNDLED"   ); // Isolated edge not within a bundle
     public static final BundleState BUNDLE_HEAD = new BundleState( "BUNDLE_HEAD" ); // Bundle head node
@@ -2708,7 +2702,7 @@ class FastRClip
   // -------------
   // --- DEBUG ---
   // -------------
-  private static void print_sbt( float[] sbt )
+  static void print_sbt( float[] sbt )
   {
     System.out.println("");
     System.out.println("sbt.length="+sbt.length);

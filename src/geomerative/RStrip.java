@@ -83,7 +83,7 @@ public class RStrip
    */
   public void draw(PGraphics g){
     int numVertices = countVertices();
-    g.beginShape(g.TRIANGLE_STRIP);
+    g.beginShape(PConstants.TRIANGLE_STRIP);
     for(int i=0;i<numVertices;i++){
       g.vertex(vertices[i].x,vertices[i].y);
     }

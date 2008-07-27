@@ -644,14 +644,13 @@ public class RCommand extends RGeomElem
    * @invisible
    * */
   public float getCurveLength(float t){
-    float arclength = 0F;
     
     /* limit the value of t between 0 and 1 */
     t = (t > 1F) ? 1F : t;
     t = (t < 0F) ? 0F : t;
     
     float dx, dy, dx2, dy2, t2;
-    float result;
+    
     switch(commandType){
     case LINETO:
       dx = endPoint.x - startPoint.x;
@@ -782,7 +781,7 @@ public class RCommand extends RGeomElem
    * @return RPoint[], the tangent vectors returned in an array.
    * */  
   public RCommand[] split(float t){
-    RCommand[] result;
+    
     switch(commandType)
       {
       case LINETO:
@@ -814,12 +813,12 @@ public class RCommand extends RGeomElem
       }
     }
 
-    RPoint[] controlPoints = this.getHandles();
+    RPoint[] ctrlPoints = this.getHandles();
 
     // Copy control points to triangle matrix
     for(int i = 0; i <= 3; i++){
-      triangleMatrix[0][i].x = controlPoints[i].x;
-      triangleMatrix[0][i].y = controlPoints[i].y;
+      triangleMatrix[0][i].x = ctrlPoints[i].x;
+      triangleMatrix[0][i].y = ctrlPoints[i].y;
     }
     
     // Triangle computation
@@ -844,11 +843,11 @@ public class RCommand extends RGeomElem
       }
     }
     
-    RPoint[] controlPoints = this.getHandles();
+    RPoint[] ctrlPoints = this.getHandles();
 
     // Copy control points to triangle matrix
     for(int i = 0; i <= 2; i++){
-      triangleMatrix[0][i] = controlPoints[i];
+      triangleMatrix[0][i] = ctrlPoints[i];
     }
     
     // Triangle computation
@@ -873,11 +872,11 @@ public class RCommand extends RGeomElem
       }
     }
 
-    RPoint[] controlPoints = this.getHandles();
+    RPoint[] ctrlPoints = this.getHandles();
 
     // Copy control points to triangle matrix
     for(int i = 0; i <= 1; i++){
-      triangleMatrix[0][i] = controlPoints[i];
+      triangleMatrix[0][i] = ctrlPoints[i];
     }
     
     // Triangle computation
@@ -1154,7 +1153,6 @@ public class RCommand extends RGeomElem
     float dt = 1F/steps;
     
     float fx, fy, fdx, fdy;
-    float temp = dt * dt;
     
     fx = startPoint.x;
     fdx = (endPoint.x - startPoint.x) * dt;
@@ -1451,7 +1449,7 @@ public class RCommand extends RGeomElem
     if(steps < 4) steps = 4;
     
     float dt = 1F/steps;
-    float untilPoint = RCommand.segmentAccOffset;
+
     
     float fx, fy, fdx, fdy, fddx, fddy, fdd_per_2x, fdd_per_2y, fix, fiy;
     float temp = dt * dt;

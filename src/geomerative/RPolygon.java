@@ -683,17 +683,17 @@ public class RPolygon extends RGeomElem
   }
 
   public RPoint getPoint(float t){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
 
   public RPoint getTangent(float t){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
   
   public RPoint[] getTangents(){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
 

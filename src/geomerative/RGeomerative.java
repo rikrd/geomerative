@@ -57,6 +57,8 @@ public class RGeomerative implements PConstants{
   static float adaptorLengthOffset = 0F;
 
   public static class LibraryNotInitializedException extends NullPointerException{
+    private static final long serialVersionUID = -3710605630786298671L;
+
     LibraryNotInitializedException(){
       super("Must call Geomerative.init(this); before using this library.");
     }
@@ -65,6 +67,10 @@ public class RGeomerative implements PConstants{
   public static void init(PApplet _parent){
     parent = _parent;
     initialized = true;
+  }
+  
+  public static boolean initialized() {
+    return initialized;
   }
 
   protected static PApplet parent(){

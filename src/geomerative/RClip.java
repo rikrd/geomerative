@@ -72,8 +72,7 @@ class RClip
   // Maximum precision for floats
   private static final double GPC_EPSILON = 2.2204460492503131e-016 ;
   //private static final float GPC_EPSILON = 1.192092896e-07F;
-  //private static final float GPC_EPSILON = 1F;
-  private static final String GPC_VERSION = "2.31" ;
+  static final String GPC_VERSION = "2.31";
   
   private static final int LEFT  = 0 ;
   private static final int RIGHT = 1 ;
@@ -265,11 +264,9 @@ class RClip
     /* Build LMT */
     LmtTable lmt_table = new LmtTable();
     ScanBeamTreeEntries sbte = new ScanBeamTreeEntries();
-    EdgeTable s_heap = null ;
-    EdgeTable c_heap = null ;
     if (!subj.isEmpty())
       {
-        s_heap = build_lmt(lmt_table, sbte, subj, SUBJ, op);
+        build_lmt(lmt_table, sbte, subj, SUBJ, op);
       }
     if( DEBUG )
       {
@@ -279,7 +276,7 @@ class RClip
       }
     if (!clip.isEmpty())
       {
-        c_heap = build_lmt(lmt_table, sbte, clip, CLIP, op);
+        build_lmt(lmt_table, sbte, clip, CLIP, op);
       }
     if( DEBUG )
       {
@@ -899,11 +896,9 @@ class RClip
     /* Build LMT */
     LmtTable lmt_table = new LmtTable();
     ScanBeamTreeEntries sbte = new ScanBeamTreeEntries();
-    EdgeTable s_heap = null ;
-    EdgeTable c_heap = null ;
     if (!subj.isEmpty())
       {
-        s_heap = build_lmt(lmt_table, sbte, subj, SUBJ, op);
+        build_lmt(lmt_table, sbte, subj, SUBJ, op);
       }
     if( DEBUG )
       {
@@ -913,7 +908,7 @@ class RClip
       }
     if (!clip.isEmpty())
       {
-        c_heap = build_lmt(lmt_table, sbte, clip, CLIP, op);
+        build_lmt(lmt_table, sbte, clip, CLIP, op);
       }
     if( DEBUG )
       {

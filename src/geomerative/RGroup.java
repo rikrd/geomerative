@@ -637,7 +637,6 @@ public class RGroup extends RGeomElem
     RContour c = this.getBounds();
     float xmin = c.points[0].x;
     float xmax = c.points[2].x;
-    float ymin = c.points[0].y;
     float ymax = c.points[2].y;
     
     int numElements = this.countElements();

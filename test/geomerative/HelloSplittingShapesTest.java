@@ -16,7 +16,7 @@ public class HelloSplittingShapesTest extends TestCase
     }
     
     public void testOldMeshing() {
-      RGeomerative.useFastClip = true;
+      RGeomerative.useFastClip = false;
       RMesh mesh = RClip.polygonToMesh(poly);
       assertNotNull(mesh);
     }

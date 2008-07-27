@@ -19,7 +19,6 @@
 
 package geomerative;
 import processing.core.*;
-import java.io.*;
 import java.awt.Toolkit;
 
 import org.apache.batik.svggen.font.*;

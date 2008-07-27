@@ -423,7 +423,7 @@ public class RSubshape extends RGeomElem
    * @param g PGraphics, the graphics object on which to draw the subshape
    */
   public void draw(PGraphics g){
-    int numCommands = countCommands();
+    countCommands();
     
     // By default always draw with an adaptative segmentator
     int lastSegmentator = RCommand.segmentType;
@@ -439,14 +439,14 @@ public class RSubshape extends RGeomElem
     for(int i=0;i<points.length;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+    g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
     
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);
   }
   
   public void draw(PApplet g){
-    int numCommands = countCommands();
+    countCommands();
     
     // By default always draw with an adaptative segmentator
     int lastSegmentator = RCommand.segmentType;
@@ -461,7 +461,7 @@ public class RSubshape extends RGeomElem
     for(int i=0;i<points.length;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+    g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
     
     // Restore the user set segmentator
     RCommand.setSegmentator(lastSegmentator);

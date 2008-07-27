@@ -150,7 +150,7 @@ public class RMesh extends RGeomElem
    */
   public void draw(PGraphics g){
     for(int i=0;i<this.countStrips();i++){
-      g.beginShape(g.TRIANGLE_STRIP);
+      g.beginShape(PConstants.TRIANGLE_STRIP);
       if(this.texture != null)
         {
           g.texture(this.texture);
@@ -173,7 +173,7 @@ public class RMesh extends RGeomElem
             g.vertex(x, y);
           }
       }
-      g.endShape(g.CLOSE);
+      g.endShape(PConstants.CLOSE);
     }
     
     
@@ -181,7 +181,7 @@ public class RMesh extends RGeomElem
   
   public void draw(PApplet g){
     for(int i=0;i<this.countStrips();i++){
-      g.beginShape(g.TRIANGLE_STRIP);
+      g.beginShape(PConstants.TRIANGLE_STRIP);
       if(this.texture != null)
         {
           g.texture(this.texture);
@@ -189,7 +189,7 @@ public class RMesh extends RGeomElem
       for(int j=0;j<this.strips[i].vertices.length;j++){
         g.vertex(this.strips[i].vertices[j].x,this.strips[i].vertices[j].y);
       }
-      g.endShape(g.CLOSE);
+      g.endShape(PConstants.CLOSE);
     }
   }		
   
@@ -321,17 +321,17 @@ public class RMesh extends RGeomElem
   }
   
   public RPoint getPoint(float t){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
 
   public RPoint getTangent(float t){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
   
   public RPoint[] getTangents(){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
   

@@ -19,6 +19,7 @@
 
 package geomerative ;
 import processing.core.*;
+
 import java.util.List;
 
 /**
@@ -95,7 +96,7 @@ public class RContour extends RGeomElem
     for(int i=0;i<numPoints;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+    g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
     if(beforeFill)
       g.fill(g.fillColor);
   }
@@ -108,7 +109,7 @@ public class RContour extends RGeomElem
     for(int i=0;i<numPoints;i++){
       g.vertex(points[i].x,points[i].y);
     }
-    g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+    g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
     if(beforeFill)
       g.fill(g.g.fillColor);
   }
@@ -220,17 +221,17 @@ public class RContour extends RGeomElem
   }
   
   public RPoint getPoint(float t){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
 
   public RPoint getTangent(float t){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
   
   public RPoint[] getTangents(){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
   

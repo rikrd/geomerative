@@ -347,12 +347,12 @@ public abstract class RGeomElem
 
   protected void setStyle(String styleString){
     //RGeomerative.parent().println("Style parsing: " + styleString);
-    String[] styleTokens = RGeomerative.parent().splitTokens(styleString, ";");
+    String[] styleTokens = PApplet.splitTokens(styleString, ";");
     
     for(int i = 0; i < styleTokens.length; i++){
-      String[] tokens = RGeomerative.parent().splitTokens(styleTokens[i], ":");
+      String[] tokens = PApplet.splitTokens(styleTokens[i], ":");
       
-      tokens[0] = RGeomerative.parent().trim(tokens[0]);
+      tokens[0] = PApplet.trim(tokens[0]);
       
       if(tokens[0].equals("fill")){
         setFill(tokens[1]);
@@ -379,7 +379,7 @@ public abstract class RGeomElem
         setAlpha(tokens[1]);
         
       }else{
-        RGeomerative.parent().println("Attribute '" + tokens[0] + "' not known.  Ignoring it.");
+        PApplet.println("Attribute '" + tokens[0] + "' not known.  Ignoring it.");
       }
     }
   }
@@ -438,9 +438,9 @@ public abstract class RGeomElem
   public void setStrokeWeight(String str){
     //RGeomerative.parent().println("  set strokeWeight by String: " + str);
     if(str.endsWith("px")){
-      setStrokeWeight(RGeomerative.parent().parseFloat(str.substring(0, str.length() - 2)));
+      setStrokeWeight(PApplet.parseFloat(str.substring(0, str.length() - 2)));
     }else{
-      setStrokeWeight(RGeomerative.parent().parseFloat(str));
+      setStrokeWeight(PApplet.parseFloat(str));
     }
 
     
@@ -484,7 +484,7 @@ public abstract class RGeomElem
   }
 
   public void setStrokeAlpha(String str){
-    setStrokeAlpha((int)(RGeomerative.parent().parseFloat(str) * 255F));
+    setStrokeAlpha((int)(PApplet.parseFloat(str) * 255F));
   }
 
   public void setFillAlpha(int opacity){
@@ -494,7 +494,7 @@ public abstract class RGeomElem
 
   public void setFillAlpha(String str){
     //RGeomerative.parent().println("  set fillOpacity: " + str);
-    setFillAlpha((int)(RGeomerative.parent().parseFloat(str) * 255F));
+    setFillAlpha((int)(PApplet.parseFloat(str) * 255F));
     //RGeomerative.parent().println("  fillColor after: " + RGeomerative.parent().hex(fillColor));
   }  
 
@@ -525,7 +525,7 @@ public abstract class RGeomElem
 
   public void setAlpha(String str){
     //RGeomerative.parent().println("Setting string opacity: " + str);
-    setAlpha(RGeomerative.parent().parseFloat(str));
+    setAlpha(PApplet.parseFloat(str));
   }
 
   public void setId(String str){
@@ -533,7 +533,7 @@ public abstract class RGeomElem
   }
 
   protected void calculateCurveLengths(){
-    RGeomerative.parent().println("Feature not yet implemented for this class.");
+    PApplet.println("Feature not yet implemented for this class.");
   }
 
   /**
@@ -573,13 +573,13 @@ public abstract class RGeomElem
   }
 
   private int getColor(String colorString){
-    colorString = RGeomerative.parent().trim(colorString);
+    colorString = PApplet.trim(colorString);
     
     if(colorString.startsWith("#")){
-      return RGeomerative.parent().unhex("FF"+colorString.substring(1));
+      return PApplet.unhex("FF"+colorString.substring(1));
     }else if(colorString.startsWith("rgb")){
-      String[] rgb = RGeomerative.parent().splitTokens(colorString, "rgb( , )");
-      return (int)RGeomerative.parent().color(RGeomerative.parent().parseInt(rgb[0]), RGeomerative.parent().parseInt(rgb[1]), RGeomerative.parent().parseInt(rgb[2]));
+      String[] rgb = PApplet.splitTokens(colorString, "rgb( , )");
+      return (int)RGeomerative.parent().color(PApplet.parseInt(rgb[0]), PApplet.parseInt(rgb[1]), PApplet.parseInt(rgb[2]));
     }else{
       if(colorString.equals("black")){
         return 0;

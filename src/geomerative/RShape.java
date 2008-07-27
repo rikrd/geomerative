@@ -19,7 +19,6 @@
 
 package geomerative ;
 import processing.core.*;
-import java.lang.reflect.Method;
 
 /**
  * RShape is a reduced interface for creating, holding and drawing complex Shapes. Shapes are groups of one or more subshapes (RSubshape).  Shapes can be selfintersecting and can contain holes.  This interface also allows you to transform shapes into polygons by segmenting the curves forming the shape.
@@ -682,8 +681,6 @@ public class RShape extends RGeomElem
     RContour c = this.getBounds();
     float xmin = c.points[0].x;
     float xmax = c.points[2].x;
-    float ymin = c.points[0].y;
-    float ymax = c.points[2].y;
     
     switch(RGeomerative.adaptorType){
     case RGeomerative.BYPOINT:
@@ -838,12 +835,6 @@ public class RShape extends RGeomElem
   }
   
   
-  /**
-   * Remove all of the subshapes.  Creates an empty shape.
-   */
-  private void clear(){
-    this.subshapes = null;
-  }
   
   private void append(RSubshape nextsubshape)
   {
@@ -925,7 +916,9 @@ public class RShape extends RGeomElem
 
         // Restore the fill state and stroke state and color
         if(fillBefore){
-          g.fill(g.fillColor);
+          g.fill(fillColorBefore);
+        } else {
+          g.noFill();
         }
         g.strokeWeight(strokeWeightBefore);
         g.stroke(strokeColorBefore);
@@ -1067,7 +1060,7 @@ public class RShape extends RGeomElem
           }
 
         }
-        g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+        g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
         if(!RGeomerative.ignoreStyles){
           restoreContext(g);
@@ -1113,7 +1106,7 @@ public class RShape extends RGeomElem
           }
 
         }
-        g.endShape(closed ? RGeomerative.parent().CLOSE : RGeomerative.parent().OPEN);
+        g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
         if(!RGeomerative.ignoreStyles){
           restoreContext(g);
