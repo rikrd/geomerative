@@ -97,7 +97,7 @@ class RClip
   private RClip()
   {
   }
-  
+    
   // ----------------------
   // --- Static Methods ---
   // ----------------------
@@ -241,6 +241,10 @@ class RClip
    */
   private static RPolygon clip( OperationType op, RPolygon subj, RPolygon clip, Class polyClass )
   {
+    if(RGeomerative.useFastClip) {
+      return FastRClip.clip(op, subj, clip, polyClass);
+    }
+    
     RPolygon result = createNewPoly( polyClass ) ;
     
     /* Test for trivial NULL result cases */
@@ -866,6 +870,10 @@ class RClip
    */
   private static RMesh clip( OperationType op, RPolygon subj, RPolygon clip )
   {
+    if(RGeomerative.useFastClip) {
+      return FastRClip.clip(op, subj, clip);
+    }
+    
     PolygonNode tlist=null, tnn, tn;
     EdgeNode prev_edge, next_edge, edge, cf=null, succ_edge, e0, e1;
     VertexNode lt, ltn, rt, rtn;
@@ -2288,7 +2296,7 @@ class RClip
   // ---------------------
   // --- Inner Classes ---
   // ---------------------
-  private static class OperationType
+  public static class OperationType
   {
     private String m_Type ;
     private OperationType( String type ) { m_Type = type; }

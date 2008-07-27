@@ -47,6 +47,7 @@ public class ClipTest extends TestCase {
     RPolygon slow_int=null,slow_union=null,slow_xor=null,slow_diff=null;
     RPolygon fast_int=null,fast_union=null,fast_xor=null,fast_diff=null;
     
+    RGeomerative.useFastClip = false;
     f.record("slow intersection");
     for(int i = 0; i < n; i++) { slow_int   = RClip.intersection(a,b); }
     f.record("slow union");
@@ -56,14 +57,15 @@ public class ClipTest extends TestCase {
     f.record("slow diff");
     for(int i = 0; i < n; i++) { slow_diff  = RClip.diff(a,b); }
     
+    RGeomerative.useFastClip = true;
     f.record("fast int");
-    for(int i = 0; i < n; i++) { fast_int   = FastRClip.intersection(a,b); }
+    for(int i = 0; i < n; i++) { fast_int   = RClip.intersection(a,b); }
     f.record("fast union");
-    for(int i = 0; i < n; i++) { fast_union = FastRClip.union(a,b); }
+    for(int i = 0; i < n; i++) { fast_union = RClip.union(a,b); }
     f.record("fast xor");
-    for(int i = 0; i < n; i++) { fast_xor   = FastRClip.xor(a,b); }
+    for(int i = 0; i < n; i++) { fast_xor   = RClip.xor(a,b); }
     f.record("fast diff");
-    for(int i = 0; i < n; i++) { fast_diff  = FastRClip.diff(a,b); }
+    for(int i = 0; i < n; i++) { fast_diff  = RClip.diff(a,b); }
     f.stop();
     f.print();
     

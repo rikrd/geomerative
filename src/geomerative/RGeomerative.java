@@ -34,6 +34,11 @@ public class RGeomerative implements PConstants{
 
   /**
    * @invisible
+   */  
+  public static boolean useFastClip = true;
+
+  /**
+   * @invisible
    */
   public final static int BYPOINT = 0;
   
