@@ -682,7 +682,21 @@ public class RCommand extends RGeomElem
   public float getCurveLength(){
     return getCurveLength(1F);
   }
-  
+
+  public RPoint[][] getPointPaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint[][] getHandlePaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint[][] getTangentPaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }  
   
   /**
    * Use this method to draw the command. 

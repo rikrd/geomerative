@@ -550,6 +550,86 @@ public class RShape extends RGeomElem
     }
     return result;
   }
+
+  /**
+   * Use this to return the points of each path of the group.  It returns the points in the way of an array of array of RPoint.
+   * @eexample RGroup_getPoints
+   * @return RPoint[], the points returned in an array.
+   * */
+  public RPoint[][] getPointPaths(){
+    int numSubshapes = countSubshapes();
+    if(numSubshapes == 0){
+      return null;
+    }
+    
+    RPoint[][] result=null;
+    RPoint[][] newresult=null;
+    for(int i=0;i<numSubshapes;i++){
+      RPoint[][] newPointPaths = subshapes[i].getPointPaths();
+      if(newPointPaths != null){
+        if(result == null){
+          result = new RPoint[newPointPaths.length][];
+          System.arraycopy(newPointPaths,0,result,0,newPointPaths.length);
+        }else{
+          newresult = new RPoint[result.length + newPointPaths.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPointPaths,0,newresult,result.length,newPointPaths.length);
+          result = newresult;
+        }
+      }
+    }
+    return result;    
+  }
+
+  public RPoint[][] getHandlePaths(){
+    int numSubshapes = countSubshapes();
+    if(numSubshapes == 0){
+      return null;
+    }
+    
+    RPoint[][] result=null;
+    RPoint[][] newresult=null;
+    for(int i=0;i<numSubshapes;i++){
+      RPoint[][] newHandlePaths = subshapes[i].getHandlePaths();
+      if(newHandlePaths != null){
+        if(result == null){
+          result = new RPoint[newHandlePaths.length][];
+          System.arraycopy(newHandlePaths,0,result,0,newHandlePaths.length);
+        }else{
+          newresult = new RPoint[result.length + newHandlePaths.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newHandlePaths,0,newresult,result.length,newHandlePaths.length);
+          result = newresult;
+        }
+      }
+    }
+    return result;    
+  }
+
+  public RPoint[][] getTangentPaths(){
+    int numSubshapes = countSubshapes();
+    if(numSubshapes == 0){
+      return null;
+    }
+    
+    RPoint[][] result=null;
+    RPoint[][] newresult=null;
+    for(int i=0;i<numSubshapes;i++){
+      RPoint[][] newTangentPaths = subshapes[i].getTangentPaths();
+      if(newTangentPaths != null){
+        if(result == null){
+          result = new RPoint[newTangentPaths.length][];
+          System.arraycopy(newTangentPaths,0,result,0,newTangentPaths.length);
+        }else{
+          newresult = new RPoint[result.length + newTangentPaths.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newTangentPaths,0,newresult,result.length,newTangentPaths.length);
+          result = newresult;
+        }
+      }
+    }
+    return result;    
+  }
   
   public RShape[] splitAll(float t){
     RShape[] result = new RShape[2];

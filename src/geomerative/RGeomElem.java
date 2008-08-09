@@ -88,6 +88,12 @@ public abstract class RGeomElem
 
   public abstract RPoint[] getTangents();
 
+  public abstract RPoint[][] getHandlePaths();
+
+  public abstract RPoint[][] getPointPaths();
+
+  public abstract RPoint[][] getTangentPaths();
+
   public abstract int getType();
 
   //public abstract RMesh toMesh();

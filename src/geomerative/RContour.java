@@ -234,6 +234,21 @@ public class RContour extends RGeomElem
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
+
+  public RPoint[][] getPointPaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint[][] getHandlePaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint[][] getTangentPaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
   
   /**
    * Use this method to know if the contour is a hole. Remember to use the method update() on the polygon before using this method.

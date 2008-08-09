@@ -184,6 +184,36 @@ public class RSubshape extends RGeomElem
     
     return newresult;
   }
+
+  /**
+   * Use this to return the points of each path of the subshape.  It returns the points in the way of an array of array of RPoint.
+   * @eexample RGroup_getPoints
+   * @return RPoint[], the points returned in an array.
+   * */
+  public RPoint[][] getPointPaths(){
+    RPoint[][] result = {this.getPoints()};
+    return result;
+  }
+
+  /**
+   * Use this to return the handles of each path of the subshape.  It returns the handles in the way of an array of array of RPoint.
+   * @eexample RGroup_getHandles
+   * @return RPoint[], the handles returned in an array.
+   * */
+  public RPoint[][] getHandlePaths(){
+    RPoint[][] result = {this.getHandles()};
+    return result;
+  }
+
+  /**
+   * Use this to return the tangents of each path of the subshape.  It returns the tangents in the way of an array of array of RPoint.
+   * @eexample RGroup_getTangents
+   * @return RPoint[], the tangents returned in an array.
+   * */
+  public RPoint[][] getTangentPaths(){
+    RPoint[][] result = {this.getTangents()};
+    return result;
+  }
   
   protected void calculateCurveLengths(){
     lenCurves = new float[countCommands()];
@@ -209,17 +239,17 @@ public class RSubshape extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numCommands;i++){
-      RPoint[] newPoints = commands[i].getTangents();
-      if(newPoints!=null){
-        if(newPoints.length!=1){
+      RPoint[] newTangents = commands[i].getTangents();
+      if(newTangents!=null){
+        if(newTangents.length!=1){
           int overlap = 1;
           if(result==null){
-            result = new RPoint[newPoints.length];
-            System.arraycopy(newPoints,0,result,0,newPoints.length);
+            result = new RPoint[newTangents.length];
+            System.arraycopy(newTangents,0,result,0,newTangents.length);
           }else{
-            newresult = new RPoint[result.length + newPoints.length - overlap];
+            newresult = new RPoint[result.length + newTangents.length - overlap];
             System.arraycopy(result,0,newresult,0,result.length);
-            System.arraycopy(newPoints,overlap,newresult,result.length,newPoints.length - overlap);
+            System.arraycopy(newTangents,overlap,newresult,result.length,newTangents.length - overlap);
             result = newresult;
           }
         }

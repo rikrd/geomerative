@@ -334,6 +334,21 @@ public class RMesh extends RGeomElem
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
+
+  public RPoint[][] getPointPaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint[][] getHandlePaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
+
+  public RPoint[][] getTangentPaths(){
+    PApplet.println("Feature not yet implemented for this class.");
+    return null;
+  }
   
   /**
    * Use this method to get the type of element this is.
