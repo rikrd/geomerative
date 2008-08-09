@@ -35,7 +35,8 @@ dist: library/geomerative.jar doc
 	##  Copy docs
 	cp README $(DIST_DIR)
 	cp COPYING $(DIST_DIR)
-	
+	cp HANDBOOK $(DIST_DIR)
+
 	cp -r examples $(DIST_DIR)
 	cp -r tutorial $(DIST_DIR)
 	
