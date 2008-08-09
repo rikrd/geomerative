@@ -1,0 +1,67 @@
+import processing.xml.*;
+import processing.opengl.*;
+import geomerative.*;
+
+RGroup grp;
+//RShape grp;
+RPoint[][] pointPaths;
+
+float xmag, ymag, newYmag, newXmag = 0;
+float z = 0;
+
+boolean ignoringStyles = false;
+
+void setup(){
+  size(600, 600, OPENGL);
+  smooth();
+  g.smooth = true; 
+
+  // VERY IMPORTANT: Allways initialize the library before using it
+  RGeomerative.init(this);
+  RGeomerative.ignoreStyles(ignoringStyles);
+  
+  RCommand.setSegmentator(RCommand.ADAPTATIVE);
+  
+  RSVG svgLoader = new RSVG();
+  grp = svgLoader.toGroup("bot1.svg");
+  grp.centerIn(g, 100, 1, 1);
+  
+  pointPaths = grp.getPointPaths();
+}
+
+void draw(){
+  translate(width/2, height/2);
+  
+  newXmag = mouseX/float(width) * TWO_PI;
+  newYmag = mouseY/float(height) * TWO_PI;
+  
+  float diff = xmag-newXmag;
+  if (abs(diff) >  0.01) { xmag -= diff/4.0; }
+  
+  diff = ymag-newYmag;
+  if (abs(diff) >  0.01) { ymag -= diff/4.0; }
+  
+  rotateX(-ymag); 
+  rotateY(-xmag); 
+  
+  background(0);
+  stroke(255);
+  noFill();
+  
+  z = 10 * sin( frameCount/50.0 * PI);
+  
+  for(int i = 0; i<pointPaths.length; i++){
+    translate(0,0,z);
+
+    beginShape();
+    for(int j = 0; j<pointPaths[i].length; j++){
+      vertex(pointPaths[i][j].x, pointPaths[i][j].y);
+    }
+    endShape();
+  }
+}
+
+void mousePressed(){
+  ignoringStyles = !ignoringStyles;
+  RGeomerative.ignoreStyles(ignoringStyles);
+}
