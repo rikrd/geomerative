@@ -1,5 +1,0 @@
-#!/bin/bash
-rm -fr documentation
-javadoc -classpath $PROCESSING_PATH/libraries/xml/library/xml.jar:$PROCESSING_PATH/lib/core.jar:/home/rmarxer/dev/geomerative/external/batikfont.jar -doclet prodoc.StartDoclet -docletpath /home/rmarxer/apps/prodoc -sourcepath  ./src geomerative
-mv ./src/documentation documentation
-cp templates/stylesheet.css documentation
