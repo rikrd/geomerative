@@ -53,11 +53,17 @@ RPoint[] myControlPoints = myShape.getHandles();
 RPoint[] myPoints = myGroup.getPoints();
 
 
-TODO:
-5- Sometimes it's useful to get points of the different contours separately, in that case we would use getPaths() and getCurvePaths().  These methods are similar to the others but return an array of arrays of RPoint.
 
-RPoint[][] myControlPaths = myShape.getHandlePaths();
+
+
+TODO:
+5- Sometimes it's useful to get points of the different contours separately, in that case we would use getHandlePaths() and getPointPaths().  These methods are similar to the others but return an array of arrays of RPoint.
+
+RPoint[][] myHandlePaths = myShape.getHandlePaths();
 RPoint[][] myPointPaths = myShape.getPointPaths();
+
+
+
 
 6- In some even more rare cases we might want to access the tangets of the curves.  In that case we use.
 
