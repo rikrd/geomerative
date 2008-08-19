@@ -319,7 +319,34 @@ public class RSubshape extends RGeomElem
     
     return commands[indOfElement].getTangent(advOfElement);
   }
+  
+  
+  /**
+   * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the path.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+   * @param RPoint p, the point for which to test containement..
+   * @return bool, true if the point is in the path.
+   * */
+  public boolean contains(RPoint p){
+    RPoint[] verts = getPoints();
+      
+    if(verts == null){
+      return false;
+    }
 
+    float testx = p.x;
+    float testy = p.y;
+    int nvert = verts.length;
+    int i, j = 0;
+    boolean c = false;
+    for (i = 0, j = nvert-1; i < nvert; j = i++) {
+      if ( ((verts[i].y > testy) != (verts[j].y>testy)) &&
+           (testx < (verts[j].x-verts[i].x) * (testy-verts[i].y) / (verts[j].y-verts[i].y) + verts[i].x) )
+        c = !c;
+    }
+    return c;
+  }
+  
+  
   /**
    * Use this to insert a split point into the subshape.
    * @eexample insertHandle

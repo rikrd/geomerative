@@ -349,6 +349,11 @@ public class RMesh extends RGeomElem
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
+
+  public boolean contains(RPoint p){
+    PApplet.println("Feature not yet implemented for this class.");
+    return false;
+  }
   
   /**
    * Use this method to get the type of element this is.

@@ -492,6 +492,20 @@ public class RGroup extends RGeomElem
     }
     return result;    
   }
+
+  /**
+   * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the group.
+   * @param RPoint p, the point for which to test containement..
+   * @return bool, true if the point is in the path.
+   * */
+  public boolean contains(RPoint p){
+    boolean result = false;
+    for(int i = 0;i<countElements();i++){
+      result |= elements[i].contains(p);
+    }
+    return result;
+  }
+
   
   /**
    * Use this method to get the type of element this is.

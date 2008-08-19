@@ -522,6 +522,43 @@ public class RShape extends RGeomElem
   }
 
   /**
+   * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the shape.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+   * @param RPoint p, the point for which to test containement..
+   * @return bool, true if the point is in the path.
+   * */
+  public boolean contains(RPoint p){
+    RPoint[][] pointpaths = getPointPaths();
+    
+    if(pointpaths == null){
+      return false;
+    }
+    
+    RPoint[] verts = pointpaths[0];
+    for(int k=1;k<pointpaths.length;k++){
+      verts = (RPoint[])RGeomerative.parent().append(verts, new RPoint(0F, 0F));
+      verts = (RPoint[])RGeomerative.parent().concat(verts, pointpaths[k]);
+    }
+    verts = (RPoint[])RGeomerative.parent().append(verts, new RPoint(0F, 0F));
+    
+    if(verts == null){
+      return false;
+    }
+    
+    float testx = p.x;
+    float testy = p.y;
+    int nvert = verts.length;
+    int i, j = 0;
+    boolean c = false;
+    for (i = 0, j = nvert-1; i < nvert; j = i++) {
+      if ( ((verts[i].y > testy) != (verts[j].y>testy)) &&
+           (testx < (verts[j].x-verts[i].x) * (testy-verts[i].y) / (verts[j].y-verts[i].y) + verts[i].x) ){
+        c = !c;
+      }
+    }
+    return c;
+  }
+
+  /**
    * Use this to return the points on the curve of the shape.  It returns the point in the way of an RPoint.
    * @eexample RShape_getTangents
    * @return RPoint[], the points returned in an array.
@@ -1050,7 +1087,9 @@ public class RShape extends RGeomElem
           }catch(Exception e){}
           
           RMesh tempMesh = this.toMesh();
-          tempMesh.draw(p);
+          if ( tempMesh != null ){
+            tempMesh.draw(p);
+          }
           
           // Restore the old context
           p.stroke(strokeColorBefore);

@@ -331,7 +331,9 @@ public class RPolygon extends RGeomElem
       return new RMesh();
     }
     RMesh mesh = RClip.polygonToMesh( this );
-    mesh.setStyle(this);
+    if ( mesh != null ) {
+      mesh.setStyle( this );
+    }
     return mesh;
   }
   
@@ -710,6 +712,11 @@ public class RPolygon extends RGeomElem
   public RPoint[][] getTangentPaths(){
     PApplet.println("Feature not yet implemented for this class.");
     return null;
+  }
+
+  public boolean contains(RPoint p){
+    PApplet.println("Feature not yet implemented for this class.");
+    return false;
   }
   
   /**

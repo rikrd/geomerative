@@ -94,6 +94,8 @@ public abstract class RGeomElem
 
   public abstract RPoint[][] getTangentPaths();
 
+  public abstract boolean contains(RPoint p);
+
   public abstract int getType();
 
   //public abstract RMesh toMesh();

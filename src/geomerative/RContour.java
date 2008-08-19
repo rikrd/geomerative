@@ -249,6 +249,11 @@ public class RContour extends RGeomElem
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
+
+  public boolean contains(RPoint p){
+    PApplet.println("Feature not yet implemented for this class.");
+    return false;
+  }
   
   /**
    * Use this method to know if the contour is a hole. Remember to use the method update() on the polygon before using this method.

@@ -697,6 +697,11 @@ public class RCommand extends RGeomElem
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }  
+
+  public boolean contains(RPoint p){
+    PApplet.println("Feature not yet implemented for this class.");
+    return false;
+  }
   
   /**
    * Use this method to draw the command. 
