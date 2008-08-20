@@ -78,6 +78,10 @@ public class RPolygon extends RGeomElem
   }
   
   public RPolygon(RPolygon p){
+    if (p == null){
+      return;
+    }
+
     for(int i=0;i<p.countContours();i++){
       this.append(new RContour(p.contours[i]));
     }
