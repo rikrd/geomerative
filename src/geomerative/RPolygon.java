@@ -42,7 +42,7 @@ public class RPolygon extends RGeomElem
   public int type = RGeomElem.POLYGON;
   public static int defaultDetail = 50;
 
-  
+  private RMesh cachedMesh = null;
   /**
    * Array of RContour objects holding the contours of the polygon. 
    * @eexample contours
@@ -330,10 +330,17 @@ public class RPolygon extends RGeomElem
     if (contours == null){
       return new RMesh();
     }
-    RMesh mesh = RClip.polygonToMesh( this );
+    
+    if (this.cachedMesh == null){      
+      //System.out.println("Creating cached mesh");
+      this.cachedMesh = RClip.polygonToMesh( this );
+    }
+    
+    RMesh mesh = new RMesh( this.cachedMesh );
     if ( mesh != null ) {
       mesh.setStyle( this );
     }
+    
     return mesh;
   }
   

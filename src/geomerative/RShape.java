@@ -42,7 +42,8 @@ public class RShape extends RGeomElem
    */
   public RSubshape[] subshapes;
   protected int currentSubshape = 0;
-  
+
+  private RPolygon cachedPolygon = null;
   // ----------------------
   // --- Public Methods ---
   // ----------------------
@@ -360,19 +361,25 @@ public class RShape extends RGeomElem
    * @related draw ( )
    */
   public RPolygon toPolygon(){
-    int numSubshapes = countSubshapes();
-    
-    RPolygon result = new RPolygon();
-    for(int i=0;i<numSubshapes;i++){
-      RPoint[] newpoints = this.subshapes[i].getPoints();
-      RContour c = new RContour(newpoints);
-      c.closed = subshapes[i].closed;
-      c.setStyle(subshapes[i]);
-      result.addContour(c);
+    if(this.cachedPolygon == null){
+      int numSubshapes = countSubshapes();
+      
+      RPolygon result = new RPolygon();
+      for(int i=0;i<numSubshapes;i++){
+        RPoint[] newpoints = this.subshapes[i].getPoints();
+        RContour c = new RContour(newpoints);
+        c.closed = subshapes[i].closed;
+        c.setStyle(subshapes[i]);
+        result.addContour(c);
+      }
+
+      this.cachedPolygon = result;
     }
+
+    RPolygon polygon = new RPolygon(this.cachedPolygon);
+    polygon.setStyle(this);
     
-    result.setStyle(this);
-    return result;
+    return polygon;
   }
   
   /**

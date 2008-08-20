@@ -58,6 +58,10 @@ public class RMesh extends RGeomElem
   }
   
   public RMesh(RMesh m){
+    if(m == null){
+      return;
+    }
+    
     for(int i=0;i<m.countStrips();i++){
       this.append(new RStrip(m.strips[i]));
     }
@@ -229,7 +233,7 @@ public class RMesh extends RGeomElem
     float xmax = -Float.MAX_VALUE ;
     float ymax = -Float.MAX_VALUE ;
     
-    for(int j=0;j<this.countStrips();j++){
+    for(int j=0 ; j < this.countStrips() ; j++ ){
       for( int i = 0 ; i < this.strips[j].countVertices() ; i++ )
         {
           float x = this.strips[j].vertices[i].x;
