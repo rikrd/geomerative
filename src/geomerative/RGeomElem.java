@@ -627,10 +627,10 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
+    float xmax = Float.NEGATIVE_INFINITY ;
+    float ymax = Float.NEGATIVE_INFINITY ;
+    float xmin = Float.POSITIVE_INFINITY ;
+    float ymin = Float.POSITIVE_INFINITY ;
 
     RPoint[] points = getHandles();
     if(points!=null){
