@@ -527,6 +527,22 @@ public class RShape extends RGeomElem
    * @return bool, true if the point is in the path.
    * */
   public boolean contains(RPoint p){
+    float testx = p.x;
+    float testy = p.y;
+
+    // Test for containment in bounding box
+    RContour bbox = getBounds();
+    float xmin = bbox.points[0].x;
+    float xmax = bbox.points[2].x;
+
+    float ymin = bbox.points[0].y;
+    float ymax = bbox.points[2].y;
+    
+    if( (testx < xmin) || (testx > xmax) || (testy < ymin) || (testy > ymax)){
+      return false;
+    }
+
+    // Test for containment in shape
     RPoint[][] pointpaths = getPointPaths();
     
     if(pointpaths == null){
@@ -544,8 +560,6 @@ public class RShape extends RGeomElem
       return false;
     }
     
-    float testx = p.x;
-    float testy = p.y;
     int nvert = verts.length;
     int i, j = 0;
     boolean c = false;

@@ -499,6 +499,22 @@ public class RGroup extends RGeomElem
    * @return bool, true if the point is in the path.
    * */
   public boolean contains(RPoint p){
+    float testx = p.x;
+    float testy = p.y;
+
+    // Test for containment in bounding box
+    RContour bbox = getBounds();
+    float xmin = bbox.points[0].x;
+    float xmax = bbox.points[2].x;
+
+    float ymin = bbox.points[0].y;
+    float ymax = bbox.points[2].y;
+    
+    if( (testx < xmin) || (testx > xmax) || (testy < ymin) || (testy > ymax)){
+      return false;
+    }
+    
+    // Test for containment in elements
     boolean result = false;
     for(int i = 0;i<countElements();i++){
       result |= elements[i].contains(p);
