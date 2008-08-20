@@ -87,6 +87,8 @@ public class RPolygon extends RGeomElem
     }
     type = RGeomElem.POLYGON;
 
+    //this.cachedMesh = p.cachedMesh;
+
     setStyle(p);
   }
   
@@ -331,26 +333,27 @@ public class RPolygon extends RGeomElem
    * @related draw ( )
    */
   public RMesh toMesh(){
-    if (contours == null){
+    if ( contours == null ){
       return new RMesh();
     }
     
-    if (this.cachedMesh == null){      
-      //System.out.println("Creating cached mesh");
+    if ( this.cachedMesh == null ){      
+      //System.out.println( "Creating cached mesh / id:" + this.id );
       this.cachedMesh = RClip.polygonToMesh( this );
     }
     
-    RMesh mesh = new RMesh( this.cachedMesh );
-    if ( mesh != null ) {
-      mesh.setStyle( this );
+    RMesh mesh = this.cachedMesh;
+    if ( mesh == null ) {
+      return null;
     }
     
+    mesh.setStyle( this ) ;
     return mesh;
   }
   
   public void print(){
     System.out.println("polygon: ");
-    for(int i=0;i<countContours();i++)
+    for( int i = 0 ; i < countContours() ; i++ )
       {
         System.out.println("---  contour "+i+" ---");
         contours[i].print();

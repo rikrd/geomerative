@@ -68,6 +68,8 @@ public class RShape extends RGeomElem
     }
     type = RGeomElem.SHAPE;
 
+    //this.cachedPolygon = s.cachedPolygon;
+
     setStyle(s);
   }
 
@@ -376,7 +378,7 @@ public class RShape extends RGeomElem
       this.cachedPolygon = result;
     }
 
-    RPolygon polygon = new RPolygon(this.cachedPolygon);
+    RPolygon polygon = this.cachedPolygon;
     polygon.setStyle(this);
     
     return polygon;
