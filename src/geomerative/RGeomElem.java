@@ -619,6 +619,35 @@ public abstract class RGeomElem
       }
     }
   }
+
+  /**
+   * Transform the geometric object to fit in a rectangle defined by the parameters passed.
+   * @eexample getBounds
+   * @return RContour, the bounding box of the element in the form of a fourpoint contour
+   * @related getCenter ( )
+   */
+  public void transform(float x, float y, float w, float h, boolean keepAspectRatio){
+    RMatrix mtx = new RMatrix();
+    RContour orig = this.getBounds();
+    float orig_w = orig.points[2].x-orig.points[0].x;
+    float orig_h = orig.points[2].y-orig.points[0].y;
+    
+    mtx.translate(-orig.points[0].x, -orig.points[0].y);
+    if(keepAspectRatio){
+      mtx.scale(Math.min(w/orig_w, h/orig_h));
+    }else{
+      mtx.scale(w/orig_w, h/orig_h);
+    }
+    mtx.translate(x, y);
+    
+    this.transform(mtx);
+    return;
+  }
+
+  public void transform(float x, float y, float w, float h){
+    this.transform(x, y, w, h, true);
+    return;
+  }
   
   /**
    * Use this method to get the bounding box of the element. 
@@ -649,7 +678,7 @@ public abstract class RGeomElem
           {
           ymin = tempy;
           }
-        else if( tempy > ymax )
+       else if( tempy > ymax )
           {
             ymax = tempy;
           }
@@ -664,6 +693,30 @@ public abstract class RGeomElem
     return c;
   }
   
+
+  /**
+   * Use this method to get the width of the element. 
+   * @eexample getWidth
+   * @return float, the width of the element
+   * @related getCenter ( )
+   */
+  public float getWidth(){
+    RContour orig = this.getBounds();
+    return orig.points[2].x-orig.points[0].x;
+  }
+
+
+  /**
+   * Use this method to get the height of the element. 
+   * @eexample getHeight
+   * @return float, the height of the element
+   * @related getCenter ( )
+   */
+  public float getHeight(){
+    RContour orig = this.getBounds();
+    return orig.points[2].y-orig.points[0].y;
+  }
+
   
   /**
    * Use this method to get the center point of the element.
