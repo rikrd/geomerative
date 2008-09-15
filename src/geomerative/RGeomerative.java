@@ -60,7 +60,7 @@ public class RGeomerative implements PConstants{
     private static final long serialVersionUID = -3710605630786298671L;
 
     LibraryNotInitializedException(){
-      super("Must call Geomerative.init(this); before using this library.");
+      super("Must call RGeomerative.init(this); before using this library.");
     }
   }
 
