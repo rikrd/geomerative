@@ -21,7 +21,7 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * RPath is a reduced interface for creating, holding and drawing contours. Subshapes are ordered lists of commands (RCommand) which define the outlines of Shapes.  Subshapes can be self-intersecting.
+ * RPath is a reduced interface for creating, holding and drawing contours. Paths are ordered lists of commands (RCommand) which define the outlines of Shapes.  Paths can be self-intersecting.
  * @eexample RPath
  * @usage Geometry
  * @related RCommand
@@ -35,7 +35,7 @@ public class RPath extends RGeomElem
   public int type = RGeomElem.SUBSHAPE;
   
   /**
-   * Array of RCommand objects holding the commands of the subshape.
+   * Array of RCommand objects holding the commands of the path.
    * @eexample commands
    * @related RCommand
    * @related countCommands ( )
@@ -53,12 +53,12 @@ public class RPath extends RGeomElem
   boolean closed = false;
   
   /**
-   * Use this method to create a new subshape.
+   * Use this method to create a new path.
    * @eexample RPath
-   * @param x float, the x coordinate of the first point of the subshape
-   * @param y float, the y coordinate of the first point of the subshape
+   * @param x float, the x coordinate of the first point of the path
+   * @param y float, the y coordinate of the first point of the path
    * @param RPath s, the object from which to make the copy
-   * @param RPoint p, the first point of the subshape
+   * @param RPoint p, the first point of the path
    */
   public RPath(){
     this.lastPoint = new RPoint(0,0);
@@ -105,7 +105,7 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this to return the start, control and end points of the subshape.  It returns the points in the way of an array of RPoint.
+   * Use this to return the start, control and end points of the path.  It returns the points in the way of an array of RPoint.
    * @eexample getHandles
    * @return RPoint[], the start, control and end points returned in an array.
    * */
@@ -186,7 +186,7 @@ public class RPath extends RGeomElem
   }
 
   /**
-   * Use this to return the points of each path of the subshape.  It returns the points in the way of an array of array of RPoint.
+   * Use this to return the points of each path of the path.  It returns the points in the way of an array of array of RPoint.
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
@@ -196,7 +196,7 @@ public class RPath extends RGeomElem
   }
 
   /**
-   * Use this to return the handles of each path of the subshape.  It returns the handles in the way of an array of array of RPoint.
+   * Use this to return the handles of each path of the path.  It returns the handles in the way of an array of array of RPoint.
    * @eexample RGroup_getHandles
    * @return RPoint[], the handles returned in an array.
    * */
@@ -206,7 +206,7 @@ public class RPath extends RGeomElem
   }
 
   /**
-   * Use this to return the tangents of each path of the subshape.  It returns the tangents in the way of an array of array of RPoint.
+   * Use this to return the tangents of each path of the path.  It returns the tangents in the way of an array of array of RPoint.
    * @eexample RGroup_getTangents
    * @return RPoint[], the tangents returned in an array.
    * */
@@ -342,7 +342,7 @@ public class RPath extends RGeomElem
       return false;
     }
 
-    // Test for containment in subshape
+    // Test for containment in path
     RPoint[] verts = getPoints();
       
     if(verts == null){
@@ -362,7 +362,7 @@ public class RPath extends RGeomElem
   
   
   /**
-   * Use this to insert a split point into the subshape.
+   * Use this to insert a split point into the path.
    * @eexample insertHandle
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
@@ -397,7 +397,7 @@ public class RPath extends RGeomElem
   }
 
   /**
-   * Use this to insert a split point into each command of the subshape.
+   * Use this to insert a split point into each command of the path.
    * @eexample insertHandleAll
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
@@ -432,7 +432,7 @@ public class RPath extends RGeomElem
   }
 
   /**
-   * Use this to split a subshape into two separate new subshapes.
+   * Use this to split a path into two separate new paths.
    * @eexample split
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPath[], an array of two RPath.
@@ -489,9 +489,9 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this method to draw the subshape. 
-   * @eexample drawSubshape
-   * @param g PGraphics, the graphics object on which to draw the subshape
+   * Use this method to draw the path. 
+   * @eexample drawPath
+   * @param g PGraphics, the graphics object on which to draw the path
    */
   public void draw(PGraphics g){
     countCommands();
@@ -550,7 +550,7 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this method to add a new cubic bezier to the subshape. The first point of the bezier will be the last point added to the subshape.
+   * Use this method to add a new cubic bezier to the path. The first point of the bezier will be the last point added to the path.
    * @eexample addBezierTo
    * @param float cp1x, the x coordinate of the first control point
    * @param float cp1y, the y coordinate of the first control point
@@ -572,7 +572,7 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this method to add a new quadratic bezier to the subshape. The first point of the bezier will be the last point added to the subshape.
+   * Use this method to add a new quadratic bezier to the path. The first point of the bezier will be the last point added to the path.
    * @eexample addQuadTo
    * @param float cp1x, the x coordinate of the first control point
    * @param float cp1y, the y coordinate of the first control point
@@ -591,7 +591,7 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this method to add a new line to the subshape. The first point of the line will be the last point added to the subshape.
+   * Use this method to add a new line to the path. The first point of the line will be the last point added to the path.
    * @eexample addLineTo
    * @param float endx, the x coordinate of the ending point
    * @param float endy, the y coordinate of the ending point
@@ -732,9 +732,9 @@ public class RPath extends RGeomElem
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
     /* Old method with uniform advancement per command
        float advPerCommand;
-       advPerCommand = 1F / numSubshapes;
-       indOfElement = (int)(Math.floor(t / advPerCommand)) % numSubshapes;
-       advOfElement = (t*numSubshapes - indOfElement);
+       advPerCommand = 1F / numPaths;
+       indOfElement = (int)(Math.floor(t / advPerCommand)) % numPaths;
+       advOfElement = (t*numPaths - indOfElement);
     */
     
     float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;

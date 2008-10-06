@@ -24,7 +24,7 @@ void draw()
   cursorShape = new RShape(shp2);
   cursorShape.translate(mouseX - width/2, mouseY - height/2);
   
-  // Only intersection() does not work for shapes with more than one subshape
+  // Only intersection() does not work for shapes with more than one path
   shp3 = shp1.diff( cursorShape );
   
   strokeWeight( 3 );

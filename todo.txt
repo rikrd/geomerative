@@ -1,14 +1,14 @@
 
 - uniform the constructors: all under the form Class o = new Class();
 + error (null pointer) testing when drawing or transforming to Mesh, Polygon,...
-+ documentacion de RSubshape: quitar todas las referencias a RContour
++ documentacion de RPath: quitar todas las referencias a RContour
 + RCommand hacer solo visible la parte de acceder a los puntos y parametros
 + RCommand añadir un metodo getCommandType()
 - fast implementation of the beziers algorithms
 + fix the smoothed rendering of meshes
 + fix the nullPointerExceptions when trying to access empty arrays
-- adding the methods drawFromTo(PGraphics g, float t0, float t1) in the RShape, RSubshape and RCommand
+- adding the methods drawFromTo(PGraphics g, float t0, float t1) in the RShape, RPath and RCommand
 + fix the lost point in fonts
 - add an RGroup class containing the abstract class RGeom2DElem which will be implemented by RPolygon, RMesh and RShape.  RGeom2DElem has methods like draw(PGraphics g), transform(PMatrix m),... which affect to all 2D geometric elements, based on 2D points.
 
-- different type of segmentators for RShape, RSubshape and RCommand: ADAPTATIVE, UNIFORMLENGTH, UNIFORMSTEP
+- different type of segmentators for RShape, RPath and RCommand: ADAPTATIVE, UNIFORMLENGTH, UNIFORMSTEP

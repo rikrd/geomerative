@@ -194,9 +194,9 @@ void draw()
     {
         RShape shp = grp.elements[i].toShape();                         // gruppen-element in shape-objekt umwandeln
         
-        for ( int ii = 0; ii < shp.subshapes.length; ii++ )             // shapes durchlaufen
+        for ( int ii = 0; ii < shp.paths.length; ii++ )             // shapes durchlaufen
         {
-            RSubshape sushp = shp.subshapes[ii];                        // subshape-objekt
+            RPath sushp = shp.paths[ii];                        // path-objekt
             
             for ( int iii = 0; iii < sushp.commands.length; iii++ )     // zeichen-kommando-objekte durchlaufen
             {

@@ -547,7 +547,7 @@ public abstract class RGeomElem
   /**
    * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
    * @eexample getCurveLength
-   * @return float[], the arclengths of each command of the subshape.
+   * @return float[], the arclengths of each command of the path.
    * */
   public float[] getCurveLengths(){
     /* If the cache with the commands lengths is empty, we fill it up */
@@ -561,7 +561,7 @@ public abstract class RGeomElem
   /**
    * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
    * @eexample getCurveLength
-   * @return float, the arclength of the subshape.
+   * @return float, the arclength of the path.
    * */
   public float getCurveLength(){    
     /* If the cache with the commands lengths is empty, we fill it up */

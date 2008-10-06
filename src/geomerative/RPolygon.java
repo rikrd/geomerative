@@ -408,7 +408,7 @@ public class RPolygon extends RGeomElem
           result.addClose();
         }
         
-        result.subshapes[i].setStyle(contours[i]);
+        result.paths[i].setStyle(contours[i]);
       }
     }
     

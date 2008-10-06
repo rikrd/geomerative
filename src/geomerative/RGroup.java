@@ -130,7 +130,7 @@ public class RGroup extends RGeomElem
   }
     
   /**
-   * Use this method to draw the group.  This will draw each element at a time, without worrying about intersections or holes.  This is the main difference between having a shape with multiple subshapes and having a group with multiple shapes.
+   * Use this method to draw the group.  This will draw each element at a time, without worrying about intersections or holes.  This is the main difference between having a shape with multiple paths and having a group with multiple shapes.
    * @eexample RGroup_draw
    * @param g PGraphics, the graphics object on which to draw the group
    */
@@ -297,8 +297,8 @@ public class RGroup extends RGeomElem
     RShape result = new RShape();
     for(int i=0;i<countElements();i++){
       RShape currentShape = elements[i].toShape();
-      for(int j=0;j<currentShape.countSubshapes();j++){
-        result.addSubshape(currentShape.subshapes[j]);
+      for(int j=0;j<currentShape.countPaths();j++){
+        result.addPath(currentShape.paths[j]);
       }
     }
     result.setStyle(this);
@@ -542,9 +542,9 @@ public class RGroup extends RGeomElem
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
     /* Old method with uniform advancement per command
        float advPerCommand;
-       advPerCommand = 1F / numSubshapes;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numSubshapes;
-       advOfCommand = (t*numSubshapes - indCommand);
+       advPerCommand = 1F / numPaths;
+       indCommand = (int)(Math.floor(t / advPerCommand)) % numPaths;
+       advOfCommand = (t*numPaths - indCommand);
     */
     
     float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
@@ -738,7 +738,7 @@ public class RGroup extends RGeomElem
   /**
    * Use this method to adapt a group of of figures to a shape.
    * @eexample RGroup_adapt
-   * @param RPath sshp, the subshape to which to adapt
+   * @param RPath sshp, the path to which to adapt
    * @return RGroup, the adapted group
    */
   public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{
