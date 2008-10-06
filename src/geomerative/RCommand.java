@@ -214,7 +214,7 @@ public class RCommand extends RGeomElem
    * @invisible
    */
   public RShape toShape(){
-    return new RShape(new RSubshape(this));
+    return new RShape(new RPath(this));
   }
 
   public int getType(){

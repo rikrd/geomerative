@@ -738,7 +738,7 @@ public class RGroup extends RGeomElem
   /**
    * Use this method to adapt a group of of figures to a shape.
    * @eexample RGroup_adapt
-   * @param RSubshape sshp, the subshape to which to adapt
+   * @param RPath sshp, the subshape to which to adapt
    * @return RGroup, the adapted group
    */
   public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{

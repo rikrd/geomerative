@@ -21,13 +21,13 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * RSubshape is a reduced interface for creating, holding and drawing contours. Subshapes are ordered lists of commands (RCommand) which define the outlines of Shapes.  Subshapes can be self-intersecting.
- * @eexample RSubshape
+ * RPath is a reduced interface for creating, holding and drawing contours. Subshapes are ordered lists of commands (RCommand) which define the outlines of Shapes.  Subshapes can be self-intersecting.
+ * @eexample RPath
  * @usage Geometry
  * @related RCommand
  * @related RPolygon
  */
-public class RSubshape extends RGeomElem
+public class RPath extends RGeomElem
 {
   /**
    * @invisible
@@ -54,25 +54,25 @@ public class RSubshape extends RGeomElem
   
   /**
    * Use this method to create a new subshape.
-   * @eexample RSubshape
+   * @eexample RPath
    * @param x float, the x coordinate of the first point of the subshape
    * @param y float, the y coordinate of the first point of the subshape
-   * @param RSubshape s, the object from which to make the copy
+   * @param RPath s, the object from which to make the copy
    * @param RPoint p, the first point of the subshape
    */
-  public RSubshape(){
+  public RPath(){
     this.lastPoint = new RPoint(0,0);
   }
   
-  public RSubshape(float x, float y){
+  public RPath(float x, float y){
     this.lastPoint = new RPoint(x,y);
   }
   
-  public RSubshape(RPoint p){
+  public RPath(RPoint p){
     this.lastPoint = p;
   }
   
-  public RSubshape(RSubshape s){
+  public RPath(RPath s){
     int numCommands = s.countCommands();
     if(numCommands!=0){
       lastPoint = new RPoint(s.commands[0].startPoint);
@@ -86,7 +86,7 @@ public class RSubshape extends RGeomElem
     setStyle(s);
   }
   
-  public RSubshape(RCommand c){
+  public RPath(RCommand c){
     this();
     this.addCommand(c);
   }
@@ -435,10 +435,10 @@ public class RSubshape extends RGeomElem
    * Use this to split a subshape into two separate new subshapes.
    * @eexample split
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
-   * @return RSubshape[], an array of two RSubshape.
+   * @return RPath[], an array of two RPath.
    * */
-  public RSubshape[] split(float t){
-    RSubshape[] result = new RSubshape[2];
+  public RPath[] split(float t){
+    RPath[] result = new RPath[2];
     
     int numCommands = countCommands();
     if(numCommands == 0){
@@ -446,8 +446,8 @@ public class RSubshape extends RGeomElem
     }
     
     if(t==0.0F){ 
-      result[0] = new RSubshape();
-      result[1] = new RSubshape(this);
+      result[0] = new RPath();
+      result[1] = new RPath(this);
       result[0].setStyle(this);
       result[1].setStyle(this);
 
@@ -455,8 +455,8 @@ public class RSubshape extends RGeomElem
     }
     
     if(t==1.0F){
-      result[0] = new RSubshape(this);
-      result[1] = new RSubshape();
+      result[0] = new RPath(this);
+      result[1] = new RPath();
       result[0].setStyle(this);
       result[1].setStyle(this);
 
@@ -471,14 +471,14 @@ public class RSubshape extends RGeomElem
     // Split the affected command and reconstruct each of the shapes
     RCommand[] splittedCommands = commands[indOfElement].split(advOfElement);
 
-    result[0] = new RSubshape();
+    result[0] = new RPath();
     for(int i = 0; i<indOfElement; i++){
       result[0].addCommand(new RCommand(commands[i]));
     }
     result[0].addCommand(new RCommand(splittedCommands[0]));
     result[0].setStyle(this);
     
-    result[1] = new RSubshape();
+    result[1] = new RPath();
     for(int i = indOfElement + 1; i < countCommands(); i++){
       result[1].addCommand(new RCommand(commands[i]));
     }
@@ -694,7 +694,7 @@ public class RSubshape extends RGeomElem
   
   /**
    * Use this method to transform the shape. 
-   * @eexample RSubshape_transform
+   * @eexample RPath_transform
    * @param m RMatrix, the matrix defining the affine transformation
    * @related draw ( )
    */

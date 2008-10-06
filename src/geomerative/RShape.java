@@ -21,10 +21,10 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * RShape is a reduced interface for creating, holding and drawing complex Shapes. Shapes are groups of one or more subshapes (RSubshape).  Shapes can be selfintersecting and can contain holes.  This interface also allows you to transform shapes into polygons by segmenting the curves forming the shape.
+ * RShape is a reduced interface for creating, holding and drawing complex Shapes. Shapes are groups of one or more subshapes (RPath).  Shapes can be selfintersecting and can contain holes.  This interface also allows you to transform shapes into polygons by segmenting the curves forming the shape.
  * @eexample RShape
  * @usage Geometry
- * @related RSubshape
+ * @related RPath
  */
 public class RShape extends RGeomElem
 {
@@ -34,13 +34,13 @@ public class RShape extends RGeomElem
   public int type = RGeomElem.SHAPE;
   
   /**
-   * Array of RSubshape objects holding the subshapes of the polygon. 
+   * Array of RPath objects holding the subshapes of the polygon. 
    * @eexample subshapes
-   * @related RSubshape
+   * @related RPath
    * @related countSubshapes ( )
    * @related addSubshape ( )
    */
-  public RSubshape[] subshapes;
+  public RPath[] subshapes;
   protected int currentSubshape = 0;
 
   private RPolygon cachedPolygon = null;
@@ -57,14 +57,14 @@ public class RShape extends RGeomElem
     type = RGeomElem.SHAPE;
   }
   
-  public RShape(RSubshape newsubshape){
+  public RShape(RPath newsubshape){
     this.append(newsubshape);
     type = RGeomElem.SHAPE;
   }
   
   public RShape(RShape s){
     for(int i=0;i<s.countSubshapes();i++){
-      this.append(new RSubshape(s.subshapes[i]));
+      this.append(new RPath(s.subshapes[i]));
     }
     type = RGeomElem.SHAPE;
 
@@ -217,15 +217,15 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new subshape.  The first point of the new subshape will be set to (0,0).  Use addMoveTo ( ) in order to add a new subshape with a different first point.
    * @eexample addSubshape
-   * @param s RSubshape, the subshape to be added.
+   * @param s RPath, the subshape to be added.
    * @related setSubshape ( )
    * @related addMoveTo ( )
    */
   public void addSubshape(){
-    this.append(new RSubshape());
+    this.append(new RPath());
   }
   
-  public void addSubshape(RSubshape s){
+  public void addSubshape(RPath s){
     this.append(s);
   }
   
@@ -255,11 +255,11 @@ public class RShape extends RGeomElem
    */
   public void addMoveTo(float endx, float endy){
     if (subshapes == null){
-      this.append(new RSubshape(endx,endy));
+      this.append(new RPath(endx,endy));
     }else if(subshapes[currentSubshape].countCommands() == 0){
       this.subshapes[currentSubshape].lastPoint = new RPoint(endx,endy);
     }else{
-      this.append(new RSubshape(endx,endy));
+      this.append(new RPath(endx,endy));
     }
   }
 
@@ -280,7 +280,7 @@ public class RShape extends RGeomElem
    */
   public void addLineTo(float endx, float endy){
     if (subshapes == null) {
-      this.append(new RSubshape());
+      this.append(new RPath());
     }
     this.subshapes[currentSubshape].addLineTo(endx, endy);
   }
@@ -304,7 +304,7 @@ public class RShape extends RGeomElem
    */
   public void addQuadTo(float cp1x, float cp1y, float endx, float endy){
     if (subshapes == null) {
-      this.append(new RSubshape());
+      this.append(new RPath());
     }
     this.subshapes[currentSubshape].addQuadTo(cp1x,cp1y,endx,endy);
   }
@@ -330,7 +330,7 @@ public class RShape extends RGeomElem
    */
   public void addBezierTo(float cp1x, float cp1y, float cp2x, float cp2y, float endx, float endy){
     if (subshapes == null) {
-      this.append(new RSubshape());
+      this.append(new RPath());
     }
     this.subshapes[currentSubshape].addBezierTo(cp1x,cp1y,cp2x,cp2y,endx,endy);
   }
@@ -341,7 +341,7 @@ public class RShape extends RGeomElem
   
   public void addClose(){
     if (subshapes == null) {
-      this.append(new RSubshape());
+      this.append(new RPath());
     }
     this.subshapes[currentSubshape].addClose();
   }
@@ -697,7 +697,7 @@ public class RShape extends RGeomElem
     result[1] = new RShape();
     
     for(int i=0; i<countSubshapes(); i++){
-      RSubshape[] splittedSubshapes = subshapes[i].split(t);
+      RPath[] splittedSubshapes = subshapes[i].split(t);
       if(splittedSubshapes != null){
         result[0].addSubshape(splittedSubshapes[0]);
         result[1].addSubshape(splittedSubshapes[1]);
@@ -792,19 +792,19 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
     
-    RSubshape[] splittedShapes = subshapes[indOfElement].split(advOfElement);
+    RPath[] splittedShapes = subshapes[indOfElement].split(advOfElement);
     
     result[0] = new RShape();
     for(int i = 0; i<indOfElement; i++){
-      result[0].addSubshape(new RSubshape(subshapes[i]));
+      result[0].addSubshape(new RPath(subshapes[i]));
     }
-    result[0].addSubshape(new RSubshape(splittedShapes[0]));
+    result[0].addSubshape(new RPath(splittedShapes[0]));
     result[0].setStyle(this);
 
     result[1] = new RShape();
-    result[1].addSubshape(new RSubshape(splittedShapes[1]));
+    result[1].addSubshape(new RPath(splittedShapes[1]));
     for(int i = indOfElement + 1; i < countSubshapes(); i++){
-      result[1].addSubshape(new RSubshape(subshapes[i]));
+      result[1].addSubshape(new RPath(subshapes[i]));
     }
     result[1].setStyle(this);
     
@@ -814,7 +814,7 @@ public class RShape extends RGeomElem
   /**
    * Use this method to adapt a group of of figures to a shape.
    * @eexample RGroup_adapt
-   * @param RSubshape sshp, the subshape to which to adapt
+   * @param RPath sshp, the subshape to which to adapt
    * @return RGroup, the adapted group
    */
   public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{
@@ -976,15 +976,15 @@ public class RShape extends RGeomElem
   
   
   
-  private void append(RSubshape nextsubshape)
+  private void append(RPath nextsubshape)
   {
-    RSubshape[] newsubshapes;
+    RPath[] newsubshapes;
     if(subshapes==null){
-      newsubshapes = new RSubshape[1];
+      newsubshapes = new RPath[1];
       newsubshapes[0] = nextsubshape;
       currentSubshape = 0;
     }else{
-      newsubshapes = new RSubshape[this.subshapes.length+1];
+      newsubshapes = new RPath[this.subshapes.length+1];
       System.arraycopy(this.subshapes,0,newsubshapes,0,this.subshapes.length);
       newsubshapes[this.subshapes.length]=nextsubshape;
       currentSubshape++;
@@ -1177,7 +1177,7 @@ public class RShape extends RGeomElem
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numSubshapes;i++){
-          RSubshape subshape = subshapes[i];
+          RPath subshape = subshapes[i];
           closed |= subshape.closed;
           for(int j = 0; j < subshape.countCommands(); j++ ){
             RPoint[] pnts = subshape.commands[j].getHandles();
@@ -1223,7 +1223,7 @@ public class RShape extends RGeomElem
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numSubshapes;i++){
-          RSubshape subshape = subshapes[i];
+          RPath subshape = subshapes[i];
           closed |= subshape.closed;
           for(int j = 0; j < subshape.countCommands(); j++ ){
             RPoint[] pnts = subshape.commands[j].getHandles();
