@@ -26,7 +26,7 @@ void setup(){
   grp = svgLoader.toGroup("bot1.svg");
   grp.centerIn(g, 100, 1, 1);
   
-  pointPaths = grp.getPointPaths();
+  pointPaths = grp.getPointsInPaths();
 }
 
 void draw(){

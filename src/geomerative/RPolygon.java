@@ -713,17 +713,17 @@ public class RPolygon extends RGeomElem
     return null;
   }
 
-  public RPoint[][] getPointPaths(){
+  public RPoint[][] getPointsInPaths(){
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
 
-  public RPoint[][] getHandlePaths(){
+  public RPoint[][] getHandlesInPaths(){
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
 
-  public RPoint[][] getTangentPaths(){
+  public RPoint[][] getTangentsInPaths(){
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }

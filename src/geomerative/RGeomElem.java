@@ -88,11 +88,11 @@ public abstract class RGeomElem
 
   public abstract RPoint[] getTangents();
 
-  public abstract RPoint[][] getHandlePaths();
+  public abstract RPoint[][] getHandlesInPaths();
 
-  public abstract RPoint[][] getPointPaths();
+  public abstract RPoint[][] getPointsInPaths();
 
-  public abstract RPoint[][] getTangentPaths();
+  public abstract RPoint[][] getTangentsInPaths();
 
   public abstract boolean contains(RPoint p);
 

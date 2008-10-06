@@ -353,18 +353,27 @@ The tutorials are not available online yet.  They can be found in the <b>tutoria
 <dt>rev 15 (06 - October - 2008):</dt><dd>
 <ul>
    <li> Major bug fixes </li>
+
    <li> Renamed RSubshape -> RPath </li>
    <li> Renamed getPoints -> getHandles </li>
    <li> Renamed getCurvePoints -> getPoints </li>
+
    <li> Added method <b>getHeight</b> returns the height of a geometric element</li>
    <li> Added method <b>getWidth</b> returns the width of a geometric element</li>
    <li> Added method <b>transform</b> rescales the geometric element to fit a rectangle</li>
+
    <li> Added method <b>contains</b>  takes as input an RPoint returns True if inside the geometric element False otherwise</li>
+
    <li> Added method <b>split</b> returns an array of RGroup containing the two geometric elements resulting in splitting the geometric element at the advancement passed as input </li>
+   <li> Added method <b>splitPaths</b> returns an array of RGroup containing the two geometric elements resulting in splitting each of the paths of the geometric element at the advancement passed as input </li>
+
    <li> Added method <b>insertHandle</b> inserts a new handle in the geometric element at the advancement passed as input </li>
-   <li> Added method <b>getPointPaths</b> returns an array of arrays of RPoint for the point on each of the paths of the geometric element</li>
-   <li> Added method <b>getHandlePaths</b> returns an array of arrays of RPoint for the handle on each of the paths of the geometric element</li>
-   <li> Added method <b>getTangentPaths</b> returns an array of arrays of RPoint for the tangent on each of the paths of the geometric element</li>
+   <li> Added method <b>insertHandleInPaths</b> inserts a new handle in each of the paths of the geometric element at the advancement passed as input </li>
+
+   <li> Added method <b>getPointsInPaths</b> returns an array of arrays of RPoint for the point on each of the paths of the geometric element</li>
+   <li> Added method <b>getHandlesInPaths</b> returns an array of arrays of RPoint for the handle on each of the paths of the geometric element</li>
+   <li> Added method <b>getTangentsInPaths</b> returns an array of arrays of RPoint for the tangent on each of the paths of the geometric element</li>
+
    <li> <b>Mark Luffel</b> made the clipping (used for the binary operations and for rendering in OPENGL) faster and better </li>
    <li> <b>Mark Luffel</b> made the buildsystem using Makefile </li>
  </ul>

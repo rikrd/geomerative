@@ -552,7 +552,7 @@ public class RShape extends RGeomElem
     }
 
     // Test for containment in shape
-    RPoint[][] pointpaths = getPointPaths();
+    RPoint[][] pointpaths = getPointsInPaths();
     
     if(pointpaths == null){
       return false;
@@ -616,7 +616,7 @@ public class RShape extends RGeomElem
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[][] getPointPaths(){
+  public RPoint[][] getPointsInPaths(){
     int numPaths = countPaths();
     if(numPaths == 0){
       return null;
@@ -625,7 +625,7 @@ public class RShape extends RGeomElem
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numPaths;i++){
-      RPoint[][] newPointPaths = paths[i].getPointPaths();
+      RPoint[][] newPointPaths = paths[i].getPointsInPaths();
       if(newPointPaths != null){
         if(result == null){
           result = new RPoint[newPointPaths.length][];
@@ -641,7 +641,7 @@ public class RShape extends RGeomElem
     return result;    
   }
 
-  public RPoint[][] getHandlePaths(){
+  public RPoint[][] getHandlesInPaths(){
     int numPaths = countPaths();
     if(numPaths == 0){
       return null;
@@ -650,7 +650,7 @@ public class RShape extends RGeomElem
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numPaths;i++){
-      RPoint[][] newHandlePaths = paths[i].getHandlePaths();
+      RPoint[][] newHandlePaths = paths[i].getHandlesInPaths();
       if(newHandlePaths != null){
         if(result == null){
           result = new RPoint[newHandlePaths.length][];
@@ -666,7 +666,7 @@ public class RShape extends RGeomElem
     return result;    
   }
 
-  public RPoint[][] getTangentPaths(){
+  public RPoint[][] getTangentsInPaths(){
     int numPaths = countPaths();
     if(numPaths == 0){
       return null;
@@ -675,7 +675,7 @@ public class RShape extends RGeomElem
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numPaths;i++){
-      RPoint[][] newTangentPaths = paths[i].getTangentPaths();
+      RPoint[][] newTangentPaths = paths[i].getTangentsInPaths();
       if(newTangentPaths != null){
         if(result == null){
           result = new RPoint[newTangentPaths.length][];
@@ -691,7 +691,7 @@ public class RShape extends RGeomElem
     return result;    
   }
   
-  public RShape[] splitAll(float t){
+  public RShape[] splitPaths(float t){
     RShape[] result = new RShape[2];
     result[0] = new RShape();
     result[1] = new RShape();
@@ -734,10 +734,10 @@ public class RShape extends RGeomElem
 
   /**
    * Use this to insert a split point into each command of the shape.
-   * @eexample insertHandleAll
+   * @eexample insertHandleInPaths
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
-  public void insertHandleAll(float t){
+  public void insertHandleInPaths(float t){
     if((t == 0F) || (t == 1F)){
       return;
     }
@@ -748,7 +748,7 @@ public class RShape extends RGeomElem
     }
     
     for( int i = 0 ; i < numPaths; i++ ) {
-      paths[i].insertHandleAll(t);
+      paths[i].insertHandleInPaths(t);
     }
 
     // Clear the cache

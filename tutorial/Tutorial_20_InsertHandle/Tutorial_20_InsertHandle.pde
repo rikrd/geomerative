@@ -30,7 +30,7 @@ void draw(){
 
   // Split and scale the shape
   shp2 = new RShape(shp);
-  shp2.insertHandleAll(0.5);
+  shp2.insertHandleInPaths(0.5);
   shp2.scale(1.1);
   
   // Draw the handles and the lines joining them

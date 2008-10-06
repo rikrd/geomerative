@@ -190,7 +190,7 @@ public class RPath extends RGeomElem
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[][] getPointPaths(){
+  public RPoint[][] getPointsInPaths(){
     RPoint[][] result = {this.getPoints()};
     return result;
   }
@@ -200,7 +200,7 @@ public class RPath extends RGeomElem
    * @eexample RGroup_getHandles
    * @return RPoint[], the handles returned in an array.
    * */
-  public RPoint[][] getHandlePaths(){
+  public RPoint[][] getHandlesInPaths(){
     RPoint[][] result = {this.getHandles()};
     return result;
   }
@@ -210,7 +210,7 @@ public class RPath extends RGeomElem
    * @eexample RGroup_getTangents
    * @return RPoint[], the tangents returned in an array.
    * */
-  public RPoint[][] getTangentPaths(){
+  public RPoint[][] getTangentsInPaths(){
     RPoint[][] result = {this.getTangents()};
     return result;
   }
@@ -398,10 +398,10 @@ public class RPath extends RGeomElem
 
   /**
    * Use this to insert a split point into each command of the path.
-   * @eexample insertHandleAll
+   * @eexample insertHandleInPaths
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
-  public void insertHandleAll(float t){
+  public void insertHandleInPaths(float t){
     if((t == 0F) || (t == 1F)){
       return;
     }

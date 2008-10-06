@@ -418,7 +418,7 @@ public class RGroup extends RGeomElem
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
-  public RPoint[][] getPointPaths(){
+  public RPoint[][] getPointsInPaths(){
     int numElements = countElements();
     if(numElements == 0){
       return null;
@@ -427,7 +427,7 @@ public class RGroup extends RGeomElem
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numElements;i++){
-      RPoint[][] newPointPaths = elements[i].getPointPaths();
+      RPoint[][] newPointPaths = elements[i].getPointsInPaths();
       if(newPointPaths != null){
         if(result == null){
           result = new RPoint[newPointPaths.length][];
@@ -443,7 +443,7 @@ public class RGroup extends RGeomElem
     return result;    
   }
 
-  public RPoint[][] getHandlePaths(){
+  public RPoint[][] getHandlesInPaths(){
     int numElements = countElements();
     if(numElements == 0){
       return null;
@@ -452,7 +452,7 @@ public class RGroup extends RGeomElem
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numElements;i++){
-      RPoint[][] newHandlePaths = elements[i].getHandlePaths();
+      RPoint[][] newHandlePaths = elements[i].getHandlesInPaths();
       if(newHandlePaths != null){
         if(result == null){
           result = new RPoint[newHandlePaths.length][];
@@ -468,7 +468,7 @@ public class RGroup extends RGeomElem
     return result;    
   }
 
-  public RPoint[][] getTangentPaths(){
+  public RPoint[][] getTangentsInPaths(){
     int numElements = countElements();
     if(numElements == 0){
       return null;
@@ -477,7 +477,7 @@ public class RGroup extends RGeomElem
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numElements;i++){
-      RPoint[][] newTangentPaths = elements[i].getTangentPaths();
+      RPoint[][] newTangentPaths = elements[i].getTangentsInPaths();
       if(newTangentPaths != null){
         if(result == null){
           result = new RPoint[newTangentPaths.length][];
@@ -664,7 +664,7 @@ public class RGroup extends RGeomElem
     return result;
   }
 
-  public RGroup[] splitAll(float t){
+  public RGroup[] splitPaths(float t){
     RGroup[] result = new RGroup[2];
     result[0] = new RGroup();
     result[1] = new RGroup();
@@ -674,7 +674,7 @@ public class RGroup extends RGeomElem
       switch(element.getType())
         {
         case RGeomElem.GROUP:
-          RGroup[] splittedGroups = ((RGroup)element).splitAll(t);
+          RGroup[] splittedGroups = ((RGroup)element).splitPaths(t);
           if( splittedGroups != null ){
             result[0].addElement(splittedGroups[0]);
             result[1].addElement(splittedGroups[1]);
@@ -682,7 +682,7 @@ public class RGroup extends RGeomElem
           break;
           
         case RGeomElem.SHAPE:
-          RShape[] splittedShapes = ((RShape)element).splitAll(t);
+          RShape[] splittedShapes = ((RShape)element).splitPaths(t);
           if( splittedShapes != null ){
             result[0].addElement(splittedShapes[0]);
             result[1].addElement(splittedShapes[1]);
@@ -698,10 +698,10 @@ public class RGroup extends RGeomElem
   
   /**
    * Use this to insert a split point into each command of the group.
-   * @eexample insertHandleAll
+   * @eexample insertHandleInPaths
    * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
-  public void insertHandleAll(float t){
+  public void insertHandleInPaths(float t){
     if((t == 0F) || (t == 1F)){
       return;
     }
@@ -712,11 +712,11 @@ public class RGroup extends RGeomElem
       switch(element.getType())
         {
         case RGeomElem.GROUP:
-          ((RGroup)element).insertHandleAll(t);
+          ((RGroup)element).insertHandleInPaths(t);
           break;
           
         case RGeomElem.SHAPE:
-          ((RShape)element).insertHandleAll(t);
+          ((RShape)element).insertHandleInPaths(t);
           break;
         }
     }

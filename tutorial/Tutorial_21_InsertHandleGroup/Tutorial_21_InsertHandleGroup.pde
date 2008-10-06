@@ -31,7 +31,7 @@ void draw(){
 
   // Split and scale the Group
   grp2 = new RGroup(grp);
-  grp2.insertHandleAll(0.5);
+  grp2.insertHandleInPaths(0.5);
   grp2.scale(1.1);
   
   // Draw the splitted and scaled Group
