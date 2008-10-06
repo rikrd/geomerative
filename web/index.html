@@ -2,24 +2,81 @@
 <head>
 	<title>geomerative</title>
  	<link rel="stylesheet" href="style.css">
+
+        <script type="text/javascript" src="jquery-1.2.2.pack.js"></script>
+        <script type="text/javascript" src="animatedcollapse.js">
+          
+          /***********************************************
+          * Animated Collapsible DIV v2.0- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
+          * This notice MUST stay intact for legal use
+          * Visit Dynamic Drive at http://www.dynamicdrive.com/ for this script and 100s more
+          ***********************************************/
+          
+        </script>
+        
+        
+        <script type="text/javascript">
+
+          animatedcollapse.addDiv('overview_content', 'fade=0,speed=400,group=sections,hide=1')
+          animatedcollapse.addDiv('changelog_content', 'fade=0,speed=400,group=sections,hide=1')
+          animatedcollapse.addDiv('tutorials_content', 'fade=0,speed=400,group=sections,hide=1')
+          
+          animatedcollapse.init()
+
+        </script>
 </head>
-	<body>
+<body>
+
+<div id="wrap">
+
+<div id="main">
 <div id="intro">
 <h1>Introduction</h1>
-
+<div id="intro_content">
 <p>Geomerative is a library for Processing.  It extends 2D geometry operations to facilitate generative geometry. Includes a TrueType font and an SVG interpreters.
-This library exposes the shapes (such as vector drawings or typographies) in a more approchable way.  Geomerative makes it easy to access the contours, the control points and the curve points, making it easy to develop generative typography and geometry pieces in Processing.</p>
-
+This library exposes the shapes (such as vector drawings or typographies) in a more approchable way.  Geomerative makes it easy to access the paths, the handles and the points, making it easy to develop generative typography and geometry pieces in Processing.</p>
+</div>
 </div>
 
 <div id="download">
 <h1>Download</h1>
+<div id="download_content">
 <p><A href="geomerative-15.zip">Geomerative library for Processing (rev 15)</A> (October 06 2008)</p>
 <p>unzip the contents of this file to /path/to/sketchbook/libraries</p>
 </div>
+</div>
 
+<div id="credits">
+<h1>Credits</h1>
+<div id="credits_content">
+<dl>
+<dt>Creator:</dt><dd><A href="http://www.ricardmarxer.com">Ricard Marxer</A></dd>
+<dt>Collaborator:</dt><dd><A href="http://www.notlime.com/">Mark Luffel</A></dd>
+<dt>Tutorials:</dt><dd><A href="http://www.florianjenett.de">Florian Jenett</A></dd>
+</dl>
+
+</div>
+</div>
+
+<div id="works">
+<h1>Works</h1>
+<div id="works_content">
+Geomerative has been used in the following projects:
+<ul>
+<li><A href="http://www.caligraft.com">Caligraft</A></li>
+<li><A href="http://www.trsp.net/cow/">Cascade on Wheels</A></li>
+<li><A href="http://casastristes.org/">Casas Tristes</A></li>
+</ul>
+</div>
+</div>
+
+
+</div>
+
+<div id="advanced">
 <div id="overview">
-<h1>Overview</h1>
+<h1><a href="javascript:animatedcollapse.toggle('overview_content')">Overview</a></h1>
+<div id="overview_content">
 The library is composed of 4 basic elements (RShape, RPolygon, RMesh and RGroup) all of which support a set of common methods such as: accessing (getCurvePoints, getPoints,...), transforming (translate, rotate, scale,...), styling (setStroke, setStrokeColor, setStrokeWeight, setFill, setFillColor,...) and drawing (draw).
 
 Additionally the library has 2 interpreters that will allow the user to import shapes from TTF fonts and SVG vector drawings into the library's classes.
@@ -280,15 +337,18 @@ void draw()
 }
 </pre>
 </div>
-
-<div>
-<h1>Examples</h1>
-<h2></h2>
-
 </div>
 
-<div>
-<h1>Changelog</h1>
+<div id="tutorials">
+<h1><a href="javascript:animatedcollapse.toggle('tutorials_content')">Tutorials</a></h1>
+<div id="tutorials_content">
+The tutorials are not available online yet.  They can be found in the <b>tutorials</b> directory inside the zip file.
+</div>
+</div>
+
+<div id="changelog">
+<h1><a href="javascript:animatedcollapse.toggle('changelog_content')">Changelog</a></h1>
+<div id="changelog_content">
 <dl>
 <dt>rev 15 (06 - October - 2008):</dt><dd>
 <ul>
@@ -326,27 +386,12 @@ void draw()
 </dd>
 </dl>
 </div>
-
-<div>
-<h1>Credits</h1>
-
-<dl>
-<dt>Creator:</dt><dd><A href="http://www.ricardmarxer.com">Ricard Marxer</A></dd>
-<dt>Collaborator:</dt><dd><A href="http://www.notlime.com/">Mark Luffel</A></dd>
-<dt>Examples:</dt><dd><A href="http://www.florianjenett.de">Florian Jenett</A></dd>
-</dl>
+</div>
 
 </div>
 
-<div>
-<h1>Works</h1>
-Geomerative has been used in the following projects:
-<ul>
-<li><A href="http://www.caligraft.com">Caligraft</A></li>
-<li><A href="http://www.trsp.net/cow/">Cascade on Wheels</A></li>
-<li><A href="http://casastristes.org/">Casas Tristes</A></li>
-</ul>
 </div>
+
 </body>
 
 <script type="text/javascript">

@@ -1,20 +1,21 @@
 a
 {
-    color:#FFF;
-    background-color:#666;
+    color:#666;
+    //background-color:#666;
     text-decoration:none;
+    font-weight:bold;
 }
 
 a:visited
 {
-    color:#FFF;
-    background-color:#666;
+    //color:#FFF;
+    //background-color:#666;
 }
 
 a:hover
 {
     color:#AAA;
-    background-color:#333;
+    //background-color:#333;
 }
 
 body
@@ -40,7 +41,6 @@ h1
   font-family: Helvetica, Verdana, sans-serif;
   margin: 0px;
   padding: 0px;
-  margin-bottom: 0.75em;
   font-size: 3.2em;
   text-transform: uppercase;
   color: #222;
@@ -52,7 +52,6 @@ h2
   font-family: Sabon, Georigia, serif;
   margin: 0px;
   padding: 0px;
-  margin-top: 3.5em;
   font-size: 1.6em;
   color: #222;
 }
@@ -66,15 +65,22 @@ h3
   color: #222;
 }
 
-div 
+#wrap
 {
-  margin-top: 3em;
-  margin-left: 7em;
-  margin-bottom: 5em;
-  text-align: left;
-  padding: 0px;
-  width: 35em;
+  padding: 5em;
+  margin: 0px;
 }
 
+#main
+{
+  float:left;
+  width:40%;
+  padding-right:5em;
+}
 
-
+#advanced
+{
+  float:left;
+  width:40%;
+  padding-left:5em;
+}
