@@ -56,8 +56,10 @@ public class RG implements PConstants{
   static float adaptorScale = 1F;
   static float adaptorLengthOffset = 0F;
 
-
-
+  public static int ADAPTATIVE = RCommand.ADAPTATIVE;
+  public static int UNIFORMLENGTH = RCommand.UNIFORMLENGTH;
+  public static int UNIFORMSTEP = RCommand.UNIFORMSTEP;
+  
   public static class LibraryNotInitializedException extends NullPointerException{
     private static final long serialVersionUID = -3710605630786298671L;
 
@@ -95,8 +97,8 @@ public class RG implements PConstants{
     fntLoader = new RFont(font, size);
   }
 
-  public static RGroup loadText(String font, String text, int size){
-    RFont tempFntLoader = new RFont(font, size);
+  public static RGroup loadText(String text, String font, int size, int align){
+    RFont tempFntLoader = new RFont(font, size, align);
     return tempFntLoader.toGroup(text);
   }
 

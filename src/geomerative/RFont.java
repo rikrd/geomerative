@@ -30,7 +30,7 @@ import org.apache.batik.svggen.font.table.*;
  * @usage Geometry
  * @related RGroup
  */
-public class RFont{
+public class RFont implements PConstants{
   Font f;
   float scaleFactor = 0.2F;
   //int scaleFactorFixed = 1;
@@ -50,22 +50,7 @@ public class RFont{
    * @related RFont
    */
   public int align = DEFAULT_ALIGN;
-  
-  /**
-   * @invisible
-   */
-  public final static int CENTER = 0;
-  
-  /**
-   * @invisible
-   */
-  public final static int LEFT = 1;
-  
-  /**
-   * @invisible
-   */
-  public final static int RIGHT = 2;
-  
+    
   final static int DEFAULT_SIZE = 48;
   final static int DEFAULT_RESOLUTION = 72;
   final static int DEFAULT_ALIGN = RFont.LEFT;
