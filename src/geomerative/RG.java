@@ -89,6 +89,8 @@ public class RG implements PConstants{
 
   static RFont fntLoader;
 
+  static boolean shapeBegin = false;
+
   public static void loadFont(String font, int size){
     fntLoader = new RFont(font, size);
   }
@@ -116,11 +118,27 @@ public class RG implements PConstants{
     shape = new RShape();
   }
 
+  public static void breakShape(){
+    shape.addPath();
+    shapeBegin = true;
+  }
+
+  public static void breakShape(int endMode){
+    if (endMode == CLOSE) {
+      shape.addClose();
+    }
+    breakShape();
+  }
+
   public static void vertex(float x, float y){
     if(path == null){
       if (shape.countPaths() == 0){
         shape.addMoveTo(x, y);
       }else{
+        if (shapeBegin){
+          shape.addMoveTo(x, y);
+          shapeBegin = false;
+        }
         shape.addLineTo(x, y);
       }
     }else{
@@ -161,9 +179,9 @@ public class RG implements PConstants{
   }
 
 
-  public static RGroup getShape(PGraphics g){
+  public static RGroup getShape(){
     RGroup returningGroup = new RGroup();
-    returningGroup.addElement(returningGroup);
+    returningGroup.addElement(shape);
 
     shape = null;
 
