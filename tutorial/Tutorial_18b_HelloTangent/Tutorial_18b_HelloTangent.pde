@@ -51,10 +51,8 @@ void setup(){
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
-  //RG.ignoreStyles();
   
-  RSVG svgLoader = new RSVG();
-  grp = svgLoader.toGroup("M2.2.svg");
+  grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g);
  
   LENGTHTANGENT = LENGTHTANGENT * width/800F;
@@ -63,7 +61,6 @@ void setup(){
   translate(width/2, height/2);
   stroke(255, ALPHAVALUE);
   noFill();
-  grp.draw();
 }
 
 void draw(){
@@ -71,7 +68,7 @@ void draw(){
   
   pushMatrix();
   for(int k=0;k<VELOCITY;k++){
-    pos = random(0, 1);
+    pos = random(0.01, 0.99);
 
     RPoint tg = grp.getTangent(pos);
     RPoint p = grp.getPoint(pos);

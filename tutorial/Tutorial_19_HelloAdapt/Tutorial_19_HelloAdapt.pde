@@ -3,7 +3,6 @@ import processing.opengl.*;
 import geomerative.*;
 
 RGroup grp;
-//RShape grp;
 RShape shp;
 
 boolean ignoringStyles = false;
@@ -20,12 +19,10 @@ void setup(){
   
   RCommand.setSegmentator(RCommand.ADAPTATIVE);
   
-  RSVG svgLoader = new RSVG();
-  grp = svgLoader.toGroup("bot1.svg");
+  grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g);
   
   grp = grp.toPolygonGroup().toShapeGroup();
-  //grp = RShape.createStar(0, 0, 40, 4, 4);
   grp.centerIn(g, 200, 1, 1);
   
   shp = RShape.createCircle(0, 0, 20);
@@ -43,7 +40,6 @@ void draw(){
   
   RShape splittedShp = shp.split(map(mouseX, 0, width, 0.01, 0.99))[0];
   adaptedGrp.adapt(splittedShp);
-  //adaptedGrp.centerIn(g);
   
   adaptedGrp.draw();
   splittedShp.draw();

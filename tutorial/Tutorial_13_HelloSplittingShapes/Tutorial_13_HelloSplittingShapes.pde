@@ -1,22 +1,19 @@
 import processing.opengl.*;
 import geomerative.*;
 
-RSVG svgLoader;
 RGroup grp;
 
 boolean ignoringStyles = false;
 
 void setup(){
-  size(600, 600, OPENGL);
+  size(600, 600);
   smooth();
   g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
-  RG.ignoreStyles(ignoringStyles);
-
-  svgLoader = new RSVG();
-  grp = svgLoader.toGroup("bot1.svg");
+  
+  grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g);
 }
 

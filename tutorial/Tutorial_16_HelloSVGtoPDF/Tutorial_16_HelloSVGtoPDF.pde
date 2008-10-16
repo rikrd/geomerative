@@ -1,8 +1,5 @@
-import processing.opengl.*;
-
+import processing.pdf.*;
 import geomerative.*;
-
-RSVG svgLoader;
 
 size(400, 400);
 
@@ -12,9 +9,8 @@ g.smooth = true;
 // VERY IMPORTANT: Allways initialize the library before using it
 RG.init(this);
 
-svgLoader = new RSVG();
-
 beginRecord(PDF, "bot1.pdf"); 
 background(255);
-svgLoader.draw("bot1.svg");
+RGroup grp = RG.loadSVG("bot1.svg");
+grp.draw();
 endRecord();

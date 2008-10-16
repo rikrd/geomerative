@@ -3,12 +3,11 @@ import processing.opengl.*;
 import geomerative.*;
 
 RGroup grp;
-//RShape grp;
 
 boolean ignoringStyles = false;
 
 void setup(){
-  size(800, 600, OPENGL);
+  size(600, 600);
   smooth();
   g.smooth = true; 
 
@@ -16,10 +15,9 @@ void setup(){
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  RCommand.setSegmentator(RCommand.ADAPTATIVE);
-  
-  RSVG svgLoader = new RSVG();
-  grp = svgLoader.toGroup("mapaAzimutal.svg");
+  RCommand.setSegmentator(RG.ADAPTATIVE);
+   
+  grp = RG.loadSVG("mapaAzimutal.svg");
   grp.centerIn(g, 100, 1, 1);
 }
 
@@ -35,9 +33,8 @@ void draw(){
   for(int i=0;i<grp.countElements();i++){
     if(grp.elements[i].contains(p)){
        RG.ignoreStyles(true);
-       fill(0,0,255,150);
+       fill(0,100,255,250);
        noStroke();
-       println("Mouse over: "+grp.elements[i].id);
        grp.elements[i].draw();
        RG.ignoreStyles(ignoringStyles);
     }

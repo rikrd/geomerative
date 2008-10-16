@@ -2,7 +2,6 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RSVG svgLoader;
 RGroup grp;
 
 RGroup polyGrp;
@@ -15,8 +14,7 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
 
-  svgLoader = new RSVG();
-  grp = svgLoader.toGroup("pirata.svg");
+  grp = RG.loadSVG("pirata.svg");
   grp.centerIn(g);
 } 
 
@@ -27,7 +25,7 @@ void draw(){
   float pointSeparation = map(constrain(mouseX, 200, width-200), 200, width-200, 5, 300);
   
   // We create the polygonized version
-  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+  RCommand.setSegmentator(RG.UNIFORMLENGTH);
   RCommand.setSegmentLength(pointSeparation);
   polyGrp = grp.toPolygonGroup();
   

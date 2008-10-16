@@ -24,8 +24,7 @@ void setup(){
   stroke(0);
   
   // Load the font file we want to use (the file must be in the data folder in the sketch floder), with the size 60 and the alignment CENTER
-  f = new RFont("FreeSans.ttf", 72, RFont.CENTER);
-  grpshapes = f.toGroup("Hola mundo!");
+  grpshapes = RG.loadText("Hello world!", "FreeSans.ttf", 72, CENTER);
 
   // Enable smoothing
   smooth();

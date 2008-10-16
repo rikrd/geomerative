@@ -2,7 +2,7 @@ import processing.xml.*;
 import geomerative.*;
 
 // Declare the objects we are going to use, so that they are accesible from setup() and from draw()
-RFont f;
+RGroup grp;
 
 void setup(){
   // Initilaize the sketch
@@ -17,7 +17,7 @@ void setup(){
   stroke(0);
   
   //  Load the font file we want to use (the file must be in the data folder in the sketch floder), with the size 60 and the alignment CENTER
-  f = new RFont("FreeSans.ttf", 72, RFont.CENTER);
+  grp = RG.loadText("Hello world!", "FreeSans.ttf", 72, CENTER);
 }
 
 void draw(){
@@ -28,5 +28,5 @@ void draw(){
   translate(width/2, height/2);
   
   // Draw the string "Hola mundo!" on the PGraphics canvas g (which is the default canvas of the sketch)  
-  f.draw("Hola mundo!");
+  grp.draw();
 }

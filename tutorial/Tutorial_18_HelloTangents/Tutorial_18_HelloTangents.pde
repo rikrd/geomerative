@@ -19,8 +19,7 @@ void setup(){
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  RSVG svgLoader = new RSVG();
-  grp = svgLoader.toGroup("bot1.svg");
+  grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g);
 
   

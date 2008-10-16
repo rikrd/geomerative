@@ -8,7 +8,7 @@ RMatrix mat;
 
 void setup(){
   // Initilaize the sketch
-  size(600,400,OPENGL);
+  size(600,400);
   frameRate(24);
 
   // VERY IMPORTANT: Allways initialize the library in the setup
@@ -20,8 +20,7 @@ void setup(){
   stroke(0);
   
   //  Load the font file we want to use (the file must be in the data folder in the sketch floder), with the size 60 and the alignment CENTER
-  f = new RFont("FreeSans.ttf", 72, RFont.CENTER);
-  grp = f.toGroup("Hola mundo!");
+  grp = RG.loadText("Hello world!", "FreeSans.ttf", 72, CENTER);
 
   // Enable smoothing
   smooth();

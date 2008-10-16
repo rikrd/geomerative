@@ -16,8 +16,7 @@ void setup(){
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  RSVG svgLoader = new RSVG();
-  grp = svgLoader.toGroup("bot1.svg");
+  grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g, 100, 1, 1);
   
 }
@@ -47,10 +46,6 @@ void draw(){
     ellipse(ps[i].x, ps[i].y, 8, 8);
   }
   endShape();
-
-  // Draw the original Group in orange  
-  stroke(200,80,0);
-  //grp.draw();
 }
 
 void mousePressed(){

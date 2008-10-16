@@ -2,9 +2,7 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RSVG svgLoader;
 RGroup grp;
-
 RGroup newGrp;
 
 void setup(){
@@ -14,12 +12,9 @@ void setup(){
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
-  //RG.ignoreStyles();
 
-  svgLoader = new RSVG();
-  grp = svgLoader.toGroup("lion.svg");
+  grp = RG.loadSVG("lion.svg");
   grp.centerIn(g);
-  //printGroup(grp, "");
 } 
 
 void draw(){
@@ -37,31 +32,4 @@ void draw(){
   noFill();
   stroke(0, 100);
   grp.draw();
-}
-
-
-void printGroup(RGroup grp, String prefix){
-  if(grp.elements != null){
-    for(int i=0;i<grp.elements.length;i++){
-      RGeomElem elem = grp.elements[i];
-      println(prefix + "id: " + elem.id);
-      println(prefix + "  fillDef: " + elem.fillDef);
-      println(prefix + "  fill: " + elem.fill);
-      println(prefix + "  fillColor: " + hex(elem.fillColor));
-      println(prefix + "  fillAlphaDef: " + elem.fillAlphaDef);
-      println(prefix + "  fillAlpha: " + elem.fillAlpha);
-      println(prefix + "  strokeDef: " + elem.fillDef);
-      println(prefix + "  stroke: " + elem.fill);
-      println(prefix + "  strokeColor: " + hex(elem.fillColor));
-      println(prefix + "  strokeAlphaDef: " + elem.fillAlphaDef);
-      println(prefix + "  strokeAlpha: " + elem.fillAlpha);
-      println(prefix + "  strokeWeightDef: " + elem.strokeWeightDef);
-      println(prefix + "  strokeWeight: " + elem.strokeWeight);
-      println(prefix + "-----------------------");
-
-      if(elem.getType() == RGeomElem.GROUP){
-        printGroup((RGroup)elem, prefix+"  ");
-      }
-    }
-  }
 }

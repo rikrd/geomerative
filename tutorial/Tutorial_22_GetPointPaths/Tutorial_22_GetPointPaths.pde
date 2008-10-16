@@ -12,18 +12,15 @@ float z = 0;
 boolean ignoringStyles = false;
 
 void setup(){
-  size(600, 600, OPENGL);
-  smooth();
-  g.smooth = true; 
+  size(600, 600, P3D);
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  RCommand.setSegmentator(RCommand.ADAPTATIVE);
+  RCommand.setSegmentator(RG.ADAPTATIVE);
   
-  RSVG svgLoader = new RSVG();
-  grp = svgLoader.toGroup("bot1.svg");
+  grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g, 100, 1, 1);
   
   pointPaths = grp.getPointsInPaths();

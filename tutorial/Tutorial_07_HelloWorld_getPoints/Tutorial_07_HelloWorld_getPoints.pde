@@ -8,7 +8,7 @@ RPoint[] points;
 
 void setup(){
   // Initilaize the sketch
-  size(600,400,OPENGL);
+  size(600,400);
   frameRate(24);
 
   // Choice of colors
@@ -20,8 +20,7 @@ void setup(){
   RG.init(this);
   
   //  Load the font file we want to use (the file must be in the data folder in the sketch floder), with the size 60 and the alignment CENTER
-  f = new RFont("FreeSans.ttf",72,RFont.CENTER);
-  grp = f.toGroup("Hola mundo!");
+  grp = RG.loadText("Hello world!", "FreeSans.ttf", 72, CENTER);
 
   // Enable smoothing
   smooth();
@@ -37,14 +36,14 @@ void draw(){
   // Draw the group of shapes
   noFill();
   stroke(0,0,200,150);
-  RCommand.setSegmentator(RCommand.ADAPTATIVE);
+  RCommand.setSegmentator(RG.ADAPTATIVE);
   grp.draw();
   
   // Get the points on the curve's shape
-  //RCommand.setSegmentator(RCommand.UNIFORMSTEP);
-  //RCommand.setSegmentStep(map(float(mouseY), 0.0, float(height), 0.0, 1.0));
+  //RG.setSegmentator(RG.UNIFORMSTEP);
+  //RG.setSegmentStep(map(float(mouseY), 0.0, float(height), 0.0, 1.0));
   
-  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
+  RCommand.setSegmentator(RG.UNIFORMLENGTH);
   RCommand.setSegmentLength(map(mouseY, 0, height, 3, 200));
   points = grp.getPoints();
   
