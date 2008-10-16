@@ -7,7 +7,7 @@ RGroup grp;
 RGroup polyGrp;
 
 void setup(){
-  size(800, 600);
+  size(600, 600);
   smooth();
   g.smooth = true;
 
@@ -27,7 +27,8 @@ void draw(){
   // We create the polygonized version
   RCommand.setSegmentator(RG.UNIFORMLENGTH);
   RCommand.setSegmentLength(pointSeparation);
-  polyGrp = grp.toPolygonGroup();
+  polyGrp = new RGroup(grp);
+  polyGrp.polygonize();
   
   // We move ourselves to the mouse position
   translate(mouseX, mouseY);

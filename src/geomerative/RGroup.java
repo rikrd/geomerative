@@ -833,6 +833,12 @@ public class RGroup extends RGeomElem
     adapt(shp, RG.adaptorScale, RG.adaptorLengthOffset);
   }
   
+
+  public void polygonize(){
+    RGroup grp = toPolygonGroup().toShapeGroup();
+    this.elements = grp.elements;
+  }
+
   private void append(RGeomElem elem){
     RGeomElem[] newelements;
     if(elements==null){

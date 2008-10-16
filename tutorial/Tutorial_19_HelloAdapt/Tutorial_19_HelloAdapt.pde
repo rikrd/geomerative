@@ -22,7 +22,7 @@ void setup(){
   grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g);
   
-  grp = grp.toPolygonGroup().toShapeGroup();
+  grp.polygonize();
   grp.centerIn(g, 200, 1, 1);
   
   shp = RShape.createCircle(0, 0, 20);
