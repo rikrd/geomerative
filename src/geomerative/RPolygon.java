@@ -42,7 +42,6 @@ public class RPolygon extends RGeomElem
   public int type = RGeomElem.POLYGON;
   public static int defaultDetail = 50;
 
-  private RMesh cachedMesh = null;
   /**
    * Array of RContour objects holding the contours of the polygon. 
    * @eexample contours
@@ -86,8 +85,6 @@ public class RPolygon extends RGeomElem
       this.append(new RContour(p.contours[i]));
     }
     type = RGeomElem.POLYGON;
-
-    //this.cachedMesh = p.cachedMesh;
 
     setStyle(p);
   }
@@ -337,12 +334,7 @@ public class RPolygon extends RGeomElem
       return new RMesh();
     }
     
-    if ( this.cachedMesh == null ){      
-      //System.out.println( "Creating cached mesh / id:" + this.id );
-      this.cachedMesh = RClip.polygonToMesh( this );
-    }
-    
-    RMesh mesh = this.cachedMesh;
+    RMesh mesh = RClip.polygonToMesh( this );
     if ( mesh == null ) {
       return null;
     }
@@ -604,7 +596,8 @@ public class RPolygon extends RGeomElem
           }
           
           RMesh tempMesh = this.toMesh();
-          tempMesh.draw(g);
+          if(tempMesh != null)
+            tempMesh.draw(g);
           
           // Restore the old stroke color
           if(stroking) g.stroke(g.g.strokeColor);

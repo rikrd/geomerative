@@ -43,7 +43,6 @@ public class RShape extends RGeomElem
   public RPath[] paths;
   protected int currentPath = 0;
 
-  private RPolygon cachedPolygon = null;
   // ----------------------
   // --- Public Methods ---
   // ----------------------
@@ -67,8 +66,6 @@ public class RShape extends RGeomElem
       this.append(new RPath(s.paths[i]));
     }
     type = RGeomElem.SHAPE;
-
-    //this.cachedPolygon = s.cachedPolygon;
 
     setStyle(s);
   }
@@ -363,25 +360,20 @@ public class RShape extends RGeomElem
    * @related draw ( )
    */
   public RPolygon toPolygon(){
-    if(this.cachedPolygon == null){
-      int numPaths = countPaths();
-      
-      RPolygon result = new RPolygon();
-      for(int i=0;i<numPaths;i++){
-        RPoint[] newpoints = this.paths[i].getPoints();
-        RContour c = new RContour(newpoints);
-        c.closed = paths[i].closed;
-        c.setStyle(paths[i]);
-        result.addContour(c);
-      }
-
-      this.cachedPolygon = result;
-    }
-
-    RPolygon polygon = this.cachedPolygon;
-    polygon.setStyle(this);
+    int numPaths = countPaths();
     
-    return polygon;
+    RPolygon result = new RPolygon();
+    for(int i=0;i<numPaths;i++){
+      RPoint[] newpoints = this.paths[i].getPoints();
+      RContour c = new RContour(newpoints);
+      c.closed = paths[i].closed;
+      c.setStyle(paths[i]);
+      result.addContour(c);
+    }
+    
+    result.setStyle(this);
+    
+    return result;
   }
   
   /**
