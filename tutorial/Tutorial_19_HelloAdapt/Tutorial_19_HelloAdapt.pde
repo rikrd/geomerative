@@ -14,9 +14,9 @@ void setup(){
   g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
-  RGeomerative.ignoreStyles(ignoringStyles);
-  RGeomerative.setAdaptor(RGeomerative.BYPOINT);
+  RG.init(this);
+  RG.ignoreStyles(ignoringStyles);
+  RG.setAdaptor(RG.BYPOINT);
   
   RCommand.setSegmentator(RCommand.ADAPTATIVE);
   
@@ -52,5 +52,5 @@ void draw(){
 
 void mousePressed(){
   ignoringStyles = !ignoringStyles;
-  RGeomerative.ignoreStyles(ignoringStyles);
+  RG.ignoreStyles(ignoringStyles);
 }

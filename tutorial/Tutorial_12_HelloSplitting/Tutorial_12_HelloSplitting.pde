@@ -11,7 +11,7 @@ void setup(){
   smooth();
   g.smooth = true; 
   
-  RGeomerative.init(this);
+  RG.init(this);
   
 }
 

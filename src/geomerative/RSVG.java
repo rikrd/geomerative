@@ -42,7 +42,7 @@ public class RSVG
   
   public RGroup toGroup(String filename)
   {
-    XMLElement svg = new XMLElement(RGeomerative.parent(), filename);
+    XMLElement svg = new XMLElement(RG.parent(), filename);
     if (!svg.getName().equals("svg")) {
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }

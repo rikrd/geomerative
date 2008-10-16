@@ -10,7 +10,7 @@ void setup()
   size(400, 400);
   smooth();
 
-  RGeomerative.init(this);
+  RG.init(this);
 
   shp1 = RShape.createRing(0, 0, 120, 50);
   shp2 = RShape.createStar(0, 0, 100.0, 80.0, 20);

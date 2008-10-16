@@ -74,7 +74,7 @@ public abstract class RGeomElem
   public abstract void draw(PApplet g);
   
   public void draw(){
-    this.draw(RGeomerative.parent());
+    this.draw(RG.parent());
   }
 
 
@@ -127,10 +127,10 @@ public abstract class RGeomElem
   public float strokeWeight = 1F;
 
   public boolean strokeCapDef = false;
-  public int strokeCap = RGeomerative.PROJECT;
+  public int strokeCap = RG.PROJECT;
 
   public boolean strokeJoinDef = false;
-  public int strokeJoin = RGeomerative.MITER;
+  public int strokeJoin = RG.MITER;
   
   private boolean oldFill = false;
   private int oldFillColor = 0;
@@ -138,8 +138,8 @@ public abstract class RGeomElem
   private boolean oldStroke = false;
   private int oldStrokeColor = 0;
   private float oldStrokeWeight = 1F;
-  private int oldStrokeCap = RGeomerative.PROJECT;
-  private int oldStrokeJoin = RGeomerative.MITER;
+  private int oldStrokeCap = RG.PROJECT;
+  private int oldStrokeJoin = RG.MITER;
   
   protected void saveContext(PGraphics g){
     oldFill = g.fill;
@@ -162,7 +162,7 @@ public abstract class RGeomElem
   }
 
   protected void saveContext(){
-    saveContext(RGeomerative.parent());
+    saveContext(RG.parent());
   }
 
   protected void restoreContext(PGraphics g){
@@ -204,23 +204,23 @@ public abstract class RGeomElem
   }
 
   protected void restoreContext(){
-    restoreContext(RGeomerative.parent());
+    restoreContext(RG.parent());
   }
 
   protected void setContext(PGraphics g){
     /*
-    RGeomerative.parent().println("Setting context");
-    RGeomerative.parent().println("  fillDef: ");
-    RGeomerative.parent().println(fillDef);
-    RGeomerative.parent().println("  fillColor: ");
-    RGeomerative.parent().println(RGeomerative.parent().hex(fillColor));
+    RG.parent().println("Setting context");
+    RG.parent().println("  fillDef: ");
+    RG.parent().println(fillDef);
+    RG.parent().println("  fillColor: ");
+    RG.parent().println(RG.parent().hex(fillColor));
 
-    RGeomerative.parent().println("  strokeDef: ");
-    RGeomerative.parent().println(strokeDef);
-    RGeomerative.parent().println("  strokeColor: ");
-    RGeomerative.parent().println(RGeomerative.parent().hex(strokeColor));
-    RGeomerative.parent().println("  strokeWeight: ");
-    RGeomerative.parent().println(strokeWeight);
+    RG.parent().println("  strokeDef: ");
+    RG.parent().println(strokeDef);
+    RG.parent().println("  strokeColor: ");
+    RG.parent().println(RG.parent().hex(strokeColor));
+    RG.parent().println("  strokeWeight: ");
+    RG.parent().println(strokeWeight);
     */
 
     if(fillAlphaDef){
@@ -324,7 +324,7 @@ public abstract class RGeomElem
   }
 
   protected void setContext(){
-    setContext(RGeomerative.parent());
+    setContext(RG.parent());
   }
 
   protected void setStyle(RGeomElem p){
@@ -354,7 +354,7 @@ public abstract class RGeomElem
   }
 
   protected void setStyle(String styleString){
-    //RGeomerative.parent().println("Style parsing: " + styleString);
+    //RG.parent().println("Style parsing: " + styleString);
     String[] styleTokens = PApplet.splitTokens(styleString, ";");
     
     for(int i = 0; i < styleTokens.length; i++){
@@ -398,14 +398,14 @@ public abstract class RGeomElem
   }
 
   public void setFill(int _fillColor){
-    //RGeomerative.parent().println("Setting fill by int: " + RGeomerative.parent().hex(_fillColor));
+    //RG.parent().println("Setting fill by int: " + RG.parent().hex(_fillColor));
     setFill(true);
     fillColor = (fillColor & 0xff000000) | (_fillColor & 0x00ffffff);
   }
 
   public void setFill(String str){
-    //RGeomerative.parent().println("id: " + id);
-    //RGeomerative.parent().println("  set fill: " + str);
+    //RG.parent().println("id: " + id);
+    //RG.parent().println("  set fill: " + str);
     if(str.equals("none")){
       setFill(false);
 
@@ -413,7 +413,7 @@ public abstract class RGeomElem
       setFill(getColor(str));
 
     }
-    //RGeomerative.parent().println("  fillColor after: " + RGeomerative.parent().hex(fillColor));
+    //RG.parent().println("  fillColor after: " + RG.parent().hex(fillColor));
   }
 
   public void setStroke(boolean _stroke){
@@ -427,7 +427,7 @@ public abstract class RGeomElem
   }
 
   public void setStroke(String str){
-    //RGeomerative.parent().println("  set stroke: " + str);
+    //RG.parent().println("  set stroke: " + str);
     if(str.equals("none")){
       setStroke(false);
 
@@ -438,13 +438,13 @@ public abstract class RGeomElem
   }
 
   public void setStrokeWeight(float value){
-    //RGeomerative.parent().println("  set strokeWeight by float: " + value);
+    //RG.parent().println("  set strokeWeight by float: " + value);
     strokeWeightDef = true;
     strokeWeight = value;
   }
 
   public void setStrokeWeight(String str){
-    //RGeomerative.parent().println("  set strokeWeight by String: " + str);
+    //RG.parent().println("  set strokeWeight by String: " + str);
     if(str.endsWith("px")){
       setStrokeWeight(PApplet.parseFloat(str.substring(0, str.length() - 2)));
     }else{
@@ -455,33 +455,33 @@ public abstract class RGeomElem
   }
 
   public void setStrokeCap(String str){
-    //RGeomerative.parent().println("  set stroke-cap: " + str);
+    //RG.parent().println("  set stroke-cap: " + str);
     strokeCapDef = true;
 
     if(str.equals("butt")){
-      strokeCap = RGeomerative.PROJECT;
+      strokeCap = RG.PROJECT;
 
     }else if(str.equals("round")){
-      strokeCap = RGeomerative.ROUND;
+      strokeCap = RG.ROUND;
 
     }else if(str.equals("square")){
-      strokeCap = RGeomerative.SQUARE;
+      strokeCap = RG.SQUARE;
 
     }
   }
 
   public void setStrokeJoin(String str){
-    //RGeomerative.parent().println("  set stroke-cap: " + str);
+    //RG.parent().println("  set stroke-cap: " + str);
     strokeJoinDef = true;
 
     if(str.equals("miter")){
-      strokeJoin = RGeomerative.MITER;
+      strokeJoin = RG.MITER;
 
     }else if(str.equals("round")){
-      strokeJoin = RGeomerative.ROUND;
+      strokeJoin = RG.ROUND;
 
     }else if(str.equals("bevel")){
-      strokeJoin = RGeomerative.BEVEL;
+      strokeJoin = RG.BEVEL;
 
     }
   }
@@ -501,22 +501,22 @@ public abstract class RGeomElem
   }
 
   public void setFillAlpha(String str){
-    //RGeomerative.parent().println("  set fillOpacity: " + str);
+    //RG.parent().println("  set fillOpacity: " + str);
     setFillAlpha((int)(PApplet.parseFloat(str) * 255F));
-    //RGeomerative.parent().println("  fillColor after: " + RGeomerative.parent().hex(fillColor));
+    //RG.parent().println("  fillColor after: " + RG.parent().hex(fillColor));
   }  
 
   public void setAlpha(float opacity){
-    //RGeomerative.parent().println("Setting float opacity: " + opacity);
+    //RG.parent().println("Setting float opacity: " + opacity);
     setAlpha((int)(opacity * 255F));
   }
 
   public void setAlpha(int opacity){
     /*
-    RGeomerative.parent().println("setting opacity: " + RGeomerative.parent().hex(opacity));    
+    RG.parent().println("setting opacity: " + RG.parent().hex(opacity));    
     
-    RGeomerative.parent().println("  fillColor before: " + RGeomerative.parent().hex(fillColor));
-    RGeomerative.parent().println("  strokeColor before: " + RGeomerative.parent().hex(fillColor));
+    RG.parent().println("  fillColor before: " + RG.parent().hex(fillColor));
+    RG.parent().println("  strokeColor before: " + RG.parent().hex(fillColor));
     */
 
     setFillAlpha(opacity);
@@ -526,13 +526,13 @@ public abstract class RGeomElem
     //strokeColor = ((opacity << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
 
     /*    
-    RGeomerative.parent().println("  fillColor now: " + RGeomerative.parent().hex(fillColor));
-    RGeomerative.parent().println("  strokeColor now: " + RGeomerative.parent().hex(fillColor));
+    RG.parent().println("  fillColor now: " + RG.parent().hex(fillColor));
+    RG.parent().println("  strokeColor now: " + RG.parent().hex(fillColor));
     */
   }
 
   public void setAlpha(String str){
-    //RGeomerative.parent().println("Setting string opacity: " + str);
+    //RG.parent().println("Setting string opacity: " + str);
     setAlpha(PApplet.parseFloat(str));
   }
 
@@ -587,22 +587,22 @@ public abstract class RGeomElem
       return PApplet.unhex("FF"+colorString.substring(1));
     }else if(colorString.startsWith("rgb")){
       String[] rgb = PApplet.splitTokens(colorString, "rgb( , )");
-      return (int)RGeomerative.parent().color(PApplet.parseInt(rgb[0]), PApplet.parseInt(rgb[1]), PApplet.parseInt(rgb[2]));
+      return (int)RG.parent().color(PApplet.parseInt(rgb[0]), PApplet.parseInt(rgb[1]), PApplet.parseInt(rgb[2]));
     }else{
       if(colorString.equals("black")){
         return 0;
 
       }else if(colorString.equals("red")){
-        return RGeomerative.parent().color(255, 0, 0);
+        return RG.parent().color(255, 0, 0);
 
       }else if(colorString.equals("green")){
-        return RGeomerative.parent().color(0, 255, 0);
+        return RG.parent().color(0, 255, 0);
 
       }else if(colorString.equals("blue")){
-        return RGeomerative.parent().color(0, 0, 255);
+        return RG.parent().color(0, 0, 255);
 
       }else if(colorString.equals("yellow")){
-        return RGeomerative.parent().color(0, 255, 255);
+        return RG.parent().color(0, 255, 255);
 
       }
     }

@@ -12,8 +12,8 @@ void setup(){
   g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
-  RGeomerative.ignoreStyles(ignoringStyles);
+  RG.init(this);
+  RG.ignoreStyles(ignoringStyles);
 
   svgLoader = new RSVG();
   grp = svgLoader.toGroup("bot1.svg");
@@ -33,5 +33,5 @@ void draw(){
 
 void mousePressed(){
   ignoringStyles = !ignoringStyles;
-  RGeomerative.ignoreStyles(ignoringStyles);
+  RG.ignoreStyles(ignoringStyles);
 }

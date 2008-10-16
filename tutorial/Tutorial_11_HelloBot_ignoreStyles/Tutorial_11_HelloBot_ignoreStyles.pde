@@ -13,8 +13,8 @@ void setup(){
   g.smooth = true;
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
-  //RGeomerative.ignoreStyles();
+  RG.init(this);
+  //RG.ignoreStyles();
 
   svgLoader = new RSVG();
   grp = svgLoader.toGroup("lion.svg");
@@ -30,10 +30,10 @@ void draw(){
   newGrp = grp.toPolygonGroup();
   
   grp.draw();
-  RGeomerative.ignoreStyles(false);  
+  RG.ignoreStyles(false);  
   newGrp.draw();
   
-  RGeomerative.ignoreStyles();
+  RG.ignoreStyles();
   noFill();
   stroke(0, 100);
   grp.draw();

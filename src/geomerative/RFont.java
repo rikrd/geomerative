@@ -91,7 +91,7 @@ public class RFont{
    */
   public RFont(String fontPath, int size, int align) throws RuntimeException{   
     // Try to find the font as font path
-    byte[] bs = RGeomerative.parent().loadBytes(fontPath);
+    byte[] bs = RG.parent().loadBytes(fontPath);
     f = Font.create(bs);
     
     setSize(size);

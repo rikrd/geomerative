@@ -50,8 +50,8 @@ void setup(){
   g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
-  //RGeomerative.ignoreStyles();
+  RG.init(this);
+  //RG.ignoreStyles();
   
   RSVG svgLoader = new RSVG();
   grp = svgLoader.toGroup("M2.2.svg");

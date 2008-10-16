@@ -13,7 +13,7 @@ void setup(){
   g.smooth = true;
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
+  RG.init(this);
 
   svgLoader = new RSVG();
   grp = svgLoader.toGroup("pirata.svg");

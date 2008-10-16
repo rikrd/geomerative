@@ -658,7 +658,7 @@ public class RCommand extends RGeomElem
       dx2 = dx*dx;
       dy2 = dy*dy;
       t2 = t*t;
-      //RGeomerative.parent().println("RCommand/LINETO::: getCurveLength: " + (float)Math.sqrt(dx2*t2 + dy2*t2));
+      //RG.parent().println("RCommand/LINETO::: getCurveLength: " + (float)Math.sqrt(dx2*t2 + dy2*t2));
       return (float)Math.sqrt(dx2*t2 + dy2*t2);
       
     case QUADBEZIERTO:

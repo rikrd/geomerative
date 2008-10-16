@@ -560,10 +560,10 @@ public class RShape extends RGeomElem
     
     RPoint[] verts = pointpaths[0];
     for(int k=1;k<pointpaths.length;k++){
-      verts = (RPoint[])RGeomerative.parent().append(verts, new RPoint(0F, 0F));
-      verts = (RPoint[])RGeomerative.parent().concat(verts, pointpaths[k]);
+      verts = (RPoint[])RG.parent().append(verts, new RPoint(0F, 0F));
+      verts = (RPoint[])RG.parent().concat(verts, pointpaths[k]);
     }
-    verts = (RPoint[])RGeomerative.parent().append(verts, new RPoint(0F, 0F));
+    verts = (RPoint[])RG.parent().append(verts, new RPoint(0F, 0F));
     
     if(verts == null){
       return false;
@@ -822,8 +822,8 @@ public class RShape extends RGeomElem
     float xmin = c.points[0].x;
     float xmax = c.points[2].x;
     
-    switch(RGeomerative.adaptorType){
-    case RGeomerative.BYPOINT:
+    switch(RG.adaptorType){
+    case RG.BYPOINT:
       RPoint[] ps = this.getHandles();
       if(ps != null){
         for(int k=0;k<ps.length;k++){
@@ -842,8 +842,8 @@ public class RShape extends RGeomElem
         }
       }
       break;
-    case RGeomerative.BYELEMENTINDEX:
-    case RGeomerative.BYELEMENTPOSITION:
+    case RG.BYELEMENTINDEX:
+    case RG.BYELEMENTPOSITION:
       RContour elemc = shp.getBounds();
       
       float px = (elemc.points[2].x + elemc.points[0].x) / 2F;
@@ -866,12 +866,12 @@ public class RShape extends RGeomElem
       break;
       
     default:
-      throw new RuntimeException("Unknown adaptor type : "+RGeomerative.adaptorType+". The method RGeomerative.setAdaptor() only accepts RGeomerative.BYPOINT or RGeomerative.BYELEMENT as parameter values.");
+      throw new RuntimeException("Unknown adaptor type : "+RG.adaptorType+". The method RG.setAdaptor() only accepts RG.BYPOINT or RG.BYELEMENT as parameter values.");
     }
   }
   
   public void adapt(RShape shp) throws RuntimeException{
-    adapt(shp, RGeomerative.adaptorScale, RGeomerative.adaptorLengthOffset);
+    adapt(shp, RG.adaptorScale, RG.adaptorLengthOffset);
   }
 
   /**
@@ -997,7 +997,7 @@ public class RShape extends RGeomElem
     
     if(numPaths!=0){
       if(isIn(g)) {
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           saveContext(g);
           setContext(g);
         }
@@ -1069,7 +1069,7 @@ public class RShape extends RGeomElem
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
 
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           restoreContext(g);
         }
       }
@@ -1081,7 +1081,7 @@ public class RShape extends RGeomElem
     
     if(numPaths!=0){
       if(isIn(p)) {
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           saveContext(p);
           setContext(p);
         }
@@ -1158,7 +1158,7 @@ public class RShape extends RGeomElem
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
 
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           restoreContext(p);
         }
       }
@@ -1169,7 +1169,7 @@ public class RShape extends RGeomElem
     int numPaths = countPaths();
     if(numPaths!=0){
       if(isIn(g)){
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           saveContext(g);
           setContext(g);
         }
@@ -1204,7 +1204,7 @@ public class RShape extends RGeomElem
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           restoreContext(g);
         }
       }
@@ -1215,7 +1215,7 @@ public class RShape extends RGeomElem
     int numPaths = countPaths();
     if(numPaths!=0){
       if(isIn(g)){
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           saveContext(g);
           setContext(g);
         }
@@ -1250,7 +1250,7 @@ public class RShape extends RGeomElem
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           restoreContext(g);
         }
       }

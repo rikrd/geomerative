@@ -135,7 +135,7 @@ public class RGroup extends RGeomElem
    * @param g PGraphics, the graphics object on which to draw the group
    */
   public void draw(PGraphics g){
-    if(!RGeomerative.ignoreStyles){
+    if(!RG.ignoreStyles){
       saveContext(g);
       setContext(g);
     }
@@ -144,13 +144,13 @@ public class RGroup extends RGeomElem
       elements[i].draw(g);
     }
 
-    if(!RGeomerative.ignoreStyles){
+    if(!RG.ignoreStyles){
       restoreContext(g);
     }
   }
   
   public void draw(PApplet a){
-    if(!RGeomerative.ignoreStyles){
+    if(!RG.ignoreStyles){
       saveContext(a);
       setContext(a);
     }
@@ -159,7 +159,7 @@ public class RGroup extends RGeomElem
       elements[i].draw(a);
     }
     
-    if(!RGeomerative.ignoreStyles){
+    if(!RG.ignoreStyles){
       restoreContext(a);
     }
   }
@@ -749,8 +749,8 @@ public class RGroup extends RGeomElem
     
     int numElements = this.countElements();
     
-    switch(RGeomerative.adaptorType){
-    case RGeomerative.BYPOINT:
+    switch(RG.adaptorType){
+    case RG.BYPOINT:
       for(int i=0;i<numElements;i++){
         RGeomElem elem = this.elements[i];
         RPoint[] ps = elem.getHandles();
@@ -772,7 +772,7 @@ public class RGroup extends RGeomElem
         }
       }
       break;
-    case RGeomerative.BYELEMENTPOSITION:
+    case RG.BYELEMENTPOSITION:
       
       for(int i=0;i<numElements;i++){
         RGeomElem elem = this.elements[i];
@@ -798,7 +798,7 @@ public class RGroup extends RGeomElem
       }
       break;
       
-    case RGeomerative.BYELEMENTINDEX:
+    case RG.BYELEMENTINDEX:
       
       for(int i=0;i<numElements;i++){
         RGeomElem elem = this.elements[i];
@@ -825,12 +825,12 @@ public class RGroup extends RGeomElem
       break;
       
     default:
-      throw new RuntimeException("Unknown adaptor type : "+RGeomerative.adaptorType+". The method RGeomerative.setAdaptor() only accepts RGeomerative.BYPOINT or RGeomerative.BYELEMENT as parameter values.");
+      throw new RuntimeException("Unknown adaptor type : "+RG.adaptorType+". The method RG.setAdaptor() only accepts RG.BYPOINT or RG.BYELEMENT as parameter values.");
     }
   }
   
   public void adapt(RShape shp) throws RuntimeException{
-    adapt(shp, RGeomerative.adaptorScale, RGeomerative.adaptorLengthOffset);
+    adapt(shp, RG.adaptorScale, RG.adaptorLengthOffset);
   }
   
   private void append(RGeomElem elem){

@@ -9,7 +9,7 @@ void setup(){
   size(600,400,OPENGL);
 
   // VERY IMPORTANT: Allways initialize the library in the setup
-  RGeomerative.init(this);
+  RG.init(this);
 
   // Choice of colors
   background(255);

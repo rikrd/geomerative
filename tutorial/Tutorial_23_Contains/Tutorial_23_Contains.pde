@@ -13,8 +13,8 @@ void setup(){
   g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
-  RGeomerative.ignoreStyles(ignoringStyles);
+  RG.init(this);
+  RG.ignoreStyles(ignoringStyles);
   
   RCommand.setSegmentator(RCommand.ADAPTATIVE);
   
@@ -34,17 +34,17 @@ void draw(){
   RPoint p = new RPoint(mouseX-width/2, mouseY-height/2);
   for(int i=0;i<grp.countElements();i++){
     if(grp.elements[i].contains(p)){
-       RGeomerative.ignoreStyles(true);
+       RG.ignoreStyles(true);
        fill(0,0,255,150);
        noStroke();
        println("Mouse over: "+grp.elements[i].id);
        grp.elements[i].draw();
-       RGeomerative.ignoreStyles(ignoringStyles);
+       RG.ignoreStyles(ignoringStyles);
     }
   }
 }
 
 void mousePressed(){
   ignoringStyles = !ignoringStyles;
-  RGeomerative.ignoreStyles(ignoringStyles);
+  RG.ignoreStyles(ignoringStyles);
 }

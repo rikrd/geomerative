@@ -16,7 +16,7 @@ void setup(){
   frameRate(24);
 
   // VERY IMPORTANT: Allways initialize the library in the setup
-  RGeomerative.init(this);
+  RG.init(this);
 
   // Choice of colors
   background(255);

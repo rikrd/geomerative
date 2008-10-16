@@ -61,7 +61,7 @@ public class RPath extends RGeomElem
    * @param RPoint p, the first point of the path
    */
   public RPath(){
-    this.lastPoint = new RPoint(0,0);
+    this.lastPoint = new RPoint();
   }
   
   public RPath(float x, float y){

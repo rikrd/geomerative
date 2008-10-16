@@ -524,7 +524,7 @@ public class RPolygon extends RGeomElem
     int numContours = countContours();
     if(numContours!=0){
       if(isIn(g)){
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           saveContext(g);
           setContext(g);
         }
@@ -569,7 +569,7 @@ public class RPolygon extends RGeomElem
           }
         }
 
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           restoreContext(g);
         }
       }
@@ -580,7 +580,7 @@ public class RPolygon extends RGeomElem
     int numContours = countContours();
     if(numContours!=0){
       if(isIn(g)){
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           saveContext(g);
           setContext(g);
         }
@@ -625,7 +625,7 @@ public class RPolygon extends RGeomElem
           }
         }
 
-        if(!RGeomerative.ignoreStyles){
+        if(!RG.ignoreStyles){
           restoreContext(g);
         }
       }

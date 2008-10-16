@@ -17,7 +17,7 @@ void setup(){
   stroke(0);
   
   // VERY IMPORTANT: Allways initialize the library in the setup
-  RGeomerative.init(this);
+  RG.init(this);
   
   //  Load the font file we want to use (the file must be in the data folder in the sketch floder), with the size 60 and the alignment CENTER
   f = new RFont("FreeSans.ttf",72,RFont.CENTER);

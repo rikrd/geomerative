@@ -13,8 +13,8 @@ void setup(){
   g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
-  RGeomerative.ignoreStyles(ignoringStyles);
+  RG.init(this);
+  RG.ignoreStyles(ignoringStyles);
   
   shp = RShape.createCircle(0, 0, 20);
   shp.centerIn(g, 200, 1, 1);
@@ -53,5 +53,5 @@ void draw(){
 
 void mousePressed(){
   ignoringStyles = !ignoringStyles;
-  RGeomerative.ignoreStyles(ignoringStyles);
+  RG.ignoreStyles(ignoringStyles);
 }

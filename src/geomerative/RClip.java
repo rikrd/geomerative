@@ -240,7 +240,7 @@ class RClip
    */
   private static RPolygon clip( OperationType op, RPolygon subj, RPolygon clip, Class polyClass )
   {
-    if(RGeomerative.useFastClip) {
+    if(RG.useFastClip) {
       return FastRClip.clip(op, subj, clip, polyClass);
     }
     
@@ -867,7 +867,7 @@ class RClip
    */
   private static RMesh clip( OperationType op, RPolygon subj, RPolygon clip )
   {
-    if(RGeomerative.useFastClip) {
+    if(RG.useFastClip) {
       return FastRClip.clip(op, subj, clip);
     }
     

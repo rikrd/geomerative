@@ -11,8 +11,8 @@ void setup(){
   g.smooth = true;
 
   // VERY IMPORTANT: Allways initialize the library before using it
-  RGeomerative.init(this);
-  //RGeomerative.ignoreStyles();
+  RG.init(this);
+  //RG.ignoreStyles();
 
   svgLoader = new RSVG();
   grp = svgLoader.toGroup("tiger.svg");
