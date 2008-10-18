@@ -93,8 +93,20 @@ public class RG implements PConstants{
 
   static boolean shapeBegin = false;
 
-  public static void loadFont(String font, int size){
-    fntLoader = new RFont(font, size);
+
+  // Font methods
+  public static RFont loadFont(String fontFile){
+    return new RFont(fontFile);
+  }
+
+  public static void text(String text){
+    RGroup grp = getText(text);
+    grp.draw();
+  }
+
+  public static void textFont(RFont font, int size){
+    font.setSize(size);
+    fntLoader = font;
   }
 
   public static RGroup getText(String text, String font, int size, int align){
@@ -110,7 +122,13 @@ public class RG implements PConstants{
     return fntLoader.toGroup(text);
   }
 
-  public static RGroup loadSVG(String filename){
+
+  // Shape methods
+  public static void shape(RGroup shp){
+    shp.draw();
+  }
+
+  public static RGroup loadShape(String filename){
     RSVG svgLoader = new RSVG();
     return svgLoader.toGroup(filename);    
   }
@@ -189,8 +207,6 @@ public class RG implements PConstants{
 
     return returningGroup;    
   }
-
-
 
   public static RGroup getEllipse(float x, float y, float rx, float ry){
     RGroup ret = new RGroup();
