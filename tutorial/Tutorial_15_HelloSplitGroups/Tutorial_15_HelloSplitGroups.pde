@@ -9,14 +9,12 @@ boolean ignoringStyles = false;
 void setup(){
   size(600, 600);
   smooth();
-  g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
-  RG.ignoreStyles(ignoringStyles);
   
   grp = RG.loadSVG("bot1.svg");
-  grp.centerIn(g);
+  grp = RG.centerIn(grp, g);
   
 }
 
@@ -29,7 +27,7 @@ void draw(){
   
   float t = constrain(map(mouseX, 10, width-10, 0, 1), 0, 1);
   
-  RGroup[] splittedGroups = grp.split(t); 
+  RGroup[] splittedGroups = RG.split(grp, t); 
   splittedGroups[0].draw();
   
 }

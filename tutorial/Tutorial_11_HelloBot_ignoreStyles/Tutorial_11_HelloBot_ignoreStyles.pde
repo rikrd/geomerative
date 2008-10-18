@@ -8,23 +8,25 @@ RGroup newGrp;
 void setup(){
   size(800, 600);
   smooth();
-  g.smooth = true;
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
 
-  grp = RG.loadSVG("lion.svg");
+  grp = RG.loadSVG("Toucan.svg");
   grp.centerIn(g);
 } 
 
 void draw(){
   background(255);
   translate(width/2, height/2);
-  RG.setPolygonizer(RG.UNIFORMLENGTH);
-  RG.setPolygonizerLength(map(constrain(mouseX, 200, width-200), 200, width-200, 5, 300));
-  newGrp = grp.toPolygonGroup();
   
-  grp.draw();
+  float pointSeparation = map(constrain(mouseX, 200, width-200), 200, width-200, 5, 300);
+  
+  RG.setPolygonizer( RG.UNIFORMLENGTH );
+  RG.setPolygonizerLength( pointSeparation );
+  newGrp = RG.polygonize( grp );
+  
+  
   RG.ignoreStyles(false);  
   newGrp.draw();
   
