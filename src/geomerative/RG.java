@@ -190,8 +190,46 @@ public class RG implements PConstants{
     return returningGroup;    
   }
 
-  
 
+
+  public static RGroup ellipse(float x, float y, float rx, float ry){
+    RGroup ret = new RGroup();
+    ret.addElement(RShape.createEllipse(x, y, rx, ry));
+    return ret;
+  }
+  
+  public static RGroup ellipse(float x, float y, float r){
+    return ellipse(x, y, r, r);
+  }
+
+
+  public static RGroup centerIn(RGroup grp, PGraphics g, float margin){
+    RGroup ret = new RGroup(grp);
+    ret.centerIn(g, margin);
+    return ret;
+  }
+
+  public static RGroup centerIn(RGroup grp, PGraphics g){
+    return centerIn(grp, g, 0);
+  }
+
+
+  public static RGroup[] split(RGroup grp, float t){
+    return grp.split(t);
+  }
+
+  public static RGroup adapt(RGroup grp, RGroup path){
+    RGroup ret = new RGroup(grp);
+    ret.adapt(path);
+    return ret;
+  }
+
+  public static RGroup polygonize(RGroup grp){
+    RGroup ret = new RGroup(grp);
+    ret.polygonize();
+    return ret;
+  }
+  
 
   public static void init(PApplet _parent){
     parent = _parent;

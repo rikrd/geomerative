@@ -861,6 +861,10 @@ public abstract class RGeomElem
   public void centerIn(PGraphics g){
     transform(getCenteringTransf(g));
   }
+
+  public void centerIn(PGraphics g, float margin){
+    transform(getCenteringTransf(g, margin, 1, 1));
+  }
   
   public void centerIn(PGraphics g, float margin, float sclDamping, float trnsDamping) throws RuntimeException{
     transform(getCenteringTransf(g, margin, sclDamping, trnsDamping));

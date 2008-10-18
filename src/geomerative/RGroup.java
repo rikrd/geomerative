@@ -736,12 +736,12 @@ public class RGroup extends RGeomElem
   
   
   /**
-   * Use this method to adapt a group of of figures to a shape.
+   * Use this method to adapt a group of of figures to a group.
    * @eexample RGroup_adapt
    * @param RPath sshp, the path to which to adapt
    * @return RGroup, the adapted group
    */
-  public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{
+  public void adapt(RGroup grp, float wght, float lngthOffset) throws RuntimeException{
     RContour c = this.getBounds();
     float xmin = c.points[0].x;
     float xmax = c.points[2].x;
@@ -762,8 +762,8 @@ public class RGroup extends RGeomElem
             float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1.001F;
             float amp = (ymax-py);
             
-            RPoint tg = shp.getTangent(t);
-            RPoint p = shp.getPoint(t);
+            RPoint tg = grp.getTangent(t);
+            RPoint p = grp.getPoint(t);
             float angle = (float)Math.atan2(tg.y, tg.x) - (float)Math.PI/2F;
             
             ps[k].x = p.x + wght*amp*(float)Math.cos(angle);
@@ -782,8 +782,8 @@ public class RGroup extends RGeomElem
         float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
         float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
         
-        RPoint tg = shp.getTangent(t);
-        RPoint p = shp.getPoint(t);
+        RPoint tg = grp.getTangent(t);
+        RPoint p = grp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
         RPoint pletter = new RPoint(px,py);
@@ -808,8 +808,8 @@ public class RGroup extends RGeomElem
         float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
         float t = ((float)i/(float)numElements + lngthOffset ) % 1F;
         
-        RPoint tg = shp.getTangent(t);
-        RPoint p = shp.getPoint(t);
+        RPoint tg = grp.getTangent(t);
+        RPoint p = grp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
         
         RPoint pletter = new RPoint(px,py);
@@ -829,8 +829,20 @@ public class RGroup extends RGeomElem
     }
   }
   
-  public void adapt(RShape shp) throws RuntimeException{
-    adapt(shp, RG.adaptorScale, RG.adaptorLengthOffset);
+  public void adapt(RGroup grp) throws RuntimeException{
+    adapt(grp, RG.adaptorScale, RG.adaptorLengthOffset);
+  }
+
+  public void adapt(RShape shp){
+    RGroup grp = new RGroup();
+    grp.addElement(shp);
+    adapt(grp);
+  }
+
+  public void adapt(RShape shp, float wght, float lngthOffset){
+    RGroup grp = new RGroup();
+    grp.addElement(shp);
+    adapt(grp, wght, lngthOffset);
   }
   
 
