@@ -1,2 +1,6 @@
 bin
 .settings
+build
+distribution
+documentation
+library
