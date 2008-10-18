@@ -97,12 +97,12 @@ public class RG implements PConstants{
     fntLoader = new RFont(font, size);
   }
 
-  public static RGroup loadText(String text, String font, int size, int align){
+  public static RGroup getText(String text, String font, int size, int align){
     RFont tempFntLoader = new RFont(font, size, align);
     return tempFntLoader.toGroup(text);
   }
 
-  public static RGroup loadText(String text){
+  public static RGroup getText(String text){
     if(fntLoader == null){
       throw new FontNotLoadedException();      
     }
@@ -192,14 +192,14 @@ public class RG implements PConstants{
 
 
 
-  public static RGroup ellipse(float x, float y, float rx, float ry){
+  public static RGroup getEllipse(float x, float y, float rx, float ry){
     RGroup ret = new RGroup();
     ret.addElement(RShape.createEllipse(x, y, rx, ry));
     return ret;
   }
   
-  public static RGroup ellipse(float x, float y, float r){
-    return ellipse(x, y, r, r);
+  public static RGroup getEllipse(float x, float y, float r){
+    return getEllipse(x, y, r, r);
   }
 
 

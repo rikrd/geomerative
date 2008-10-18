@@ -20,7 +20,7 @@ void setup(){
   RG.init(this);
   
   //  Load the font file we want to use (the file must be in the data folder in the sketch floder), with the size 60 and the alignment CENTER
-  grp = RG.loadText("Hello world!", "FreeSans.ttf", 72, CENTER);
+  grp = RG.getText("Hello world!", "FreeSans.ttf", 72, CENTER);
 
   // Enable smoothing
   smooth();

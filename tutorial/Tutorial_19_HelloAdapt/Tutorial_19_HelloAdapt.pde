@@ -3,7 +3,7 @@ import processing.opengl.*;
 import geomerative.*;
 
 RGroup grp;
-RShape shp;
+RGroup circle;
 
 boolean ignoringStyles = false;
 
@@ -17,16 +17,14 @@ void setup(){
   RG.ignoreStyles(ignoringStyles);
   RG.setAdaptor(RG.BYPOINT);
   
-  RCommand.setSegmentator(RCommand.ADAPTATIVE);
+  RCommand.setSegmentator(RG.ADAPTATIVE);
   
   grp = RG.loadSVG("bot1.svg");
-  grp.centerIn(g);
+  grp = RG.polygonize(grp);
+  grp = RG.centerIn(grp, g, 200);
   
-  grp.polygonize();
-  grp.centerIn(g, 200, 1, 1);
-  
-  shp = RShape.createCircle(0, 0, 20);
-  shp.centerIn(g, 200, 1, 1);
+  circle = RG.getEllipse(0, 0, 20);
+  circle = RG.centerIn(circle, g, 200);
 }
 
 void draw(){
@@ -36,13 +34,12 @@ void draw(){
   noFill();
   stroke(255, 200);
   
-  RGroup adaptedGrp = new RGroup(grp);
-  
-  RShape splittedShp = shp.split(map(mouseX, 0, width, 0.01, 0.99))[0];
-  adaptedGrp.adapt(splittedShp);
+  float t = map(mouseX, 0, width, 0.01, 0.99);
+  RGroup circleSeg = RG.split(circle, t)[0];
+  RGroup adaptedGrp = RG.adapt(grp, circleSeg);
   
   adaptedGrp.draw();
-  splittedShp.draw();
+  circleSeg.draw();
   
 }
 
