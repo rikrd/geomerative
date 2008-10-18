@@ -20,8 +20,8 @@ void setup(){
 void draw(){
   background(255);
   translate(width/2, height/2);
-  RCommand.setSegmentator(RCommand.UNIFORMLENGTH);
-  RCommand.setSegmentLength(map(constrain(mouseX, 200, width-200), 200, width-200, 5, 300));
+  RG.setPolygonizer(RG.UNIFORMLENGTH);
+  RG.setPolygonizerLength(map(constrain(mouseX, 200, width-200), 200, width-200, 5, 300));
   newGrp = grp.toPolygonGroup();
   
   grp.draw();

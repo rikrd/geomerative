@@ -15,7 +15,7 @@ void setup(){
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  RCommand.setSegmentator(RG.ADAPTATIVE);
+  RG.setPolygonizer(RG.ADAPTATIVE);
    
   grp = RG.loadSVG("mapaAzimutal.svg");
   grp.centerIn(g, 100, 1, 1);

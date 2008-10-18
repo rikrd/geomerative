@@ -18,7 +18,7 @@ void setup(){
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  RCommand.setSegmentator(RG.ADAPTATIVE);
+  RG.setPolygonizer(RG.ADAPTATIVE);
   
   grp = RG.loadSVG("bot1.svg");
   grp.centerIn(g, 100, 1, 1);

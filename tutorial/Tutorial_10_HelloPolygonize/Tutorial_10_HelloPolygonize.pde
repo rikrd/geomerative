@@ -25,8 +25,8 @@ void draw(){
   float pointSeparation = map(constrain(mouseX, 200, width-200), 200, width-200, 5, 300);
   
   // We create the polygonized version
-  RCommand.setSegmentator(RG.UNIFORMLENGTH);
-  RCommand.setSegmentLength(pointSeparation);
+  RG.setPolygonizer(RG.UNIFORMLENGTH);
+  RG.setPolygonizerLength(pointSeparation);
   polyGrp = new RGroup(grp);
   polyGrp.polygonize();
   

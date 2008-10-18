@@ -10,19 +10,17 @@ boolean ignoringStyles = false;
 void setup(){
   size(600, 600);
   smooth();
-  g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
-  RG.ignoreStyles(ignoringStyles);
-  RG.setAdaptor(RG.BYPOINT);
-  
-  RCommand.setSegmentator(RG.ADAPTATIVE);
   
   grp = RG.loadSVG("bot1.svg");
-  grp = RG.polygonize(grp);
   grp = RG.centerIn(grp, g, 200);
   
+  RG.setPolygonizer(RG.ADAPTATIVE);
+  RG.setPolygonizerAngle(0.065);
+  grp = RG.polygonize(grp);
+    
   circle = RG.getEllipse(0, 0, 20);
   circle = RG.centerIn(circle, g, 200);
 }
@@ -36,6 +34,8 @@ void draw(){
   
   float t = map(mouseX, 0, width, 0.01, 0.99);
   RGroup circleSeg = RG.split(circle, t)[0];
+  
+  RG.setAdaptor(RG.BYPOINT);
   RGroup adaptedGrp = RG.adapt(grp, circleSeg);
   
   adaptedGrp.draw();

@@ -203,6 +203,7 @@ public class RG implements PConstants{
   }
 
 
+  // Transformation methods
   public static RGroup centerIn(RGroup grp, PGraphics g, float margin){
     RGroup ret = new RGroup(grp);
     ret.centerIn(g, margin);
@@ -231,6 +232,7 @@ public class RG implements PConstants{
   }
   
 
+  // State methods
   public static void init(PApplet _parent){
     parent = _parent;
     initialized = true;
@@ -285,4 +287,41 @@ public class RG implements PConstants{
     else
       throw new RuntimeException("The adaptor length offset must take a value between 0 and 1.");
   }
+
+
+  /**
+   * Use this to set the segmentator type.  ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.  This can be useful when using or drawing a lot the same Polygon or Mesh deriving from this Shape.  UNIFORMLENGTH segmentator is the slowest segmentator and it segments the curve on segments of equal length.  This can be useful for very specific applications when for example drawing incrementaly a shape with a uniform speed.  UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
+   * @eexample setPolygonizer
+   * */
+  public static void setPolygonizer(int segmenterMethod){
+    RCommand.setSegmentator(segmenterMethod);
+  }
+
+  /**
+   * Use this to set the segmentator angle tolerance for the ADAPTATIVE segmentator and set the segmentator to ADAPTATIVE.
+   * @eexample setPolygonizerAngle
+   * @param float angle, an angle from 0 to PI/2 it defines the maximum angle between segments.
+   * */
+  public static void setPolygonizerAngle(float angle){
+    RCommand.setSegmentAngle(angle);
+  }
+
+  /**
+   * Use this to set the segmentator length for the UNIFORMLENGTH segmentator and set the segmentator to UNIFORMLENGTH.
+   * @eexample setPolygonizerLength
+   * @param float length, the length of each resulting segment.
+   * */
+  public static void setPolygonizerLength(float length){
+    RCommand.setSegmentLength(length);
+  }
+
+  /**
+   * Use this to set the segmentator step for the UNIFORMSTEP segmentator and set the segmentator to UNIFORMSTEP.
+   * @eexample setSegmentStep
+   * @param float step, if a float from +0.0 to 1.0 is passed it's considered as the step, else it's considered as the number of steps.  When a value of 0.0 is used the steps will be calculated automatically depending on an estimation of the length of the curve.  The special value -1 is the same as 0.0 but also turning of the segmentation of lines (faster segmentation).
+   * */
+  public static void setPolygonizerStep(float step){
+    RCommand.setSegmentStep(step);
+  }
+
 }

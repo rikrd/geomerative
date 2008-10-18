@@ -36,15 +36,15 @@ void draw(){
   // Draw the group of shapes
   noFill();
   stroke(0,0,200,150);
-  RCommand.setSegmentator(RG.ADAPTATIVE);
+  RG.setPolygonizer(RG.ADAPTATIVE);
   grp.draw();
   
   // Get the points on the curve's shape
-  //RG.setSegmentator(RG.UNIFORMSTEP);
-  //RG.setSegmentStep(map(float(mouseY), 0.0, float(height), 0.0, 1.0));
+  //RG.setPolygonizer(RG.UNIFORMSTEP);
+  //RG.setPolygonizerStep(map(float(mouseY), 0.0, float(height), 0.0, 1.0));
   
-  RCommand.setSegmentator(RG.UNIFORMLENGTH);
-  RCommand.setSegmentLength(map(mouseY, 0, height, 3, 200));
+  RG.setPolygonizer(RG.UNIFORMLENGTH);
+  RG.setPolygonizerLength(map(mouseY, 0, height, 3, 200));
   points = grp.getPoints();
   
   // If there are any points
