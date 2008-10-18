@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+    "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
+<svg xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve"
+         width="200" height="200"
+         viewBox="0 0 200 200"  >
+	
+	<!-- Matthew Bystedt http://pike.port5.com 2005 -->
+	
+	<!-- Pattern Definition -->
+	<defs>
+		<pattern id="rulerPattern" patternUnits="userSpaceOnUse"
+				x="0" y="0" width="10" height="10"
+				viewBox="0 0 10 10" >
+				
+			<line x1="0" y1="0" x2="10" y2="0" stroke="lightblue" fill="none" stroke-dasharray="2,2" />
+			<line x1="0" y1="0" x2="0" y2="10" stroke="lightblue" fill="none" stroke-dasharray="2,2" />
+		</pattern>
+        
+        <radialGradient id="myFillGrad" r="100%" spreadMethod="reflect">
+            <stop offset="5%" stop-color="blue" stop-opacity="0.5" />
+            <stop offset="95%" stop-color="midnightblue" />
+        </radialGradient>
+
+        <marker id="marker" viewBox="0 0 10 10" refX="5" refY="5" 
+            markerUnits="strokeWidth" orient="none"
+              markerWidth="4" markerHeight="3">
+            <circle cx="5" cy="5" r="5" stroke="red" fill="none" />
+        </marker>
+
+	</defs>
+
+	<!-- Background -->
+	<rect x="0" y="0" width="100%" height="100%" fill="url(#rulerPattern)" stroke="black" />
+
+	<!-- Path Line Example -->
+    
+    <g>
+    <path id="playButton" d="M50,50 Q-30,100 50,150 100,230 150,150 230,100 150,50 100,-30 50,50" stroke="darkblue" stroke-width="4" fill="url(#myFillGrad)"  />
+
+    <path d="M50,50 L100,-30 150,50" stroke="black" stroke-width="2" fill="none" opacity="0.0" marker-mid="url(#marker)">
+        <animate attributeName="opacity" begin="playButton.activate+0s" dur="1s" from="0" to="1" fill="freeze" />
+        <animate attributeName="opacity" begin="playButton.activate+5s" dur="1s" from="1" to="0" fill="freeze" />
+    </path>
+    <animateTransform attributeName="transform" type="translate" attributeType="XML" begin="playButton.activate+0s" dur="2.0s" from="0,0" to="0,40" fill="freeze" />
+    <animateTransform attributeName="transform" type="translate" attributeType="XML" begin="playButton.activate+5s" dur="1.5s" from="0,40" to="0,0" fill="freeze" />
+    </g>
+    
+    <text x="5" y="190">Click Shape!</text>
+</svg>
