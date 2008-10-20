@@ -106,7 +106,7 @@ public abstract class RGeomElem
   protected float[] lenCurves;
   protected float lenCurve = -1F;
 
-  public String id = "";  
+  public String name = "";  
 
   protected RStyle style = new RStyle();
 
@@ -215,7 +215,7 @@ public abstract class RGeomElem
   }
 
   protected void setStyle(RGeomElem p){
-    id = p.id;
+    name = p.name;
 
     style = new RStyle(p.style);
   }
@@ -224,8 +224,8 @@ public abstract class RGeomElem
     style.setStyle(styleString);
   }
 
-  public void setId(String str){
-    this.id = str;
+  public void setName(String str){
+    this.name = str;
   }
 
   protected void calculateCurveLengths(){
