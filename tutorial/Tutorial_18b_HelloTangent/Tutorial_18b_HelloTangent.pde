@@ -2,7 +2,7 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
+RShape grp;
 RShape s;
 float pos;
 float len;
@@ -25,17 +25,17 @@ int ALPHAVALUE = 3;
 // The velocity of the calligraphy
 int VELOCITY = 500;
 
-void printIfNaN(RGroup grp){
-  for(int j=0;j<grp.countElements();j++){
-    RGeomElem e = grp.elements[j];
+void printIfNaN(RShape grp){
+  for(int j=0;j<grp.countChildren();j++){
+    RGeomElem e = grp.children[j];
     if(e.getType()==RGeomElem.GROUP){
-      printIfNaN((RGroup)e);
+      printIfNaN((RShape)e);
     }else{
       RPoint[] handles = e.getHandles();
       for(int i=0;i<handles.length;i++){
         if(Float.isNaN(handles[i].x) && Float.isNaN(handles[i].y))
         {
-          println(e.id);
+          println(e.name);
           handles[i].print();
         }
       }
