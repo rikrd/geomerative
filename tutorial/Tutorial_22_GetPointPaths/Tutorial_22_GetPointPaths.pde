@@ -20,7 +20,7 @@ void setup(){
   
   RG.setPolygonizer(RG.ADAPTATIVE);
   
-  grp = RG.loadSVG("bot1.svg");
+  grp = RG.loadShape("bot1.svg");
   grp.centerIn(g, 100, 1, 1);
   
   pointPaths = grp.getPointsInPaths();

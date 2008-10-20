@@ -1,8 +1,8 @@
 import processing.opengl.*;
 import geomerative.*;
 
-RG curva = new RG(0 , 0, -200, -200, 200, -200, 0, -100);
-RG[] piezas = new RG[2];
+RCommand curva = new RCommand(0 , 0, -200, -200, 200, -200, 0, -100);
+RCommand[] piezas = new RCommand[2];
 
 void setup(){
   size(600, 600);

@@ -2,8 +2,8 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
-RGroup circle;
+RShape   grp;
+RShape   circle;
 
 boolean ignoringStyles = false;
 
@@ -14,7 +14,7 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
   
-  grp = RG.loadSVG("bot1.svg");
+  grp = RG.loadShape("bot1.svg");
   grp = RG.centerIn(grp, g, 200);
   
   RG.setPolygonizer(RG.ADAPTATIVE);
@@ -33,10 +33,10 @@ void draw(){
   stroke(255, 200);
   
   float t = map(mouseX, 0, width, 0.01, 0.99);
-  RGroup circleSeg = RG.split(circle, t)[0];
+  RShape circleSeg = RG.split(circle, t)[0];
   
   RG.setAdaptor(RG.BYPOINT);
-  RGroup adaptedGrp = RG.adapt(grp, circleSeg);
+  RShape adaptedGrp = RG.adapt(grp, circleSeg);
   
   adaptedGrp.draw();
   circleSeg.draw();

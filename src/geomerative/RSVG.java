@@ -52,7 +52,12 @@ public class RSVG
   
   public RShape toShape(String filename)
   {
-    return toGroup(filename).toShape();
+    XMLElement svg = new XMLElement(RG.parent(), filename);
+    if (!svg.getName().equals("svg")) {
+      throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
+    }
+    
+    return elemToCompositeShape(svg);
   }
   
   public RPolygon toPolygon(String filename)
@@ -187,6 +192,130 @@ public class RSVG
     }
 
     return grp;
+  }
+
+  /**
+   * @invisible
+   */
+  public RShape elemToCompositeShape(XMLElement elem)
+  {
+    RShape shp = new RShape();
+
+    // Set the defaults SVG styles for the root
+    if(elem.getName().toLowerCase().equals("svg")){
+      shp.setFill(0);  // By default in SVG it's black
+      shp.setFillAlpha(255);  // By default in SVG it's 1
+      shp.setStroke(false);  // By default in SVG it's none
+      shp.setStrokeWeight(1F);  // By default in SVG it's none
+      shp.setStrokeCap("butt");  // By default in SVG it's 'butt'
+      shp.setStrokeJoin("miter");  // By default in SVG it's 'miter'
+      shp.setStrokeAlpha(255);  // By default in SVG it's 1
+      shp.setAlpha(255);  // By default in SVG it's 1F
+    }
+    
+    XMLElement elems[] = elem.getChildren();
+    for (int i = 0; i < elems.length; i++) {
+      String name = elems[i].getName().toLowerCase();
+      XMLElement element = elems[i];
+      
+      // Parse and create the geometrical element
+      RShape geomElem = null;
+      if(name.equals("g")){
+        geomElem = elemToCompositeShape(element);
+        
+      }else if (name.equals("path")) {
+        geomElem = elemToShape(element);
+        
+      }else if(name.equals("polygon")){
+        geomElem = elemToPolygon(element);
+        
+      }else if(name.equals("polyline")){
+        geomElem = elemToPolyline(element);
+        
+      }else if(name.equals("circle")){
+        geomElem = elemToCircle(element);
+        
+      }else if(name.equals("ellipse")){
+        geomElem = elemToEllipse(element);
+        
+      }else if(name.equals("rect")){
+        geomElem = elemToRect(element);
+        
+      }else if(name.equals("line")){
+        geomElem = elemToLine(element);
+        
+      }else if(name.equals("defs")){
+        // Do nothing normally we should make a hashmap 
+        // to apply everytime they are called in the actual objects
+      }else{
+        PApplet.println("Element '" + name + "' not know. Ignoring it.");
+      }
+      
+      // If the geometrical element has been correctly created
+      if((geomElem != null)){
+        // Transform geometrical element
+        if(element.hasAttribute("transform")){
+          String transformString = element.getStringAttribute("transform");
+          RMatrix transf = new RMatrix(transformString);
+          geomElem.transform(transf);
+        }
+        
+        // Get the id for the geometrical element
+        if(element.hasAttribute("id")){
+          geomElem.name = element.getStringAttribute("id");
+        }
+                
+        // Get the style for the geometrical element
+        if(element.hasAttribute("style")){
+          geomElem.setStyle(element.getStringAttribute("style"));
+        }
+
+        // Get the fill for the geometrical element
+        if(element.hasAttribute("fill")){
+          geomElem.setFill(element.getStringAttribute("fill"));
+        }
+
+        // Get the fill-linejoin for the geometrical element
+        if(element.hasAttribute("fill-opacity")){
+          geomElem.setFillAlpha(element.getStringAttribute("fill-opacity"));
+        }
+
+        // Get the stroke for the geometrical element
+        if(element.hasAttribute("stroke")){
+          geomElem.setStroke(element.getStringAttribute("stroke"));
+        }
+
+        // Get the stroke-width for the geometrical element
+        if(element.hasAttribute("stroke-width")){
+          geomElem.setStrokeWeight(element.getStringAttribute("stroke-width"));
+        }
+
+        // Get the stroke-linecap for the geometrical element
+        if(element.hasAttribute("stroke-linecap")){
+          geomElem.setStrokeCap(element.getStringAttribute("stroke-linecap"));
+        }
+
+        // Get the stroke-linejoin for the geometrical element
+        if(element.hasAttribute("stroke-linejoin")){
+          geomElem.setStrokeJoin(element.getStringAttribute("stroke-linejoin"));
+        }
+
+        // Get the stroke-linejoin for the geometrical element
+        if(element.hasAttribute("stroke-opacity")){
+          geomElem.setStrokeAlpha(element.getStringAttribute("stroke-opacity"));
+        }
+
+        // Get the opacity for the geometrical element
+        if(element.hasAttribute("opacity")){
+          geomElem.setAlpha(element.getStringAttribute("opacity"));
+        }
+        
+        // Get the style for the geometrical element
+        shp.addChild(geomElem);      
+      }
+    }
+
+    return shp;
   }
   
   /**

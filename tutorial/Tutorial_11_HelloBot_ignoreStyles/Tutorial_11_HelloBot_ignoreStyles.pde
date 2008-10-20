@@ -12,7 +12,7 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
 
-  grp = RG.loadSVG("Toucan.svg");
+  grp = RG.loadShape("Toucan.svg");
   grp.centerIn(g);
 } 
 

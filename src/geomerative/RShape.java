@@ -252,7 +252,7 @@ public class RShape extends RGeomElem
     this.appendChild(new RShape());
   }
   
-  public void addPath(RShape s){
+  public void addChild(RShape s){
     this.appendChild(s);
   }
   
@@ -405,6 +405,19 @@ public class RShape extends RGeomElem
     
     return result;
   }
+
+  public void polygonize(){
+    int numPaths = countPaths();
+    
+    for(int i=0;i<numPaths;i++){
+      this.paths[i].polygonize();
+    }
+    
+    for(int i=0;i<countChildren();i++){
+      this.children[i].polygonize();
+    }
+  }
+
   
   /**
    * @invisible
@@ -492,6 +505,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].getHandles();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
     return result;
   }
   
@@ -540,6 +569,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].getPoints();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
     return result;
   }
 
@@ -627,6 +672,21 @@ public class RShape extends RGeomElem
     RPoint[] newresult=null;
     for(int i=0;i<numPaths;i++){
       RPoint[] newPoints = paths[i].getTangents();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].getTangents();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -951,18 +1011,36 @@ public class RShape extends RGeomElem
   }
   
   public void draw(PGraphics g){
+    if(!RG.ignoreStyles){
+      saveContext(g);
+      setContext(g);
+    }
+
     this.drawPaths(g);
 
     for(int i=0;i<countChildren();i++){
       this.children[i].draw(g);
     }
+
+    if(!RG.ignoreStyles){
+      restoreContext(g);
+    }
   }
 
   public void draw(PApplet g){
+    if(!RG.ignoreStyles){
+      saveContext(g);
+      setContext(g);
+    }
+
     this.drawPaths(g);
 
     for(int i=0;i<countChildren();i++){
       this.children[i].draw(g);
+    }
+
+    if(!RG.ignoreStyles){
+      restoreContext(g);
     }
   }
 
@@ -1085,10 +1163,6 @@ public class RShape extends RGeomElem
     
     if(numPaths!=0){
       if(isIn(g)) {
-        if(!RG.ignoreStyles){
-          saveContext(g);
-          setContext(g);
-        }
 
         // Save the information about the current context
         boolean strokeBefore = g.stroke;
@@ -1156,10 +1230,6 @@ public class RShape extends RGeomElem
         
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
-
-        if(!RG.ignoreStyles){
-          restoreContext(g);
-        }
       }
     }
   }
@@ -1169,11 +1239,6 @@ public class RShape extends RGeomElem
     
     if(numPaths!=0){
       if(isIn(p)) {
-        if(!RG.ignoreStyles){
-          saveContext(p);
-          setContext(p);
-        }
-
         // Save the information about the current context
         boolean strokeBefore = p.g.stroke;
         int strokeColorBefore = p.g.strokeColor;
@@ -1245,10 +1310,6 @@ public class RShape extends RGeomElem
         
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
-
-        if(!RG.ignoreStyles){
-          restoreContext(p);
-        }
       }
     }
   }
@@ -1257,11 +1318,6 @@ public class RShape extends RGeomElem
     int numPaths = countPaths();
     if(numPaths!=0){
       if(isIn(g)){
-        if(!RG.ignoreStyles){
-          saveContext(g);
-          setContext(g);
-        }
-
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numPaths;i++){
@@ -1292,9 +1348,6 @@ public class RShape extends RGeomElem
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
-        if(!RG.ignoreStyles){
-          restoreContext(g);
-        }
       }
     }
   }
@@ -1303,11 +1356,6 @@ public class RShape extends RGeomElem
     int numPaths = countPaths();
     if(numPaths!=0){
       if(isIn(g)){
-        if(!RG.ignoreStyles){
-          saveContext(g);
-          setContext(g);
-        }
-
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numPaths;i++){
@@ -1338,9 +1386,6 @@ public class RShape extends RGeomElem
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
-        if(!RG.ignoreStyles){
-          restoreContext(g);
-        }
       }
     }
   }

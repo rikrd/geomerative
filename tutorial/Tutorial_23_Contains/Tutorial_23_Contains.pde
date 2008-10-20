@@ -17,7 +17,7 @@ void setup(){
   
   RG.setPolygonizer(RG.ADAPTATIVE);
    
-  grp = RG.loadSVG("mapaAzimutal.svg");
+  grp = RG.loadShape("mapaAzimutal.svg");
   grp.centerIn(g, 100, 1, 1);
 }
 

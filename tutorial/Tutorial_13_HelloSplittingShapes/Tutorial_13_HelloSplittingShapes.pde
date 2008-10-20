@@ -1,7 +1,7 @@
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
+RShape shp;
 
 boolean ignoringStyles = false;
 
@@ -13,8 +13,8 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
   
-  grp = RG.loadSVG("bot1.svg");
-  grp.centerIn(g);
+  shp = RG.loadShape("bot1.svg");
+  shp.centerIn(g);
 }
 
 void draw(){
@@ -23,7 +23,7 @@ void draw(){
 
   noFill();
   stroke(255, 200);
-  RGroup[] splittedGroups = grp.split(map(mouseX, 0, width, 0, 1));
+  RShape[] splittedGroups = shp.split(map(mouseX, 0, width, 0, 1));
   splittedGroups[0].rotate(cos(frameCount*0.1));
   splittedGroups[0].draw();
 }
