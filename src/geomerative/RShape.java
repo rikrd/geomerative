@@ -246,6 +246,15 @@ public class RShape extends RGeomElem
   public void addPath(RPath s){
     this.append(s);
   }
+
+
+  public void addChild(){
+    this.appendChild(new RShape());
+  }
+  
+  public void addPath(RShape s){
+    this.appendChild(s);
+  }
   
   /**
    * Use this method to set the current path. 
