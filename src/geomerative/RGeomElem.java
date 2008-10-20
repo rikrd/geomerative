@@ -623,16 +623,16 @@ public abstract class RGeomElem
   /**
    * Transform the geometric object to fit in a rectangle defined by the parameters passed.
    * @eexample getBounds
-   * @return RContour, the bounding box of the element in the form of a fourpoint contour
+   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
    * @related getCenter ( )
    */
   public void transform(float x, float y, float w, float h, boolean keepAspectRatio){
     RMatrix mtx = new RMatrix();
-    RContour orig = this.getBounds();
-    float orig_w = orig.points[2].x-orig.points[0].x;
-    float orig_h = orig.points[2].y-orig.points[0].y;
+    RRectangle orig = this.getBounds();
+    float orig_w = orig.getMaxX() - orig.getMinX();
+    float orig_h = orig.getMaxY() - orig.getMinY();
     
-    mtx.translate(-orig.points[0].x, -orig.points[0].y);
+    mtx.translate(-orig.getMinX(), -orig.getMinY());
     if(keepAspectRatio){
       mtx.scale(Math.min(w/orig_w, h/orig_h));
     }else{
@@ -652,16 +652,17 @@ public abstract class RGeomElem
   /**
    * Use this method to get the bounding box of the element. 
    * @eexample getBounds
-   * @return RContour, the bounding box of the element in the form of a fourpoint contour
+   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
    * @related getCenter ( )
    */
-  public RContour getBounds(){
+  public RRectangle getBounds(){
     float xmax = Float.NEGATIVE_INFINITY ;
     float ymax = Float.NEGATIVE_INFINITY ;
     float xmin = Float.POSITIVE_INFINITY ;
     float ymin = Float.POSITIVE_INFINITY ;
 
     RPoint[] points = getHandles();
+
     if(points!=null){
       for(int i=0;i<points.length;i++){
         float tempx = points[i].x;
@@ -684,12 +685,8 @@ public abstract class RGeomElem
           }
       }
     }
-
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
+    
+    RRectangle c = new RRectangle(new RPoint(xmin, ymin), new RPoint(xmax, ymax));
     return c;
   }
   
@@ -701,8 +698,8 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public float getWidth(){
-    RContour orig = this.getBounds();
-    return orig.points[2].x-orig.points[0].x;
+    RRectangle orig = this.getBounds();
+    return orig.getMaxX()-orig.getMinX();
   }
 
 
@@ -713,8 +710,8 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public float getHeight(){
-    RContour orig = this.getBounds();
-    return orig.points[2].y-orig.points[0].y;
+    RRectangle orig = this.getBounds();
+    return orig.getMaxY()-orig.getMinY();
   }
 
   
@@ -725,8 +722,8 @@ public abstract class RGeomElem
    * @related getBounds ( )
    */
   public RPoint getCenter(){
-    RContour c = getBounds();
-    return new RPoint((c.points[2].x + c.points[0].x)/2,(c.points[2].y + c.points[0].y)/2);
+    RRectangle c = getBounds();
+    return new RPoint((c.getMaxX() + c.getMinX())/2,(c.getMaxY() + c.getMinY())/2);
   }
   
   /**
@@ -782,15 +779,15 @@ public abstract class RGeomElem
    * @return boolean, whether the shape is in or not the graphics object
    */
   public boolean isIn(PGraphics g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
+    RRectangle c = getBounds();
+    float x0 = g.screenX(c.topLeft.x, c.topLeft.y);
+    float y0 = g.screenY(c.topLeft.x, c.topLeft.y);
+    float x1 = g.screenX(c.bottomRight.x, c.topLeft.y);
+    float y1 = g.screenY(c.bottomRight.x, c.topLeft.y);
+    float x2 = g.screenX(c.bottomRight.x, c.bottomRight.y);
+    float y2 = g.screenY(c.bottomRight.x, c.bottomRight.y);
+    float x3 = g.screenX(c.topLeft.x, c.bottomRight.y);
+    float y3 = g.screenY(c.topLeft.x, c.bottomRight.y);
     
     float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
     float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
@@ -801,15 +798,15 @@ public abstract class RGeomElem
   }
   
   public boolean isIn(PApplet g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
+    RRectangle c = getBounds();
+    float x0 = g.screenX(c.topLeft.x, c.topLeft.y);
+    float y0 = g.screenY(c.topLeft.x, c.topLeft.y);
+    float x1 = g.screenX(c.bottomRight.x, c.topLeft.y);
+    float y1 = g.screenY(c.bottomRight.x, c.topLeft.y);
+    float x2 = g.screenX(c.bottomRight.x, c.bottomRight.y);
+    float y2 = g.screenY(c.bottomRight.x, c.bottomRight.y);
+    float x3 = g.screenX(c.topLeft.x, c.bottomRight.y);
+    float y3 = g.screenY(c.topLeft.x, c.bottomRight.y);
     
     float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
     float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
@@ -834,8 +831,8 @@ public abstract class RGeomElem
     RMatrix transf;
     
     float mrgn = margin*2;
-    RContour c = getBounds();
-    float scl = (float)Math.min((g.width-mrgn)/(float)Math.abs(c.points[0].x-c.points[2].x),(g.height-mrgn)/(float)Math.abs(c.points[0].y-c.points[2].y));
+    RRectangle c = getBounds();
+    float scl = (float)Math.min((g.width-mrgn)/(float)Math.abs(c.getMinX() - c.getMaxX()),(g.height-mrgn)/(float)Math.abs(c.getMinY()-c.getMaxY()));
     RPoint trns = getCenter();
     transf = new RMatrix();
     

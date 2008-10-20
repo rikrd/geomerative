@@ -503,12 +503,12 @@ public class RGroup extends RGeomElem
     float testy = p.y;
 
     // Test for containment in bounding box
-    RContour bbox = getBounds();
-    float xmin = bbox.points[0].x;
-    float xmax = bbox.points[2].x;
+    RRectangle bbox = getBounds();
+    float xmin = bbox.getMinX();
+    float xmax = bbox.getMaxX();
 
-    float ymin = bbox.points[0].y;
-    float ymax = bbox.points[2].y;
+    float ymin = bbox.getMinY();
+    float ymax = bbox.getMaxY();
     
     if( (testx < xmin) || (testx > xmax) || (testy < ymin) || (testy > ymax)){
       return false;
@@ -742,10 +742,10 @@ public class RGroup extends RGeomElem
    * @return RGroup, the adapted group
    */
   public void adapt(RGroup grp, float wght, float lngthOffset) throws RuntimeException{
-    RContour c = this.getBounds();
-    float xmin = c.points[0].x;
-    float xmax = c.points[2].x;
-    float ymax = c.points[2].y;
+    RRectangle c = this.getBounds();
+    float xmin = c.getMinX();
+    float xmax = c.getMaxX();
+    float ymax = c.getMaxY();
     
     int numElements = this.countElements();
     
@@ -776,10 +776,10 @@ public class RGroup extends RGeomElem
       
       for(int i=0;i<numElements;i++){
         RGeomElem elem = this.elements[i];
-        RContour elemc = elem.getBounds();
+        RRectangle elemc = elem.getBounds();
         
-        float px = (elemc.points[2].x + elemc.points[0].x) / 2F;
-        float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
+        float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
+        float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
         float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
         
         RPoint tg = grp.getTangent(t);
@@ -802,10 +802,10 @@ public class RGroup extends RGeomElem
       
       for(int i=0;i<numElements;i++){
         RGeomElem elem = this.elements[i];
-        RContour elemc = elem.getBounds();
+        RRectangle elemc = elem.getBounds();
         
-        float px = (elemc.points[2].x + elemc.points[0].x) / 2F;
-        float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
+        float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
+        float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
         float t = ((float)i/(float)numElements + lngthOffset ) % 1F;
         
         RPoint tg = grp.getTangent(t);

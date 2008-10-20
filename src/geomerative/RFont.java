@@ -256,23 +256,21 @@ public class RFont implements PConstants{
       throw new RuntimeException("Alignement unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
     }
     
-    RContour r;
+    RRectangle r;
+    RMatrix mattrans;
+
     switch(this.align){
     case RFont.CENTER:
       r = result.getBounds();
-      if(r.points!=null){
-        RMatrix mattrans = new RMatrix();
-        mattrans.translate((r.points[0].x-r.points[2].x)/2,0);
-        result.transform(mattrans);
-      }
+      mattrans = new RMatrix();
+      mattrans.translate((r.getMinX()-r.getMaxX())/2,0);
+      result.transform(mattrans);
       break;
     case RFont.RIGHT:
       r = result.getBounds();
-      if(r.points!=null){
-        RMatrix mattrans = new RMatrix();
-        mattrans.translate((r.points[0].x-r.points[2].x),0);
-        result.transform(mattrans);
-      }
+      mattrans = new RMatrix();
+      mattrans.translate((r.getMinX()-r.getMaxX()),0);
+      result.transform(mattrans);
       break;
     case RFont.LEFT:
       break;

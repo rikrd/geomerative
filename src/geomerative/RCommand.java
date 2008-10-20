@@ -738,41 +738,7 @@ public class RCommand extends RGeomElem
     a.endShape();
   }
 
-  
-  
-  /**
-   * Use this method to get the bounding box of the command. 
-   * @eexample getBounds
-   * @return RContour, the bounding box of the command in the form of a fourpoint contour
-   * @related draw ( )
-   */
-  public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
     
-    RPoint[] points = this.getPoints();
-    if(points!=null){
-      for( int i = 0 ; i < points.length ; i++ )
-        {
-          float x = points[i].x;
-          float y = points[i].y;
-          if( x < xmin ) xmin = x;
-          if( x > xmax ) xmax = x;
-          if( y < ymin ) ymin = y;
-          if( y > ymax ) ymax = y;
-        }
-    }
-    
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
-    return c;
-  }
-  
   /**
    * Use this to return the start, control and end points of the curve.  It returns the points in the way of an array of RPoint.
    * @eexample getHandles
