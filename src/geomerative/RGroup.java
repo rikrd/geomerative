@@ -540,12 +540,6 @@ public class RGroup extends RGeomElem
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    /* Old method with uniform advancement per command
-       float advPerCommand;
-       advPerCommand = 1F / numPaths;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numPaths;
-       advOfCommand = (t*numPaths - indCommand);
-    */
     
     float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
     float prevAccumulatedAdvancement = 0F;

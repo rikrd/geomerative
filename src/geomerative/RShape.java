@@ -40,8 +40,11 @@ public class RShape extends RGeomElem
    * @related countPaths ( )
    * @related addPath ( )
    */
-  public RPath[] paths;
+  public RPath[] paths = null;
   protected int currentPath = 0;
+
+  public RShape[] children = null;
+  protected int currentChild;
 
   // ----------------------
   // --- Public Methods ---
@@ -52,7 +55,6 @@ public class RShape extends RGeomElem
    * @eexample RShape
    */
   public RShape(){
-    this.paths= null;
     type = RGeomElem.SHAPE;
   }
   
@@ -60,11 +62,21 @@ public class RShape extends RGeomElem
     this.append(newpath);
     type = RGeomElem.SHAPE;
   }
+
+  public RShape(RPath[] newpaths){
+    this.paths = newpaths;
+    type = RGeomElem.SHAPE;
+  }
   
   public RShape(RShape s){
     for(int i=0;i<s.countPaths();i++){
       this.append(new RPath(s.paths[i]));
     }
+    
+    for(int i=0;i<s.countChildren();i++){
+      this.appendChild(new RShape(s.children[i]));
+    }
+
     type = RGeomElem.SHAPE;
 
     setStyle(s);
@@ -109,7 +121,7 @@ public class RShape extends RGeomElem
     }
 
     star.addClose();
-
+    
     return star;
   }
   
@@ -195,6 +207,15 @@ public class RShape extends RGeomElem
     }
     
     return this.paths.length;
+  }
+
+
+  public int countChildren(){
+    if(this.children==null){
+      return 0;
+    }
+    
+    return this.children.length;
   }
   
   /**
@@ -475,7 +496,11 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
 
-    return paths[indOfElement].getPoint(advOfElement);
+    if ( indOfElement < countPaths() ){
+      return paths[indOfElement].getPoint(advOfElement);
+    }else{
+      return children[indOfElement - countPaths()].getPoint(advOfElement);
+    }
   }
 
   /**
@@ -519,7 +544,12 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
 
-    return paths[indOfElement].getTangent(advOfElement);
+
+    if ( indOfElement < countPaths() ){
+      return paths[indOfElement].getTangent(advOfElement);
+    }else{
+      return children[indOfElement - countPaths()].getTangent(advOfElement);
+    }
   }
 
   /**
@@ -715,7 +745,11 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
 
-    paths[indOfElement].insertHandle(advOfElement);
+    if ( indOfElement < countPaths() ){
+      paths[indOfElement].insertHandle(advOfElement);
+    }else{
+      children[indOfElement - countPaths()].insertHandle(advOfElement);
+    }
     
     // Clear the cache
     lenCurves = null;
@@ -784,23 +818,37 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
     
-    RPath[] splittedShapes = paths[indOfElement].split(advOfElement);
-    
-    result[0] = new RShape();
-    for(int i = 0; i<indOfElement; i++){
-      result[0].addPath(new RPath(paths[i]));
-    }
-    result[0].addPath(new RPath(splittedShapes[0]));
-    result[0].setStyle(this);
+    if ( indOfElement < countPaths() ){
+      RPath[] splittedShapes = paths[indOfElement].split(advOfElement);
+      
+      result[0] = new RShape();
+      for(int i = 0; i<indOfElement; i++){
+        result[0].addPath(new RPath(paths[i]));
+      }
+      result[0].addPath(new RPath(splittedShapes[0]));
+      result[0].setStyle(this);
+      
+      result[1] = new RShape();
+      result[1].addPath(new RPath(splittedShapes[1]));
+      for(int i = indOfElement + 1; i < countPaths(); i++){
+        result[1].addPath(new RPath(paths[i]));
+      }
 
-    result[1] = new RShape();
-    result[1].addPath(new RPath(splittedShapes[1]));
-    for(int i = indOfElement + 1; i < countPaths(); i++){
-      result[1].addPath(new RPath(paths[i]));
-    }
-    result[1].setStyle(this);
+      for (int i = 0; i < countChildren(); i++){
+        result[1].appendChild(new RShape(this.children[i]));
+      }
+      result[1].setStyle(this);
     
-    return result;
+      return result;
+    }else{
+      System.out.println("Over countPaths");
+      RShape[] splittedShapes = children[indOfElement - countPaths()].split(advOfElement);
+      
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+    
+      return result;
+    }
   }
 
   /**
@@ -883,14 +931,38 @@ public class RShape extends RGeomElem
         paths[i].print();
         System.out.println("---------------");
       }
+    System.out.println("children [count " + this.countChildren() + "]: ");
+    for(int i=0;i<countChildren();i++)
+      {
+        System.out.println("--- child "+i+" ---");
+        children[i].print();
+        System.out.println("---------------");
+      }
+
   }
   
+  public void draw(PGraphics g){
+    this.drawPaths(g);
+
+    for(int i=0;i<countChildren();i++){
+      this.children[i].draw(g);
+    }
+  }
+
+  public void draw(PApplet g){
+    this.drawPaths(g);
+
+    for(int i=0;i<countChildren();i++){
+      this.children[i].draw(g);
+    }
+  }
+
   /**
    * Use this method to draw the shape. 
    * @eexample drawShape
    * @param g PGraphics, the graphics object on which to draw the shape
    */
-  public void draw(PGraphics g){
+  private void drawPaths(PGraphics g){
     try{
       Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
       if(declaringClass != g.getClass()){
@@ -904,7 +976,7 @@ public class RShape extends RGeomElem
     }
   }
 
-  public void draw(PApplet g){
+  private void drawPaths(PApplet g){
     try{
       Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
       if(declaringClass != g.g.getClass()){
@@ -923,14 +995,19 @@ public class RShape extends RGeomElem
   // ----------------------
 
   protected void calculateCurveLengths(){
-    lenCurves = new float[countPaths()];
+    lenCurves = new float[countPaths() + countChildren()];
     lenCurve = 0F;
     for(int i=0;i<countPaths();i++){
       lenCurves[i] = paths[i].getCurveLength();
       lenCurve += lenCurves[i];
     }  
-  }
 
+    for(int i=0;i<countChildren();i++){
+      lenCurves[i + countPaths()] = children[i].getCurveLength();
+      lenCurve += lenCurves[i + countPaths()];
+    }
+  }
+  
   private float[] indAndAdvAt(float t){
     int indOfElement = 0;
     float[] lengthsCurves = getCurveLengths();
@@ -939,12 +1016,6 @@ public class RShape extends RGeomElem
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    /* Old method with uniform advancement per command
-       float advPerCommand;
-       advPerCommand = 1F / numPaths;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numPaths;
-       advOfCommand = (t*numPaths - indCommand);
-    */
     
     float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
     float prevAccumulatedAdvancement = 0F;
@@ -966,6 +1037,22 @@ public class RShape extends RGeomElem
     return indAndAdv;
   }
   
+
+  private void appendChild(RShape nextshape)
+  {
+    RShape[] newshapes;
+    if(children==null){
+      newshapes = new RShape[1];
+      newshapes[0] = nextshape;
+      currentChild = 0;
+    }else{
+      newshapes = new RShape[this.children.length+1];
+      System.arraycopy(this.children,0,newshapes,0,this.children.length);
+      newshapes[this.children.length]=nextshape;
+      currentChild++;
+    }
+    this.children = newshapes;
+  }
   
   
   private void append(RPath nextpath)
