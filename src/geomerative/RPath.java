@@ -331,12 +331,12 @@ public class RPath extends RGeomElem
     float testy = p.y;
 
     // Test for containment in bounding box
-    RContour bbox = getBounds();
-    float xmin = bbox.points[0].x;
-    float xmax = bbox.points[2].x;
+    RRectangle bbox = getBounds();
+    float xmin = bbox.getMinX();
+    float xmax = bbox.getMaxX();
 
-    float ymin = bbox.points[0].y;
-    float ymax = bbox.points[2].y;
+    float ymin = bbox.getMinY();
+    float ymax = bbox.getMaxY();
     
     if( (testx < xmin) || (testx > xmax) || (testy < ymin) || (testy > ymax)){
       return false;

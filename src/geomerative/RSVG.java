@@ -133,7 +133,7 @@ public class RSVG
         
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){
-          geomElem.id = element.getStringAttribute("id");
+          geomElem.name = element.getStringAttribute("id");
         }
                 
         // Get the style for the geometrical element

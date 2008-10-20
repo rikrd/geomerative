@@ -160,48 +160,6 @@ public class RContour extends RGeomElem
     }
   }
   
-  
-  /**
-   * Use this method to get the bounding box of the contour. 
-   * @eexample getBounds
-   * @return RContour, the bounding box of the contour in the form of a fourpoint contour
-   * @related draw ( )
-   */
-  public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
-    
-    for( int i = 0 ; i < this.countPoints() ; i++ )
-      {
-        float x = this.points[i].x;
-        float y = this.points[i].y;
-        if( x < xmin ) xmin = x;
-        if( x > xmax ) xmax = x;
-        if( y < ymin ) ymin = y;
-        if( y > ymax ) ymax = y;
-      }
-    
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
-    return c;
-  }
-  
-  /**
-   * Use this method to get the center point of the contour. 
-   * @eexample RPolygon_getCenter
-   * @return RPoint, the center point of the contour
-   * @related getBounds ( )
-   */
-  public RPoint getCenter(){
-    RContour c = getBounds();
-    return new RPoint((c.points[2].x + c.points[0].x)/2,(c.points[2].y + c.points[0].y)/2);
-  }
-  
   /**
    * Use this to return the points of the contour.  It returns the points in the way of an array of RPoint.
    * @eexample RContour_getHandles

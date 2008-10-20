@@ -155,16 +155,16 @@ public class RMesh extends RGeomElem
   public void draw(PGraphics g){
     for(int i=0;i<this.countStrips();i++){
       g.beginShape(PConstants.TRIANGLE_STRIP);
-      if(this.texture != null)
+      if(this.style.texture != null)
         {
-          g.texture(this.texture);
+          g.texture(this.style.texture);
           for(int j=0;j<this.strips[i].vertices.length;j++)
             {
               float x = this.strips[i].vertices[j].x;
               float y = this.strips[i].vertices[j].y;
               /*
-                float u = (x - minx)/(maxx-minx) * this.texture.width;
-                float v = (y - miny)/(maxy-miny) * this.texture.height;
+                float u = (x - minx)/(maxx-minx) * this.style.texture.width;
+                float v = (y - miny)/(maxy-miny) * this.style.texture.height;
               */
               g.vertex(x, y, x, y);
             }
@@ -186,9 +186,9 @@ public class RMesh extends RGeomElem
   public void draw(PApplet g){
     for(int i=0;i<this.countStrips();i++){
       g.beginShape(PConstants.TRIANGLE_STRIP);
-      if(this.texture != null)
+      if(this.style.texture != null)
         {
-          g.texture(this.texture);
+          g.texture(this.style.texture);
         }
       for(int j=0;j<this.strips[i].vertices.length;j++){
         g.vertex(this.strips[i].vertices[j].x,this.strips[i].vertices[j].y);
@@ -196,73 +196,6 @@ public class RMesh extends RGeomElem
       g.endShape(PConstants.CLOSE);
     }
   }		
-  
-  /**
-   * Use this method to know if the mesh is inside a graphics object. This might be useful if we want to delete objects that go offscreen.
-   * @eexample RMesh_isIn
-   * @usage Geometry
-   * @param PGraphics g, the graphics object
-   * @return boolean, whether the mesh is in or not the graphics object
-   */
-  public boolean isIn(PGraphics g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
-    
-    return ((((x0 > 0 && x0 < g.width) && (y0 > 0 && y0 < g.height)) ||
-             ((x1 > 0 && x1 < g.width) && (y1 > 0 && y1 < g.height)) ||
-             ((x2 > 0 && x2 < g.width) && (y2 > 0 && y2 < g.height)) ||
-             ((x3 > 0 && x3 < g.width) && (y3 > 0 && y3 < g.height))));
-  }
-  
-  /**
-   * Use this method to get the bounding box of the mesh. 
-   * @eexample getBounds
-   * @return RContour, the bounding box of the mesh in the form of a fourpoint contour
-   * @related getCenter ( )
-   */
-  public RContour getBounds(){
-    float xmin =  Float.MAX_VALUE ;
-    float ymin =  Float.MAX_VALUE ;
-    float xmax = -Float.MAX_VALUE ;
-    float ymax = -Float.MAX_VALUE ;
-    
-    for(int j=0 ; j < this.countStrips() ; j++ ){
-      for( int i = 0 ; i < this.strips[j].countVertices() ; i++ )
-        {
-          float x = this.strips[j].vertices[i].x;
-          float y = this.strips[j].vertices[i].y;
-          if( x < xmin ) xmin = x;
-          if( x > xmax ) xmax = x;
-          if( y < ymin ) ymin = y;
-          if( y > ymax ) ymax = y;
-        }
-    }
-    
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
-    return c;
-  }
-  
-  /**
-   * Use this method to get the center point of the mesh. 
-   * @eexample RMesh_getCenter
-   * @return RPoint, the center point of the mesh
-   * @related getBounds ( )
-   */
-  public RPoint getCenter(){
-    RContour c = getBounds();
-    return new RPoint((c.points[2].x + c.points[0].x)/2,(c.points[2].y + c.points[0].y)/2);
-  }
   
   /**
    * Use this to get the vertices of the mesh.  It returns the points in the way of an array of RPoint.

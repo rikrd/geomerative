@@ -21,46 +21,50 @@ package geomerative ;
 
 class RRectangle
 {
-  RPoint p;
-  RPoint q;
+  RPoint topLeft;
+  RPoint bottomRight;
   
   RRectangle()
   {
-    p = new RPoint();
-    q = new RPoint();
+    topLeft = new RPoint();
+    bottomRight = new RPoint();
   }
   
   RRectangle(float x,float y,float w,float h)
   {
-    p = new RPoint(x,y);
-    q = new RPoint(x+w,y+h);
+    topLeft = new RPoint(x,y);
+    bottomRight = new RPoint(x+w,y+h);
     
   }
   
-  RRectangle(RPoint np,RPoint nq)
+  RRectangle(RPoint _topLeft,RPoint _bottomRight)
   {
-    this.p = np;
-    this.q = nq;
+    this.topLeft = _topLeft;
+    this.bottomRight = _bottomRight;
   } 
   
   float getMaxX()
   {
-    return (p.x > q.x) ? p.x : q.x;
+    //return (topLeft.x > bottomRight.x) ? topLeft.x : bottomRight.x;
+    return bottomRight.x;
   }
   
   float getMaxY()
   {
-    return (p.y > q.y) ? p.y : q.y;
+    //return (topLeft.y > bottomRight.y) ? topLeft.y : bottomRight.y;
+    return bottomRight.y;
   }
   
   float getMinX()
   {
-    return (p.x < q.x) ? p.x : q.x;
+    //return (topLeft.x < bottomRight.x) ? topLeft.x : bottomRight.x;
+    return topLeft.x;
   }
   
   float getMinY()
   {
-    return (p.y < q.y) ? p.y : q.y;
+    //return (topLeft.y < bottomRight.y) ? topLeft.y : bottomRight.y;
+    return topLeft.y;
   }
   
   public String toString()

@@ -532,12 +532,12 @@ public class RShape extends RGeomElem
     float testy = p.y;
 
     // Test for containment in bounding box
-    RContour bbox = getBounds();
-    float xmin = bbox.points[0].x;
-    float xmax = bbox.points[2].x;
+    RRectangle bbox = getBounds();
+    float xmin = bbox.getMinX();
+    float xmax = bbox.getMaxX();
 
-    float ymin = bbox.points[0].y;
-    float ymax = bbox.points[2].y;
+    float ymin = bbox.getMinY();
+    float ymax = bbox.getMaxY();
     
     if( (testx < xmin) || (testx > xmax) || (testy < ymin) || (testy > ymax)){
       return false;
@@ -810,9 +810,9 @@ public class RShape extends RGeomElem
    * @return RGroup, the adapted group
    */
   public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{
-    RContour c = this.getBounds();
-    float xmin = c.points[0].x;
-    float xmax = c.points[2].x;
+    RRectangle c = this.getBounds();
+    float xmin = c.getMinX();
+    float xmax = c.getMaxX();
     
     switch(RG.adaptorType){
     case RG.BYPOINT:
@@ -836,10 +836,10 @@ public class RShape extends RGeomElem
       break;
     case RG.BYELEMENTINDEX:
     case RG.BYELEMENTPOSITION:
-      RContour elemc = shp.getBounds();
+      RRectangle elemc = shp.getBounds();
       
-      float px = (elemc.points[2].x + elemc.points[0].x) / 2F;
-      float py = (elemc.points[2].y - elemc.points[0].y) / 2F;
+      float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
+      float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
       float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
       
       RPoint tg = shp.getTangent(t);

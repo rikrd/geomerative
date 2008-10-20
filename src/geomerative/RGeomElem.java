@@ -106,438 +106,126 @@ public abstract class RGeomElem
   protected float[] lenCurves;
   protected float lenCurve = -1F;
 
-  public String id = "";
-  public PImage texture = null;
-  
-  public boolean fillDef = false;
-  public boolean fill = false;
-  public int fillColor = 0xff000000;
+  public String name = "";  
 
-  public boolean fillAlphaDef = false;
-  public int fillAlpha = 0xff000000;
-
-  public boolean strokeDef = false;
-  public boolean stroke = false;
-  public int strokeColor = 0xff000000;
-
-  public boolean strokeAlphaDef = false;
-  public int strokeAlpha = 0xff000000;
-  
-  public boolean strokeWeightDef = false;
-  public float strokeWeight = 1F;
-
-  public boolean strokeCapDef = false;
-  public int strokeCap = RG.PROJECT;
-
-  public boolean strokeJoinDef = false;
-  public int strokeJoin = RG.MITER;
-  
-  private boolean oldFill = false;
-  private int oldFillColor = 0;
-  
-  private boolean oldStroke = false;
-  private int oldStrokeColor = 0;
-  private float oldStrokeWeight = 1F;
-  private int oldStrokeCap = RG.PROJECT;
-  private int oldStrokeJoin = RG.MITER;
-  
-  protected void saveContext(PGraphics g){
-    oldFill = g.fill;
-    oldFillColor = g.fillColor;
-    oldStroke = g.stroke;
-    oldStrokeColor = g.strokeColor;
-    oldStrokeWeight = g.strokeWeight;
-    oldStrokeCap = g.strokeCap;
-    oldStrokeJoin = g.strokeJoin;
-  }
-
-  protected void saveContext(PApplet p){
-    oldFill = p.g.fill;
-    oldFillColor = p.g.fillColor;
-    oldStroke = p.g.stroke;
-    oldStrokeColor = p.g.strokeColor;
-    oldStrokeWeight = p.g.strokeWeight;    
-    oldStrokeCap = p.g.strokeCap;
-    oldStrokeJoin = p.g.strokeJoin;
-  }
-
-  protected void saveContext(){
-    saveContext(RG.parent());
-  }
-
-  protected void restoreContext(PGraphics g){
-    g.fill(oldFillColor);
-    if(!oldFill){
-      g.noFill();
-    }
-
-    g.stroke(oldStrokeColor);
-    g.strokeWeight(oldStrokeWeight);
-
-    try{
-      g.strokeCap(oldStrokeCap);
-      g.strokeJoin(oldStrokeJoin);
-    }catch(RuntimeException e){}
-
-    if(!oldStroke){
-      g.noStroke();
-    }
-  }
-
-  protected void restoreContext(PApplet p){
-    p.fill(oldFillColor);
-    if(!oldFill){
-      p.noFill();
-    }
-
-    p.stroke(oldStrokeColor);
-    p.strokeWeight(oldStrokeWeight);
-
-    try{
-      p.strokeCap(oldStrokeCap);
-      p.strokeJoin(oldStrokeJoin);
-    }catch(RuntimeException e){}
-
-    if(!oldStroke){
-      p.noStroke();
-    }    
-  }
-
-  protected void restoreContext(){
-    restoreContext(RG.parent());
-  }
-
-  protected void setContext(PGraphics g){
-    /*
-    RG.parent().println("Setting context");
-    RG.parent().println("  fillDef: ");
-    RG.parent().println(fillDef);
-    RG.parent().println("  fillColor: ");
-    RG.parent().println(RG.parent().hex(fillColor));
-
-    RG.parent().println("  strokeDef: ");
-    RG.parent().println(strokeDef);
-    RG.parent().println("  strokeColor: ");
-    RG.parent().println(RG.parent().hex(strokeColor));
-    RG.parent().println("  strokeWeight: ");
-    RG.parent().println(strokeWeight);
-    */
-
-    if(fillAlphaDef){
-      if(fillDef){
-        fillColor = ((fillAlpha << 24) & 0xff000000) | (fillColor & 0x00ffffff);
-      }else{
-        if(g.fill){
-          g.fill(((fillAlpha << 24) & 0xff000000) | (g.fillColor & 0x00ffffff));
-        }
-      }
-    }
-
-    if(fillDef){
-      g.fill(fillColor);
-      if(!fill){
-        g.noFill();
-      }
-    }
-
-    if(strokeWeightDef){      
-      g.strokeWeight(strokeWeight);
-    }
-
-    try{
-      if(strokeCapDef){      
-        g.strokeCap(strokeCap);
-      }
-      
-      if(strokeJoinDef){      
-        g.strokeJoin(strokeJoin);
-      }
-    }catch(RuntimeException e){}
-
-    if(strokeAlphaDef){
-      if(strokeDef){
-        strokeColor = ((strokeAlpha << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
-      }else{
-        if(g.stroke){
-          g.stroke(((strokeAlpha << 24) & 0xff000000) | (g.strokeColor & 0x00ffffff));
-        }
-      }
-    }
-    
-    if(strokeDef){      
-      g.stroke(strokeColor);
-      if(!stroke){
-        g.noStroke();
-      }
-    }
-  }
-
-  protected void setContext(PApplet p){
-    
-    if(fillAlphaDef){
-      if(fillDef){
-        fillColor = ((fillAlpha << 24) & 0xff000000) | (fillColor & 0x00ffffff);
-      }else{
-        if(p.g.fill){
-          p.fill(((fillAlpha << 24) & 0xff000000) | (p.g.fillColor & 0x00ffffff));
-        }
-      }
-    }
-    
-    if(fillDef){
-      p.fill(fillColor);
-      if(!fill){
-        p.noFill();
-      }
-    }
-
-    if(strokeWeightDef){      
-      p.strokeWeight(strokeWeight);
-    }
-
-    try{
-      if(strokeCapDef){      
-        p.strokeCap(strokeCap);
-      }
-      
-      if(strokeJoinDef){      
-        p.strokeJoin(strokeJoin);
-      }
-    }catch(RuntimeException e){}
-
-    if(strokeAlphaDef){
-      if(strokeDef){
-        strokeColor = ((strokeAlpha << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
-      }else{
-        if(p.g.stroke){
-          p.stroke(((strokeAlpha << 24) & 0xff000000) | (p.g.strokeColor & 0x00ffffff));
-        }
-      }
-    }
-
-    if(strokeDef){
-      p.stroke(strokeColor);
-      if(!stroke){
-        p.noStroke();
-      }
-    }
-  }
-
-  protected void setContext(){
-    setContext(RG.parent());
-  }
-
-  protected void setStyle(RGeomElem p){
-    id = p.id;
-    texture = p.texture;
-    
-    fillDef = p.fillDef;
-    fill = p.fill;
-    fillColor = p.fillColor;
-    fillAlphaDef = p.fillAlphaDef;
-    fillAlpha = p.fillAlpha;
-    
-    strokeDef = p.strokeDef;
-    stroke = p.stroke;
-    strokeColor = p.strokeColor;
-    strokeAlphaDef = p.strokeAlphaDef;
-    strokeAlpha = p.strokeAlpha;
-
-    strokeWeightDef = p.strokeWeightDef;
-    strokeWeight = p.strokeWeight;
-
-    strokeCapDef = p.strokeCapDef;
-    strokeCap = p.strokeCap;
-
-    strokeJoinDef = p.strokeJoinDef;
-    strokeJoin = p.strokeJoin;
-  }
-
-  protected void setStyle(String styleString){
-    //RG.parent().println("Style parsing: " + styleString);
-    String[] styleTokens = PApplet.splitTokens(styleString, ";");
-    
-    for(int i = 0; i < styleTokens.length; i++){
-      String[] tokens = PApplet.splitTokens(styleTokens[i], ":");
-      
-      tokens[0] = PApplet.trim(tokens[0]);
-      
-      if(tokens[0].equals("fill")){
-        setFill(tokens[1]);
-        
-      }else if(tokens[0].equals("fill-opacity")){
-        setFillAlpha(tokens[1]);        
-        
-      }else if(tokens[0].equals("stroke")){
-        setStroke(tokens[1]);
-      
-      }else if(tokens[0].equals("stroke-width")){
-        setStrokeWeight(tokens[1]);
-
-      }else if(tokens[0].equals("stroke-linecap")){
-        setStrokeCap(tokens[1]);
-
-      }else if(tokens[0].equals("stroke-linejoin")){
-        setStrokeJoin(tokens[1]); 
-       
-      }else if(tokens[0].equals("stroke-opacity")){
-        setStrokeAlpha(tokens[1]);
-     
-      }else if(tokens[0].equals("opacity")){
-        setAlpha(tokens[1]);
-        
-      }else{
-        PApplet.println("Attribute '" + tokens[0] + "' not known.  Ignoring it.");
-      }
-    }
-  }
+  protected RStyle style = new RStyle();
 
   public void setFill(boolean _fill){
-    fillDef = true;
-    fill = _fill;
+    style.setFill(_fill);
   }
 
   public void setFill(int _fillColor){
-    //RG.parent().println("Setting fill by int: " + RG.parent().hex(_fillColor));
-    setFill(true);
-    fillColor = (fillColor & 0xff000000) | (_fillColor & 0x00ffffff);
+    style.setFill(_fillColor);
   }
 
   public void setFill(String str){
-    //RG.parent().println("id: " + id);
-    //RG.parent().println("  set fill: " + str);
-    if(str.equals("none")){
-      setFill(false);
-
-    }else{
-      setFill(getColor(str));
-
-    }
-    //RG.parent().println("  fillColor after: " + RG.parent().hex(fillColor));
+    style.setFill(str);
   }
 
   public void setStroke(boolean _stroke){
-    strokeDef = true;
-    stroke = _stroke;
+    style.setStroke(_stroke);
   }
 
   public void setStroke(int _strokeColor){
-    setStroke(true);
-    strokeColor = (strokeColor & 0xff000000) | (_strokeColor & 0x00ffffff);
+    style.setStroke(_strokeColor);
   }
 
   public void setStroke(String str){
-    //RG.parent().println("  set stroke: " + str);
-    if(str.equals("none")){
-      setStroke(false);
-
-    }else{
-      setStroke(getColor(str));
-      
-    }
+    style.setStroke(str);
   }
 
   public void setStrokeWeight(float value){
-    //RG.parent().println("  set strokeWeight by float: " + value);
-    strokeWeightDef = true;
-    strokeWeight = value;
+    style.setStrokeWeight(value);
   }
 
   public void setStrokeWeight(String str){
-    //RG.parent().println("  set strokeWeight by String: " + str);
-    if(str.endsWith("px")){
-      setStrokeWeight(PApplet.parseFloat(str.substring(0, str.length() - 2)));
-    }else{
-      setStrokeWeight(PApplet.parseFloat(str));
-    }
-
-    
+    style.setStrokeWeight(str);
   }
 
   public void setStrokeCap(String str){
-    //RG.parent().println("  set stroke-cap: " + str);
-    strokeCapDef = true;
-
-    if(str.equals("butt")){
-      strokeCap = RG.PROJECT;
-
-    }else if(str.equals("round")){
-      strokeCap = RG.ROUND;
-
-    }else if(str.equals("square")){
-      strokeCap = RG.SQUARE;
-
-    }
+    style.setStrokeCap(str);
   }
 
   public void setStrokeJoin(String str){
-    //RG.parent().println("  set stroke-cap: " + str);
-    strokeJoinDef = true;
-
-    if(str.equals("miter")){
-      strokeJoin = RG.MITER;
-
-    }else if(str.equals("round")){
-      strokeJoin = RG.ROUND;
-
-    }else if(str.equals("bevel")){
-      strokeJoin = RG.BEVEL;
-
-    }
+    style.setStrokeJoin(str);
   }
 
   public void setStrokeAlpha(int opacity){
-    strokeAlphaDef = true;
-    strokeAlpha = opacity;
+    style.setStrokeAlpha(opacity);
   }
 
   public void setStrokeAlpha(String str){
-    setStrokeAlpha((int)(PApplet.parseFloat(str) * 255F));
+    style.setStrokeAlpha(str);
   }
 
   public void setFillAlpha(int opacity){
-    fillAlphaDef = true;
-    fillAlpha = opacity;
+    style.setFillAlpha(opacity);
   }
 
   public void setFillAlpha(String str){
-    //RG.parent().println("  set fillOpacity: " + str);
-    setFillAlpha((int)(PApplet.parseFloat(str) * 255F));
-    //RG.parent().println("  fillColor after: " + RG.parent().hex(fillColor));
+    style.setFillAlpha(str);
   }  
 
   public void setAlpha(float opacity){
-    //RG.parent().println("Setting float opacity: " + opacity);
-    setAlpha((int)(opacity * 255F));
+    style.setAlpha(opacity);
   }
 
   public void setAlpha(int opacity){
-    /*
-    RG.parent().println("setting opacity: " + RG.parent().hex(opacity));    
-    
-    RG.parent().println("  fillColor before: " + RG.parent().hex(fillColor));
-    RG.parent().println("  strokeColor before: " + RG.parent().hex(fillColor));
-    */
-
-    setFillAlpha(opacity);
-    setStrokeAlpha(opacity);
-
-    //fillColor = ((opacity << 24) & 0xff000000) | (fillColor & 0x00ffffff);
-    //strokeColor = ((opacity << 24) & 0xff000000) | (strokeColor & 0x00ffffff);
-
-    /*    
-    RG.parent().println("  fillColor now: " + RG.parent().hex(fillColor));
-    RG.parent().println("  strokeColor now: " + RG.parent().hex(fillColor));
-    */
+    style.setAlpha(opacity);
   }
 
   public void setAlpha(String str){
-    //RG.parent().println("Setting string opacity: " + str);
-    setAlpha(PApplet.parseFloat(str));
+    style.setAlpha(str);
   }
 
-  public void setId(String str){
-    this.id = str;
+  protected void saveContext(PGraphics g){
+    style.saveContext(g);
+  }
+
+  protected void saveContext(PApplet p){
+    style.saveContext(p);
+}
+
+  protected void saveContext(){
+    style.saveContext();
+  }
+
+  protected void restoreContext(PGraphics g){
+    style.restoreContext(g);
+  }
+
+  protected void restoreContext(PApplet p){
+    style.restoreContext(p);
+  }
+
+  protected void restoreContext(){
+    style.restoreContext();
+  }
+
+  protected void setContext(PGraphics g){
+    style.setContext(g);
+  }
+
+  protected void setContext(PApplet p){
+    style.setContext(p);
+  }
+
+  protected void setContext(){
+    style.setContext();
+  }
+
+  protected void setStyle(RGeomElem p){
+    name = p.name;
+
+    style = new RStyle(p.style);
+  }
+
+  protected void setStyle(String styleString){
+    style.setStyle(styleString);
+  }
+
+  public void setName(String str){
+    this.name = str;
   }
 
   protected void calculateCurveLengths(){
@@ -580,35 +268,6 @@ public abstract class RGeomElem
     return toShape().toPolygon().toMesh();
   }
 
-  private int getColor(String colorString){
-    colorString = PApplet.trim(colorString);
-    
-    if(colorString.startsWith("#")){
-      return PApplet.unhex("FF"+colorString.substring(1));
-    }else if(colorString.startsWith("rgb")){
-      String[] rgb = PApplet.splitTokens(colorString, "rgb( , )");
-      return (int)RG.parent().color(PApplet.parseInt(rgb[0]), PApplet.parseInt(rgb[1]), PApplet.parseInt(rgb[2]));
-    }else{
-      if(colorString.equals("black")){
-        return 0;
-
-      }else if(colorString.equals("red")){
-        return RG.parent().color(255, 0, 0);
-
-      }else if(colorString.equals("green")){
-        return RG.parent().color(0, 255, 0);
-
-      }else if(colorString.equals("blue")){
-        return RG.parent().color(0, 0, 255);
-
-      }else if(colorString.equals("yellow")){
-        return RG.parent().color(0, 255, 255);
-
-      }
-    }
-    return 0;
-  }
-
   // Functions independent of the type of element
   // No need of being overrided
   public void transform(RMatrix m){   
@@ -623,16 +282,16 @@ public abstract class RGeomElem
   /**
    * Transform the geometric object to fit in a rectangle defined by the parameters passed.
    * @eexample getBounds
-   * @return RContour, the bounding box of the element in the form of a fourpoint contour
+   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
    * @related getCenter ( )
    */
   public void transform(float x, float y, float w, float h, boolean keepAspectRatio){
     RMatrix mtx = new RMatrix();
-    RContour orig = this.getBounds();
-    float orig_w = orig.points[2].x-orig.points[0].x;
-    float orig_h = orig.points[2].y-orig.points[0].y;
+    RRectangle orig = this.getBounds();
+    float orig_w = orig.getMaxX() - orig.getMinX();
+    float orig_h = orig.getMaxY() - orig.getMinY();
     
-    mtx.translate(-orig.points[0].x, -orig.points[0].y);
+    mtx.translate(-orig.getMinX(), -orig.getMinY());
     if(keepAspectRatio){
       mtx.scale(Math.min(w/orig_w, h/orig_h));
     }else{
@@ -652,16 +311,17 @@ public abstract class RGeomElem
   /**
    * Use this method to get the bounding box of the element. 
    * @eexample getBounds
-   * @return RContour, the bounding box of the element in the form of a fourpoint contour
+   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
    * @related getCenter ( )
    */
-  public RContour getBounds(){
+  public RRectangle getBounds(){
     float xmax = Float.NEGATIVE_INFINITY ;
     float ymax = Float.NEGATIVE_INFINITY ;
     float xmin = Float.POSITIVE_INFINITY ;
     float ymin = Float.POSITIVE_INFINITY ;
 
     RPoint[] points = getHandles();
+
     if(points!=null){
       for(int i=0;i<points.length;i++){
         float tempx = points[i].x;
@@ -684,12 +344,8 @@ public abstract class RGeomElem
           }
       }
     }
-
-    RContour c = new RContour();
-    c.addPoint(xmin,ymin);
-    c.addPoint(xmin,ymax);
-    c.addPoint(xmax,ymax);
-    c.addPoint(xmax,ymin);
+    
+    RRectangle c = new RRectangle(new RPoint(xmin, ymin), new RPoint(xmax, ymax));
     return c;
   }
   
@@ -701,8 +357,8 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public float getWidth(){
-    RContour orig = this.getBounds();
-    return orig.points[2].x-orig.points[0].x;
+    RRectangle orig = this.getBounds();
+    return orig.getMaxX()-orig.getMinX();
   }
 
 
@@ -713,8 +369,8 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public float getHeight(){
-    RContour orig = this.getBounds();
-    return orig.points[2].y-orig.points[0].y;
+    RRectangle orig = this.getBounds();
+    return orig.getMaxY()-orig.getMinY();
   }
 
   
@@ -725,8 +381,8 @@ public abstract class RGeomElem
    * @related getBounds ( )
    */
   public RPoint getCenter(){
-    RContour c = getBounds();
-    return new RPoint((c.points[2].x + c.points[0].x)/2,(c.points[2].y + c.points[0].y)/2);
+    RRectangle c = getBounds();
+    return new RPoint((c.getMaxX() + c.getMinX())/2,(c.getMaxY() + c.getMinY())/2);
   }
   
   /**
@@ -782,15 +438,15 @@ public abstract class RGeomElem
    * @return boolean, whether the shape is in or not the graphics object
    */
   public boolean isIn(PGraphics g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
+    RRectangle c = getBounds();
+    float x0 = g.screenX(c.topLeft.x, c.topLeft.y);
+    float y0 = g.screenY(c.topLeft.x, c.topLeft.y);
+    float x1 = g.screenX(c.bottomRight.x, c.topLeft.y);
+    float y1 = g.screenY(c.bottomRight.x, c.topLeft.y);
+    float x2 = g.screenX(c.bottomRight.x, c.bottomRight.y);
+    float y2 = g.screenY(c.bottomRight.x, c.bottomRight.y);
+    float x3 = g.screenX(c.topLeft.x, c.bottomRight.y);
+    float y3 = g.screenY(c.topLeft.x, c.bottomRight.y);
     
     float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
     float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
@@ -801,15 +457,15 @@ public abstract class RGeomElem
   }
   
   public boolean isIn(PApplet g){
-    RContour c = getBounds();
-    float x0 = g.screenX(c.points[0].x,c.points[0].y);
-    float y0 = g.screenY(c.points[0].x,c.points[0].y);
-    float x1 = g.screenX(c.points[1].x,c.points[1].y);
-    float y1 = g.screenY(c.points[1].x,c.points[1].y);
-    float x2 = g.screenX(c.points[2].x,c.points[2].y);
-    float y2 = g.screenY(c.points[2].x,c.points[2].y);
-    float x3 = g.screenX(c.points[3].x,c.points[3].y);
-    float y3 = g.screenY(c.points[3].x,c.points[3].y);
+    RRectangle c = getBounds();
+    float x0 = g.screenX(c.topLeft.x, c.topLeft.y);
+    float y0 = g.screenY(c.topLeft.x, c.topLeft.y);
+    float x1 = g.screenX(c.bottomRight.x, c.topLeft.y);
+    float y1 = g.screenY(c.bottomRight.x, c.topLeft.y);
+    float x2 = g.screenX(c.bottomRight.x, c.bottomRight.y);
+    float y2 = g.screenY(c.bottomRight.x, c.bottomRight.y);
+    float x3 = g.screenX(c.topLeft.x, c.bottomRight.y);
+    float y3 = g.screenY(c.topLeft.x, c.bottomRight.y);
     
     float xmax = Math.max(Math.max(x0,x1),Math.max(x2,x3));
     float ymax = Math.max(Math.max(y0,y1),Math.max(y2,y3));
@@ -834,8 +490,8 @@ public abstract class RGeomElem
     RMatrix transf;
     
     float mrgn = margin*2;
-    RContour c = getBounds();
-    float scl = (float)Math.min((g.width-mrgn)/(float)Math.abs(c.points[0].x-c.points[2].x),(g.height-mrgn)/(float)Math.abs(c.points[0].y-c.points[2].y));
+    RRectangle c = getBounds();
+    float scl = (float)Math.min((g.width-mrgn)/(float)Math.abs(c.getMinX() - c.getMaxX()),(g.height-mrgn)/(float)Math.abs(c.getMinY()-c.getMaxY()));
     RPoint trns = getCenter();
     transf = new RMatrix();
     
