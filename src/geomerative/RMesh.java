@@ -155,16 +155,16 @@ public class RMesh extends RGeomElem
   public void draw(PGraphics g){
     for(int i=0;i<this.countStrips();i++){
       g.beginShape(PConstants.TRIANGLE_STRIP);
-      if(this.texture != null)
+      if(this.style.texture != null)
         {
-          g.texture(this.texture);
+          g.texture(this.style.texture);
           for(int j=0;j<this.strips[i].vertices.length;j++)
             {
               float x = this.strips[i].vertices[j].x;
               float y = this.strips[i].vertices[j].y;
               /*
-                float u = (x - minx)/(maxx-minx) * this.texture.width;
-                float v = (y - miny)/(maxy-miny) * this.texture.height;
+                float u = (x - minx)/(maxx-minx) * this.style.texture.width;
+                float v = (y - miny)/(maxy-miny) * this.style.texture.height;
               */
               g.vertex(x, y, x, y);
             }
@@ -186,9 +186,9 @@ public class RMesh extends RGeomElem
   public void draw(PApplet g){
     for(int i=0;i<this.countStrips();i++){
       g.beginShape(PConstants.TRIANGLE_STRIP);
-      if(this.texture != null)
+      if(this.style.texture != null)
         {
-          g.texture(this.texture);
+          g.texture(this.style.texture);
         }
       for(int j=0;j<this.strips[i].vertices.length;j++){
         g.vertex(this.strips[i].vertices[j].x,this.strips[i].vertices[j].y);
