@@ -2,8 +2,8 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
-RGroup newGrp;
+RShape grp;
+RShape newGrp;
 
 void setup(){
   size(800, 600);

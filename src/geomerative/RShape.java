@@ -858,11 +858,6 @@ public class RShape extends RGeomElem
     result[0] = new RShape();
     result[1] = new RShape();
 
-    int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
-
     if(t == 0.0F){ 
       result[0] = new RShape();
       result[0].setStyle(this);
@@ -910,9 +905,23 @@ public class RShape extends RGeomElem
     
       return result;
     }else{
-      System.out.println("Over countPaths");
-      RShape[] splittedShapes = children[indOfElement - countPaths()].split(advOfElement);
+      indOfElement -= countPaths();
+
+      // Add the elements before the cut point
+      for(int i=0; i<indOfElement; i++){
+        result[0].addChild(new RShape(children[i]));
+      }
+
+      // Add the cut point element cutted
+      RShape[] splittedChild = children[indOfElement].split(advOfElement);
+      result[0].addChild(new RShape(splittedChild[0]));
+      result[1].addChild(new RShape(splittedChild[1]));
       
+      // Add the elements after the cut point    
+      for(int i=indOfElement+1; i<countChildren(); i++){
+        result[1].addChild(new RShape(children[i]));
+      }
+
       result[0].setStyle(this);
       result[1].setStyle(this);
     

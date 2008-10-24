@@ -12,7 +12,7 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
 
-  shp = RG.loadShape("lion.svg");
+  shp = RG.loadShape("Lion.svg");
   shp = RG.centerIn(shp, g, 100);
 } 
 
