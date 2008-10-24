@@ -12,7 +12,7 @@ float FREQ = 0.08;
 
 void setup(){
   // Initilaize the sketch
-  size(600, 400, OPENGL);
+  size(600, 400);
   frameRate(24);
 
   // VERY IMPORTANT: Allways initialize the library in the setup

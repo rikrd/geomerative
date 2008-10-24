@@ -1,9 +1,9 @@
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
+RShape shp;
 
-boolean ignoringStyles = false;
+int first = 0;
 
 void setup(){
   size(600, 600);
@@ -13,8 +13,8 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
   
-  grp = RG.loadSVG("bot1.svg");
-  grp.centerIn(g);
+  shp = RG.loadShape("bot1.svg");
+  shp = RG.centerIn(shp, g, 100);
 }
 
 void draw(){
@@ -23,12 +23,13 @@ void draw(){
 
   noFill();
   stroke(255, 200);
-  RGroup[] splittedGroups = grp.split(map(mouseX, 0, width, 0, 1));
-  splittedGroups[0].rotate(cos(frameCount*0.1));
-  splittedGroups[0].draw();
+  float splitPos = map(mouseX, 0, width, 0, 1);
+  
+  RShape[] splitShapes = RG.split(shp, splitPos);
+ 
+  RG.shape(splitShapes[first]);
 }
 
 void mousePressed(){
-  ignoringStyles = !ignoringStyles;
-  RG.ignoreStyles(ignoringStyles);
+  first = (first + 1) % 2;
 }

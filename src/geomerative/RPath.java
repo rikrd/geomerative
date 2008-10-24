@@ -487,6 +487,20 @@ public class RPath extends RGeomElem
 
     return result;
   }
+
+  public void polygonize(){
+    RPoint[] points = getPoints();
+    
+    if (points == null){
+      this.commands = null;
+    }else{
+      RPath result = new RPath(points[0]);
+      for(int i = 1; i< points.length; i++){
+        result.addLineTo(points[i]);
+      }
+      this.commands = result.commands;
+    }
+  }
   
   /**
    * Use this method to draw the path. 

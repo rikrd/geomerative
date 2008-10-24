@@ -2,7 +2,7 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
+RShape grp;
 
 boolean ignoringStyles = false;
 
@@ -17,7 +17,7 @@ void setup(){
   
   RG.setPolygonizer(RG.ADAPTATIVE);
    
-  grp = RG.loadSVG("mapaAzimutal.svg");
+  grp = RG.loadShape("mapaAzimutal.svg");
   grp.centerIn(g, 100, 1, 1);
 }
 
@@ -30,12 +30,12 @@ void draw(){
   
   grp.draw();
   RPoint p = new RPoint(mouseX-width/2, mouseY-height/2);
-  for(int i=0;i<grp.countElements();i++){
-    if(grp.elements[i].contains(p)){
+  for(int i=0;i<grp.countChildren();i++){
+    if(grp.children[i].contains(p)){
        RG.ignoreStyles(true);
        fill(0,100,255,250);
        noStroke();
-       grp.elements[i].draw();
+       grp.children[i].draw();
        RG.ignoreStyles(ignoringStyles);
     }
   }

@@ -2,8 +2,8 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
-RGroup newGrp;
+RShape grp;
+RShape newGrp;
 
 void setup(){
   size(800, 600);
@@ -12,7 +12,7 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
 
-  grp = RG.loadSVG("Toucan.svg");
+  grp = RG.loadShape("Toucan.svg");
   grp.centerIn(g);
 } 
 

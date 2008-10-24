@@ -277,6 +277,85 @@ public class RFont implements PConstants{
     }
     return result;
   }
+
+  public RShape toShape(String text)  throws RuntimeException{
+    RShape result = new RShape();
+    
+    // Decide upon a cmap table to use for our character to glyph look-up
+    CmapFormat cmapFmt = getCmapFormat();
+    
+    if (cmapFmt == null) {
+      throw new RuntimeException("Cannot find a suitable cmap table");
+    }
+    
+    // If this font includes arabic script, we want to specify
+    // substitutions for initial, medial, terminal & isolated
+    // cases.
+    /*
+      GsubTable gsub = (GsubTable) f.getTable(Table.GSUB);
+      SingleSubst initialSubst = null;
+      SingleSubst medialSubst = null;
+      SingleSubst terminalSubst = null;
+      if (gsub != null) {
+      Script s = gsub.getScriptList().findScript(ScriptTags.SCRIPT_TAG_ARAB);
+      if (s != null) {
+      LangSys ls = s.getDefaultLangSys();
+      if (ls != null) {
+      Feature init = gsub.getFeatureList().findFeature(ls, FeatureTags.FEATURE_TAG_INIT);
+      Feature medi = gsub.getFeatureList().findFeature(ls, FeatureTags.FEATURE_TAG_MEDI);
+      Feature fina = gsub.getFeatureList().findFeature(ls, FeatureTags.FEATURE_TAG_FINA);
+      
+      initialSubst = (SingleSubst)
+      gsub.getLookupList().getLookup(init, 0).getSubtable(0);
+      medialSubst = (SingleSubst)
+      gsub.getLookupList().getLookup(medi, 0).getSubtable(0);
+      terminalSubst = (SingleSubst)
+      gsub.getLookupList().getLookup(fina, 0).getSubtable(0);
+      }
+      }
+      }*/
+    
+    int x = 0;
+    for (short i = 0; i < text.length(); i++) {
+      int glyphIndex = cmapFmt.mapCharCode(text.charAt(i));
+      Glyph glyph = f.getGlyph(glyphIndex);
+      int default_advance_x = f.getHmtxTable().getAdvanceWidth(glyphIndex);
+      if (glyph != null) {
+        glyph.scale(scaleFactor);
+        // Add the Glyph to the Shape with an horizontal offset of x
+        result.addChild(getGlyphAsShape(f,glyph, glyphIndex,x));
+        x += glyph.getAdvanceWidth();
+      }else{
+        x += (int)((float)default_advance_x*scaleFactor);
+      }
+      
+    }
+    
+    if(align!=LEFT && align!=CENTER && align!=RIGHT){
+      throw new RuntimeException("Alignement unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
+    }
+    
+    RRectangle r;
+    RMatrix mattrans;
+
+    switch(this.align){
+    case RFont.CENTER:
+      r = result.getBounds();
+      mattrans = new RMatrix();
+      mattrans.translate((r.getMinX()-r.getMaxX())/2,0);
+      result.transform(mattrans);
+      break;
+    case RFont.RIGHT:
+      r = result.getBounds();
+      mattrans = new RMatrix();
+      mattrans.translate((r.getMinX()-r.getMaxX()),0);
+      result.transform(mattrans);
+      break;
+    case RFont.LEFT:
+      break;
+    }
+    return result;
+  }
   
   /**
    * Use this method to draw a character on a certain canvas.

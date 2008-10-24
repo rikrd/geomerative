@@ -2,8 +2,8 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
-RGroup grp2;
+RShape grp;
+RShape grp2;
 
 boolean ignoringStyles = false;
 
@@ -16,8 +16,8 @@ void setup(){
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  grp = RG.loadSVG("bot1.svg");
-  grp.centerIn(g, 100, 1, 1);
+  grp = RG.loadShape("bot1.svg");
+  grp = RG.centerIn(grp, g, 100);
   
 }
 
@@ -29,7 +29,7 @@ void draw(){
   stroke(255, 200);
 
   // Split and scale the Group
-  grp2 = new RGroup(grp);
+  grp2 = new RShape(grp);
   grp2.insertHandleInPaths(0.5);
   grp2.scale(1.1);
   

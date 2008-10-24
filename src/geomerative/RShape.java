@@ -40,8 +40,11 @@ public class RShape extends RGeomElem
    * @related countPaths ( )
    * @related addPath ( )
    */
-  public RPath[] paths;
+  public RPath[] paths = null;
   protected int currentPath = 0;
+
+  public RShape[] children = null;
+  protected int currentChild;
 
   // ----------------------
   // --- Public Methods ---
@@ -52,7 +55,6 @@ public class RShape extends RGeomElem
    * @eexample RShape
    */
   public RShape(){
-    this.paths= null;
     type = RGeomElem.SHAPE;
   }
   
@@ -60,11 +62,21 @@ public class RShape extends RGeomElem
     this.append(newpath);
     type = RGeomElem.SHAPE;
   }
+
+  public RShape(RPath[] newpaths){
+    this.paths = newpaths;
+    type = RGeomElem.SHAPE;
+  }
   
   public RShape(RShape s){
     for(int i=0;i<s.countPaths();i++){
       this.append(new RPath(s.paths[i]));
     }
+    
+    for(int i=0;i<s.countChildren();i++){
+      this.appendChild(new RShape(s.children[i]));
+    }
+
     type = RGeomElem.SHAPE;
 
     setStyle(s);
@@ -109,7 +121,7 @@ public class RShape extends RGeomElem
     }
 
     star.addClose();
-
+    
     return star;
   }
   
@@ -196,6 +208,15 @@ public class RShape extends RGeomElem
     
     return this.paths.length;
   }
+
+
+  public int countChildren(){
+    if(this.children==null){
+      return 0;
+    }
+    
+    return this.children.length;
+  }
   
   /**
    * Use this method to add a new shape.  The paths of the shape we are adding will simply be added to the current shape.
@@ -224,6 +245,15 @@ public class RShape extends RGeomElem
   
   public void addPath(RPath s){
     this.append(s);
+  }
+
+
+  public void addChild(){
+    this.appendChild(new RShape());
+  }
+  
+  public void addChild(RShape s){
+    this.appendChild(s);
   }
   
   /**
@@ -375,6 +405,19 @@ public class RShape extends RGeomElem
     
     return result;
   }
+
+  public void polygonize(){
+    int numPaths = countPaths();
+    
+    for(int i=0;i<numPaths;i++){
+      this.paths[i].polygonize();
+    }
+    
+    for(int i=0;i<countChildren();i++){
+      this.children[i].polygonize();
+    }
+  }
+
   
   /**
    * @invisible
@@ -442,9 +485,6 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getHandles(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[] result=null;
     RPoint[] newresult=null;
@@ -462,6 +502,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].getHandles();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
     return result;
   }
   
@@ -475,7 +531,11 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
 
-    return paths[indOfElement].getPoint(advOfElement);
+    if ( indOfElement < countPaths() ){
+      return paths[indOfElement].getPoint(advOfElement);
+    }else{
+      return children[indOfElement - countPaths()].getPoint(advOfElement);
+    }
   }
 
   /**
@@ -485,9 +545,6 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getPoints(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
 
     RCommand.segmentAccOffset = RCommand.segmentOffset;    
     RPoint[] result=null;
@@ -506,6 +563,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].getPoints();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
     return result;
   }
 
@@ -519,7 +592,12 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
 
-    return paths[indOfElement].getTangent(advOfElement);
+
+    if ( indOfElement < countPaths() ){
+      return paths[indOfElement].getTangent(advOfElement);
+    }else{
+      return children[indOfElement - countPaths()].getTangent(advOfElement);
+    }
   }
 
   /**
@@ -580,14 +658,26 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getTangents(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numPaths;i++){
       RPoint[] newPoints = paths[i].getTangents();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].getTangents();
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -610,9 +700,6 @@ public class RShape extends RGeomElem
    * */
   public RPoint[][] getPointsInPaths(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[][] result=null;
     RPoint[][] newresult=null;
@@ -630,14 +717,27 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[][] newPoints = children[i].getPointsInPaths();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length][];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
     return result;    
   }
 
   public RPoint[][] getHandlesInPaths(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[][] result=null;
     RPoint[][] newresult=null;
@@ -655,6 +755,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[][] newPoints = children[i].getHandlesInPaths();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length][];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
     return result;    
   }
 
@@ -680,6 +796,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[][] newPoints = children[i].getTangentsInPaths();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length][];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
     return result;    
   }
   
@@ -693,6 +825,14 @@ public class RShape extends RGeomElem
       if(splittedPaths != null){
         result[0].addPath(splittedPaths[0]);
         result[1].addPath(splittedPaths[1]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape[] splittedPaths = children[i].splitPaths(t);
+      if(splittedPaths != null){
+        result[0].addChild(splittedPaths[0]);
+        result[1].addChild(splittedPaths[1]);
       }
     }
     
@@ -715,7 +855,11 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
 
-    paths[indOfElement].insertHandle(advOfElement);
+    if ( indOfElement < countPaths() ){
+      paths[indOfElement].insertHandle(advOfElement);
+    }else{
+      children[indOfElement - countPaths()].insertHandle(advOfElement);
+    }
     
     // Clear the cache
     lenCurves = null;
@@ -755,11 +899,6 @@ public class RShape extends RGeomElem
     result[0] = new RShape();
     result[1] = new RShape();
 
-    int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
-
     if(t == 0.0F){ 
       result[0] = new RShape();
       result[0].setStyle(this);
@@ -784,23 +923,51 @@ public class RShape extends RGeomElem
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
     
-    RPath[] splittedShapes = paths[indOfElement].split(advOfElement);
-    
-    result[0] = new RShape();
-    for(int i = 0; i<indOfElement; i++){
-      result[0].addPath(new RPath(paths[i]));
-    }
-    result[0].addPath(new RPath(splittedShapes[0]));
-    result[0].setStyle(this);
+    if ( indOfElement < countPaths() ){
+      RPath[] splittedShapes = paths[indOfElement].split(advOfElement);
+      
+      result[0] = new RShape();
+      for(int i = 0; i<indOfElement; i++){
+        result[0].addPath(new RPath(paths[i]));
+      }
+      result[0].addPath(new RPath(splittedShapes[0]));
+      result[0].setStyle(this);
+      
+      result[1] = new RShape();
+      result[1].addPath(new RPath(splittedShapes[1]));
+      for(int i = indOfElement + 1; i < countPaths(); i++){
+        result[1].addPath(new RPath(paths[i]));
+      }
 
-    result[1] = new RShape();
-    result[1].addPath(new RPath(splittedShapes[1]));
-    for(int i = indOfElement + 1; i < countPaths(); i++){
-      result[1].addPath(new RPath(paths[i]));
-    }
-    result[1].setStyle(this);
+      for (int i = 0; i < countChildren(); i++){
+        result[1].appendChild(new RShape(this.children[i]));
+      }
+      result[1].setStyle(this);
     
-    return result;
+      return result;
+    }else{
+      indOfElement -= countPaths();
+
+      // Add the elements before the cut point
+      for(int i=0; i<indOfElement; i++){
+        result[0].addChild(new RShape(children[i]));
+      }
+
+      // Add the cut point element cutted
+      RShape[] splittedChild = children[indOfElement].split(advOfElement);
+      result[0].addChild(new RShape(splittedChild[0]));
+      result[1].addChild(new RShape(splittedChild[1]));
+      
+      // Add the elements after the cut point    
+      for(int i=indOfElement+1; i<countChildren(); i++){
+        result[1].addChild(new RShape(children[i]));
+      }
+
+      result[0].setStyle(this);
+      result[1].setStyle(this);
+    
+      return result;
+    }
   }
 
   /**
@@ -814,6 +981,8 @@ public class RShape extends RGeomElem
     float xmin = c.getMinX();
     float xmax = c.getMaxX();
     
+    int numChildren = countChildren();
+
     switch(RG.adaptorType){
     case RG.BYPOINT:
       RPoint[] ps = this.getHandles();
@@ -835,26 +1004,53 @@ public class RShape extends RGeomElem
       }
       break;
     case RG.BYELEMENTINDEX:
+      for(int i=0;i<numChildren;i++){
+        RShape elem = this.children[i];
+        RRectangle elemc = elem.getBounds();
+        
+        float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
+        float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
+        float t = ((float)i/(float)numChildren + lngthOffset ) % 1F;
+        
+        RPoint tg = shp.getTangent(t);
+        RPoint p = shp.getPoint(t);
+        float angle = (float)Math.atan2(tg.y, tg.x);
+        
+        RPoint pletter = new RPoint(px,py);
+        p.sub(pletter);
+        
+        RMatrix mtx = new RMatrix();
+        mtx.translate(p);
+        mtx.rotate(angle,pletter);
+        mtx.scale(wght,pletter);
+        
+        elem.transform(mtx);
+      }
+      break;
+
     case RG.BYELEMENTPOSITION:
-      RRectangle elemc = shp.getBounds();
-      
-      float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
-      float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
-      float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
-      
-      RPoint tg = shp.getTangent(t);
-      RPoint p = shp.getPoint(t);
-      float angle = (float)Math.atan2(tg.y, tg.x);
-      
-      RPoint pletter = new RPoint(px,py);
-      p.sub(pletter);
-      
-      RMatrix mtx = new RMatrix();
-      mtx.translate(p);
-      mtx.rotate(angle,pletter);
-      mtx.scale(wght,pletter);
-      
-      this.transform(mtx);
+      for(int i=0;i<numChildren;i++){
+        RShape elem = this.children[i];
+        RRectangle elemc = elem.getBounds();
+        
+        float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
+        float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
+        float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
+        
+        RPoint tg = shp.getTangent(t);
+        RPoint p = shp.getPoint(t);
+        float angle = (float)Math.atan2(tg.y, tg.x);
+        
+        RPoint pletter = new RPoint(px,py);
+        p.sub(pletter);
+        
+        RMatrix mtx = new RMatrix();
+        mtx.translate(p);
+        mtx.rotate(angle,pletter);
+        mtx.scale(wght,pletter);
+        
+        elem.transform(mtx);
+      }
       break;
       
     default:
@@ -883,14 +1079,56 @@ public class RShape extends RGeomElem
         paths[i].print();
         System.out.println("---------------");
       }
+    System.out.println("children [count " + this.countChildren() + "]: ");
+    for(int i=0;i<countChildren();i++)
+      {
+        System.out.println("--- child "+i+" ---");
+        children[i].print();
+        System.out.println("---------------");
+      }
+
   }
   
+  public void draw(PGraphics g){
+    if(!RG.ignoreStyles){
+      saveContext(g);
+      setContext(g);
+    }
+
+    this.drawPaths(g);
+
+    for(int i=0;i<countChildren();i++){
+      this.children[i].draw(g);
+    }
+
+    if(!RG.ignoreStyles){
+      restoreContext(g);
+    }
+  }
+
+  public void draw(PApplet g){
+    if(!RG.ignoreStyles){
+      saveContext(g);
+      setContext(g);
+    }
+
+    this.drawPaths(g);
+
+    for(int i=0;i<countChildren();i++){
+      this.children[i].draw(g);
+    }
+
+    if(!RG.ignoreStyles){
+      restoreContext(g);
+    }
+  }
+
   /**
    * Use this method to draw the shape. 
    * @eexample drawShape
    * @param g PGraphics, the graphics object on which to draw the shape
    */
-  public void draw(PGraphics g){
+  private void drawPaths(PGraphics g){
     try{
       Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
       if(declaringClass != g.getClass()){
@@ -904,7 +1142,7 @@ public class RShape extends RGeomElem
     }
   }
 
-  public void draw(PApplet g){
+  private void drawPaths(PApplet g){
     try{
       Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
       if(declaringClass != g.g.getClass()){
@@ -923,14 +1161,19 @@ public class RShape extends RGeomElem
   // ----------------------
 
   protected void calculateCurveLengths(){
-    lenCurves = new float[countPaths()];
+    lenCurves = new float[countPaths() + countChildren()];
     lenCurve = 0F;
     for(int i=0;i<countPaths();i++){
       lenCurves[i] = paths[i].getCurveLength();
       lenCurve += lenCurves[i];
     }  
-  }
 
+    for(int i=0;i<countChildren();i++){
+      lenCurves[i + countPaths()] = children[i].getCurveLength();
+      lenCurve += lenCurves[i + countPaths()];
+    }
+  }
+  
   private float[] indAndAdvAt(float t){
     int indOfElement = 0;
     float[] lengthsCurves = getCurveLengths();
@@ -939,12 +1182,6 @@ public class RShape extends RGeomElem
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    /* Old method with uniform advancement per command
-       float advPerCommand;
-       advPerCommand = 1F / numPaths;
-       indCommand = (int)(Math.floor(t / advPerCommand)) % numPaths;
-       advOfCommand = (t*numPaths - indCommand);
-    */
     
     float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
     float prevAccumulatedAdvancement = 0F;
@@ -966,6 +1203,22 @@ public class RShape extends RGeomElem
     return indAndAdv;
   }
   
+
+  private void appendChild(RShape nextshape)
+  {
+    RShape[] newshapes;
+    if(children==null){
+      newshapes = new RShape[1];
+      newshapes[0] = nextshape;
+      currentChild = 0;
+    }else{
+      newshapes = new RShape[this.children.length+1];
+      System.arraycopy(this.children,0,newshapes,0,this.children.length);
+      newshapes[this.children.length]=nextshape;
+      currentChild++;
+    }
+    this.children = newshapes;
+  }
   
   
   private void append(RPath nextpath)
@@ -989,10 +1242,6 @@ public class RShape extends RGeomElem
     
     if(numPaths!=0){
       if(isIn(g)) {
-        if(!RG.ignoreStyles){
-          saveContext(g);
-          setContext(g);
-        }
 
         // Save the information about the current context
         boolean strokeBefore = g.stroke;
@@ -1060,10 +1309,6 @@ public class RShape extends RGeomElem
         
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
-
-        if(!RG.ignoreStyles){
-          restoreContext(g);
-        }
       }
     }
   }
@@ -1073,11 +1318,6 @@ public class RShape extends RGeomElem
     
     if(numPaths!=0){
       if(isIn(p)) {
-        if(!RG.ignoreStyles){
-          saveContext(p);
-          setContext(p);
-        }
-
         // Save the information about the current context
         boolean strokeBefore = p.g.stroke;
         int strokeColorBefore = p.g.strokeColor;
@@ -1149,10 +1389,6 @@ public class RShape extends RGeomElem
         
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
-
-        if(!RG.ignoreStyles){
-          restoreContext(p);
-        }
       }
     }
   }
@@ -1161,11 +1397,6 @@ public class RShape extends RGeomElem
     int numPaths = countPaths();
     if(numPaths!=0){
       if(isIn(g)){
-        if(!RG.ignoreStyles){
-          saveContext(g);
-          setContext(g);
-        }
-
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numPaths;i++){
@@ -1196,9 +1427,6 @@ public class RShape extends RGeomElem
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
-        if(!RG.ignoreStyles){
-          restoreContext(g);
-        }
       }
     }
   }
@@ -1207,11 +1435,6 @@ public class RShape extends RGeomElem
     int numPaths = countPaths();
     if(numPaths!=0){
       if(isIn(g)){
-        if(!RG.ignoreStyles){
-          saveContext(g);
-          setContext(g);
-        }
-
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numPaths;i++){
@@ -1242,9 +1465,6 @@ public class RShape extends RGeomElem
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
-        if(!RG.ignoreStyles){
-          restoreContext(g);
-        }
       }
     }
   }

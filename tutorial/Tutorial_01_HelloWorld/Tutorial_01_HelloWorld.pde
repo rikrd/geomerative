@@ -2,7 +2,7 @@ import processing.xml.*;
 import geomerative.*;
 
 // Declare the objects we are going to use, so that they are accesible from setup() and from draw()
-RGroup grp;
+RShape grp;
 
 void setup(){
   // Initilaize the sketch

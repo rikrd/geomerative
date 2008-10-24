@@ -2,8 +2,8 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
-RGroup polyGrp;
+RShape shp;
+RShape polyshp;
 
 void setup(){
   size(600, 600);
@@ -12,8 +12,8 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
 
-  grp = RG.loadSVG("lion.svg");
-  grp = RG.centerIn(grp, g, 100);
+  shp = RG.loadShape("Lion.svg");
+  shp = RG.centerIn(shp, g, 100);
 } 
 
 void draw(){
@@ -25,11 +25,12 @@ void draw(){
   // We create the polygonized version
   RG.setPolygonizer(RG.UNIFORMLENGTH);
   RG.setPolygonizerLength(pointSeparation);
-  polyGrp = RG.polygonize(grp);
+  
+  polyshp = RG.polygonize(shp);
   
   // We move ourselves to the mouse position
   translate(mouseX, mouseY);
   
   // We draw the polygonized group with the SVG styles
-  polyGrp.draw();
+  RG.shape(polyshp);
 }

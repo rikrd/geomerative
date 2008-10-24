@@ -2,7 +2,7 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
+RShape shp;
 RPoint[] points;
 RPoint[] tangents;
 
@@ -19,8 +19,8 @@ void setup(){
   RG.init(this);
   RG.ignoreStyles(ignoringStyles);
   
-  grp = RG.loadSVG("bot1.svg");
-  grp.centerIn(g);
+  shp = RG.loadShape("bot1.svg");
+  shp = RG.centerIn(shp, g, 100);
 
   
 }
@@ -29,7 +29,7 @@ void draw(){
   translate(mouseX, mouseY);
   background(#2D4D83);
   
-  grp.draw();
+  RG.shape(shp);
 
   noFill();
   stroke(255, 100);
@@ -38,8 +38,8 @@ void draw(){
   tangents = null;
   
   for(int i=0; i<numPoints; i++){
-    RPoint point = grp.getPoint(float(i)/float(numPoints));
-    RPoint tangent = grp.getTangent(float(i)/float(numPoints));
+    RPoint point = shp.getPoint(float(i)/float(numPoints));
+    RPoint tangent = shp.getTangent(float(i)/float(numPoints));
     if(points == null){
       points = new RPoint[1];
       tangents = new RPoint[1];

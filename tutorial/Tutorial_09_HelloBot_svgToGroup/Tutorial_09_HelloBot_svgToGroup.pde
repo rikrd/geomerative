@@ -2,7 +2,7 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
+RShape shp;
 
 void setup(){
   size(800, 600);
@@ -11,12 +11,12 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
 
-  grp = RG.loadSVG("tiger.svg");
-  grp = RG.centerIn(grp, g);
+  shp = RG.loadShape("tiger.svg");
+  shp = RG.centerIn(shp, g);
 } 
 
 void draw(){
   background(255);
   translate(mouseX, mouseY);
-  grp.draw();
+  RG.shape(shp);
 }

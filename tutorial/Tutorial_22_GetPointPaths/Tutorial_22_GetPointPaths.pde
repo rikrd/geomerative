@@ -1,9 +1,7 @@
 import processing.xml.*;
-import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
-//RShape grp;
+RShape grp;
 RPoint[][] pointPaths;
 
 float xmag, ymag, newYmag, newXmag = 0;
@@ -20,7 +18,7 @@ void setup(){
   
   RG.setPolygonizer(RG.ADAPTATIVE);
   
-  grp = RG.loadSVG("bot1.svg");
+  grp = RG.loadShape("bot1.svg");
   grp.centerIn(g, 100, 1, 1);
   
   pointPaths = grp.getPointsInPaths();

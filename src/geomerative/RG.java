@@ -86,7 +86,7 @@ public class RG implements PConstants{
 
 
   static RShape shape;
-  static RGroup group;
+  static RShape group;
   static RPath path;
 
   static RFont fntLoader;
@@ -100,7 +100,7 @@ public class RG implements PConstants{
   }
 
   public static void text(String text){
-    RGroup grp = getText(text);
+    RShape grp = getText(text);
     grp.draw();
   }
 
@@ -109,29 +109,30 @@ public class RG implements PConstants{
     fntLoader = font;
   }
 
-  public static RGroup getText(String text, String font, int size, int align){
+  public static RShape getText(String text, String font, int size, int align){
     RFont tempFntLoader = new RFont(font, size, align);
-    return tempFntLoader.toGroup(text);
+    return tempFntLoader.toShape(text);
   }
 
-  public static RGroup getText(String text){
+  public static RShape getText(String text){
     if(fntLoader == null){
       throw new FontNotLoadedException();      
     }
     
-    return fntLoader.toGroup(text);
+    return fntLoader.toShape(text);
   }
 
 
   // Shape methods
-  public static void shape(RGroup shp){
+  public static void shape(RShape shp){
     shp.draw();
   }
-
-  public static RGroup loadShape(String filename){
+  
+  public static RShape loadShape(String filename){
     RSVG svgLoader = new RSVG();
-    return svgLoader.toGroup(filename);    
+    return svgLoader.toShape(filename);    
   }
+
 
   // Methods to create shapes
   public static void beginShape(){
@@ -185,7 +186,7 @@ public class RG implements PConstants{
       shape.draw(g);
     }else{
       // We are inside a beginGroup
-      group.addElement(shape);
+      group.addChild(shape);
       
       shape = null;
     }
@@ -199,50 +200,50 @@ public class RG implements PConstants{
   }
 
 
-  public static RGroup getShape(){
-    RGroup returningGroup = new RGroup();
-    returningGroup.addElement(shape);
+  public static RShape getShape(){
+    RShape returningGroup = new RShape();
+    returningGroup.addChild(shape);
 
     shape = null;
 
     return returningGroup;    
   }
 
-  public static RGroup getEllipse(float x, float y, float rx, float ry){
-    RGroup ret = new RGroup();
-    ret.addElement(RShape.createEllipse(x, y, rx, ry));
+  public static RShape getEllipse(float x, float y, float rx, float ry){
+    RShape ret = new RShape();
+    ret.addChild(RShape.createEllipse(x, y, rx, ry));
     return ret;
   }
   
-  public static RGroup getEllipse(float x, float y, float r){
+  public static RShape getEllipse(float x, float y, float r){
     return getEllipse(x, y, r, r);
   }
 
 
   // Transformation methods
-  public static RGroup centerIn(RGroup grp, PGraphics g, float margin){
-    RGroup ret = new RGroup(grp);
+  public static RShape centerIn(RShape grp, PGraphics g, float margin){
+    RShape ret = new RShape(grp);
     ret.centerIn(g, margin);
     return ret;
   }
 
-  public static RGroup centerIn(RGroup grp, PGraphics g){
+  public static RShape centerIn(RShape grp, PGraphics g){
     return centerIn(grp, g, 0);
   }
 
 
-  public static RGroup[] split(RGroup grp, float t){
+  public static RShape[] split(RShape grp, float t){
     return grp.split(t);
   }
 
-  public static RGroup adapt(RGroup grp, RGroup path){
-    RGroup ret = new RGroup(grp);
+  public static RShape adapt(RShape grp, RShape path){
+    RShape ret = new RShape(grp);
     ret.adapt(path);
     return ret;
   }
 
-  public static RGroup polygonize(RGroup grp){
-    RGroup ret = new RGroup(grp);
+  public static RShape polygonize(RShape grp){
+    RShape ret = new RShape(grp);
     ret.polygonize();
     return ret;
   }
@@ -266,6 +267,11 @@ public class RG implements PConstants{
     return parent;
   }
 
+  public static RShape diff(RShape a, RShape b){
+    return a.diff(b);
+  }
+  
+
   public static void ignoreStyles(){
     ignoreStyles = true;
   }
@@ -275,9 +281,9 @@ public class RG implements PConstants{
   }
 
   /**
-   * Use this to set the adaptor type.  RGroup.BYPOINT adaptor adapts the group to a particular shape by adapting each of the groups points.  This can cause deformations of the individual elements in the group.  RGroup.BYELEMENT adaptor adapts the group to a particular shape by adapting each of the groups elements.  This mantains the proportions of the shapes.
-   * @eexample RGroup_setAdaptor
-   * @param int adptorType, it can take the values RGroup.BYPOINT and RGroup.BYELEMENT
+   * Use this to set the adaptor type.  RShape.BYPOINT adaptor adapts the group to a particular shape by adapting each of the groups points.  This can cause deformations of the individual elements in the group.  RShape.BYELEMENT adaptor adapts the group to a particular shape by adapting each of the groups elements.  This mantains the proportions of the shapes.
+   * @eexample RShape_setAdaptor
+   * @param int adptorType, it can take the values RShape.BYPOINT and RShape.BYELEMENT
    * */
   public static void setAdaptor(int adptorType){
     adaptorType = adptorType;
@@ -285,7 +291,7 @@ public class RG implements PConstants{
   
   /**
    * Use this to set the adaptor scaling.  This scales the transformation of the adaptor.
-   * @eexample RGroup_setAdaptor
+   * @eexample RShape_setAdaptor
    * @param float adptorScale, the scaling coefficient
    * */
   public static void setAdaptorScale(float adptorScale){
@@ -294,7 +300,7 @@ public class RG implements PConstants{
   
   /**
    * Use this to set the adaptor length offset.  This specifies where to start adapting the group to the shape.
-   * @eexample RGroup_setAdaptorLengthOffset
+   * @eexample RShape_setAdaptorLengthOffset
    * @param float adptorLengthOffst, the offset along the curve of the shape. Must be a value between 0 and 1;
    * */
   public static void setAdaptorLengthOffset(float adptorLengthOffset) throws RuntimeException{

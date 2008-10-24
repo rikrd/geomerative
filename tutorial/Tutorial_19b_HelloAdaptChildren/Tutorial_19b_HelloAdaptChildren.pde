@@ -1,5 +1,4 @@
 import processing.xml.*;
-import processing.opengl.*;
 import geomerative.*;
 
 RShape   grp;
@@ -14,7 +13,7 @@ void setup(){
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
   
-  grp = RG.loadShape("bot1.svg");
+  grp = RG.getText("around the world", "FreeSans.ttf", 72, RG.CENTER);
 
   RG.setPolygonizer(RG.ADAPTATIVE);
   RG.setPolygonizerAngle(0.065);
@@ -28,16 +27,20 @@ void draw(){
   translate(width/2, height/2);
   background(#2D4D83);
 
-  noFill();
-  stroke(255, 200);
+  fill(0);
+  stroke(0);
   
   float t = map(mouseX, 0, width, 0.01, 0.99);
   RShape circleSeg = RG.split(circle, t)[0];
   
-  RG.setAdaptor(RG.BYPOINT);
+  RG.setAdaptor(RG.BYELEMENTPOSITION);
   RShape adaptedGrp = RG.adapt(grp, circleSeg);
   
   RG.shape( adaptedGrp );
+  
+  noFill();
+  stroke(255, 200);
+    
   RG.shape( circleSeg );
 }
 
