@@ -25,22 +25,22 @@ void draw()
   cursorShape.translate(mouseX - width/2, mouseY - height/2);
   
   // Only intersection() does not work for shapes with more than one path
-  shp3 = shp1.diff( cursorShape );
+  shp3 = RG.diff( shp1, cursorShape );
   
   strokeWeight( 3 );
 
   if(mousePressed){
     fill( 220 , 0 , 0 , 30 );
     stroke( 120 , 0 , 0 );
-    cursorShape.draw();
+    RG.shape(cursorShape);
 
     fill( 0 , 220 , 0 , 30 );
     stroke( 0 , 120 , 0 );
-    shp1.draw();
+    RG.shape(shp1);
   }
   else{
     fill( 220 );
     stroke( 120 );
-    shp3.draw();
+    RG.shape(shp3);
   }
 }

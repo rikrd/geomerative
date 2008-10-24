@@ -1,9 +1,7 @@
 import processing.xml.*;
-import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
-//RShape grp;
+RShape grp;
 RPoint[][] pointPaths;
 
 float xmag, ymag, newYmag, newXmag = 0;

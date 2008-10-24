@@ -15,14 +15,13 @@ void setup(){
   RG.init(this);
   
   grp = RG.loadShape("bot1.svg");
-  grp = RG.centerIn(grp, g, 200);
-  
+
   RG.setPolygonizer(RG.ADAPTATIVE);
   RG.setPolygonizerAngle(0.065);
   grp = RG.polygonize(grp);
     
   circle = RG.getEllipse(0, 0, 20);
-  circle = RG.centerIn(circle, g, 200);
+  circle = RG.centerIn(circle, g, 220);  
 }
 
 void draw(){
@@ -38,9 +37,8 @@ void draw(){
   RG.setAdaptor(RG.BYPOINT);
   RShape adaptedGrp = RG.adapt(grp, circleSeg);
   
-  adaptedGrp.draw();
-  circleSeg.draw();
-  
+  RG.shape( adaptedGrp );
+  RG.shape( circleSeg );
 }
 
 void mousePressed(){

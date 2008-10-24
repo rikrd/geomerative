@@ -1,5 +1,4 @@
 import processing.xml.*;
-import processing.opengl.*;
 import geomerative.*;
 
 RShape grp;
@@ -25,35 +24,15 @@ int ALPHAVALUE = 3;
 // The velocity of the calligraphy
 int VELOCITY = 500;
 
-void printIfNaN(RShape grp){
-  for(int j=0;j<grp.countChildren();j++){
-    RGeomElem e = grp.children[j];
-    if(e.getType()==RGeomElem.GROUP){
-      printIfNaN((RShape)e);
-    }else{
-      RPoint[] handles = e.getHandles();
-      for(int i=0;i<handles.length;i++){
-        if(Float.isNaN(handles[i].x) && Float.isNaN(handles[i].y))
-        {
-          println(e.name);
-          handles[i].print();
-        }
-      }
-      //println(handles[i].x+" "+handles[i].y);
-    }
-  }
-}
-
 void setup(){
   size(600, 600);
   smooth();
-  g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
   
   grp = RG.loadShape("bot1.svg");
-  grp.centerIn(g);
+  grp = RG.centerIn(grp, g);
  
   LENGTHTANGENT = LENGTHTANGENT * width/800F;
   

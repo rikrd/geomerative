@@ -267,6 +267,11 @@ public class RG implements PConstants{
     return parent;
   }
 
+  public static RShape diff(RShape a, RShape b){
+    return a.diff(b);
+  }
+  
+
   public static void ignoreStyles(){
     ignoreStyles = true;
   }

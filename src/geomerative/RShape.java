@@ -827,6 +827,14 @@ public class RShape extends RGeomElem
         result[1].addPath(splittedPaths[1]);
       }
     }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape[] splittedPaths = children[i].splitPaths(t);
+      if(splittedPaths != null){
+        result[0].addChild(splittedPaths[0]);
+        result[1].addChild(splittedPaths[1]);
+      }
+    }
     
     result[0].setStyle(this);
     result[1].setStyle(this);
