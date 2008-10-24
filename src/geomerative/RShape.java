@@ -485,9 +485,6 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getHandles(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[] result=null;
     RPoint[] newresult=null;
@@ -548,9 +545,6 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getPoints(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
 
     RCommand.segmentAccOffset = RCommand.segmentOffset;    
     RPoint[] result=null;
@@ -664,9 +658,6 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getTangents(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[] result=null;
     RPoint[] newresult=null;
@@ -709,9 +700,6 @@ public class RShape extends RGeomElem
    * */
   public RPoint[][] getPointsInPaths(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[][] result=null;
     RPoint[][] newresult=null;
@@ -729,14 +717,27 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[][] newPoints = children[i].getPointsInPaths();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length][];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
     return result;    
   }
 
   public RPoint[][] getHandlesInPaths(){
     int numPaths = countPaths();
-    if(numPaths == 0){
-      return null;
-    }
     
     RPoint[][] result=null;
     RPoint[][] newresult=null;
@@ -754,6 +755,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[][] newPoints = children[i].getHandlesInPaths();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length][];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
     return result;    
   }
 
@@ -779,6 +796,22 @@ public class RShape extends RGeomElem
         }
       }
     }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[][] newPoints = children[i].getTangentsInPaths();
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length][];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length][];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
     return result;    
   }
   

@@ -272,10 +272,11 @@ public abstract class RGeomElem
   // No need of being overrided
   public void transform(RMatrix m){   
     RPoint[] ps = getHandles();
-    if(ps != null){
-      for(int i=0; i<ps.length; i++){
-        ps[i].transform(m);
-      }
+    
+    if(ps == null) return;
+    
+    for(int i=0; i<ps.length; i++){
+      ps[i].transform(m);
     }
   }
 
