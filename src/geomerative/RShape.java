@@ -981,6 +981,8 @@ public class RShape extends RGeomElem
     float xmin = c.getMinX();
     float xmax = c.getMaxX();
     
+    int numChildren = countChildren();
+
     switch(RG.adaptorType){
     case RG.BYPOINT:
       RPoint[] ps = this.getHandles();
@@ -1002,26 +1004,53 @@ public class RShape extends RGeomElem
       }
       break;
     case RG.BYELEMENTINDEX:
+      for(int i=0;i<numChildren;i++){
+        RShape elem = this.children[i];
+        RRectangle elemc = elem.getBounds();
+        
+        float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
+        float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
+        float t = ((float)i/(float)numChildren + lngthOffset ) % 1F;
+        
+        RPoint tg = shp.getTangent(t);
+        RPoint p = shp.getPoint(t);
+        float angle = (float)Math.atan2(tg.y, tg.x);
+        
+        RPoint pletter = new RPoint(px,py);
+        p.sub(pletter);
+        
+        RMatrix mtx = new RMatrix();
+        mtx.translate(p);
+        mtx.rotate(angle,pletter);
+        mtx.scale(wght,pletter);
+        
+        elem.transform(mtx);
+      }
+      break;
+
     case RG.BYELEMENTPOSITION:
-      RRectangle elemc = shp.getBounds();
-      
-      float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
-      float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
-      float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
-      
-      RPoint tg = shp.getTangent(t);
-      RPoint p = shp.getPoint(t);
-      float angle = (float)Math.atan2(tg.y, tg.x);
-      
-      RPoint pletter = new RPoint(px,py);
-      p.sub(pletter);
-      
-      RMatrix mtx = new RMatrix();
-      mtx.translate(p);
-      mtx.rotate(angle,pletter);
-      mtx.scale(wght,pletter);
-      
-      this.transform(mtx);
+      for(int i=0;i<numChildren;i++){
+        RShape elem = this.children[i];
+        RRectangle elemc = elem.getBounds();
+        
+        float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
+        float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
+        float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
+        
+        RPoint tg = shp.getTangent(t);
+        RPoint p = shp.getPoint(t);
+        float angle = (float)Math.atan2(tg.y, tg.x);
+        
+        RPoint pletter = new RPoint(px,py);
+        p.sub(pletter);
+        
+        RMatrix mtx = new RMatrix();
+        mtx.translate(p);
+        mtx.rotate(angle,pletter);
+        mtx.scale(wght,pletter);
+        
+        elem.transform(mtx);
+      }
       break;
       
     default:
