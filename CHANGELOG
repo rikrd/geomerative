@@ -1,0 +1,3 @@
+rev 17:
+ - fixed the binary shape ops for when the result is null (thanks to ekene ijeoma for spotting it)
+ - added a RShape.contains(float x, float y)

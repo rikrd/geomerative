@@ -80,7 +80,7 @@ public class RG implements PConstants{
     private static final long serialVersionUID = -3710605630786298673L;
 
     NoPathInitializedException(){
-      super("Must initialize a path by calling RG.beginGroup(), RG.beginShape() or RG.beginPath() first.");
+      super("Must initialize a path by calling RG.beginShape() or RG.beginPath() first.");
     }
   }
 
@@ -269,6 +269,18 @@ public class RG implements PConstants{
 
   public static RShape diff(RShape a, RShape b){
     return a.diff(b);
+  }
+
+  public static RShape union(RShape a, RShape b){
+    return a.union(b);
+  }
+
+  public static RShape intersection(RShape a, RShape b){
+    return a.intersection(b);
+  }
+
+  public static RShape xor(RShape a, RShape b){
+    return a.xor(b);
   }
   
 

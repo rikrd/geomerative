@@ -436,7 +436,11 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape intersection( RShape p ){
-    return RClip.intersection( p.toPolygon(), this.toPolygon() ).toShape();
+    RPolygon result = RClip.intersection( p.toPolygon(), this.toPolygon() );
+
+    if (result == null) return null;
+
+    return result.toShape();
   }
   
   /**
@@ -449,7 +453,11 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape union( RShape p ){
-    return RClip.union( p.toPolygon(), this.toPolygon() ).toShape();
+    RPolygon result = RClip.union( p.toPolygon(), this.toPolygon() );
+
+    if (result == null) return null;
+
+    return result.toShape();
   }
   
   /**
@@ -462,7 +470,12 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape xor( RShape p ){
-    return RClip.xor( p.toPolygon(), this.toPolygon() ).toShape();
+    RPolygon result = RClip.xor( p.toPolygon(), this.toPolygon() );
+
+    if (result == null) return null;
+
+    return result.toShape();
+
   }
   
   /**
@@ -475,7 +488,11 @@ public class RShape extends RGeomElem
    * @related intersection ( )
    */	
   public RShape diff( RShape p ){
-    return RClip.diff( this.toPolygon(), p.toPolygon() ).toShape();
+    RPolygon result = RClip.diff( p.toPolygon(), this.toPolygon() );
+
+    if (result == null) return null;
+
+    return result.toShape();
   }
     
   /**
@@ -598,6 +615,16 @@ public class RShape extends RGeomElem
     }else{
       return children[indOfElement - countPaths()].getTangent(advOfElement);
     }
+  }
+
+  /**
+   * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the shape.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+   * @param float x, the X coordinate of the point for which to test containement.
+   * @param float y, the Y coordinate of the point for which to test containement.
+   * @return bool, true if the point is in the path.
+   * */
+  public boolean contains(float x, float y){
+    return contains(new RPoint(x, y));
   }
 
   /**
