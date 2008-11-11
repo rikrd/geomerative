@@ -214,6 +214,10 @@ public abstract class RGeomElem
     style.setContext();
   }
 
+  public void setStyle(RStyle s){
+    style = s;
+  }
+
   protected void setStyle(RGeomElem p){
     name = p.name;
 
