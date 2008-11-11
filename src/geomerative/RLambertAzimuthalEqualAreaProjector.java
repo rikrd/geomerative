@@ -22,7 +22,7 @@ package geomerative;
 import processing.core.*;
 import java.lang.Math.*;
 
-public class RLambertAzimuthalEqualAreaProjector implements RProjector
+public class RLambertAzimuthalEqualAreaProjector extends RProjector
 {   
   float phi1;
   float lamb0;
@@ -90,7 +90,7 @@ public class RLambertAzimuthalEqualAreaProjector implements RProjector
     float c = 2F* asin(ro/2F);
     float cos_c = cos(c);
     float sin_c = sin(c);
-      
+ 
     float phi = asin(cos_c * this.sin_phi1 + y*sin(c)*this.cos_phi1/ro);
     float lamb = this.lamb0 + atan(x*sin_c / (ro*this.cos_phi1*cos_c - y*this.sin_phi1*sin_c));
 

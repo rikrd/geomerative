@@ -21,9 +21,56 @@ package geomerative;
 
 import processing.core.*;
 
-public interface RProjector
-{    
-  public abstract void project(RPoint p);
+public class RProjector
+{ 
+  public void unproject(RPoint[] points){
+    if (points == null) return;
 
-  public abstract void unproject(RPoint p);
+    float xmax = Float.NEGATIVE_INFINITY ;
+    float ymax = Float.NEGATIVE_INFINITY ;
+    float xmin = Float.POSITIVE_INFINITY ;
+    float ymin = Float.POSITIVE_INFINITY ;
+
+    for(int i=0;i<points.length;i++){
+      float tempx = points[i].x;
+      float tempy = points[i].y;
+      if( tempx < xmin )
+        {
+          xmin = tempx;
+        }
+      else if( tempx > xmax )
+        {
+          xmax = tempx;
+        }
+      if( tempy < ymin )
+        {
+          ymin = tempy;
+        }
+      else if( tempy > ymax )
+        {
+          ymax = tempy;
+        }
+    }
+    
+    for(int i=0;i<points.length;i++){
+      points[i].setLocation((points[i].x - xmin)/(xmax - xmin), (points[i].y - ymin)/(ymax - ymin));
+      this.unproject(points[i]);
+    }
+  }
+
+  public void project(RPoint[] points){
+    if (points == null) return;
+    
+    for(int i=0;i<points.length;i++){
+      this.project(points[i]);
+    }
+  }
+
+  public void project(RPoint p){
+    return;
+  }
+
+  public void unproject(RPoint p){
+    return;
+  }
 }
