@@ -124,6 +124,19 @@ public class RG implements PConstants{
 
 
   // Shape methods
+  public static void shape(RShape shp, float x, float y, float w, float h){
+    RShape tshp = new RShape(shp);
+    tshp.transform(x, y, w, h);
+    tshp.draw();
+  }
+
+  public static void shape(RShape shp, float x, float y){
+    RShape tshp = new RShape(shp);
+    tshp.transform(x, y, tshp.getWidth(), tshp.getHeight());
+    tshp.draw();
+  }
+
+
   public static void shape(RShape shp){
     shp.draw();
   }
