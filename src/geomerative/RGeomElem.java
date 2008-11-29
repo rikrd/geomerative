@@ -356,6 +356,35 @@ public abstract class RGeomElem
   
 
   /**
+   * Use this method to get the x (left side position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getY ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public float getX(){
+    RRectangle orig = this.getBounds();
+    return orig.getMinX();
+  }
+
+  /**
+   * Use this method to get the y (left side position) of the element. 
+   * @eexample getY
+   * @return float, the y coordinate of the element
+   * @related getY ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public float getY(){
+    RRectangle orig = this.getBounds();
+    return orig.getMinY();
+  }
+
+
+  /**
    * Use this method to get the width of the element. 
    * @eexample getWidth
    * @return float, the width of the element
