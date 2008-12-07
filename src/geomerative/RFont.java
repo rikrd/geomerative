@@ -30,7 +30,7 @@ import org.apache.batik.svggen.font.table.*;
  * @usage Geometry
  * @related RGroup
  *
- * @invisible  
+ * @extended
  */
 public class RFont implements PConstants{
   Font f;

@@ -25,7 +25,7 @@ import processing.core.PApplet;
  * RMatrix is a very simple interface for creating, holding 3x3 matrices with the most common 2D affine transformations such as translation, rotation, scaling and shearing.  We only have access to the first to rows of the matrix the last row is considered a constant 0, 0, 1 in order to have better performance.
  * @eexample RMatrix
  * @usage Geometry
- * @invisible
+ * @extended
  */
 public class RMatrix
 {

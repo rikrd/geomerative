@@ -23,7 +23,7 @@ import processing.core.*;
 import processing.xml.*;
 
 /**
- * @invisible
+ * @extended
  */  
 public class RSVG
 {    

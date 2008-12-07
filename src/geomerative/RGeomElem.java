@@ -23,7 +23,7 @@ import processing.core.*;
 
 /**
  * RGeomElem is an interface to any Geometric element that can be drawn and transformed, such as Shapes, Polygons or Meshes.
- * @invisible
+ * @extended
  */
 public abstract class RGeomElem
 {

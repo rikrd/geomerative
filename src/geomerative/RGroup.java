@@ -24,7 +24,7 @@ import processing.core.*;
 /**
  * RGroup is a holder for a group of geometric element that can be drawn and transformed, such as Shapes, Polygons or Meshes.
  * @usage geometry
- * @invisible
+ * @extended
  */
 public class RGroup extends RGeomElem
 {

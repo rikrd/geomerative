@@ -33,7 +33,7 @@ import processing.core.*;
  * @related xor ( )
  * @related union ( )
  * @related intersection ( )
- * @invisible
+ * @extended
  */
 public class RPolygon extends RGeomElem
 {

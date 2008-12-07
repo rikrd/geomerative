@@ -21,7 +21,7 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * @invisible
+ * @extended
  */  
 public class RStyle{
   public PImage texture = null;

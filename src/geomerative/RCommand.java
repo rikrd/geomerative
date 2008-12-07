@@ -21,7 +21,7 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * @invisible
+ * @extended
  */
 public class RCommand extends RGeomElem
 {
