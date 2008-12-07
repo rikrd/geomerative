@@ -38,17 +38,17 @@ public class RG implements PConstants{
   public static boolean useFastClip = true;
 
   /**
-   * @invisible
+   * The adaptor adapts the shape to a particular shape by adapting each of the groups points.  This can cause deformations of the individual elements in the group.  
    */
   public final static int BYPOINT = 0;
   
   /**
-   * @invisible
+   * The adaptor adapts the shape to a particular shape by adapting each of the groups elements positions.  This mantains the proportions of the shapes.
    */
   public final static int BYELEMENTPOSITION = 1;
   
   /**
-   * @invisible
+   * The adaptor adapts the shape to a particular shape by adapting each of the groups elements indices.  This mantains the proportions of the shapes.
    */
   public final static int BYELEMENTINDEX = 2;
   
@@ -446,10 +446,13 @@ public class RG implements PConstants{
   }
 
   /**
-   * Use this to set the adaptor type.  RShape.BYPOINT adaptor adapts the group to a particular shape by adapting each of the groups points.  This can cause deformations of the individual elements in the group.  RShape.BYELEMENT adaptor adapts the group to a particular shape by adapting each of the groups elements.  This mantains the proportions of the shapes.
+   * Use this to set the adaptor type.
    * @eexample RShape_setAdaptor
-   * @param int adptorType, it can take the values RShape.BYPOINT and RShape.BYELEMENT
-   * */
+   * @param int adptorType, it can be RG.BYPOINT, RG.BYELEMENTPOSITION or RG.BYELEMENTINDEX
+   * @related BYPOINT
+   * @related BYELEMENTPOSITION
+   * @related BYELEMENTINDEX
+   */
   public static void setAdaptor(int adptorType){
     adaptorType = adptorType;
   }
@@ -458,7 +461,7 @@ public class RG implements PConstants{
    * Use this to set the adaptor scaling.  This scales the transformation of the adaptor.
    * @eexample RShape_setAdaptor
    * @param float adptorScale, the scaling coefficient
-   * */
+   */
   public static void setAdaptorScale(float adptorScale){
     adaptorScale = adptorScale;
   }
@@ -477,7 +480,14 @@ public class RG implements PConstants{
 
 
   /**
-   * Use this to set the segmentator type.  ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.  This can be useful when using or drawing a lot the same Polygon or Mesh deriving from this Shape.  UNIFORMLENGTH segmentator is the slowest segmentator and it segments the curve on segments of equal length.  This can be useful for very specific applications when for example drawing incrementaly a shape with a uniform speed.  UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
+   * Use this to set the polygonizer type. 
+   *
+   * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.
+   * UNIFORMLENGTH segmentator is the slowest segmentator and it segments the curve on segments of equal length.  This can be useful for very specific applications when for example drawing incrementaly a shape with a uniform speed.
+   * UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
+   *
+   * @param int segmenterMethod, can be RG.ADAPTATIVE, RG.UNIFORMLENGTH or RG.UNIFORMSTEP.
+   *
    * @eexample setPolygonizer
    * */
   public static void setPolygonizer(int segmenterMethod){
