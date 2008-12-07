@@ -95,20 +95,46 @@ public class RG implements PConstants{
 
 
   // Font methods
+  /**
+   * Load and get the font object that can be used in the textFont method.
+   * @eexample loadFont
+   * @param String fontFile, the filename of the font to be loaded
+   * @return RFont, the font object
+   */
   public static RFont loadFont(String fontFile){
     return new RFont(fontFile);
   }
 
+  /**
+   * Draw text to the screen using the font set using the textFont method.
+   * @eexample text
+   * @param String text, the string to be drawn on the screen
+   */
   public static void text(String text){
     RShape grp = getText(text);
     grp.draw();
   }
 
+  /**
+   * Set the font object to be used in all text calls.
+   * @eexample textFont
+   * @param RFont font, the font object to be set
+   * @param int size, the size of the font
+   */
   public static void textFont(RFont font, int size){
     font.setSize(size);
     fntLoader = font;
   }
 
+  /**
+   * Get the shape corresponding to a text.  Use the textFont method to select the font and size.
+   * @eexample getText
+   * @param String fontFile, the filename of the font to be loaded
+   * @param String text, the string to be created
+   * @param int size, the size of the font to be used
+   * @param int align, the alignment. Use RG.CENTER, RG.LEFT or RG.RIGHT
+   * @return RShape, the shape created
+   */
   public static RShape getText(String text, String font, int size, int align){
     RFont tempFntLoader = new RFont(font, size, align);
     return tempFntLoader.toShape(text);
@@ -124,6 +150,15 @@ public class RG implements PConstants{
 
 
   // Shape methods
+  /**
+   * Draw a shape to a given position on the screen.
+   * @eexample shape
+   * @param RShape shp, the shape to be drawn
+   * @param float x, the horizontal coordinate
+   * @param float y, the vertical coordinate
+   * @param float w, the width with which we draw the shape
+   * @param float h, the height with which we draw the shape
+   */
   public static void shape(RShape shp, float x, float y, float w, float h){
     RShape tshp = new RShape(shp);
     tshp.transform(x, y, w, h);
@@ -140,7 +175,13 @@ public class RG implements PConstants{
   public static void shape(RShape shp){
     shp.draw();
   }
-  
+
+
+  /**
+   * Load a shape object from a file.
+   * @eexample loadShape
+   * @param String filename, the SVG file to be loaded.  Must be in the data directory
+   */  
   public static RShape loadShape(String filename){
     RSVG svgLoader = new RSVG();
     return svgLoader.toShape(filename);    
@@ -148,10 +189,19 @@ public class RG implements PConstants{
 
 
   // Methods to create shapes
+  /**
+   * Begin to create a shape.
+   * @eexample createShape
+   */  
   public static void beginShape(){
     shape = new RShape();
   }
 
+  /**
+   * Begin a new path in the current shape.  Can only be called inside beginShape() and endShape().
+   * @param int endMode, if called with RG.CLOSE it closes the current path before starting the new one. 
+   * @eexample createShape
+   */  
   public static void breakShape(){
     shape.addPath();
     shapeBegin = true;
@@ -164,6 +214,13 @@ public class RG implements PConstants{
     breakShape();
   }
 
+  /**
+   * Add a vertex to the shape.  Can only be called inside beginShape() and endShape().
+   * @param int endMode, if called with RG.CLOSE it closes the current path before starting the new one. 
+   * @eexample createShape
+   * @param float x, the x coordinate of the vertex
+   * @param float y, the y coordinate of the vertex
+   */  
   public static void vertex(float x, float y){
     if(path == null){
       if (shape.countPaths() == 0){
@@ -180,6 +237,17 @@ public class RG implements PConstants{
     }
   }
 
+  /**
+   * Add a bezierVertex to the shape.  Can only be called inside beginShape() and endShape().
+   * @param int endMode, if called with RG.CLOSE it closes the current path before starting the new one. 
+   * @eexample createShape
+   * @param float cx1, the x coordinate of the first control point
+   * @param float cy1, the y coordinate of the first control point
+   * @param float cx2, the x coordinate of the second control point
+   * @param float cy2, the y coordinate of the second control point
+   * @param float x, the x coordinate of the end point
+   * @param float y, the y coordinate of the end point
+   */  
   public static void bezierVertex(float cx1, float cy1, float cx2, float cy2, float x, float y){
     if(path == null){
       if (shape.countPaths() == 0){
@@ -192,7 +260,11 @@ public class RG implements PConstants{
     }
   }
 
-
+  /**
+   * End the shape being created and draw it to the screen or the PGraphics passed as parameter.
+   * @eexample createShape
+   * @param PGraphics g, the canvas on which to draw.  By default it draws on the screen
+   */
   public static void endShape(PGraphics g){
     if(group == null){
       // We are not inside a beginGroup
@@ -213,6 +285,10 @@ public class RG implements PConstants{
   }
 
 
+  /**
+   * End the shape being created and get it as an object.
+   * @eexample getShape
+   */
   public static RShape getShape(){
     RShape returningGroup = new RShape();
     returningGroup.addChild(shape);
@@ -222,6 +298,14 @@ public class RG implements PConstants{
     return returningGroup;    
   }
 
+  /**
+   * Get an ellipse as a shape object.
+   * @eexample getEllipse
+   * @param float x, x coordinate of the center of the ellipse
+   * @param float y, y coordinate of the center of the ellipse
+   * @param float rx, horizontal radius of the ellipse 
+   * @param float ry, vertical radius of the ellipse
+   */
   public static RShape getEllipse(float x, float y, float rx, float ry){
     RShape ret = new RShape();
     ret.addChild(RShape.createEllipse(x, y, rx, ry));
@@ -244,17 +328,36 @@ public class RG implements PConstants{
     return centerIn(grp, g, 0);
   }
 
-
-  public static RShape[] split(RShape grp, float t){
-    return grp.split(t);
+  /**
+   * Split a shape along the curve length in two parts.
+   * @eexample split
+   * @param RShape shp, the shape to be splited
+   * @param float t, the proportion (a value from 0 to 1) along the curve where to split
+   * @return RShape[], an array of shapes with two elements, one for each side of the split
+   */
+  public static RShape[] split(RShape shp, float t){
+    return shp.split(t);
   }
 
+  /**
+   * Adapt a shape along the curve of another shape.
+   * @eexample split
+   * @param RShape shp, the shape to be adapted
+   * @param RShape path, the shape which curve will be followed
+   * @return RShape, the adapted shape
+   */
   public static RShape adapt(RShape grp, RShape path){
     RShape ret = new RShape(grp);
     ret.adapt(path);
     return ret;
   }
 
+  /**
+   * Polygonize a shape.
+   * @eexample split
+   * @param RShape shp, the shape to be polygonized
+   * @return RShape, the polygonized shape
+   */
   public static RShape polygonize(RShape grp){
     RShape ret = new RShape(grp);
     ret.polygonize();
@@ -263,15 +366,24 @@ public class RG implements PConstants{
   
 
   // State methods
+  /**
+   * @invisible
+   */
   public static void init(PApplet _parent){
     parent = _parent;
     initialized = true;
   }
   
+  /**
+   * @invisible
+   */
   public static boolean initialized() {
     return initialized;
   }
 
+  /**
+   * @invisible
+   */
   protected static PApplet parent(){
     if(parent == null){
       throw new LibraryNotInitializedException();
@@ -280,29 +392,57 @@ public class RG implements PConstants{
     return parent;
   }
 
+  /**
+   * Polygonize a shape.
+   * @eexample split
+   * @param RShape shp, the shape to be polygonized
+   * @return RShape, the polygonized shape
+   */
   public static RShape diff(RShape a, RShape b){
     return a.diff(b);
   }
 
+  /**
+   * Polygonize a shape.
+   * @eexample split
+   * @param RShape shp, the shape to be polygonized
+   * @return RShape, the polygonized shape
+   */
   public static RShape union(RShape a, RShape b){
     return a.union(b);
   }
 
+  /**
+   * Polygonize a shape.
+   * @eexample split
+   * @param RShape shp, the shape to be polygonized
+   * @return RShape, the polygonized shape
+   */
   public static RShape intersection(RShape a, RShape b){
     return a.intersection(b);
   }
 
+  /**
+   * Polygonize a shape.
+   * @eexample split
+   * @param RShape shp, the shape to be polygonized
+   * @return RShape, the polygonized shape
+   */
   public static RShape xor(RShape a, RShape b){
     return a.xor(b);
   }
   
-
+  /**
+   * Ignore the styles of the shapes when drawing and use the processing style methods.
+   * @eexample ignoreStyles
+   * @param boolean value, set the ignoreStyles state to the value passed
+   */
   public static void ignoreStyles(){
     ignoreStyles = true;
   }
 
-  public static void ignoreStyles(boolean _value){
-    ignoreStyles = _value;
+  public static void ignoreStyles(boolean value){
+    ignoreStyles = value;
   }
 
   /**
