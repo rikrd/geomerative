@@ -22,6 +22,9 @@ package geomerative;
 import processing.core.*;
 import processing.xml.*;
 
+/**
+ * @invisible
+ */  
 public class RSVG
 {    
   public void draw(String filename, PGraphics g)

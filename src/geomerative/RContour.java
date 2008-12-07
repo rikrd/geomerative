@@ -28,6 +28,7 @@ import java.util.List;
  * @usage Geometry
  * @related RPoint
  * @related RPolygon
+ * @invisible
  */
 public class RContour extends RGeomElem
 {

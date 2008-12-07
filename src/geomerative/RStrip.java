@@ -26,6 +26,7 @@ import processing.core.*;
  * @usage Geometry
  * @related RPoint
  * @related RMesh
+ * @invisible
  */
 public class RStrip
 {

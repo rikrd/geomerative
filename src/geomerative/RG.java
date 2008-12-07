@@ -21,10 +21,18 @@ package geomerative;
 import processing.core.*;
 
 /**
- * R is a static class containing all the states, modes, etc..
+ * RG is a static class containing all the states, modes, etc..
+ * Most uses of Geomerative is done by calling RG methods. e.g.  RShape s = RG.getEllipse(30, 40, 80, 80)
  */
 public class RG implements PConstants{
+  /**
+   * @invisible
+   */
   private static boolean initialized = false;
+  
+  /**
+   * @invisible
+   */  
   private static PApplet parent;
 
   /**
@@ -52,14 +60,39 @@ public class RG implements PConstants{
    */
   public final static int BYELEMENTINDEX = 2;
   
+  /**
+   * @invisible
+   */
   static int adaptorType = BYELEMENTPOSITION;
+  
+  /**
+   * @invisible
+   */  
   static float adaptorScale = 1F;
+  
+  /**
+   * @invisible
+   */  
   static float adaptorLengthOffset = 0F;
 
+  /**
+   * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.
+   */
   public static int ADAPTATIVE = RCommand.ADAPTATIVE;
-  public static int UNIFORMLENGTH = RCommand.UNIFORMLENGTH;
-  public static int UNIFORMSTEP = RCommand.UNIFORMSTEP;
   
+  /**
+   * UNIFORMLENGTH segmentator is the slowest segmentator and it segments the curve on segments of equal length.  This can be useful for very specific applications when for example drawing incrementaly a shape with a uniform speed.
+   */  
+  public static int UNIFORMLENGTH = RCommand.UNIFORMLENGTH;
+  
+  /**
+   * UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
+   */
+  public static int UNIFORMSTEP = RCommand.UNIFORMSTEP;
+
+  /**
+   * @invisible
+   */  
   public static class LibraryNotInitializedException extends NullPointerException{
     private static final long serialVersionUID = -3710605630786298671L;
 
@@ -68,6 +101,9 @@ public class RG implements PConstants{
     }
   }
 
+  /**
+   * @invisible
+   */  
   public static class FontNotLoadedException extends NullPointerException{
     private static final long serialVersionUID = -3710605630786298672L;
 
@@ -76,6 +112,9 @@ public class RG implements PConstants{
     }
   }
 
+  /**
+   * @invisible
+   */  
   public static class NoPathInitializedException extends NullPointerException{
     private static final long serialVersionUID = -3710605630786298673L;
 
@@ -345,6 +384,7 @@ public class RG implements PConstants{
    * @param RShape shp, the shape to be adapted
    * @param RShape path, the shape which curve will be followed
    * @return RShape, the adapted shape
+   * @related setAdaptor ( )
    */
   public static RShape adapt(RShape grp, RShape path){
     RShape ret = new RShape(grp);
@@ -357,9 +397,10 @@ public class RG implements PConstants{
    * @eexample split
    * @param RShape shp, the shape to be polygonized
    * @return RShape, the polygonized shape
+   * @related setPolygonizer ( )
    */
-  public static RShape polygonize(RShape grp){
-    RShape ret = new RShape(grp);
+  public static RShape polygonize(RShape shp){
+    RShape ret = new RShape(shp);
     ret.polygonize();
     return ret;
   }
@@ -367,7 +408,7 @@ public class RG implements PConstants{
 
   // State methods
   /**
-   * @invisible
+   * Initialize the library.  Must be called before any call to Geomerative methods.  Must be called by passing the PApplet.  e.g. RG.init(this)
    */
   public static void init(PApplet _parent){
     parent = _parent;
@@ -393,40 +434,60 @@ public class RG implements PConstants{
   }
 
   /**
-   * Polygonize a shape.
-   * @eexample split
-   * @param RShape shp, the shape to be polygonized
-   * @return RShape, the polygonized shape
+   * Binary difference between two shapes.
+   * @eexample binaryOps
+   * @param RShape a, first shape to operate on
+   * @param RShape b, first shape to operate on
+   * @return RShape, the result of the operation
+   * @related diff ( )
+   * @related union ( )
+   * @related intersection ( )   
+   * @related xor ( )   
    */
   public static RShape diff(RShape a, RShape b){
     return a.diff(b);
   }
 
   /**
-   * Polygonize a shape.
-   * @eexample split
-   * @param RShape shp, the shape to be polygonized
-   * @return RShape, the polygonized shape
+   * Binary union between two shapes.
+   * @eexample binaryOps
+   * @param RShape a, first shape to operate on
+   * @param RShape b, first shape to operate on
+   * @return RShape, the result of the operation
+   * @related diff ( )
+   * @related union ( )
+   * @related intersection ( )   
+   * @related xor ( )   
    */
   public static RShape union(RShape a, RShape b){
     return a.union(b);
   }
 
   /**
-   * Polygonize a shape.
-   * @eexample split
-   * @param RShape shp, the shape to be polygonized
-   * @return RShape, the polygonized shape
+   * Binary intersection between two shapes.
+   * @eexample binaryOps
+   * @param RShape a, first shape to operate on
+   * @param RShape b, first shape to operate on
+   * @return RShape, the result of the operation
+   * @related diff ( )
+   * @related union ( )
+   * @related intersection ( )   
+   * @related xor ( )   
    */
   public static RShape intersection(RShape a, RShape b){
     return a.intersection(b);
   }
 
   /**
-   * Polygonize a shape.
-   * @eexample split
-   * @param RShape shp, the shape to be polygonized
-   * @return RShape, the polygonized shape
+   * Binary xor between two shapes.
+   * @eexample binaryOps
+   * @param RShape a, first shape to operate on
+   * @param RShape b, first shape to operate on
+   * @return RShape, the result of the operation
+   * @related diff ( )
+   * @related union ( )
+   * @related intersection ( )   
+   * @related xor ( )   
    */
   public static RShape xor(RShape a, RShape b){
     return a.xor(b);
@@ -482,13 +543,12 @@ public class RG implements PConstants{
   /**
    * Use this to set the polygonizer type. 
    *
-   * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.
-   * UNIFORMLENGTH segmentator is the slowest segmentator and it segments the curve on segments of equal length.  This can be useful for very specific applications when for example drawing incrementaly a shape with a uniform speed.
-   * UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
-   *
    * @param int segmenterMethod, can be RG.ADAPTATIVE, RG.UNIFORMLENGTH or RG.UNIFORMSTEP.
    *
    * @eexample setPolygonizer
+   * @related ADAPTATIVE
+   * @related UNIFORMLENGTH
+   * @related UNIFORMSTEP
    * */
   public static void setPolygonizer(int segmenterMethod){
     RCommand.setSegmentator(segmenterMethod);
@@ -498,6 +558,7 @@ public class RG implements PConstants{
    * Use this to set the segmentator angle tolerance for the ADAPTATIVE segmentator and set the segmentator to ADAPTATIVE.
    * @eexample setPolygonizerAngle
    * @param float angle, an angle from 0 to PI/2 it defines the maximum angle between segments.
+   * @related ADAPTATIVE
    * */
   public static void setPolygonizerAngle(float angle){
     RCommand.setSegmentAngle(angle);
@@ -507,7 +568,9 @@ public class RG implements PConstants{
    * Use this to set the segmentator length for the UNIFORMLENGTH segmentator and set the segmentator to UNIFORMLENGTH.
    * @eexample setPolygonizerLength
    * @param float length, the length of each resulting segment.
-   * */
+   * @related UNIFORMLENGTH
+   * @related polygonize ( )
+   */
   public static void setPolygonizerLength(float length){
     RCommand.setSegmentLength(length);
   }
@@ -516,7 +579,9 @@ public class RG implements PConstants{
    * Use this to set the segmentator step for the UNIFORMSTEP segmentator and set the segmentator to UNIFORMSTEP.
    * @eexample setSegmentStep
    * @param float step, if a float from +0.0 to 1.0 is passed it's considered as the step, else it's considered as the number of steps.  When a value of 0.0 is used the steps will be calculated automatically depending on an estimation of the length of the curve.  The special value -1 is the same as 0.0 but also turning of the segmentation of lines (faster segmentation).
-   * */
+   * @related UNIFORMSTEP 
+   * @related polygonize ( )
+   */
   public static void setPolygonizerStep(float step){
     RCommand.setSegmentStep(step);
   }
