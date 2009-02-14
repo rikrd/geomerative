@@ -96,6 +96,43 @@ public abstract class RGeomElem
 
   public abstract boolean contains(RPoint p);
 
+  public boolean contains(RGeomElem shp, boolean approx) {
+    RPoint tl = shp.getTopLeft();
+    RPoint tr = shp.getTopRight();
+    RPoint bl = shp.getBottomRight();
+    RPoint br = shp.getBottomLeft();
+    
+    if(this.contains(tl) 
+       && this.contains(tr) 
+       && this.contains(bl) 
+       && this.contains(br)){
+      
+      return true;
+    }
+
+    return false;
+  }
+
+
+  public boolean intersects(RGeomElem shp) {
+    RPoint tl = shp.getTopLeft();
+    RPoint tr = shp.getTopRight();
+    RPoint bl = shp.getBottomRight();
+    RPoint br = shp.getBottomLeft();
+    
+    if(this.contains(tl) 
+       || this.contains(tr) 
+       || this.contains(bl) 
+       || this.contains(br)){
+      
+      return true;
+      
+    }
+
+    return false;
+  }
+  
+
   public abstract int getType();
 
   //public abstract RMesh toMesh();
@@ -354,6 +391,74 @@ public abstract class RGeomElem
     return c;
   }
   
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getTopLeft(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMinX(), orig.getMinY());
+  }
+
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getTopRight(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMaxX(), orig.getMinY());
+  }
+
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getBottomLeft(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMinX(), orig.getMaxY());
+  }
+
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getBottomRight(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMaxX(), orig.getMaxY());
+  }
+
 
   /**
    * Use this method to get the x (left side position) of the element. 
