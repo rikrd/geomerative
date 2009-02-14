@@ -42,6 +42,22 @@ class RRectangle
     this.topLeft = _topLeft;
     this.bottomRight = _bottomRight;
   } 
+
+  RPoint[] getPoints() {
+    RPoint[] ps = new RPoint[4];
+
+    ps[0] = new RPoint(topLeft);
+    
+    ps[1] = new RPoint(topLeft);
+    ps[1].x = bottomRight.x;
+    
+    ps[2] = new RPoint(bottomRight);
+    
+    ps[3] = new RPoint(bottomRight);
+    ps[3].x = topLeft.x;
+    
+    return ps;
+  }
   
   float getMaxX()
   {
