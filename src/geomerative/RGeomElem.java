@@ -635,7 +635,7 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public RPoint getCentroid(){
-    RPoint[] ps = getHandles();
+    RPoint[] ps = getPoints();
     
     float areaAcc = 0.0f;
     float xAcc = 0.0f;
@@ -661,7 +661,7 @@ public abstract class RGeomElem
    * @related getCentroid ( )
    */
   public float getArea(){
-    RPoint[] ps = getHandles();
+    RPoint[] ps = getPoints();
     
     float areaAcc = 0.0f;
     for(int i=0;i<ps.length-1;i++)
@@ -669,7 +669,7 @@ public abstract class RGeomElem
         areaAcc += ps[i].x*ps[i+1].y - ps[i+1].x*ps[i].y;
       }
     areaAcc /= 2.0f;
-    return areaAcc;
+    return Math.abs(areaAcc);
   }
 
   /**
@@ -843,6 +843,20 @@ public abstract class RGeomElem
     transf.scale(sx, sy);
     transform(transf);
   }
+
+  public void scale (float sx, float sy, RPoint p)
+  {
+    RMatrix transf = new RMatrix();
+    transf.scale(sx, sy, p);
+    transform(transf);
+  }
+
+  public void scale (float sx, float sy, float x, float y)
+  {
+    RMatrix transf = new RMatrix();
+    transf.scale(sx, sy, x, y);
+    transform(transf);
+  }
   
   public void scale (float s)
   {
@@ -850,4 +864,20 @@ public abstract class RGeomElem
     transf.scale(s);
     transform(transf);
   }
+
+  public void scale (float s, RPoint p)
+  {
+    RMatrix transf = new RMatrix();
+    transf.scale(s, p);
+    transform(transf);
+  }
+
+
+  public void scale (float s, float x, float y)
+  {
+    RMatrix transf = new RMatrix();
+    transf.scale(s, x, y);
+    transform(transf);
+  }
+
 }
