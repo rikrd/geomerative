@@ -29,6 +29,8 @@ import org.apache.batik.svggen.font.table.*;
  * @eexample RFont
  * @usage Geometry
  * @related RGroup
+ *
+ * @extended
  */
 public class RFont implements PConstants{
   Font f;

@@ -20,7 +20,9 @@
 package geomerative ;
 import processing.core.*;
 
-
+/**
+ * @extended
+ */  
 public class RStyle{
   public PImage texture = null;
   
@@ -238,7 +240,7 @@ public class RStyle{
 
   public void setAlpha(float opacity){
     //RG.parent().println("Setting float opacity: " + opacity);
-    setAlpha((int)(opacity * 255F));
+    setAlpha((int)(opacity * 100F));
   }
 
   public void setAlpha(int opacity){

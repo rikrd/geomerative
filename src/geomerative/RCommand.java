@@ -20,6 +20,9 @@
 package geomerative ;
 import processing.core.*;
 
+/**
+ * @extended
+ */
 public class RCommand extends RGeomElem
 {
   /**

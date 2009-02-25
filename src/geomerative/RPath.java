@@ -26,6 +26,8 @@ import processing.core.*;
  * @usage Geometry
  * @related RCommand
  * @related RPolygon
+ * @extended
+ *
  */
 public class RPath extends RGeomElem
 {

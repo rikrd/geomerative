@@ -23,7 +23,7 @@ import processing.core.*;
 
 /**
  * RGeomElem is an interface to any Geometric element that can be drawn and transformed, such as Shapes, Polygons or Meshes.
- * @invisible
+ * @extended
  */
 public abstract class RGeomElem
 {
@@ -95,6 +95,137 @@ public abstract class RGeomElem
   public abstract RPoint[][] getTangentsInPaths();
 
   public abstract boolean contains(RPoint p);
+
+  /**
+   * Use this method to test if the shape contains another shape. 
+   * @eexample contains
+   * @return boolean, true if the shape contains all the points of the other shape
+   * @related containsBounds ( )
+   * @related containsHandles ( )
+   */
+  public boolean contains(RGeomElem shp) {
+    return contains(shp.getPoints());
+  }
+
+  /**
+   * Use this method to test if the shape contains the bounding box of another shape. 
+   * @eexample contains
+   * @return boolean, true if the shape contains the bounding box of the other shape
+   * @related contains ( )
+   * @related containsHandles ( )
+   */
+  public boolean containsBounds(RGeomElem shp) {
+    RPoint tl = shp.getTopLeft();
+    RPoint tr = shp.getTopRight();
+    RPoint bl = shp.getBottomRight();
+    RPoint br = shp.getBottomLeft();
+    
+    if(this.contains(tl) 
+       && this.contains(tr) 
+       && this.contains(bl) 
+       && this.contains(br)){
+      
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Use this method to test if the shape contains the handles of another shape. This method is faster than contains(), but the results might not perfect.
+   * @eexample contains
+   * @return boolean, true if the shape contains all the handles of the other shape
+   * @related containsBounds ( )
+   * @related contains ( )
+   */
+  public boolean containsHandles(RGeomElem shp) {
+    return contains(shp.getHandles());
+  }
+
+  /**
+   * Use this method to test if the shape contains an array of points. 
+   * @eexample contains
+   * @return boolean, true if the shape contains all the points
+   * @related contains ( )
+   * @related containsBounds ( )
+   * @related containsHandles ( )
+   */
+  public boolean contains(RPoint[] ps) {
+    boolean contains = false;
+    if(ps != null){
+      for(int i=0; i < ps.length; i++) {
+        contains &= this.contains(ps[i]);
+      }
+    }
+    return contains;
+  }
+
+  
+  /**
+   * Use this method to test if the shape intersects another shape. 
+   * @eexample intersects
+   * @return boolean, true if the shape intersects all the points of the other shape
+   * @related intersectsBounds ( )
+   * @related intersectsHandles ( )
+   */
+  public boolean intersects(RGeomElem shp) {
+    return intersects(shp.getPoints());
+  }
+
+  /**
+   * Use this method to test if the shape intersects the bounding box of another shape. 
+   * @eexample intersects
+   * @return boolean, true if the shape intersects the bounding box of the other shape
+   * @related intersects ( )
+   * @related intersectsHandles ( )
+   */
+  public boolean intersectsBounds(RGeomElem shp) {
+    RPoint tl = shp.getTopLeft();
+    RPoint tr = shp.getTopRight();
+    RPoint bl = shp.getBottomRight();
+    RPoint br = shp.getBottomLeft();
+    
+    if(this.contains(tl) 
+       || this.contains(tr) 
+       || this.contains(bl) 
+       || this.contains(br)){
+      
+      return true;
+      
+    }
+
+    return false;
+  }
+
+  /**
+   * Use this method to test if the shape intersects the handles of another shape. This method is faster than intersects(), but the results might not perfect.
+   * @eexample intersects
+   * @return boolean, true if the shape intersects all the handles of the other shape
+   * @related intersectsBounds ( )
+   * @related intersects ( )
+   */
+  public boolean intersectsHandles(RGeomElem shp) {
+    return intersects(shp.getHandles());
+  }
+
+  /**
+   * Use this method to test if the shape intersects an array of points. 
+   * @eexample intersects
+   * @return boolean, true if the shape intersects all the points
+   * @related intersects ( )
+   * @related intersectsBounds ( )
+   * @related intersectsHandles ( )
+   */
+  public boolean intersects(RPoint[] ps) {
+    boolean intersects = false;
+    if(ps != null){
+      for(int i=0; i < ps.length; i++) {
+        intersects |= this.contains(ps[i]);
+      }
+    }
+    return intersects;
+  }
+
 
   public abstract int getType();
 
@@ -212,6 +343,10 @@ public abstract class RGeomElem
 
   protected void setContext(){
     style.setContext();
+  }
+
+  public void setStyle(RStyle s){
+    style = s;
   }
 
   protected void setStyle(RGeomElem p){
@@ -349,7 +484,113 @@ public abstract class RGeomElem
     RRectangle c = new RRectangle(new RPoint(xmin, ymin), new RPoint(xmax, ymax));
     return c;
   }
-  
+
+  /**
+   * Use this method to get the points of the bounding box of the element. 
+   * @eexample getBounds
+   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
+   * @related getCenter ( )
+   */
+  public RPoint[] getBoundsPoints(){
+    return getBounds().getPoints();
+  }  
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getTopLeft(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMinX(), orig.getMinY());
+  }
+
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getTopRight(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMaxX(), orig.getMinY());
+  }
+
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getBottomLeft(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMinX(), orig.getMaxY());
+  }
+
+
+  /**
+   * Use this method to get the (top left position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getTopRight ( )
+   * @related getBottomLeft ( )
+   * @related getBottomRight ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public RPoint getBottomRight(){
+    RRectangle orig = this.getBounds();
+    return new RPoint(orig.getMaxX(), orig.getMaxY());
+  }
+
+
+  /**
+   * Use this method to get the x (left side position) of the element. 
+   * @eexample getX
+   * @return float, the x coordinate of the element
+   * @related getY ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public float getX(){
+    RRectangle orig = this.getBounds();
+    return orig.getMinX();
+  }
+
+  /**
+   * Use this method to get the y (left side position) of the element. 
+   * @eexample getY
+   * @return float, the y coordinate of the element
+   * @related getY ( )
+   * @related getWidth ( )
+   * @related getHeight ( )
+   * @related getCenter ( )
+   */
+  public float getY(){
+    RRectangle orig = this.getBounds();
+    return orig.getMinY();
+  }
+
 
   /**
    * Use this method to get the width of the element. 

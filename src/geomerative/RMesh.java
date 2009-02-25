@@ -25,6 +25,7 @@ import processing.core.*;
  * @eexample RMesh
  * @usage Geometry
  * @related RStrip
+ * @extended
  */
 public class RMesh extends RGeomElem
 {

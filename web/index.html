@@ -20,6 +20,7 @@
           animatedcollapse.addDiv('overview_content', 'fade=0,speed=400,group=sections,hide=1')
           animatedcollapse.addDiv('changelog_content', 'fade=0,speed=400,group=sections,hide=1')
           animatedcollapse.addDiv('tutorials_content', 'fade=0,speed=400,group=sections,hide=1')
+          animatedcollapse.addDiv('documentation_content', 'fade=0,speed=400,group=sections,hide=1')
           
           animatedcollapse.init()
 
@@ -45,7 +46,7 @@ This library exposes the shapes (such as vector drawings or typographies) in a m
 <div id="download">
 <h1>Download</h1>
 <div id="download_content">
-<p><A href="geomerative-15.zip">Geomerative (rev 15)</A> (October 06 2008)</p>
+<p><A href="geomerative-20.zip">Geomerative (rev 20)</A> (February 14 2009)</p>
 <p>unzip the contents of this file to /path/to/sketchbook/libraries</p>
 </div>
 </div>
@@ -56,7 +57,7 @@ This library exposes the shapes (such as vector drawings or typographies) in a m
 <dl>
 <dt>Creator:</dt><dd><A href="http://www.ricardmarxer.com">Ricard Marxer</A></dd>
 <dt>Collaborator:</dt><dd><A href="http://www.notlime.com/">Mark Luffel</A></dd>
-<dt>Tutorials:</dt><dd><A href="http://www.florianjenett.de">Florian Jenett</A></dd>
+<dt>Overview and examples:</dt><dd><A href="http://www.florianjenett.de">Florian Jenett</A></dd>
 </dl>
 
 </div>
@@ -350,10 +351,51 @@ The tutorials are not available online yet.  They can be found in the <b>tutoria
 </div>
 </div>
 
+<div id="documentation">
+<h1><a href="javascript:animatedcollapse.toggle('documentation_content')">Documentation</a></h1>
+<div id="documentation_content">
+The documentation is not available online yet.  It can be found in the <b>documentation</b> directory inside the zip file.
+</div>
+</div>
+
+
 <div id="changelog">
 <h1><a href="javascript:animatedcollapse.toggle('changelog_content')">Changelog</a></h1>
 <div id="changelog_content">
 <dl>
+
+<dt>rev 20 (14 - February - 2009):</dt><dd>
+<ul>
+   <li> Added the methods <b>.contains(shp)</b>, <b>.containsBounds(shp)</b>, <b>.containsHandles(shp)</b> and <b>.intersects(shp)</b>, <b>.intersectsBounds(shp)</b>, <b>.intersectsHandles(shp)</b> to all geometric elements.</li>
+
+ </ul>
+</dd>
+
+
+<dt>rev 19 (29 - November - 2008):</dt><dd>
+<ul>
+   <li> Added the methods <b>.getX</b> and <b>.getY()</b> to all geometric elements.  This should finally deprecate the use of .getBounds()</li>
+
+ </ul>
+</dd>
+
+
+<dt>rev 18 (26 - November - 2008):</dt><dd>
+<ul>
+   <li> Major addition of a <b>RG</b> static class that contains most functions available in the library and that resembles more to the Processing way of doing things (RG.loadShape(), RG.loadFont(), RG.beginShape(),...).</li>
+
+   <li> Updated the examples to use the new RG interface.</li>
+
+   <li> Renamed RGeomerative.init() -> RG.init() </li>
+
+   <li> Changed the way getBounds() works.  It now returns an instance of type RRectangle. </li>
+
+   <li> <b>RGroup will soon become deprecated.</b>  Please start using <b>RShape</b> everywhere and it's method <b>children</b>.  This will allow us a smoother transition to Processing's PShape. </li>
+
+ </ul>
+</dd>
+
+
 <dt>rev 15 (06 - October - 2008):</dt><dd>
 <ul>
    <li> Major bug fixes </li>
