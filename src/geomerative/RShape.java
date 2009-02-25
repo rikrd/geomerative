@@ -1159,18 +1159,28 @@ public class RShape extends RGeomElem
     try{
       Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
       if(declaringClass == Class.forName("processing.core.PGraphics")){
+
         // The backend does not implement breakShape
+        // HACK: Drawing twice, so that it also works on backends that support breakShape
+        // such as when recording to a PDF from a OPENGL backend
+        drawUsingBreakShape(g);
         drawUsingInternalTesselator(g);
+        
       }else{
+
         // The backend does implement breakShape
-        drawUsingBreakShape(g);        
+        drawUsingBreakShape(g);
       }
     }catch(NoSuchMethodException e){   
+
       // The backend does implement breakShape
       drawUsingInternalTesselator(g);
-    }catch(java.lang.ClassNotFoundException e){
+
+    }catch(ClassNotFoundException e){
+
       // The backend does implement breakShape
       drawUsingInternalTesselator(g);
+
     }
   }
 
@@ -1178,18 +1188,29 @@ public class RShape extends RGeomElem
     try{
       Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
       if(declaringClass == Class.forName("processing.core.PGraphics")){
+
         // The backend does not implement breakShape
+        // HACK: Drawing twice, so that it also works on backends that support breakShape
+        // such as when recording to a PDF from a OPENGL backend
+        drawUsingBreakShape(g);    
         drawUsingInternalTesselator(g);
+      
       }else{
+      
         // The backend does implement breakShape
         drawUsingBreakShape(g);        
+      
       }
     }catch(NoSuchMethodException e){   
+      
       // The backend does implement breakShape
       drawUsingInternalTesselator(g);
+    
     }catch(ClassNotFoundException e){
+
       // The backend does implement breakShape
       drawUsingInternalTesselator(g);
+    
     }
   }
   
@@ -1369,8 +1390,10 @@ public class RShape extends RGeomElem
         
         // Check whether to draw the fill or not
         if(p.g.fill){
-          // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
-          // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
+          // Since we are drawing the different tristrips we must turn off the stroke
+          // or make it the same color as the fill
+          // NOTE: there's currently no way of drawing the outline of a mesh,
+          // since no information is kept about what vertices are at the edge
 
           // This is here because when rendering meshes we get unwanted lines between the triangles
           p.noStroke();
