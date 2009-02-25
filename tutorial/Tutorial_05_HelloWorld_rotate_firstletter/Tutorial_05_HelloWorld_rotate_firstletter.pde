@@ -3,7 +3,7 @@ import processing.opengl.*;
 
 // Declare the objects we are going to use, so that they are accesible from setup() and from draw()
 RFont f;
-RGroup grp;
+RShape grp;
 RMatrix mat;
 
 void setup(){
@@ -28,7 +28,7 @@ void setup(){
   // Define a rotation of PI/20 around the center of the first letter
   mat = new RMatrix();
   // To get the center of the first letter we must access the first element on the group
-  RPoint centerOfFirstLetter = grp.elements[0].getCenter();
+  RPoint centerOfFirstLetter = grp.children[0].getCenter();
   mat.rotate(PI/20,centerOfFirstLetter);
 }
 
@@ -40,7 +40,7 @@ void draw(){
   translate(width/2, height/2);
   
   // Transform at each frame the first letter with the transformation we defined before
-  grp.elements[0].transform(mat);
+  grp.children[0].transform(mat);
   
   // Draw the group of shapes representing "Hola mundo!" on the PGraphics canvas g (which is the default canvas of the sketch)
   grp.draw();
