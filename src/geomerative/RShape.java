@@ -1163,7 +1163,7 @@ public class RShape extends RGeomElem
         // The backend does not implement breakShape
         // HACK: Drawing twice, so that it also works on backends that support breakShape
         // such as when recording to a PDF from a OPENGL backend
-        drawUsingBreakShape(g);
+        //drawUsingBreakShape(g);
         drawUsingInternalTesselator(g);
         
       }else{
@@ -1192,7 +1192,7 @@ public class RShape extends RGeomElem
         // The backend does not implement breakShape
         // HACK: Drawing twice, so that it also works on backends that support breakShape
         // such as when recording to a PDF from a OPENGL backend
-        drawUsingBreakShape(g);    
+        //drawUsingBreakShape(g);    
         drawUsingInternalTesselator(g);
       
       }else{
