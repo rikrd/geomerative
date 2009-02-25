@@ -11,6 +11,6 @@ RG.init(this);
 
 beginRecord(PDF, "bot1.pdf"); 
 background(255);
-RGroup grp = RG.loadShape("bot1.svg");
+RShape grp = RG.loadShape("bot1.svg");
 grp.draw();
 endRecord();
