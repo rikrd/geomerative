@@ -1,19 +1,28 @@
+import processing.opengl.*;
 import processing.pdf.*;
 import geomerative.*;
 
-void setup(){
-  size(400, 400);
-  smooth();
+RShape grp;
+PGraphics pdf;
 
+void setup(){
+  size(400, 400, OPENGL);
+  smooth();
+  
+  RG.init(this);
+  grp = RG.loadShape("bot1.svg");
+  
+  pdf = createGraphics(width, height, PDF, "bot1.pdf");
 }
 
 void draw(){
-  // VERY IMPORTANT: Allways initialize the library before using it
-  RG.init(this);
-
-  beginRecord(PDF, "bot1.pdf"); 
   background(255);
-  RShape grp = RG.loadShape("bot1.svg");
   grp.draw();
-  endRecord();
+
+  pdf.beginDraw(); 
+  pdf.background(255);
+  grp.draw(pdf);
+  pdf.dispose();
+  pdf.endDraw();
 }
+
