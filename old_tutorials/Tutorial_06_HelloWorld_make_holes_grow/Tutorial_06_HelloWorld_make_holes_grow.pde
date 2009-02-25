@@ -3,7 +3,7 @@ import processing.opengl.*;
 
 // Declare the objects we are going to use, so that they are accesible from setup() and from draw()
 RFont f;
-RGroup grp, grpshapes;
+RShape grp, grpshapes;
 RMatrix mat;
 
 // Declare the time counter variable and initialize it to 0
@@ -43,7 +43,7 @@ void draw(){
   
   // Access each element in the group in the form of a polygon
   for(int i=0;i<grp.countElements();i++){
-      RPolygon p = (RPolygon)(grp.elements[i]);
+      RPolygon p = grp.children[i].toPolygon();
       
       // This is a very important line.  In order to know if a contour is a hole or not we must first update it
       p = p.update();

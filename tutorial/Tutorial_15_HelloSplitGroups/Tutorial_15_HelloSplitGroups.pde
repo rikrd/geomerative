@@ -2,7 +2,7 @@ import processing.xml.*;
 import processing.opengl.*;
 import geomerative.*;
 
-RGroup grp;
+RShape grp;
 
 boolean ignoringStyles = false;
 
@@ -27,7 +27,7 @@ void draw(){
   
   float t = constrain(map(mouseX, 10, width-10, 0, 1), 0, 1);
   
-  RGroup[] splittedGroups = RG.split(grp, t); 
+  RShape[] splittedGroups = RG.split(grp, t); 
   splittedGroups[0].draw();
   
 }

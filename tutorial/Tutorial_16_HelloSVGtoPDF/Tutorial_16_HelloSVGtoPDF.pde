@@ -1,16 +1,28 @@
+import processing.opengl.*;
 import processing.pdf.*;
 import geomerative.*;
 
-size(400, 400);
+RShape grp;
+PGraphics pdf;
 
-smooth();
-g.smooth = true;
+void setup(){
+  size(400, 400);
+  smooth();
+  
+  RG.init(this);
+  grp = RG.loadShape("bot1.svg");
+  
+  pdf = createGraphics(width, height, PDF, "bot1.pdf");
+}
 
-// VERY IMPORTANT: Allways initialize the library before using it
-RG.init(this);
+void draw(){
+  background(255);
+  grp.draw();
 
-beginRecord(PDF, "bot1.pdf"); 
-background(255);
-RGroup grp = RG.loadShape("bot1.svg");
-grp.draw();
-endRecord();
+  pdf.beginDraw(); 
+  pdf.background(255);
+  grp.draw(pdf);
+  pdf.dispose();
+  pdf.endDraw();
+}
+

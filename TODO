@@ -15,6 +15,7 @@
 ** polygonize(): return a polygon version (like toPolygon)
 ** skeleton(): return the skeleton of the shape or group
 
+** fitIn(): similar method to centerIn() which doesn't translate only scales
 
 * Internals
 --------------------------------------------
