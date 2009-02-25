@@ -1158,50 +1158,38 @@ public class RShape extends RGeomElem
   private void drawPaths(PGraphics g){
     try{
       Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
-      System.out.println("declaringClass: " + declaringClass.toString());
-      System.out.println("g.getClass: " + g.getClass().toString());
-      if(declaringClass != Class.forName("processing.core.PGraphics")){
+      if(declaringClass == Class.forName("processing.core.PGraphics")){
         // The backend does not implement breakShape
-        System.out.println("internal tesselator");
         drawUsingInternalTesselator(g);
       }else{
         // The backend does implement breakShape
-        System.out.println("provided tesselator");
         drawUsingBreakShape(g);        
       }
     }catch(NoSuchMethodException e){   
       // The backend does implement breakShape
-      System.out.println("provided tesselator");
-      drawUsingBreakShape(g);
+      drawUsingInternalTesselator(g);
     }catch(java.lang.ClassNotFoundException e){
       // The backend does implement breakShape
-      System.out.println("provided tesselator");
-      drawUsingBreakShape(g);
+      drawUsingInternalTesselator(g);
     }
   }
 
   private void drawPaths(PApplet g){
     try{
       Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
-      System.out.println("declaringClass: " + declaringClass.toString());
-      System.out.println("g.getClass: " + g.g.getClass().toString());
-      if(declaringClass != Class.forName("PGraphics")){
+      if(declaringClass == Class.forName("processing.core.PGraphics")){
         // The backend does not implement breakShape
-        System.out.println("internal tesselator");
         drawUsingInternalTesselator(g);
       }else{
         // The backend does implement breakShape
-        System.out.println("provided tesselator");
         drawUsingBreakShape(g);        
       }
     }catch(NoSuchMethodException e){   
       // The backend does implement breakShape
-      System.out.println("provided tesselator");
-      drawUsingBreakShape(g);
-    }catch(java.lang.ClassNotFoundException e){
+      drawUsingInternalTesselator(g);
+    }catch(ClassNotFoundException e){
       // The backend does implement breakShape
-      System.out.println("provided tesselator");
-      drawUsingBreakShape(g);
+      drawUsingInternalTesselator(g);
     }
   }
   
