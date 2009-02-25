@@ -6,7 +6,7 @@ RShape grp;
 PGraphics pdf;
 
 void setup(){
-  size(400, 400, OPENGL);
+  size(400, 400);
   smooth();
   
   RG.init(this);
