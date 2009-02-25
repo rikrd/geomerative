@@ -46,7 +46,7 @@ This library exposes the shapes (such as vector drawings or typographies) in a m
 <div id="download">
 <h1>Download</h1>
 <div id="download_content">
-<p><A href="geomerative-20.zip">Geomerative (rev 20)</A> (February 14 2009)</p>
+<p><A href="geomerative-22.zip">Geomerative (rev 22)</A> (February 25 2009)</p>
 <p>unzip the contents of this file to /path/to/sketchbook/libraries</p>
 </div>
 </div>
@@ -363,6 +363,24 @@ The documentation is not available online yet.  It can be found in the <b>docume
 <h1><a href="javascript:animatedcollapse.toggle('changelog_content')">Changelog</a></h1>
 <div id="changelog_content">
 <dl>
+
+<dt>rev 22 (25 - February - 2009):</dt><dd>
+<ul>
+   <li> Removed obsolete tutorials and fixed some that were broken.</li>
+   <li> Fixed the PDF output so it is not tesselated (when it can it uses the breakShape() method of the backend).  PDF is still tesselated when using beginRecord()/endRecord() in backends that don't support breakShape() such as OPENGL, P3D and P2D.  In those cases createGraphics() should be used. Look at the Tutorial about SVG to PDF to see how.</li>
+
+ </ul>
+</dd>
+
+
+<dt>rev 21 (19 - February - 2009):</dt><dd>
+<ul>
+   <li> Added the methods <b>.scale(s, p)</b>, <b>.scale(s, x, y)</b>, <b>.scale(sx, sy, p)</b> and <b>.scale(sx, sy, x, y)</b> to allow scaling relative to a given point.</li>
+   <li> Fix the <b>.getArea()</b> method.  It is now calculated using the points of the curve and not the handles and it will not return negative values.</li>
+
+ </ul>
+</dd>
+
 
 <dt>rev 20 (14 - February - 2009):</dt><dd>
 <ul>
