@@ -65,6 +65,17 @@ public class RPath extends RGeomElem
   public RPath(){
     this.lastPoint = new RPoint();
   }
+
+  public RPath(RPoint[] points){
+    if(points == null) return;
+    this.lastPoint = points[0];
+
+    for(int i = 1; i < points.length; i++){
+      this.addLineTo(points[i]);
+    }
+
+    this.addClose();
+  }
   
   public RPath(float x, float y){
     this.lastPoint = new RPoint(x,y);

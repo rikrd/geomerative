@@ -67,6 +67,18 @@ public class RShape extends RGeomElem
     this.paths = newpaths;
     type = RGeomElem.SHAPE;
   }
+
+  public RShape(RPoint[][] points){
+    if(points == null) return;
+    
+    RPath[] newpaths = new RPath[points.length];
+    for(int i=0; i<points.length; i++){
+      newpaths[i] = new RPath(points[i]);
+    }
+
+    this.paths = newpaths;
+    type = RGeomElem.SHAPE;
+  }
   
   public RShape(RShape s){
     for(int i=0;i<s.countPaths();i++){
@@ -169,6 +181,25 @@ public class RShape extends RGeomElem
 
   static public RShape createCircle(float x, float y, float r){
     return createEllipse(x, y, r, r);
+  }
+  
+  /**
+   *
+   * Extracts a shape by its name. The shape is returned as an RShape object, or null is returned if no shape with the name has been found.
+   * @return RShape or null, the target shape or null if not found
+   *
+   */
+  public RShape getChild(String target){
+    if (this.name.equals(target)) {
+      return this;
+    }
+
+    for (int i = 0; i < countChildren(); i++) {
+      RShape shp = children[i].getChild(target);
+      if (shp != null) return shp;
+    }
+
+    return null;
   }
   
   /**
