@@ -74,7 +74,6 @@ public class RPath extends RGeomElem
       this.addLineTo(points[i]);
     }
 
-    this.addClose();
   }
   
   public RPath(float x, float y){

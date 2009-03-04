@@ -215,6 +215,14 @@ public class RG implements PConstants{
     shp.draw();
   }
 
+  /**
+   * Create a shape from an array of point arrays.
+   * @eexample createShape
+   */
+  public static RShape createShape(RPoint[][] points){
+    return new RShape(points);
+  }
+
 
   /**
    * Load a shape object from a file.
