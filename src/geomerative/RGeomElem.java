@@ -67,6 +67,9 @@ public abstract class RGeomElem
    * @invisible
    */
   public static final int UNKNOWN = 8;
+
+  float width;
+  float height;
   
   // Functions dependent of the type of element
   // They must be overrided
@@ -351,6 +354,8 @@ public abstract class RGeomElem
 
   protected void setStyle(RGeomElem p){
     name = p.name;
+    width = p.width;
+    height = p.height;
 
     style = new RStyle(p.style);
   }
@@ -591,6 +596,30 @@ public abstract class RGeomElem
     return orig.getMinY();
   }
 
+  /**
+   * Use this method to get the origianl height of the element. 
+   * @eexample getOrigHeight
+   * @return float, the original height of the element before applying any transformations
+   * @related getCenter ( )
+   */
+  public float getOrigHeight(){
+    return height != 0.0 ? height : getHeight();
+  }
+
+  /**
+   * Use this method to get the origianl width of the element. 
+   * @eexample getOrigWidth
+   * @return float, the original width of the element before applying any transformations
+   * @related getCenter ( )
+   */
+  public float getOrigWidth(){
+    return width != 0.0 ? width : getWidth();
+  }
+
+  protected void updateOrigParams(){
+    this.width = this.getWidth();
+    this.height = this.getHeight();
+  }
 
   /**
    * Use this method to get the width of the element. 

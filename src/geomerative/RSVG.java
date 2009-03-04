@@ -60,7 +60,11 @@ public class RSVG
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
     
-    return elemToCompositeShape(svg);
+    RShape result = elemToCompositeShape(svg);
+    result.width = result.getWidth();
+    result.height = result.getHeight();
+    
+    return result;
   }
   
   public RPolygon toPolygon(String filename)
@@ -194,6 +198,9 @@ public class RSVG
       }
     }
 
+    // Set the original width and height
+    grp.updateOrigParams();
+    
     return grp;
   }
 
@@ -318,6 +325,8 @@ public class RSVG
       }
     }
 
+    shp.updateOrigParams();
+
     return shp;
   }
   
@@ -326,7 +335,11 @@ public class RSVG
    */
   public RShape elemToPolyline(XMLElement elem)
   {
-    return getPolyline(elem.getStringAttribute("points").trim());
+    RShape shp = getPolyline(elem.getStringAttribute("points").trim());
+
+    shp.updateOrigParams();
+
+    return shp;
   }
   
   /**
@@ -338,6 +351,8 @@ public class RSVG
     
     poly.addClose();
     
+    poly.updateOrigParams();
+
     return poly;    
   }
   
@@ -346,7 +361,12 @@ public class RSVG
    */
   public RShape elemToRect(XMLElement elem)
   {
-    return getRect(elem.getFloatAttribute("x"), elem.getFloatAttribute("y"), elem.getFloatAttribute("width"), elem.getFloatAttribute("height"));
+    
+    RShape shp = getRect(elem.getFloatAttribute("x"), elem.getFloatAttribute("y"), elem.getFloatAttribute("width"), elem.getFloatAttribute("height"));
+ 
+    shp.updateOrigParams();
+    
+    return shp;
   }
   
   /**
@@ -354,7 +374,11 @@ public class RSVG
    */
   public RShape elemToLine(XMLElement elem)
   {
-    return getLine(elem.getFloatAttribute("x1"), elem.getFloatAttribute("y1"), elem.getFloatAttribute("x2"), elem.getFloatAttribute("y2"));
+    RShape shp = getLine(elem.getFloatAttribute("x1"), elem.getFloatAttribute("y1"), elem.getFloatAttribute("x2"), elem.getFloatAttribute("y2"));
+
+    shp.updateOrigParams();
+
+    return shp;
   }
   
   
@@ -363,7 +387,11 @@ public class RSVG
    */
   public RShape elemToEllipse(XMLElement elem)
   {
-    return getEllipse(elem.getFloatAttribute("cx"), elem.getFloatAttribute("cy"), elem.getFloatAttribute("rx"), elem.getFloatAttribute("ry"));
+    RShape shp = getEllipse(elem.getFloatAttribute("cx"), elem.getFloatAttribute("cy"), elem.getFloatAttribute("rx"), elem.getFloatAttribute("ry"));
+
+    shp.updateOrigParams();
+
+    return shp;
   }
   
   
@@ -373,7 +401,11 @@ public class RSVG
   public RShape elemToCircle(XMLElement elem)
   {
     float r = elem.getFloatAttribute("r");
-    return getEllipse(elem.getFloatAttribute("cx"), elem.getFloatAttribute("cy"), r, r);
+    RShape shp = getEllipse(elem.getFloatAttribute("cx"), elem.getFloatAttribute("cy"), r, r);
+    
+    shp.updateOrigParams();    
+
+    return shp;
   }
   
   /**
@@ -381,7 +413,11 @@ public class RSVG
    */
   public RShape elemToShape(XMLElement elem)
   {
-    return getShape(elem.getStringAttribute("d"));
+    RShape shp = getShape(elem.getStringAttribute("d"));
+
+    shp.updateOrigParams();    
+
+    return shp;
   }
   
   /**
@@ -389,7 +425,11 @@ public class RSVG
    */
   private RShape getRect(float x, float y, float w, float h)
   {
-    return RShape.createRectangle(x, y, w, h);
+    RShape shp = RShape.createRectangle(x, y, w, h);
+    
+    shp.updateOrigParams();
+
+    return shp;
   }
   
   /**

@@ -200,13 +200,22 @@ public class RG implements PConstants{
    */
   public static void shape(RShape shp, float x, float y, float w, float h){
     RShape tshp = new RShape(shp);
-    tshp.transform(x, y, w, h);
+
+    RMatrix transf = new RMatrix();
+    transf.translate(x, y);
+    transf.scale(w / tshp.getOrigWidth(), h/ tshp.getOrigHeight());
+    tshp.transform(transf);
+
     tshp.draw();
   }
 
   public static void shape(RShape shp, float x, float y){
     RShape tshp = new RShape(shp);
-    tshp.transform(x, y, tshp.getWidth(), tshp.getHeight());
+    
+    RMatrix transf = new RMatrix();
+    transf.translate(x, y);
+    tshp.transform(transf);
+
     tshp.draw();
   }
 
@@ -258,6 +267,9 @@ public class RG implements PConstants{
     if (endMode == CLOSE) {
       shape.addClose();
     }
+
+    shape.updateOrigParams();
+    
     breakShape();
   }
 
@@ -341,6 +353,8 @@ public class RG implements PConstants{
     returningGroup.addChild(shape);
 
     shape = null;
+
+    returningGroup.updateOrigParams();
 
     return returningGroup;    
   }
