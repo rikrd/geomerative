@@ -420,22 +420,36 @@ public class RShape extends RGeomElem
    * @return RPolygon, the polygon resulting of the segmentation of the commands in each path.
    * @related draw ( )
    */
-  public RPolygon toPolygon(){
-    int numPaths = countPaths();
+  RPolygon toPolygon ( RShape shp )
+  {
+    int numPnts = shp.countPaths();
     
-    RPolygon result = new RPolygon();
-    for(int i=0;i<numPaths;i++){
-      RPoint[] newpoints = this.paths[i].getPoints();
-      RContour c = new RContour(newpoints);
-      c.closed = paths[i].closed;
-      c.setStyle(paths[i]);
-      result.addContour(c);
-    }
+    RPolygon poly = new RPolygon();
     
-    result.setStyle(this);
+    if ( shp.children != null )
+      {
+        for ( int i = 0; i < shp.children.length; i++ )
+          {
+            RPolygon childPoly = toPolygon( shp.children[i] );
+            for ( int ii = 0; ii < childPoly.contours.length; ii++ )
+              {
+                poly.addContour( childPoly.contours[ii] );
+              }
+          }
+      }
     
-    return result;
+    for ( int i = 0; i < numPnts; i++ )
+      {
+        RPoint[] pnts = shp.paths[i].getPoints();
+        RContour c = new RContour(pnts);
+        //c.closed = shp.paths[i].closed;
+        //c.setStyle( shp.paths[i] );
+        poly.addContour(c);
+      }
+    
+    return poly;
   }
+
 
   public void polygonize(){
     int numPaths = countPaths();
