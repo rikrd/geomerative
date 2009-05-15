@@ -97,15 +97,16 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new ring polygon. 
    * @eexample createRing
-   * @param radiusBig float, the outter radius of the ring polygon
-   * @param radiusSmall float, the inner radius of the ring polygon
-   * @param detail int, the number of vertices on each contour of the ring
+   * @param float x, x coordinate of the center of the shape
+   * @param float y, y coordinate of the center of the shape
+   * @param widthBig float, the outter width of the ring polygon
+   * @param widthSmall float, the inner width of the ring polygon
    * @return RShape, the ring polygon newly created
    */
-  static public RShape createRing(float x, float y, float radiusBig, float radiusSmall){
+  static public RShape createRing(float x, float y, float widthBig, float widthSmall){
     RShape ring = new RShape();
-    RShape outer = RShape.createCircle(x, y, radiusBig);
-    RShape inner = RShape.createCircle(x, y, -radiusSmall);
+    RShape outer = RShape.createCircle(x, y, widthBig);
+    RShape inner = RShape.createCircle(x, y, -widthSmall);
     
     ring.addPath(outer.paths[0]);
     ring.addPath(inner.paths[0]);
@@ -116,14 +117,15 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new starform polygon. 
    * @eexample createStar
-   * @param radiusBig float, the outter radius of the star polygon
-   * @param radiusSmall float, the inner radius of the star polygon
+   * @param widthBig float, the outter width of the star polygon
+   * @param widthSmall float, the inner width of the star polygon
    * @param spikes int, the amount of spikes on the star polygon
    * @return RShape, the starform polygon newly created
    */
-  static public RShape createStar(float x, float y, float radiusBig, float radiusSmall, int spikes){
+  static public RShape createStar(float x, float y, float widthBig, float widthSmall, int spikes){
+    float radiusBig = widthBig/2F;
+    float radiusSmall = widthSmall/2F;
     RShape star = new RShape();
-
     star.addMoveTo( x - radiusBig, y );
     star.addLineTo( x - (float)(radiusSmall*Math.cos(Math.PI/spikes)), y - (float)(radiusSmall*Math.sin(Math.PI/spikes)));
 
@@ -161,11 +163,13 @@ public class RShape extends RGeomElem
    * @eexample createEllipse
    * @param x float, the x position of the ellipse
    * @param y float, the y position of the ellipse
-   * @param rx float, the horizontal radius of the ellipse
-   * @param ry float, the vertical radius of the ellipse
+   * @param w float, the width of the ellipse
+   * @param h float, the height of the ellipse
    * @return RShape, the elliptical shape just created
    */
-  static public RShape createEllipse(float x, float y, float rx, float ry){
+  static public RShape createEllipse(float x, float y, float w, float h){
+    float rx = w/2F;
+    float ry = h/2F;
     RPoint center = new RPoint(x,y);
     RShape circle = new RShape();
     float kx = (((8F/(float)Math.sqrt(2F))-4F)/3F) * rx;
@@ -179,8 +183,8 @@ public class RShape extends RGeomElem
     return circle;
   }
 
-  static public RShape createCircle(float x, float y, float r){
-    return createEllipse(x, y, r, r);
+  static public RShape createCircle(float x, float y, float d){
+    return createEllipse(x, y, d, d);
   }
   
   /**

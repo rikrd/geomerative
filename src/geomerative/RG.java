@@ -362,22 +362,74 @@ public class RG implements PConstants{
   /**
    * Get an ellipse as a shape object.
    * @eexample getEllipse
-   * @param float x, x coordinate of the center of the ellipse
-   * @param float y, y coordinate of the center of the ellipse
-   * @param float rx, horizontal radius of the ellipse 
-   * @param float ry, vertical radius of the ellipse
+   * @param float x, x coordinate of the center of the shape
+   * @param float y, y coordinate of the center of the shape
+   * @param float w, width of the ellipse 
+   * @param float h, height of the ellipse
+   * @return RShape, the shape created
    */
-  public static RShape getEllipse(float x, float y, float rx, float ry){
+  public static RShape getEllipse(float x, float y, float w, float h){
     RShape ret = new RShape();
-    ret.addChild(RShape.createEllipse(x, y, rx, ry));
+    ret.addChild(RShape.createEllipse(x, y, w, h));
     return ret;
   }
   
-  public static RShape getEllipse(float x, float y, float r){
-    return getEllipse(x, y, r, r);
+  public static RShape getEllipse(float x, float y, float w){
+    return getEllipse(x, y, w, w);
+  }
+
+  /**
+   * Get an rectangle as a shape object.
+   * @eexample getRect
+   * @param float x, x coordinate of the top left corner of the shape
+   * @param float y, y coordinate of the top left of the shape
+   * @param float w, width of the rectangle 
+   * @param float h, height of the rectangle
+   * @return RShape, the shape created
+   */
+  public static RShape getRect(float x, float y, float w, float h){
+    RShape ret = new RShape();
+    ret.addChild(RShape.createRectangle(x, y, w, h));
+    return ret;
+  }
+  
+  public static RShape getRect(float x, float y, float w){
+    return getRect(x, y, w, w);
+  }
+
+  /**
+   * Get a star as a shape object.
+   * @eexample getStar
+   * @param float x, x coordinate of the center of the shape
+   * @param float y, y coordinate of the center of the shape
+   * @param widthBig float, the outter width of the star polygon
+   * @param widthSmall float, the inner width of the star polygon
+   * @param spikes int, the amount of spikes on the star polygon
+   * @return RShape, the shape created
+   */
+  public static RShape getStar(float x, float y, float widthBig, float widthSmall, int spikes){
+    RShape ret = new RShape();
+    ret.addChild(RShape.createStar(x, y, widthBig, widthSmall, spikes));
+    return ret;
   }
 
 
+  /**
+   * Get a ring as a shape object.
+   * @eexample getRing
+   * @param float x, x coordinate of the center of the shape
+   * @param float y, y coordinate of the center of the shape
+   * @param widthBig float, the outter width of the ring polygon
+   * @param widthSmall float, the inner width of the ring polygon
+   * @return RShape, the shape created
+   */
+  public static RShape getRing(float x, float y, float widthBig, float widthSmall){
+    RShape ret = new RShape();
+    ret.addChild(RShape.createRing(x, y, widthBig, widthSmall));
+    return ret;
+  }
+  
+  
   // Transformation methods
   public static RShape centerIn(RShape grp, PGraphics g, float margin){
     RShape ret = new RShape(grp);
