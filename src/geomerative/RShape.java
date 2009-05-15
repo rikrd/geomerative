@@ -420,17 +420,17 @@ public class RShape extends RGeomElem
    * @return RPolygon, the polygon resulting of the segmentation of the commands in each path.
    * @related draw ( )
    */
-  RPolygon toPolygon ( RShape shp )
+  public RPolygon toPolygon ( )
   {
-    int numPnts = shp.countPaths();
+    int numPnts = this.countPaths();
     
     RPolygon poly = new RPolygon();
     
-    if ( shp.children != null )
+    if ( this.children != null )
       {
-        for ( int i = 0; i < shp.children.length; i++ )
+        for ( int i = 0; i < this.children.length; i++ )
           {
-            RPolygon childPoly = toPolygon( shp.children[i] );
+            RPolygon childPoly = this.children[i].toPolygon();
             for ( int ii = 0; ii < childPoly.contours.length; ii++ )
               {
                 poly.addContour( childPoly.contours[ii] );
@@ -440,10 +440,10 @@ public class RShape extends RGeomElem
     
     for ( int i = 0; i < numPnts; i++ )
       {
-        RPoint[] pnts = shp.paths[i].getPoints();
+        RPoint[] pnts = this.paths[i].getPoints();
         RContour c = new RContour(pnts);
-        //c.closed = shp.paths[i].closed;
-        //c.setStyle( shp.paths[i] );
+        c.closed = this.paths[i].closed;
+        c.setStyle( this.paths[i] );
         poly.addContour(c);
       }
     
@@ -481,7 +481,7 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape intersection( RShape p ){
-    RPolygon result = RClip.intersection( p.toPolygon(), this.toPolygon() );
+    RPolygon result = RClip.intersection( this.toPolygon(),p.toPolygon() );
 
     if (result == null) return null;
 
@@ -498,7 +498,7 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape union( RShape p ){
-    RPolygon result = RClip.union( p.toPolygon(), this.toPolygon() );
+    RPolygon result = RClip.union( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
@@ -515,7 +515,7 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape xor( RShape p ){
-    RPolygon result = RClip.xor( p.toPolygon(), this.toPolygon() );
+    RPolygon result = RClip.xor( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
@@ -533,7 +533,7 @@ public class RShape extends RGeomElem
    * @related intersection ( )
    */	
   public RShape diff( RShape p ){
-    RPolygon result = RClip.diff( p.toPolygon(), this.toPolygon() );
+    RPolygon result = RClip.diff( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
