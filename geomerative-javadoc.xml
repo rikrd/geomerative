@@ -1,0 +1,31 @@
+<project name="geomerative" default="build" basedir="./">
+
+	<path id="library-classpath">
+		<fileset dir="library" >
+			<include name="batikfont.jar"/>
+			<include name="geomerative.jar"/>
+		</fileset>
+	</path>
+
+	<target name="build" description="generate the distribution" >
+  	
+  	<mkdir dir="javadoc" />
+  	
+ 	<javadoc bottom="Geomerative by Ricard Marxer, http://www.ricardmarxer.com/geomerative/"
+			 destdir="./javadoc" 
+			 verbose="false" 
+			 doctitle="Geomerative Javadocs" 
+			 public="true" version="false" 
+			 windowtitle="Geomerative Javadocs"
+                         stylesheetfile="stylesheet.css">
+ 		<fileset dir="src" defaultexcludes="yes">
+			<include name="**/*"/>
+		</fileset>
+		<classpath>
+			<path refid="library-classpath" />
+		</classpath>
+ 	</javadoc>
+ 	
+ 	</target>
+
+</project>
