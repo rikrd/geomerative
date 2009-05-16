@@ -451,7 +451,8 @@ public class RSVG
    */
   private RShape getEllipse(float cx, float cy, float rx, float ry)
   {
-    return RShape.createEllipse(cx, cy, rx, ry);
+    // RShape createEllipse takes as input the width and height of the ellipses
+    return RShape.createEllipse(cx, cy, rx*2F, ry*2F);
   }
   
   /**
