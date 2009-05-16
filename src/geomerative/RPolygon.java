@@ -931,10 +931,12 @@ public class RPolygon extends RGeomElem
    * This method should NOT be used outside the Clip algorithm.
    */
   protected void setContributing( int polyIndex, boolean contributes ){
+    /*
     if( this.contours.length != 1 )
       {
         throw new IllegalStateException( "Only applies to polys of size 1" );
       }
+    */
     this.contours[polyIndex].isContributing = contributes;
   }
   

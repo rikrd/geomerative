@@ -46,7 +46,7 @@ This library exposes the shapes (such as vector drawings or typographies) in a m
 <div id="download">
 <h1>Download</h1>
 <div id="download_content">
-<p><A href="geomerative-25.zip">Geomerative (rev 25)</A> (March 4 2009)</p>
+<p><A href="geomerative-26.zip">Geomerative (rev 26)</A> (May 15 2009)</p>
 <p>unzip the contents of this file to /path/to/sketchbook/libraries</p>
 </div>
 </div>
@@ -57,7 +57,7 @@ This library exposes the shapes (such as vector drawings or typographies) in a m
 <dl>
 <dt>Creator:</dt><dd><A href="http://www.ricardmarxer.com">Ricard Marxer</A></dd>
 <dt>Collaborator:</dt><dd><A href="http://www.notlime.com/">Mark Luffel</A></dd>
-<dt>Overview and examples:</dt><dd><A href="http://www.florianjenett.de">Florian Jenett</A></dd>
+<dt>Overview, examples and bug fixes:</dt><dd><A href="http://www.florianjenett.de">Florian Jenett</A></dd>
 </dl>
 
 </div>
@@ -363,6 +363,18 @@ The documentation is not available online yet.  It can be found in the <b>docume
 <h1><a href="javascript:animatedcollapse.toggle('changelog_content')">Changelog</a></h1>
 <div id="changelog_content">
 <dl>
+
+<dt>rev 26 (15 - May - 2009):</dt><dd>
+<ul>
+   <li> Added a fix to <b>RG.polygonize(myShape)</b> when <b>myShape</b> had no root level paths.  Patch provided by <b>Florian Jenett</b>.</li>
+   <li> Fix binary operations of shapes. Now <b>Tutorial 17</b> should work correctly.</li>
+   <li> Modified <b>RG.getEllipse(x, y, w, h)</b> to take <b>width</b> and <b>height</b> as arguments to be consistent with Processing's API.</li>
+   <li> Added <b>RG.getRect(x, y, w, h)</b>.  This returns a rectangle in the form of a <b>RShape</b>.</li>
+   <li> Added <b>RG.getRing(x, y, widthBig, widthSmall)</b>.  This returns a ring in the form of a <b>RShape</b>.</li>
+   <li> Added <b>RG.getStar(x, y, widthBig, widthSmall, spikes)</b>.  This returns a star in the form of a <b>RShape</b>.</li>
+ </ul>
+</dd>
+
 
 <dt>rev 25 (4 - March - 2009):</dt><dd>
 <ul>
