@@ -66,7 +66,6 @@ public class RFont implements PConstants{
   /**
    * The constructor of the RFont object.  Use this in order to create a Font with which we will be able to draw and obtain outlines of text.
    * @eexample RFont
-   * @param parent PApplet, always use "this" as the value for this parameter.
    * @param fontPath String, the name of the TrueType Font file which should be situated in the data folder of the sketch.
    * @param size int, the point size of the font in points.
    * @param align int, this can only take the following values: RFont.LEFT, RFont.CENTER and RFont.RIGHT.
@@ -362,9 +361,8 @@ public class RFont implements PConstants{
   /**
    * Use this method to draw a character on a certain canvas.
    * @eexample RFont_draw
-   * @param character char, the character to be drawn
-   * @param text String, the string to be drawn
-   * @param g PGraphics, the canvas where to draw
+   * @param character  the character to be drawn
+   * @param g   the canvas where to draw
    * @related toShape ( )
    * @related toGroup ( )
    */
@@ -372,16 +370,38 @@ public class RFont implements PConstants{
     this.toShape(character).draw(g);
   }
   
-  
+  /**
+   * Use this method to draw a character on a certain canvas.
+   * @eexample RFont_draw
+   * @param text  the string to be drawn
+   * @param g  the canvas where to draw
+   * @related toShape ( )
+   * @related toGroup ( )
+   */  
   public void draw(String text, PGraphics g) throws RuntimeException{
     this.toGroup(text).draw(g);
   }
   
+  /**
+   * Use this method to draw a character on a certain canvas.
+   * @eexample RFont_draw
+   * @param character char, the character to be drawn
+   * @param g  the canvas where to draw
+   * @related toShape ( )
+   * @related toGroup ( )
+   */
   public void draw(char character, PApplet g) throws RuntimeException{
     this.toShape(character).draw(g);
   }
   
-  
+  /**
+   * Use this method to draw a character on a certain canvas.
+   * @eexample RFont_draw
+   * @param text  the string to be drawn
+   * @param g  the canvas where to draw
+   * @related toShape ( )
+   * @related toGroup ( )
+   */  
   public void draw(String text, PApplet g) throws RuntimeException{
     this.toGroup(text).draw(g);
   }

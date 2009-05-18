@@ -62,8 +62,8 @@ public class RContour extends RGeomElem
   }
   
   /**
-   * Use this constructor to make a copy of another RCommand object.  This can be useful when wanting to transform one but at the same time keep the original.
-   * @param  RContour c, the object of which to make the copy
+   * Create a countour given an array of points.
+   * @param  contourpoints  the points of the new contour
    * @invisible
    */
   public RContour(RPoint[] contourpoints){
@@ -224,22 +224,6 @@ public class RContour extends RGeomElem
     return isHole;
   }
   
-  /**
-   * Use this method to transform the contour.
-   * @eexample transformContour
-   * @param m RMatrix, the matrix of the affine transformation to apply to the contour
-   */
-  /*
-    public void transform(RMatrix m){
-    int numPoints = countPoints();
-    if(numPoints!=0){
-    for(int i=0;i<numPoints;i++){
-    points[i].transform(m);
-    }
-    }
-    }
-  */
-
   public void print(){
     System.out.println("contour: ");
     for(int i=0;i<countPoints();i++)
