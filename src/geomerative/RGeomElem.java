@@ -423,7 +423,6 @@ public abstract class RGeomElem
   /**
    * Transform the geometric object to fit in a rectangle defined by the parameters passed.
    * @eexample getBounds
-   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
    * @related getCenter ( )
    */
   public void transform(float x, float y, float w, float h, boolean keepAspectRatio){
@@ -705,7 +704,7 @@ public abstract class RGeomElem
    * Use this method to know if the shape is inside a graphics object. This might be useful if we want to delete objects that go offscreen.
    * @eexample RShape_isIn
    * @usage Geometry
-   * @param PGraphics g, the graphics object
+   * @param g  the graphics object
    * @return boolean, whether the shape is in or not the graphics object
    */
   public boolean isIn(PGraphics g){
@@ -751,10 +750,10 @@ public abstract class RGeomElem
    * Use this method to get the transformation matrix in order to fit and center the element on the canvas. Scaling and translation damping parameters are available, in order to create animations.
    * @eexample RGeomElem_getCenteringTransf
    * @return RMatrix, the transformation matrix
-   * @param PGraphics g, the canvas to which to fit and center the path
-   * @param float margin, the margin to take into account when fitting
-   * @param float sclDamping, a value from 0 to 1. The damping coefficient for the scale, if the value is 0, then no scaling is applied.
-   * @param float trnsDamping, a value from 0 to 1. The damping coefficient for the translation, if the value is 0, then no translation is applied.
+   * @param g  the canvas to which to fit and center the path
+   * @param margin  the margin to take into account when fitting
+   * @param sclDamping  a value from 0 to 1. The damping coefficient for the scale, if the value is 0, then no scaling is applied.
+   * @param trnsDamping  a value from 0 to 1. The damping coefficient for the translation, if the value is 0, then no translation is applied.
    * @related getBounds ( )
    */
   public RMatrix getCenteringTransf(PGraphics g, float margin, float sclDamping, float trnsDamping) throws RuntimeException{
@@ -798,12 +797,11 @@ public abstract class RGeomElem
   }
   
   /**
-   * Use this to apply a translation to the point.
+   * Apply a translation to the element, given translation coordinates.
    * @eexample RGeomElem_translate
    * @usage Geometry
-   * @param tx float, the coefficient of x translation
-   * @param ty float, the coefficient of y translation
-   * @param t RPoint, the translation vector to be applied
+   * @param tx  the coefficient of x translation
+   * @param ty  the coefficient of y translation
    * @related transform ( )
    * @related rotate ( )
    * @related scale ( )
@@ -814,7 +812,16 @@ public abstract class RGeomElem
     transf.translate(tx, ty);
     transform(transf);
   }
-  
+
+  /**
+   * Apply a translation to the element, given a point.
+   * @eexample RGeomElem_translate
+   * @usage Geometry
+   * @param t  the translation vector to be applied
+   * @related transform ( )
+   * @related rotate ( )
+   * @related scale ( )
+   */  
   public void translate(RPoint t)
   {
     RMatrix transf = new RMatrix();
@@ -822,17 +829,23 @@ public abstract class RGeomElem
     transform(transf);  }
   
   /**
-   * Use this to apply a rotation to the point.
+   * Apply a rotation to the element, given an angle and optionally a rotation center.
    * @eexample RPoint_rotate
    * @usage Geometry
-   * @param angle float, the angle of rotation to be applied
-   * @param vx float, the x coordinate of the center of rotation
-   * @param vy float, the y coordinate of the center of rotation
-   * @param v RPoint, the position vector of the center of rotation
+   * @param angle  the angle of rotation to be applied
+   * @param vx  the x coordinate of the center of rotation
+   * @param vy  the y coordinate of the center of rotation
    * @related transform ( )
    * @related translate ( )
    * @related scale ( )
    */
+  public void rotate(float angle, float vx, float vy)
+  {
+    RMatrix transf = new RMatrix();
+    transf.rotate(angle, vx, vy);
+    transform(transf);
+  }
+
   public void rotate(float angle)
   {
     RMatrix transf = new RMatrix();
@@ -840,13 +853,16 @@ public abstract class RGeomElem
     transform(transf);
   }
   
-  public void rotate(float angle, float vx, float vy)
-  {
-    RMatrix transf = new RMatrix();
-    transf.rotate(angle, vx, vy);
-    transform(transf);
-  }
-  
+  /**
+   * Apply a rotation to the element, given an angle and optionally a rotation center.
+   * @eexample RPoint_rotate
+   * @usage Geometry
+   * @param angle  the angle of rotation to be applied
+   * @param v  the position vector of the center of rotation
+   * @related transform ( )
+   * @related translate ( )
+   * @related scale ( )
+   */  
   public void rotate(float angle, RPoint v)
   {
     RMatrix transf = new RMatrix();
@@ -855,24 +871,16 @@ public abstract class RGeomElem
   }
   
   /**
-   * Use this to scale the point.
+   * Apply a scale to the element, given scaling factors and optionally a scaling center.
    * @eexample RPoint_scale
    * @usage Geometry
-   * @param sx float, the scaling coefficient over the x axis
-   * @param sy float, the scaling coefficient over the y axis
-   * @param s float, the scaling coefficient for a uniform scaling
-   * @param s RPoint, the scaling vector
+   * @param sx  the scaling coefficient over the x axis
+   * @param sy  the scaling coefficient over the y axis
+   * @param p  the position vector of the center of the scaling
    * @related transform ( )
    * @related translate ( )
    * @related rotate ( )
    */
-  public void scale (float sx, float sy)
-  {
-    RMatrix transf = new RMatrix();
-    transf.scale(sx, sy);
-    transform(transf);
-  }
-
   public void scale (float sx, float sy, RPoint p)
   {
     RMatrix transf = new RMatrix();
@@ -880,6 +888,25 @@ public abstract class RGeomElem
     transform(transf);
   }
 
+  public void scale (float sx, float sy)
+  {
+    RMatrix transf = new RMatrix();
+    transf.scale(sx, sy);
+    transform(transf);
+  }
+
+  /**
+   * Apply a scale to the element, given scaling factors and optionally a scaling center.
+   * @eexample RPoint_scale
+   * @usage Geometry
+   * @param sx  the scaling coefficient over the x axis
+   * @param sy  the scaling coefficient over the y axis
+   * @param x  x coordinate of the position vector of the center of the scaling
+   * @param y  y coordinate of the position vector of the center of the scaling
+   * @related transform ( )
+   * @related translate ( )
+   * @related rotate ( )
+   */
   public void scale (float sx, float sy, float x, float y)
   {
     RMatrix transf = new RMatrix();
@@ -887,13 +914,16 @@ public abstract class RGeomElem
     transform(transf);
   }
   
-  public void scale (float s)
-  {
-    RMatrix transf = new RMatrix();
-    transf.scale(s);
-    transform(transf);
-  }
-
+  /**
+   * Apply a scale to the element, given scaling factors and optionally a scaling center.
+   * @eexample RPoint_scale
+   * @usage Geometry
+   * @param s  the scaling coefficient for a uniform scaling
+   * @param p  the position vector of the center of the scaling
+   * @related transform ( )
+   * @related translate ( )
+   * @related rotate ( )
+   */
   public void scale (float s, RPoint p)
   {
     RMatrix transf = new RMatrix();
@@ -901,7 +931,24 @@ public abstract class RGeomElem
     transform(transf);
   }
 
+  public void scale (float s)
+  {
+    RMatrix transf = new RMatrix();
+    transf.scale(s);
+    transform(transf);
+  }
 
+  /**
+   * Apply a scale to the element, given scaling factors and optionally a scaling center.
+   * @eexample RPoint_scale
+   * @usage Geometry
+   * @param s  the scaling coefficient for a uniform scaling
+   * @param x  x coordinate of the position vector of the center of the scaling
+   * @param y  y coordinate of the position vector of the center of the scaling
+   * @related transform ( )
+   * @related translate ( )
+   * @related rotate ( )
+   */
   public void scale (float s, float x, float y)
   {
     RMatrix transf = new RMatrix();

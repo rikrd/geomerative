@@ -55,17 +55,18 @@ public class RPath extends RGeomElem
   boolean closed = false;
   
   /**
-   * Use this method to create a new path.
+   * Create a new empty path.
    * @eexample RPath
-   * @param x float, the x coordinate of the first point of the path
-   * @param y float, the y coordinate of the first point of the path
-   * @param RPath s, the object from which to make the copy
-   * @param RPoint p, the first point of the path
    */
   public RPath(){
     this.lastPoint = new RPoint();
   }
 
+  /**
+   * Create a new path, given an array of points.
+   * @eexample RPath
+   * @param points  the points of the new path
+   */
   public RPath(RPoint[] points){
     if(points == null) return;
     this.lastPoint = points[0];
@@ -75,15 +76,31 @@ public class RPath extends RGeomElem
     }
 
   }
-  
+
+  /**
+   * Create a new path, given the coordinates of the first point.
+   * @eexample RPath
+   * @param x  x coordinate of the first point of the new path
+   * @param y  y coordinate of the first point of the new path
+   */  
   public RPath(float x, float y){
     this.lastPoint = new RPoint(x,y);
   }
-  
+
+  /**
+   * Create a new path, given the first point.
+   * @eexample RPath
+   * @param p  first point of the new path
+   */    
   public RPath(RPoint p){
     this.lastPoint = p;
   }
   
+  /**
+   * Copy a path.
+   * @eexample RPath
+   * @param s  path to be copied
+   */    
   public RPath(RPath s){
     int numCommands = s.countCommands();
     if(numCommands!=0){
@@ -239,7 +256,6 @@ public class RPath extends RGeomElem
   /**
    * Use this to return the tangents on the curve.  It returns the vectors in the way of an array of RPoint.
    * @eexample getTangents
-   * @param segments int, the number of segments in which to divide each command.
    * @return RPoint[], the tangent vectors returned in an array.
    * */
   public RPoint[] getTangents(){
@@ -271,9 +287,9 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this to return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
+   * Return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
    * @eexample getPoint
-   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * @param t  the parameter of advancement on the curve. t must have values between 0 and 1.
    * @return RPoint, the vertice returned.
    * */
   public RPoint getPoint(float t){
@@ -335,8 +351,8 @@ public class RPath extends RGeomElem
   
   /**
    * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the path.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-   * @param RPoint p, the point for which to test containement..
-   * @return bool, true if the point is in the path.
+   * @param p  the point for which to test containement..
+   * @return boolean, true if the point is in the path.
    * */
   public boolean contains(RPoint p){
     float testx = p.x;
@@ -576,19 +592,26 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this method to add a new cubic bezier to the path. The first point of the bezier will be the last point added to the path.
+   * Add a new cubic bezier to the path. The first point of the bezier will be the last point added to the path.
    * @eexample addBezierTo
-   * @param float cp1x, the x coordinate of the first control point
-   * @param float cp1y, the y coordinate of the first control point
-   * @param float cp2x, the x coordinate of the second control point
-   * @param float cp2y, the y coordinate of the second control point
-   * @param float endx, the x coordinate of the ending point
-   * @param float endy, the y coordinate of the ending point
+   * @param cp1  first control point
+   * @param cp2  second control point
+   * @param end  end point
    */
   public void addBezierTo(RPoint cp1, RPoint cp2, RPoint end){
     this.addCommand(RCommand.createBezier4(lastPoint, cp1, cp2, end));
   }
-  
+
+  /**
+   * Add a new cubic bezier to the path. The first point of the bezier will be the last point added to the path.
+   * @eexample addBezierTo
+   * @param cp1x  the x coordinate of the first control point
+   * @param cp1y  the y coordinate of the first control point
+   * @param cp2x  the x coordinate of the second control point
+   * @param cp2y  the y coordinate of the second control point
+   * @param endx  the x coordinate of the end point
+   * @param endy  the y coordinate of the end point
+   */  
   public void addBezierTo(float cp1x, float cp1y, float cp2x, float cp2y, float endx, float endy){
     RPoint cp1 = new RPoint(cp1x, cp1y);
     RPoint cp2 = new RPoint(cp2x, cp2y);
@@ -598,17 +621,23 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this method to add a new quadratic bezier to the path. The first point of the bezier will be the last point added to the path.
+   * Add a new quadratic bezier to the path. The first point of the bezier will be the last point added to the path.
    * @eexample addQuadTo
-   * @param float cp1x, the x coordinate of the first control point
-   * @param float cp1y, the y coordinate of the first control point
-   * @param float endx, the x coordinate of the ending point
-   * @param float endy, the y coordinate of the ending point
+   * @param cp1  first control point
+   * @param end  end point
    */
   public void addQuadTo(RPoint cp1, RPoint end){
     this.addCommand(RCommand.createBezier3(lastPoint, cp1, end));
   }
-  
+
+  /**
+   * Add a new quadratic bezier to the path. The first point of the bezier will be the last point added to the path.
+   * @eexample addQuadTo
+   * @param cp1x  the x coordinate of the first control point
+   * @param cp1y  the y coordinate of the first control point
+   * @param endx  the x coordinate of the end point
+   * @param endy  the y coordinate of the end point
+   */  
   public void addQuadTo(float cp1x, float cp1y, float endx, float endy){
     RPoint cp1 = new RPoint(cp1x, cp1y);
     RPoint end = new RPoint(endx, endy);
@@ -617,15 +646,20 @@ public class RPath extends RGeomElem
   }
   
   /**
-   * Use this method to add a new line to the path. The first point of the line will be the last point added to the path.
+   * Add a new line to the path. The first point of the line will be the last point added to the path.
    * @eexample addLineTo
-   * @param float endx, the x coordinate of the ending point
-   * @param float endy, the y coordinate of the ending point
+   * @param end  end point
    */
   public void addLineTo(RPoint end){
     this.addCommand(RCommand.createLine(lastPoint, end));
   }
-  
+
+  /**
+   * Add a new line to the path. The first point of the line will be the last point added to the path.
+   * @eexample addLineTo
+   * @param endx  the x coordinate of the end point
+   * @param endy  the y coordinate of the end point
+   */  
   public void addLineTo(float endx, float endy){
     RPoint end = new RPoint(endx, endy);
     addLineTo(end);

@@ -48,16 +48,19 @@ public class RMesh extends RGeomElem
   // ----------------------
   
   /**
-   * Use this method to create a new empty mesh. 
+   * Create a new empty mesh. 
    * @eexample createaMesh
-   * @return RMesh, the mesh newly created
-   * @param RMesh m, the object of which to make a copy
    */
   public RMesh(){
     strips = null;
     type = RGeomElem.MESH;
   }
-  
+
+  /**
+   * Copy a mesh. 
+   * @eexample createaMesh
+   * @param m  the object of which to make a copy
+   */  
   public RMesh(RMesh m){
     if(m == null){
       return;
@@ -86,17 +89,17 @@ public class RMesh extends RGeomElem
   }
   
   /**
-   * Use this method to create a new strip. 
+   * Add a new strip. 
    * @eexample addStrip
-   * @param s RStrip, the strip to be added
+   * @param s  the strip to be added
    * @related addPoint ( )
-   */
-  public void addStrip(){
-    this.append(new RStrip());
-  }
-  
+   */  
   public void addStrip(RStrip s){
     this.append(s);
+  }
+
+  public void addStrip(){
+    this.append(new RStrip());
   }
   
   /**
@@ -110,12 +113,9 @@ public class RMesh extends RGeomElem
   }
   
   /**
-   * Use this method to add new points to the current strip. 
+   * Add a new point to the current strip. 
    * @eexample addPoint
-   * @param indStrip int, the index of the strip to which the point will be added
-   * @param p RPoint, the point to be added
-   * @param x float, the x coordinate of the point to be added
-   * @param y float, the y coordinate of the point to be added
+   * @param p  the point to be added
    * @related addStrip ( )
    * @related setCurrent ( )
    * @invisible
@@ -126,7 +126,16 @@ public class RMesh extends RGeomElem
     }
     this.strips[currentStrip].append(p);
   }
-  
+
+  /**
+   * Add a new point to the current strip. 
+   * @eexample addPoint
+   * @param x  the x coordinate of the point to be added
+   * @param y  the y coordinate of the point to be added
+   * @related addStrip ( )
+   * @related setCurrent ( )
+   * @invisible
+   */  
   public void addPoint(float x, float y){
     if (strips == null) {
       this.append(new RStrip());
@@ -134,6 +143,15 @@ public class RMesh extends RGeomElem
     this.strips[currentStrip].append(new RPoint(x,y));
   }
   
+  /**
+   * Add a new point to the given strip. 
+   * @eexample addPoint
+   * @param indStrip  the index of the strip to which the point will be added
+   * @param p  the point to be added
+   * @related addStrip ( )
+   * @related setCurrent ( )
+   * @invisible
+   */
   public void addPoint(int indStrip, RPoint p){
     if (strips == null) {
       this.append(new RStrip());
@@ -141,6 +159,16 @@ public class RMesh extends RGeomElem
     this.strips[indStrip].append(p);
   }
   
+  /**
+   * Add a new point to the given strip. 
+   * @eexample addPoint
+   * @param indStrip  the index of the strip to which the point will be added
+   * @param x  the x coordinate of the point to be added
+   * @param y  the y coordinate of the point to be added
+   * @related addStrip ( )
+   * @related setCurrent ( )
+   * @invisible
+   */
   public void addPoint(int indStrip, float x, float y){
     if (strips == null) {
       this.append(new RStrip());

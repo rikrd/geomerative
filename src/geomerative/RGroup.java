@@ -496,8 +496,8 @@ public class RGroup extends RGeomElem
 
   /**
    * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the group.
-   * @param RPoint p, the point for which to test containement..
-   * @return bool, true if the point is in the path.
+   * @param p  the point for which to test containement..
+   * @return boolean, true if the point is in the path.
    * */
   public boolean contains(RPoint p){
     float testx = p.x;
@@ -733,8 +733,7 @@ public class RGroup extends RGeomElem
   /**
    * Use this method to adapt a group of of figures to a group.
    * @eexample RGroup_adapt
-   * @param RPath sshp, the path to which to adapt
-   * @return RGroup, the adapted group
+   * @param grp  the path to which to adapt
    */
   public void adapt(RGroup grp, float wght, float lngthOffset) throws RuntimeException{
     RRectangle c = this.getBounds();
