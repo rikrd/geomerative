@@ -459,7 +459,7 @@ public class RG implements PConstants{
    * @related setAdaptor ( )
    */
   public static RShape adapt(RShape shp, RShape path){
-    RShape ret = new RShape(grp);
+    RShape ret = new RShape(shp);
     ret.adapt(path);
     return ret;
   }

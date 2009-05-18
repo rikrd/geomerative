@@ -1,5 +1,5 @@
 
-GEOMERATIVE_VERSION=26
+GEOMERATIVE_VERSION=27
 
 JAVAC_ARGS=-source 1.3 -target 1.1
 CLASSPATH=external/batikfont.jar:"$(PROCESSING_PATH)/lib/core.jar":"$(PROCESSING_PATH)/libraries/xml/library/xml.jar"
@@ -46,11 +46,11 @@ dist: library/geomerative.jar doc
 	cd distribution && zip -r geomerative-$(GEOMERATIVE_VERSION).zip .
 
 doc:
-	#mkdir -p $(DIST_DIR)
+	mkdir -p $(DIST_DIR)
 	#javadoc -classpath $(CLASSPATH) -doclet prodoc.StartDoclet -docletpath external -sourcepath src geomerative
-	#rm -rf $(DIST_DIR)/documentation
+	rm -rf $(DIST_DIR)/documentation
 	ant -f geomerative-javadoc.xml
-	mv -f documentation $(DIST_DIR)
+	cp -r documentation $(DIST_DIR)
 
 
 clean:
