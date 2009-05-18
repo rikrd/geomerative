@@ -46,11 +46,11 @@ dist: library/geomerative.jar doc
 	cd distribution && zip -r geomerative-$(GEOMERATIVE_VERSION).zip .
 
 doc:
-	mkdir -p $(DIST_DIR)
-	javadoc -classpath $(CLASSPATH) -doclet prodoc.StartDoclet -docletpath external -sourcepath src geomerative
-	rm -rf $(DIST_DIR)/documentation
-	mv -f src/documentation $(DIST_DIR)
-	cp templates/stylesheet.css $(DIST_DIR)/documentation/
+	#mkdir -p $(DIST_DIR)
+	#javadoc -classpath $(CLASSPATH) -doclet prodoc.StartDoclet -docletpath external -sourcepath src geomerative
+	#rm -rf $(DIST_DIR)/documentation
+	ant -f geomerative-javadoc.xml
+	mv -f documentation $(DIST_DIR)
 
 
 clean:

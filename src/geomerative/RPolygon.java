@@ -56,27 +56,12 @@ public class RPolygon extends RGeomElem
   // ----------------------
   // --- Public Methods ---
   // ----------------------
-  
+
   /**
-   * Use this method to create a new polygon.  If no argument is passed the polygon will be empty.
+   * Make a copy of the given polygon.
    * @eexample createPolygon
-   * @param RContour newcontour, the contour for the new polygon.
-   * @param RPolygon p, the object of which to make a copy
-   */
-  public RPolygon(){
-    contours = null;
-    type = RGeomElem.POLYGON;
-  }
-  
-  public RPolygon(RPoint[] points){
-    this(new RContour(points));
-  }
-  
-  public RPolygon(RContour newcontour){
-    this.append(newcontour);
-    type = RGeomElem.POLYGON;
-  }
-  
+   * @param p  the object of which to make a copy
+   */  
   public RPolygon(RPolygon p){
     if (p == null){
       return;
@@ -89,12 +74,38 @@ public class RPolygon extends RGeomElem
 
     setStyle(p);
   }
+
+  /**
+   * Create a new polygon given an array of points.
+   * @eexample createPolygon
+   * @param points  the points of the newly created polygon.
+   */    
+  public RPolygon(RPoint[] points){
+    this(new RContour(points));
+  }
+
+  /**
+   * Create a new polygon given a contour.
+   * @param newcontour  the contour for the new polygon.
+   */    
+  public RPolygon(RContour newcontour){
+    this.append(newcontour);
+    type = RGeomElem.POLYGON;
+  }
+
+  /**
+   * Create an empty polygon.
+   */  
+  public RPolygon(){
+    contours = null;
+    type = RGeomElem.POLYGON;
+  }
   
   /**
    * Use this method to create a new circle polygon. 
    * @eexample createCircle
-   * @param radius float, the radius of the circle
-   * @param detail int, the number of vertices of the polygon
+   * @param radius  the radius of the circle
+   * @param detail  the number of vertices of the polygon
    * @return RPolygon, the circular polygon newly created
    */
   static public RPolygon createCircle(float x, float y, float radius,int detail){
@@ -124,10 +135,10 @@ public class RPolygon extends RGeomElem
   /**
    * Use this method to create a new rectangle polygon. 
    * @eexample createRectangle
-   * @param x float, the upper-left corner x coordinate
-   * @param y float, the upper-left corner y coordinate
-   * @param w float, the width
-   * @param h float, the height
+   * @param x  the upper-left corner x coordinate
+   * @param y  the upper-left corner y coordinate
+   * @param w  the width
+   * @param h  the height
    * @return RPolygon, the circular polygon newly created
    */
   static public RPolygon createRectangle(float x, float y, float w,float h){
@@ -147,9 +158,9 @@ public class RPolygon extends RGeomElem
   /**
    * Use this method to create a new starform polygon. 
    * @eexample createStar
-   * @param radiusBig float, the outter radius of the star polygon
-   * @param radiusSmall float, the inner radius of the star polygon
-   * @param spikes int, the amount of spikes on the star polygon
+   * @param radiusBig  the outter radius of the star polygon
+   * @param radiusSmall  the inner radius of the star polygon
+   * @param spikes  the amount of spikes on the star polygon
    * @return RPolygon, the starform polygon newly created
    */
   static public RPolygon createStar(float x, float y, float radiusBig, float radiusSmall, int spikes){
@@ -176,9 +187,9 @@ public class RPolygon extends RGeomElem
   /**
    * Use this method to create a new ring polygon. 
    * @eexample createRing
-   * @param radiusBig float, the outter radius of the ring polygon
-   * @param radiusSmall float, the inner radius of the ring polygon
-   * @param detail int, the number of vertices on each contour of the ring
+   * @param radiusBig  the outter radius of the ring polygon
+   * @param radiusSmall  the inner radius of the ring polygon
+   * @param detail  the number of vertices on each contour of the ring
    * @return RPolygon, the ring polygon newly created
    */
   static public RPolygon createRing(float x, float y, float radiusBig, float radiusSmall, int detail){
@@ -216,7 +227,7 @@ public class RPolygon extends RGeomElem
   /**
    * Use this method to get the centroid of the element.
    * @eexample RGroup_getCentroid
-   * @return RPoint, the centroid point of the element
+   * @return RPo the centroid point of the element
    * @related getBounds ( )
    * @related getCenter ( )
    */
@@ -240,7 +251,7 @@ public class RPolygon extends RGeomElem
   /**
    * Use this method to count the number of contours in the polygon. 
    * @eexample countContours
-   * @return int, the number countours in the polygon
+   * @return int  the number countours in the polygon
    * @related addContour ( )
    */
   public int countContours(){
@@ -252,22 +263,35 @@ public class RPolygon extends RGeomElem
   }
   
   /**
-   * Use this method to create a new contour. 
+   * Add a new contour to the polygon.
    * @eexample addContour
-   * @param c RContour, the contour to be added
+   * @param c  the contour to be added
+   * @related addPoint ( )
+   */
+  public void addContour(RContour c){
+    this.append(c);
+  }
+
+  /**
+   * Add an empty contour to the polygon.
+   * @eexample addContour
    * @related addPoint ( )
    */
   public void addContour(){
     this.append(new RContour());
   }
-  
+
+  /**
+   * Add a new contour to the polygon given an array of points.
+   * @eexample addContour
+   * @param points  the points of the new contour to be added
+   * @related addPoint ( )
+   */
   public void addContour(RPoint[] points){
     this.append(new RContour(points));
   }
   
-  public void addContour(RContour c){
-    this.append(c);
-  }
+  
   
   /**
    * Use this method to set the current contour to which append points. 
@@ -279,12 +303,9 @@ public class RPolygon extends RGeomElem
   }
   
   /**
-   * Use this method to add new points to the current contour. 
+   * Add a new point to the current contour. 
    * @eexample addPoint
-   * @param indContour int, the index of the contour to which the point will be added
-   * @param p RPoint, the point to be added
-   * @param x float, the x coordinate of the point to be added
-   * @param y float, the y coordinate of the point to be added
+   * @param p  the point to be added
    * @related addContour ( )
    * @related setCurrent ( )
    */
@@ -294,21 +315,46 @@ public class RPolygon extends RGeomElem
     }
     this.contours[currentContour].append(p);
   }
-  
+
+  /**
+   * Add a new point to the current contour. 
+   * @eexample addPoint
+   * @param x  the x coordinate of the point to be added
+   * @param y  the y coordinate of the point to be added
+   * @related addContour ( )
+   * @related setCurrent ( )
+   */  
   public void addPoint(float x, float y){
     if (contours == null) {
       this.append(new RContour());
     }
     this.contours[currentContour].append(new RPoint(x,y));
   }
-  
+
+  /**
+   * Add a new point to the selected contour.
+   * @eexample addPoint
+   * @param indContour  the index of the contour to which the point will be added
+   * @param p  the point to be added
+   * @related addContour ( )
+   * @related setCurrent ( )
+   */  
   public void addPoint(int indContour, RPoint p){
     if (contours == null) {
       this.append(new RContour());
     }
     this.contours[indContour].append(p);
   }
-  
+
+  /**
+   * Add a new point to the selected contour. 
+   * @eexample addPoint
+   * @param indContour  the index of the contour to which the point will be added
+   * @param x  the x coordinate of the point to be added
+   * @param y  the y coordinate of the point to be added
+   * @related addContour ( )
+   * @related setCurrent ( )
+   */  
   public void addPoint(int indContour, float x, float y){
     if (contours == null) {
       this.append(new RContour());

@@ -1,31 +1,47 @@
 <project name="geomerative" default="build" basedir="./">
 
-	<path id="library-classpath">
-		<fileset dir="library" >
-			<include name="batikfont.jar"/>
-			<include name="geomerative.jar"/>
-		</fileset>
-	</path>
+  <property environment="env"/>
 
-	<target name="build" description="generate the distribution" >
-  	
-  	<mkdir dir="javadoc" />
-  	
- 	<javadoc bottom="Geomerative by Ricard Marxer, http://www.ricardmarxer.com/geomerative/"
-			 destdir="./javadoc" 
-			 verbose="false" 
-			 doctitle="Geomerative Javadocs" 
-			 public="true" version="false" 
-			 windowtitle="Geomerative Javadocs"
-                         stylesheetfile="stylesheet.css">
- 		<fileset dir="src" defaultexcludes="yes">
-			<include name="**/*"/>
-		</fileset>
-		<classpath>
-			<path refid="library-classpath" />
-		</classpath>
- 	</javadoc>
- 	
- 	</target>
+  <path id="library-classpath">
+    <fileset dir="library" >
+      <include name="batikfont.jar"/>
+      <include name="geomerative.jar"/>
+    </fileset>
+  </path>
+  
+  <path id="processing-core">
+    <fileset dir="${env.PROCESSING_PATH}">
+      <include name="lib/core.jar"/>
+    </fileset>
+  </path>
+  
+  
+  <target name="build" description="generate the distribution" >
+    
+    <mkdir dir="documentation" />
+    
+    <javadoc bottom="Geomerative by Ricard Marxer, http://www.ricardmarxer.com/geomerative/"
+	     destdir="./documentation" 
+	     verbose="false" 
+	     doctitle="Geomerative Reference" 
+	     public="true" version="false" 
+	     windowtitle="Geomerative Reference"
+             stylesheetfile="stylesheet.css">
+      <fileset dir="src" defaultexcludes="yes">
+	<include name="**/*"/>
+      </fileset>
+      <classpath>
+	<path refid="library-classpath" />
+	<path refid="processing-core" />
+      </classpath>
 
+      <tag name="invisible" scope="all" enabled="false"/>
+      <tag name="related" scope="all" enabled="false"/>
+      <tag name="extended" scope="all" enabled="false"/>
+      <tag name="usage" scope="all" enabled="false"/>
+      <tag name="eexample" scope="all" enabled="false"/>
+    </javadoc>
+    
+  </target>
+  
 </project>

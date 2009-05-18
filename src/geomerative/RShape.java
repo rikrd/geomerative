@@ -97,10 +97,10 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new ring polygon. 
    * @eexample createRing
-   * @param float x, x coordinate of the center of the shape
-   * @param float y, y coordinate of the center of the shape
-   * @param widthBig float, the outter width of the ring polygon
-   * @param widthSmall float, the inner width of the ring polygon
+   * @param x  x coordinate of the center of the shape
+   * @param y  y coordinate of the center of the shape
+   * @param widthBig  the outter width of the ring polygon
+   * @param widthSmall  the inner width of the ring polygon
    * @return RShape, the ring polygon newly created
    */
   static public RShape createRing(float x, float y, float widthBig, float widthSmall){
@@ -117,9 +117,9 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new starform polygon. 
    * @eexample createStar
-   * @param widthBig float, the outter width of the star polygon
-   * @param widthSmall float, the inner width of the star polygon
-   * @param spikes int, the amount of spikes on the star polygon
+   * @param widthBig  the outter width of the star polygon
+   * @param widthSmall  the inner width of the star polygon
+   * @param spikes  the amount of spikes on the star polygon
    * @return RShape, the starform polygon newly created
    */
   static public RShape createStar(float x, float y, float widthBig, float widthSmall, int spikes){
@@ -142,10 +142,10 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new circle shape. 
    * @eexample createRectangle
-   * @param x float, the x position of the rectangle
-   * @param y float, the y position of the rectangle
-   * @param w float, the width of the rectangle
-   * @param h float, the height of the rectangle
+   * @param x  the x position of the rectangle
+   * @param y  the y position of the rectangle
+   * @param w  the width of the rectangle
+   * @param h  the height of the rectangle
    * @return RShape, the rectangular shape just created
    */
   static public RShape createRectangle(float x, float y, float w, float h){
@@ -161,10 +161,10 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new elliptical shape. 
    * @eexample createEllipse
-   * @param x float, the x position of the ellipse
-   * @param y float, the y position of the ellipse
-   * @param w float, the width of the ellipse
-   * @param h float, the height of the ellipse
+   * @param x  the x position of the ellipse
+   * @param y  the y position of the ellipse
+   * @param w  the width of the ellipse
+   * @param h  the height of the ellipse
    * @return RShape, the elliptical shape just created
    */
   static public RShape createEllipse(float x, float y, float w, float h){
@@ -270,18 +270,18 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new path.  The first point of the new path will be set to (0,0).  Use addMoveTo ( ) in order to add a new path with a different first point.
    * @eexample addPath
-   * @param s RPath, the path to be added.
+   * @param s  the path to be added.
    * @related setPath ( )
    * @related addMoveTo ( )
    */
-  public void addPath(){
-    this.append(new RPath());
-  }
-  
   public void addPath(RPath s){
     this.append(s);
   }
 
+  public void addPath(){
+    this.append(new RPath());
+  }
+  
 
   public void addChild(){
     this.appendChild(new RShape());
@@ -307,8 +307,8 @@ public class RShape extends RGeomElem
   /**
    * Use this method to add a new moveTo command to the shape.  The command moveTo acts different to normal commands, in order to make a better analogy to its borthers classes Polygon and Mesh.  MoveTo creates a new path in the shape.  It's similar to adding a new contour to a polygon.
    * @eexample addMoveTo
-   * @param endx float, the x coordinate of the first point for the new path.
-   * @param endy float, the y coordinate of the first point for the new path.
+   * @param endx  the x coordinate of the first point for the new path.
+   * @param endy  the y coordinate of the first point for the new path.
    * @related addLineTo ( )
    * @related addQuadTo ( )
    * @related addBezierTo ( )
@@ -332,8 +332,8 @@ public class RShape extends RGeomElem
   /**
    * Use this method to add a new lineTo command to the current path.  This will add a line from the last point added to the point passed as argument.
    * @eexample addLineTo
-   * @param endx float, the x coordinate of the ending point of the line.
-   * @param endy float, the y coordinate of the ending point of the line.
+   * @param endx  the x coordinate of the ending point of the line.
+   * @param endy  the y coordinate of the ending point of the line.
    * @related addMoveTo ( )
    * @related addQuadTo ( )
    * @related addBezierTo ( )
@@ -354,10 +354,10 @@ public class RShape extends RGeomElem
   /**
    * Use this method to add a new quadTo command to the current path.  This will add a quadratic bezier from the last point added with the control and ending points passed as arguments.
    * @eexample addQuadTo
-   * @param cp1x float, the x coordinate of the control point of the bezier.
-   * @param cp1y float, the y coordinate of the control point of the bezier.
-   * @param endx float, the x coordinate of the ending point of the bezier.
-   * @param endy float, the y coordinate of the ending point of the bezier.
+   * @param cp1x  the x coordinate of the control point of the bezier.
+   * @param cp1y  the y coordinate of the control point of the bezier.
+   * @param endx  the x coordinate of the ending point of the bezier.
+   * @param endy  the y coordinate of the ending point of the bezier.
    * @related addMoveTo ( )
    * @related addLineTo ( )
    * @related addBezierTo ( )
@@ -378,12 +378,12 @@ public class RShape extends RGeomElem
   /**
    * Use this method to add a new bezierTo command to the current path.  This will add a cubic bezier from the last point added with the control and ending points passed as arguments.
    * @eexample addArcTo
-   * @param cp1x float, the x coordinate of the first control point of the bezier.
-   * @param cp1y float, the y coordinate of the first control point of the bezier.
-   * @param cp2x float, the x coordinate of the second control point of the bezier.
-   * @param cp2y float, the y coordinate of the second control point of the bezier.
-   * @param endx float, the x coordinate of the ending point of the bezier.
-   * @param endy float, the y coordinate of the ending point of the bezier.
+   * @param cp1x  the x coordinate of the first control point of the bezier.
+   * @param cp1y  the y coordinate of the first control point of the bezier.
+   * @param cp2x  the x coordinate of the second control point of the bezier.
+   * @param cp2y  the y coordinate of the second control point of the bezier.
+   * @param endx  the x coordinate of the ending point of the bezier.
+   * @param endy  the y coordinate of the ending point of the bezier.
    * @related addMoveTo ( )
    * @related addLineTo ( )
    * @related addQuadTo ( )
@@ -668,9 +668,9 @@ public class RShape extends RGeomElem
 
   /**
    * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the shape.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-   * @param float x, the X coordinate of the point for which to test containement.
-   * @param float y, the Y coordinate of the point for which to test containement.
-   * @return bool, true if the point is in the path.
+   * @param x  the X coordinate of the point for which to test containement.
+   * @param y  the Y coordinate of the point for which to test containement.
+   * @return boolean, true if the point is in the path.
    * */
   public boolean contains(float x, float y){
     return contains(new RPoint(x, y));
@@ -678,8 +678,8 @@ public class RShape extends RGeomElem
 
   /**
    * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the shape.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-   * @param RPoint p, the point for which to test containement..
-   * @return bool, true if the point is in the path.
+   * @param p  the point for which to test containement..
+   * @return boolean, true if the point is in the path.
    * */
   public boolean contains(RPoint p){
     float testx = p.x;
@@ -920,7 +920,7 @@ public class RShape extends RGeomElem
   /**
    * Use this to insert a split point into the shape.
    * @eexample insertHandle
-   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * @param t  the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
   public void insertHandle(float t){
     if((t == 0F) || (t == 1F)){
@@ -947,7 +947,7 @@ public class RShape extends RGeomElem
   /**
    * Use this to insert a split point into each command of the shape.
    * @eexample insertHandleInPaths
-   * @param t float, the parameter of advancement on the curve. t must have values between 0 and 1.
+   * @param t  the parameter of advancement on the curve. t must have values between 0 and 1.
    * */
   public void insertHandleInPaths(float t){
     if((t == 0F) || (t == 1F)){
@@ -1049,8 +1049,7 @@ public class RShape extends RGeomElem
   /**
    * Use this method to adapt a group of of figures to a shape.
    * @eexample RGroup_adapt
-   * @param RPath sshp, the path to which to adapt
-   * @return RGroup, the adapted group
+   * @param shp  the path to which to adapt
    */
   public void adapt(RShape shp, float wght, float lngthOffset) throws RuntimeException{
     RRectangle c = this.getBounds();

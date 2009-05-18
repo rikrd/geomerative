@@ -52,17 +52,18 @@ public class RStrip
    * Use this method to create a new strip.
    * @eexample RStrip ( )
    * @related addVertex ( )
-   * @param RStrip s, the object of which to make a copy
+   * @param s  the object of which to make a copy
    */
-  public RStrip(){
-    vertices=null;
-  }
-  
   public RStrip(RStrip s){
     for(int i=0;i<s.countVertices();i++){
       this.append(new RPoint(s.vertices[i]));
     }
   }
+
+  public RStrip(){
+    vertices=null;
+  }
+  
   
   /**
    * Use this method to count the number of vertices in the strip. 

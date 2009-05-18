@@ -153,14 +153,18 @@ public class RCommand extends RGeomElem
   }
   
   /**
-   * Use this constructor to make a copy of another RCommand object.  This can be useful when wanting to transform one but at the same time keep the original.
-   * @param RCommand c, the object of which to make the copy
+   * Create an empty command
    * @invisible
    */
   public RCommand(){
     controlPoints = null;
   }
-  
+
+  /**
+   * Make a copy of another RCommand object.  This can be useful when wanting to transform one but at the same time keep the original.
+   * @param c  the object of which to make the copy
+   * @invisible
+   */
   public RCommand(RCommand c){
     this.startPoint = new RPoint(c.startPoint);
     for(int i=0;i<c.countControlPoints();i++){
@@ -169,7 +173,12 @@ public class RCommand extends RGeomElem
     this.endPoint = new RPoint(c.endPoint);
     this.commandType = c.commandType;
   }
-  
+
+  /**
+   * Make a copy of another RCommand object with a specific start point.
+   * @param c  the object of which to make the copy
+   * @param sp  the start point of the command to be created
+   */
   public RCommand(RCommand c, RPoint sp){
     this.startPoint = sp;
     for(int i=0;i<c.countControlPoints();i++){
@@ -179,16 +188,34 @@ public class RCommand extends RGeomElem
     this.commandType = c.commandType;
   }
 
+  /**
+   * Create a LINETO command object with specific start and end points.
+   * @param sp  the start point of the command to be created
+   * @param ep  the end point of the command to be created
+   */
   public RCommand(RPoint sp, RPoint ep){
     this.startPoint = sp;
     this.endPoint = ep;
     this.commandType = LINETO;
   }
 
+  /**
+   * Create a LINETO command object with specific start and end point coordinates.
+   * @param spx  the x coordinate of the start point of the command to be created
+   * @param spy  the y coordinate of the start point of the command to be created
+   * @param epx  the x coordinate of the end point of the command to be created
+   * @param epy  the y coordinate of the end point of the command to be created
+   */
   public RCommand(float spx, float spy, float epx, float epy){
     this(new RPoint(spx, spy), new RPoint(epx, epy));
   }
 
+  /**
+   * Create a QUADBEZIERTO command object with specific start, control and end points.
+   * @param sp  the start point of the command to be created
+   * @param cp1  the first control point of the command to be created
+   * @param ep  the end point of the command to be created
+   */
   public RCommand(RPoint sp, RPoint cp1, RPoint ep){
     this.startPoint = sp;
     this.append(cp1);
@@ -196,11 +223,27 @@ public class RCommand extends RGeomElem
     this.commandType = QUADBEZIERTO;
   }
 
+  /**
+   * Create a QUADBEZIERTO command object with specific start, control and end point coordinates.
+   * @param spx  the x coordinate of the start point of the command to be created
+   * @param spy  the y coordinate of the start point of the command to be created
+   * @param cp1x  the x coordinate of the first control point of the command to be created
+   * @param cp1y  the y coordinate of the first control point of the command to be created
+   * @param epx  the x coordinate of the end point of the command to be created
+   * @param epy  the y coordinate of the end point of the command to be created
+   */
   public RCommand(float spx, float spy, float cp1x, float cp1y, float epx, float epy){
     this(new RPoint(spx, spy), new RPoint(cp1x, cp1y), new RPoint(epx, epy));
   }
 
 
+  /**
+   * Create a CUBICBEZIERTO command object with specific start, controls and end point coordinates.
+   * @param sp  the start point of the command to be created
+   * @param cp1  the first control point of the command to be created
+   * @param cp2  the second control point of the command to be created
+   * @param ep  the end point of the command to be created
+   */
   public RCommand(RPoint sp, RPoint cp1, RPoint cp2, RPoint ep){
     this.startPoint = sp;
     this.append(cp1);
@@ -209,6 +252,17 @@ public class RCommand extends RGeomElem
     this.commandType = CUBICBEZIERTO;
   }
 
+  /**
+   * Create a CUBICBEZIERTO command object with specific start, controls and end point coordinates.
+   * @param spx  the x coordinate of the start point of the command to be created
+   * @param spy  the y coordinate of the start point of the command to be created
+   * @param cp1x  the x coordinate of the first control point of the command to be created
+   * @param cp1y  the y coordinate of the first control point of the command to be created
+   * @param cp2x  the x coordinate of the second control point of the command to be created
+   * @param cp2y  the y coordinate of the second control point of the command to be created
+   * @param epx  the x coordinate of the end point of the command to be created
+   * @param epy  the y coordinate of the end point of the command to be created
+   */
   public RCommand(float spx, float spy, float cp1x, float cp1y, float cp2x, float cp2y, float epx, float epy){
     this(new RPoint(spx, spy), new RPoint(cp1x, cp1y), new RPoint(cp2x, cp2y), new RPoint(epx, epy));
   }
@@ -236,7 +290,7 @@ public class RCommand extends RGeomElem
   /**
    * Use this to set the segmentator graphic context.
    * @eexample setSegmentGraphic
-   * @param PGraphics g, graphics object too which to adapt the segmentation of the command.
+   * @param g  graphics object too which to adapt the segmentation of the command.
    * */
   public static void setSegmentGraphic(PGraphics g){
     // Set the segmentApproxScale from the graphic context g
@@ -258,7 +312,7 @@ public class RCommand extends RGeomElem
   /**
    * Use this to set the segmentator angle tolerance for the ADAPTATIVE segmentator and set the segmentator to ADAPTATIVE.
    * @eexample setSegmentAngle
-   * @param float segmentAngleTolerance, an angle from 0 to PI/2 it defines the maximum angle between segments.
+   * @param segmentAngleTolerance  an angle from 0 to PI/2 it defines the maximum angle between segments.
    * */
   public static void setSegmentAngle(float segmentAngleTolerance){
     //segmentType = ADAPTATIVE;
@@ -269,7 +323,7 @@ public class RCommand extends RGeomElem
   /**
    * Use this to set the segmentator length for the UNIFORMLENGTH segmentator and set the segmentator to UNIFORMLENGTH.
    * @eexample setSegmentLength
-   * @param float segmentLngth, the length of each resulting segment.
+   * @param segmentLngth  the length of each resulting segment.
    * */
   public static void setSegmentLength(float segmentLngth){
     //segmentType = UNIFORMLENGTH;
@@ -283,7 +337,7 @@ public class RCommand extends RGeomElem
   /**
    * Use this to set the segmentator offset for the UNIFORMLENGTH segmentator and set the segmentator to UNIFORMLENGTH.
    * @eexample setSegmentOffset
-   * @param float segmentOffst, the offset of the first point on the path.
+   * @param segmentOffst  the offset of the first point on the path.
    * */
   public static void setSegmentOffset(float segmentOffst){
     //segmentType = UNIFORMLENGTH;
@@ -297,7 +351,7 @@ public class RCommand extends RGeomElem
   /**
    * Use this to set the segmentator step for the UNIFORMSTEP segmentator and set the segmentator to UNIFORMSTEP.
    * @eexample setSegmentStep
-   * @param float segmentStps, if a float from +0.0 to 1.0 is passed it's considered as the step, else it's considered as the number of steps.  When a value of 0.0 is used the steps will be calculated automatically depending on an estimation of the length of the curve.  The special value -1 is the same as 0.0 but also turning of the segmentation of lines (faster segmentation).
+   * @param segmentStps  if a float from +0.0 to 1.0 is passed it's considered as the step, else it's considered as the number of steps.  When a value of 0.0 is used the steps will be calculated automatically depending on an estimation of the length of the curve.  The special value -1 is the same as 0.0 but also turning of the segmentation of lines (faster segmentation).
    * */
   public static void setSegmentStep(float segmentStps){
     //segmentType = UNIFORMSTEP;
@@ -415,13 +469,12 @@ public class RCommand extends RGeomElem
   /**
    * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
    * @eexample getPoints
-   * @param segments int, the number of segments in which to divide the curve.
    * @return RPoint[], the vertices returned in an array.
    * */
   public RPoint[] getPoints(){
     return getPoints(true);
   }
-  
+
   protected RPoint[] getPoints(boolean resetSegmentator){
     
     if(resetSegmentator){
@@ -726,7 +779,7 @@ public class RCommand extends RGeomElem
   /**
    * Use this method to draw the command. 
    * @eexample drawCommand
-   * @param g PGraphics, the graphics object on which to draw the command
+   * @param a  the applet object on which to draw the command
    */
   public void draw(PApplet a){
     RPoint[] points = getPoints();
@@ -765,7 +818,7 @@ public class RCommand extends RGeomElem
   /**
    * Returns two commands resulting of splitting the command.
    * @eexample split
-   * @param segments int, the number of segments in which to divide the curve.
+   * @param t  the advancement on the curve where command should be splitted.
    * @return RPoint[], the tangent vectors returned in an array.
    * */  
   public RCommand[] split(float t){
