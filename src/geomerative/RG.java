@@ -108,7 +108,7 @@ public class RG implements PConstants{
     private static final long serialVersionUID = -3710605630786298672L;
 
     FontNotLoadedException(){
-      super("Must load a font using RG.loadFont(filename, size) first.");
+      super("Use RG.loadFont(filename) and RG.textFont(font, size) to load and set fonts first.");
     }
   }
 
@@ -128,7 +128,7 @@ public class RG implements PConstants{
   static RShape group;
   static RPath path;
 
-  static RFont fntLoader;
+  static RFont fntLoader = null;
 
   static boolean shapeBegin = false;
 
@@ -141,7 +141,10 @@ public class RG implements PConstants{
    * @return RFont, the font object
    */
   public static RFont loadFont(String fontFile){
-    return new RFont(fontFile);
+    RFont newFntLoader = new RFont(fontFile);
+    if (fntLoader == null) fntLoader = newFntLoader;
+    return newFntLoader;
+    
   }
 
   /**
@@ -459,7 +462,7 @@ public class RG implements PConstants{
    * @related setAdaptor ( )
    */
   public static RShape adapt(RShape shp, RShape path){
-    RShape ret = new RShape(grp);
+    RShape ret = new RShape(shp);
     ret.adapt(path);
     return ret;
   }
