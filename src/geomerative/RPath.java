@@ -194,10 +194,9 @@ public class RPath extends RGeomElem
           RPoint lastp = result[result.length-1];
           RPoint firstp = newPoints[0];
           int overlap = 0;
-          if((lastp.x == firstp.x) && (lastp.y == firstp.y))
-            {
-              overlap = 1;
-            }
+          if((lastp.x == firstp.x) && (lastp.y == firstp.y)) {
+            overlap = 1;
+          }
           newresult = new RPoint[result.length + newPoints.length - overlap];
           System.arraycopy(result,0,newresult,0,result.length);
           System.arraycopy(newPoints,overlap,newresult,result.length,newPoints.length - overlap);
@@ -671,15 +670,13 @@ public class RPath extends RGeomElem
       return;
     }
     
-    if((commands[commands.length-1].endPoint.x == commands[0].startPoint.x) && (commands[commands.length-1].endPoint.y == commands[0].startPoint.y))
-      {
-        commands[commands.length-1].endPoint = new RPoint(commands[0].startPoint.x, commands[0].startPoint.y);
-      }else{
+    if((commands[commands.length-1].endPoint.x == commands[0].startPoint.x) && (commands[commands.length-1].endPoint.y == commands[0].startPoint.y)) {
+      commands[commands.length-1].endPoint = new RPoint(commands[0].startPoint.x, commands[0].startPoint.y);
+      lastPoint = commands[commands.length-1].endPoint;
+    }else{
       addLineTo(new RPoint(commands[0].startPoint.x,commands[0].startPoint.y));
     }
     
-    lastPoint = commands[commands.length-1].endPoint;
-
     closed = true;
   }
   
