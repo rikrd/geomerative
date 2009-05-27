@@ -108,7 +108,7 @@ public class RG implements PConstants{
     private static final long serialVersionUID = -3710605630786298672L;
 
     FontNotLoadedException(){
-      super("Must load a font using RG.loadFont(filename, size) first.");
+      super("Use RG.loadFont(filename) and RG.textFont(font, size) to load and set fonts first.");
     }
   }
 
@@ -119,18 +119,14 @@ public class RG implements PConstants{
     private static final long serialVersionUID = -3710605630786298673L;
 
     NoPathInitializedException(){
-      super("Must initialize a path by calling RG.beginShape() or RG.beginPath() first.");
+      super("Must initialize a path by calling RG.beginShape() first.");
     }
   }
 
 
   static RShape shape;
-  static RShape group;
-  static RPath path;
 
-  static RFont fntLoader;
-
-  static boolean shapeBegin = false;
+  static RFont fntLoader = null;
 
 
   // Font methods
@@ -141,7 +137,10 @@ public class RG implements PConstants{
    * @return RFont, the font object
    */
   public static RFont loadFont(String fontFile){
-    return new RFont(fontFile);
+    RFont newFntLoader = new RFont(fontFile);
+    if (fntLoader == null) fntLoader = newFntLoader;
+    return newFntLoader;
+    
   }
 
   /**
@@ -270,7 +269,6 @@ public class RG implements PConstants{
 
   public static void breakShape(){
     shape.addPath();
-    shapeBegin = true;
   }
 
   /**
@@ -280,18 +278,10 @@ public class RG implements PConstants{
    * @param y  the y coordinate of the vertex
    */  
   public static void vertex(float x, float y){
-    if(path == null){
-      if (shape.countPaths() == 0){
-        shape.addMoveTo(x, y);
-      }else{
-        if (shapeBegin){
-          shape.addMoveTo(x, y);
-          shapeBegin = false;
-        }
-        shape.addLineTo(x, y);
-      }
+    if (shape.countPaths() == 0){
+      shape.addMoveTo(x, y);
     }else{
-      path.addLineTo(x, y);
+      shape.addLineTo(x, y);
     }
   }
 
@@ -306,14 +296,10 @@ public class RG implements PConstants{
    * @param y  the y coordinate of the end point
    */  
   public static void bezierVertex(float cx1, float cy1, float cx2, float cy2, float x, float y){
-    if(path == null){
-      if (shape.countPaths() == 0){
-        throw new NoPathInitializedException();
-      }else{
-        shape.addBezierTo(cx1, cy1, cx2, cy2, x, y);
-      }
+    if (shape.countPaths() == 0){
+      throw new NoPathInitializedException();
     }else{
-      path.addBezierTo(cx1, cy1, cx2, cy2, x, y);
+      shape.addBezierTo(cx1, cy1, cx2, cy2, x, y);
     }
   }
 
@@ -323,16 +309,7 @@ public class RG implements PConstants{
    * @param g  the canvas on which to draw.  By default it draws on the screen
    */
   public static void endShape(PGraphics g){
-    if(group == null){
-      // We are not inside a beginGroup
-      shape.draw(g);
-    }else{
-      // We are inside a beginGroup
-      group.addChild(shape);
-      
-      shape = null;
-    }
-    
+    shape.draw(g);
     shape = null;
   }
 
@@ -351,7 +328,7 @@ public class RG implements PConstants{
     returningGroup.addChild(shape);
 
     shape = null;
-
+    
     returningGroup.updateOrigParams();
 
     return returningGroup;    
