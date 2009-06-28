@@ -312,6 +312,10 @@ public abstract class RGeomElem
     style.setAlpha(str);
   }
 
+  public RStyle getStyle() {
+    return this.style;
+  }
+
   protected void saveContext(PGraphics g){
     style.saveContext(g);
   }
@@ -956,4 +960,52 @@ public abstract class RGeomElem
     transform(transf);
   }
 
+  /**
+   * Apply a horizontal skew to the element, given skewing angle
+   * @eexample RMatrix_skewing
+   * @param angle  skewing angle
+   * @usage Geometry
+   * @related rotate ( )
+   * @related scale ( )
+   * @related translate ( )
+   */
+  public void skewX(float angle)
+  {
+    RMatrix transf = new RMatrix();
+    transf.skewY(angle);
+    transform(transf);
+  }
+  
+  /**
+   * Apply a vertical skew to the element, given skewing angle
+   * @eexample RMatrix_skewing
+   * @param angle  skewing angle
+   * @usage Geometry
+   * @related rotate ( )
+   * @related scale ( )
+   * @related translate ( )
+   */
+  public void skewY(float angle)
+  {
+    RMatrix transf = new RMatrix();
+    transf.skewY(angle);
+    transform(transf);
+  }
+  
+  /**
+   * Apply a shear to the element, given shearing factors
+   * @eexample RMatrix_translate
+   * @param shx  x coordinate shearing
+   * @param shy  y coordinate shearing
+   * @usage Geometry
+   * @related rotate ( )
+   * @related scale ( )
+   * @related translate ( )
+   */
+  public void shear(float shx, float shy)
+  {
+    RMatrix transf = new RMatrix();
+    transf.shear(shx, shy);
+    transform(transf);
+  }
 }
