@@ -37,7 +37,7 @@ void draw(){
   noStroke();
   
   // Get the intersection points
-  RPoint[] ps = cuttingLine.intersectionPoints(shp);
+  RPoint[] ps = shp.getIntersections(cuttingLine);
   if (ps != null) {
     for (int i=0; i<ps.length; i++) {
       ellipse(ps[i].x, ps[i].y, 10, 10);
