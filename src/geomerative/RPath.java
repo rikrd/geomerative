@@ -284,6 +284,37 @@ public class RPath extends RGeomElem
     }
     return result;
   }
+
+  /**
+   * Use this to return the tangents on the curve.  It returns the vectors in the way of an array of RPoint.
+   * @eexample getTangents
+   * @return RPoint[], the tangent vectors returned in an array.
+   * */
+  public RPoint[] intersection(RCommand other){
+    int numCommands = countCommands();
+    if(numCommands == 0){
+      return null;
+    }
+    
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    for(int i=0;i<numCommands;i++){
+      RPoint[] newPoints = commands[i].intersection(other);
+      if(newPoints!=null) {
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    return result;
+  }
+
   
   /**
    * Return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.

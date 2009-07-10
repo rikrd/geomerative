@@ -1627,4 +1627,100 @@ public class RCommand extends RGeomElem
     }
     this.curvePoints=newcurvePoints;
   }
+
+  public RPoint[] intersection(RCommand other)
+  {
+    RPoint[] result = null;
+
+    switch (commandType) {
+    case LINETO:
+      switch (other.getCommandType()) {
+      case LINETO:
+        result = lineLine(this, other);
+        break;
+        
+      case QUADBEZIERTO:
+        result = lineQuad(this, other);
+        break;
+
+      case CUBICBEZIERTO:
+        result = lineCubic(this, other);
+        break;
+      }
+      break;
+      
+    case QUADBEZIERTO:
+      switch (other.getCommandType()) {
+      case LINETO:
+        result = lineQuad(other, this);
+        break;
+        
+      case QUADBEZIERTO:
+        result = quadQuad(this, other);
+        break;
+
+      case CUBICBEZIERTO:
+        result = quadCubic(this, other);
+        break;
+      }
+      break;
+
+    case CUBICBEZIERTO:
+      switch (other.getCommandType()) {
+      case LINETO:
+        result = lineCubic(other, this);
+        break;
+        
+      case QUADBEZIERTO:
+        result = quadCubic(other, this);
+        break;
+
+      case CUBICBEZIERTO:
+        result = cubicCubic(this, other);
+        break;
+      }
+      break;
+    }
+
+    return result;
+  }
+
+  public static RPoint[] lineLine(RCommand c1, RCommand c2) {
+    RPoint a = new RPoint(c1.startPoint);
+    RPoint b = new RPoint(c1.endPoint);
+    
+    RPoint c = new RPoint(c2.startPoint);
+    RPoint d = new RPoint(c2.endPoint);
+    
+    float epsilon = 1e-9f;
+    
+    //test for parallel case
+    float denom = (d.y - c.y)*(b.x - a.x) - (d.x - c.x)*(b.y - a.y);
+    if(Math.abs(denom) < epsilon)
+      return null;
+    
+    //calculate segment parameter and ensure its within bounds
+    float t1 = ((d.x - c.x)*(a.y - c.y) - (d.y - c.y)*(a.x - c.x))/denom;
+    float t2 = ((b.x - a.x)*(a.y - c.y) - (b.y - a.y)*(a.x - c.x))/denom;
+    if ( t1 < 0.0f || t1 > 1.0f || t2 < 0.0f || t2 > 1.0f )
+      return null;
+  
+    //store actual intersection
+    RPoint[] result = new RPoint[1];
+    
+    RPoint temp = new RPoint(b);
+    temp.sub(a);
+    temp.scale(t1);
+
+    result[0] = new RPoint(a);
+    result[0].add(temp);
+
+    return result;
+  }
+
+  public static RPoint[] lineQuad(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] lineCubic(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] quadQuad(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] quadCubic(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] cubicCubic(RCommand c1, RCommand c2) { return null; }
 }

@@ -1046,6 +1046,54 @@ public class RShape extends RGeomElem
     }
   }
 
+  public RPoint[] intersection(RCommand other) {
+    RShape shp = new RShape(this);
+    shp.polygonize();
+    return shp.polygonIntersection(other);
+  }
+  
+  public RPoint[] polygonIntersection(RCommand other){
+    int numPaths = countPaths();
+
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    for(int i=0;i<numPaths;i++){
+      RPoint[] newPoints = paths[i].intersection(other);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].intersection(other);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  public RPoint[] intersection(float x1, float y1, float x2, float y2){
+    return this.intersection(new RCommand(new RPoint(x1, y1), new RPoint(x2, y2)));
+  }
+
   /**
    * Use this method to adapt a group of of figures to a shape.
    * @eexample RGroup_adapt
