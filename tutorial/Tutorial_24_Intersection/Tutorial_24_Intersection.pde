@@ -26,13 +26,17 @@ void draw(){
   noFill();
   stroke(255);
   
+  // Draw the shape
   RG.shape(shp);
   
+  // Create and draw a cutting line
   RShape cuttingLine = RG.getLine(-width/2, -height/2, mouseX-width/2, mouseY-height/2);
   RG.shape(cuttingLine);
   
   fill(0, 200);
-  noStroke();  
+  noStroke();
+  
+  // Get the intersection points
   RPoint[] ps = cuttingLine.intersectionPoints(shp);
   if (ps != null) {
     for (int i=0; i<ps.length; i++) {
