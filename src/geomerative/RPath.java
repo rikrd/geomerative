@@ -286,11 +286,10 @@ public class RPath extends RGeomElem
   }
 
   /**
-   * Use this to return the tangents on the curve.  It returns the vectors in the way of an array of RPoint.
-   * @eexample getTangents
-   * @return RPoint[], the tangent vectors returned in an array.
+   * Use this to return the intersection points between this path and a command. Returns null if no intersection exists.
+   * @return RPoint[], the intersection points returned in an array.
    * */
-  public RPoint[] intersection(RCommand other){
+  public RPoint[] intersectionPoints(RCommand other){
     int numCommands = countCommands();
     if(numCommands == 0){
       return null;
@@ -299,7 +298,7 @@ public class RPath extends RGeomElem
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numCommands;i++){
-      RPoint[] newPoints = commands[i].intersection(other);
+      RPoint[] newPoints = commands[i].intersectionPoints(other);
       if(newPoints!=null) {
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -312,6 +311,41 @@ public class RPath extends RGeomElem
         }
       }
     }
+    return result;
+  }
+
+  /**
+   * Use this to return the intersection points between two paths. Returns null if no intersection exists.
+   * @return RPoint[], the intersection points returned in an array.
+   * */
+  public RPoint[] intersectionPoints(RPath other){
+    int numCommands = countCommands();
+    int numOtherCommands = other.countCommands();
+    
+    if(numCommands == 0){
+      return null;
+    }
+    
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    
+    for(int j=0;j<numOtherCommands;j++){
+      for(int i=0;i<numCommands;i++){
+        RPoint[] newPoints = commands[i].intersectionPoints(other.commands[j]);
+        if(newPoints!=null){
+          if(result==null){
+            result = new RPoint[newPoints.length];
+            System.arraycopy(newPoints,0,result,0,newPoints.length);
+          }else{
+            newresult = new RPoint[result.length + newPoints.length];
+            System.arraycopy(result,0,newresult,0,result.length);
+            System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+            result = newresult;
+          }
+        }
+      }
+    }
+    
     return result;
   }
 

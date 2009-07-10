@@ -1628,7 +1628,7 @@ public class RCommand extends RGeomElem
     this.curvePoints=newcurvePoints;
   }
 
-  public RPoint[] intersection(RCommand other)
+  public RPoint[] intersectionPoints(RCommand other)
   {
     RPoint[] result = null;
 
@@ -1636,15 +1636,15 @@ public class RCommand extends RGeomElem
     case LINETO:
       switch (other.getCommandType()) {
       case LINETO:
-        result = lineLine(this, other);
+        result = lineLineIntersection(this, other);
         break;
         
       case QUADBEZIERTO:
-        result = lineQuad(this, other);
+        result = lineQuadIntersection(this, other);
         break;
 
       case CUBICBEZIERTO:
-        result = lineCubic(this, other);
+        result = lineCubicIntersection(this, other);
         break;
       }
       break;
@@ -1652,15 +1652,15 @@ public class RCommand extends RGeomElem
     case QUADBEZIERTO:
       switch (other.getCommandType()) {
       case LINETO:
-        result = lineQuad(other, this);
+        result = lineQuadIntersection(other, this);
         break;
         
       case QUADBEZIERTO:
-        result = quadQuad(this, other);
+        result = quadQuadIntersection(this, other);
         break;
 
       case CUBICBEZIERTO:
-        result = quadCubic(this, other);
+        result = quadCubicIntersection(this, other);
         break;
       }
       break;
@@ -1668,15 +1668,15 @@ public class RCommand extends RGeomElem
     case CUBICBEZIERTO:
       switch (other.getCommandType()) {
       case LINETO:
-        result = lineCubic(other, this);
+        result = lineCubicIntersection(other, this);
         break;
         
       case QUADBEZIERTO:
-        result = quadCubic(other, this);
+        result = quadCubicIntersection(other, this);
         break;
 
       case CUBICBEZIERTO:
-        result = cubicCubic(this, other);
+        result = cubicCubicIntersection(this, other);
         break;
       }
       break;
@@ -1685,13 +1685,13 @@ public class RCommand extends RGeomElem
     return result;
   }
 
-  public static RPoint[] lineLine(RCommand c1, RCommand c2) {
+  public static RPoint[] lineLineIntersection(RCommand c1, RCommand c2) {
     RPoint a = new RPoint(c1.startPoint);
     RPoint b = new RPoint(c1.endPoint);
     
     RPoint c = new RPoint(c2.startPoint);
     RPoint d = new RPoint(c2.endPoint);
-    
+
     float epsilon = 1e-9f;
     
     //test for parallel case
@@ -1707,7 +1707,7 @@ public class RCommand extends RGeomElem
   
     //store actual intersection
     RPoint[] result = new RPoint[1];
-    
+
     RPoint temp = new RPoint(b);
     temp.sub(a);
     temp.scale(t1);
@@ -1718,9 +1718,9 @@ public class RCommand extends RGeomElem
     return result;
   }
 
-  public static RPoint[] lineQuad(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] lineCubic(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] quadQuad(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] quadCubic(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] cubicCubic(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] lineQuadIntersection(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] lineCubicIntersection(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] quadQuadIntersection(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] quadCubicIntersection(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] cubicCubicIntersection(RCommand c1, RCommand c2) { return null; }
 }

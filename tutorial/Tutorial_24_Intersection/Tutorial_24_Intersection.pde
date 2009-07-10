@@ -5,8 +5,9 @@ import geomerative.*;
 RShape shp;
 
 void setup(){
-  size(600, 600);
+  size(600, 600, OPENGL);
   smooth();
+  g.smooth = true;
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);
@@ -26,11 +27,13 @@ void draw(){
   stroke(255);
   
   RG.shape(shp);
-  line(-width/2, -height/2, mouseX-width/2, mouseY-height/2);
-
+  
+  RShape cuttingLine = RG.getLine(-width/2, -height/2, mouseX-width/2, mouseY-height/2);
+  RG.shape(cuttingLine);
+  
   fill(0, 200);
   noStroke();  
-  RPoint[] ps = shp.intersection(-width/2, -height/2, mouseX-width/2, mouseY-height/2);
+  RPoint[] ps = cuttingLine.intersectionPoints(shp);
   if (ps != null) {
     for (int i=0; i<ps.length; i++) {
       ellipse(ps[i].x, ps[i].y, 10, 10);
