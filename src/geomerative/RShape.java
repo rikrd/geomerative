@@ -1066,7 +1066,11 @@ public class RShape extends RGeomElem
     }
   }
 
-  public RPoint[] intersectionPoints(RShape other) {
+  /**
+   * Use this method to get the intersection points of the shape with another shape passed as argument.
+   * @param other  the path with which to check for intersections
+   */  
+  public RPoint[] getIntersections(RShape other) {
     // TODO: when we will be able to intersect between all
     //       geometric elements the polygonization will not be necessary
     RShape shp = new RShape(this);
@@ -1078,7 +1082,7 @@ public class RShape extends RGeomElem
   }
 
 
-  public RPoint[] intersectionPoints(RCommand other) {
+  RPoint[] getIntersections(RCommand other) {
     // TODO: when we will be able to intersect between all
     //       geometric elements the polygonization will not be necessary
     RShape shp = new RShape(this);
@@ -1087,7 +1091,7 @@ public class RShape extends RGeomElem
     return shp.polygonIntersectionPoints(other);
   }
   
-  public RPoint[] polygonIntersectionPoints(RCommand other){
+  RPoint[] polygonIntersectionPoints(RCommand other){
     int numPaths = countPaths();
 
     RPoint[] result=null;
@@ -1108,7 +1112,7 @@ public class RShape extends RGeomElem
     }
 
     for(int i=0;i<countChildren();i++){
-      RPoint[] newPoints = children[i].intersectionPoints(other);
+      RPoint[] newPoints = children[i].polygonIntersectionPoints(other);
       if(newPoints!=null){
         if(result==null){
           result = new RPoint[newPoints.length];
@@ -1125,11 +1129,7 @@ public class RShape extends RGeomElem
     return result;
   }
 
-  public RPoint[] intersectionPoints(float x1, float y1, float x2, float y2){
-    return this.intersectionPoints(new RCommand(new RPoint(x1, y1), new RPoint(x2, y2)));
-  }
-
-  public RPoint[] polygonIntersectionPoints(RPath other){
+  RPoint[] polygonIntersectionPoints(RPath other){
     int numChildren = countChildren();
     int numPaths = countPaths();
     
@@ -1169,7 +1169,7 @@ public class RShape extends RGeomElem
     return result;
   }
 
-  public RPoint[] polygonIntersectionPoints(RShape other){
+  RPoint[] polygonIntersectionPoints(RShape other){
     int numChildren = countChildren();
     int numPaths = countPaths();
     
