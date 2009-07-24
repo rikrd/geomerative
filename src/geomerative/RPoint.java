@@ -384,6 +384,22 @@ public class RPoint
     float normthis = norm();
     return (float)Math.acos(mult(p)/(normp*normthis));
   }
+
+  /**
+   * Use this to obtain the distance between the vector and another vector
+   * @eexample RPoint_dist
+   * @usage Geometry
+   * @param p  the vector relative to which we want to evaluate the distance
+   * @return float, the distance between the two vectors
+   * @related norm ( )
+   */
+  public float dist (RPoint p)
+  {
+    float dx = (p.x-this.x);
+    float dy = (p.y-this.y);
+    return (float)Math.sqrt(dx*dx + dy*dy);
+  }
+
   
   public void print(){
     System.out.print("("+x+","+y+")\n");

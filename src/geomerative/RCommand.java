@@ -1723,4 +1723,133 @@ public class RCommand extends RGeomElem
   public static RPoint[] quadQuadIntersection(RCommand c1, RCommand c2) { return null; }
   public static RPoint[] quadCubicIntersection(RCommand c1, RCommand c2) { return null; }
   public static RPoint[] cubicCubicIntersection(RCommand c1, RCommand c2) { return null; }
+
+  public RPoint[] distancePoints(RCommand other)
+  {
+    RPoint[] result = null;
+    RPoint temp;
+    switch (commandType) {
+    case LINETO:
+      switch (other.getCommandType()) {
+      case LINETO:
+        result = lineLineDistance(this, other);
+        break;
+        
+      case QUADBEZIERTO:
+        result = lineQuadDistance(this, other);
+        break;
+
+      case CUBICBEZIERTO:
+        result = lineCubicDistance(this, other);
+        break;
+      }
+      break;
+      
+    case QUADBEZIERTO:
+      switch (other.getCommandType()) {
+      case LINETO:
+        result = lineQuadDistance(other, this);
+        temp = result[0];
+        result[0] = result[1];
+        result[1] = temp;
+        break;
+        
+      case QUADBEZIERTO:
+        result = quadQuadDistance(this, other);
+        break;
+
+      case CUBICBEZIERTO:
+        result = quadCubicDistance(this, other);
+        break;
+      }
+      break;
+
+    case CUBICBEZIERTO:
+      switch (other.getCommandType()) {
+      case LINETO:
+        result = lineCubicDistance(other, this);
+        temp = result[0];
+        result[0] = result[1];
+        result[1] = temp;
+        break;
+        
+      case QUADBEZIERTO:
+        result = quadCubicDistance(other, this);
+        temp = result[0];
+        result[0] = result[1];
+        result[1] = temp;
+        break;
+
+      case CUBICBEZIERTO:
+        result = cubicCubicDistance(this, other);
+        break;
+      }
+      break;
+    }
+
+    return result;
+  }
+
+  public static float closestAdvFrom(RCommand c, RPoint p) {
+    RPoint a = new RPoint(c.startPoint);
+    RPoint b = new RPoint(c.endPoint);
+    
+    RPoint ap = new RPoint(p);
+    ap.sub(a);
+    
+    RPoint ab = new RPoint(b);
+    ab.sub(a);
+    
+    float denom = ab.norm();
+    float epsilon = 1e-9f;
+
+    if(denom < epsilon)
+      return 0.5f;
+    
+    float t = (ab.x*ap.x + ab.y*ap.y) / denom;
+    
+    t = t > 0.0f ? t : 0.0f;
+    t = t < 1.0f ? t : 1.0f;
+
+    return t;
+    
+  }
+
+  // TODO: return the distance as well
+  public static RPoint[] lineLineDistance(RCommand c1, RCommand c2) {
+    RPoint a = new RPoint(c1.startPoint);
+    RPoint b = new RPoint(c1.endPoint);
+    
+    RPoint c = new RPoint(c2.startPoint);
+    RPoint d = new RPoint(c2.endPoint);
+
+    float t1 = closestAdvFrom(c1, c);
+    float t2 = closestAdvFrom(c1, d);
+
+    RPoint p1 = c1.getPoint(t1);
+    p1.sub(c);
+    
+    RPoint p2 = c1.getPoint(t2);
+    p2.sub(d);
+    
+    float dist1 = p1.norm();
+    float dist2 = p2.norm();
+
+    RPoint[] result = new RPoint[2];
+    if (dist1 < dist2) {
+      result[0] = p1;
+      result[1] = c;
+    } else {
+      result[0] = p2;
+      result[1] = d;
+    }
+    
+    return result;
+  }
+
+  public static RPoint[] lineQuadDistance(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] lineCubicDistance(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] quadQuadDistance(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] quadCubicDistance(RCommand c1, RCommand c2) { return null; }
+  public static RPoint[] cubicCubicDistance(RCommand c1, RCommand c2) { return null; }
 }
