@@ -1724,23 +1724,33 @@ public class RCommand extends RGeomElem
   public static RPoint[] quadCubicIntersection(RCommand c1, RCommand c2) { return null; }
   public static RPoint[] cubicCubicIntersection(RCommand c1, RCommand c2) { return null; }
 
-  public RPoint[] distancePoints(RCommand other)
+  public RClosest closestPoints(RCommand other)
   {
-    RPoint[] result = null;
+    RClosest result = new RClosest();
     RPoint temp;
+    RPoint[] intersects = null;
     switch (commandType) {
     case LINETO:
       switch (other.getCommandType()) {
       case LINETO:
-        result = lineLineDistance(this, other);
+        intersects = lineLineIntersection(this, other);
+        if (intersects == null) {
+          result = lineLineClosest(this, other);
+        }
         break;
         
       case QUADBEZIERTO:
-        result = lineQuadDistance(this, other);
+        intersects = lineQuadIntersection(this, other);
+        if (intersects == null) {
+          result = lineQuadClosest(this, other);
+        }
         break;
 
       case CUBICBEZIERTO:
-        result = lineCubicDistance(this, other);
+        intersects = lineCubicIntersection(this, other);
+        if (intersects == null) {
+          result = lineCubicClosest(this, other);
+        }
         break;
       }
       break;
@@ -1748,18 +1758,27 @@ public class RCommand extends RGeomElem
     case QUADBEZIERTO:
       switch (other.getCommandType()) {
       case LINETO:
-        result = lineQuadDistance(other, this);
-        temp = result[0];
-        result[0] = result[1];
-        result[1] = temp;
+        intersects = lineQuadIntersection(other, this);
+        if (intersects == null) {
+          result = lineQuadClosest(other, this);
+          temp = result.closest[0];
+          result.closest[0] = result.closest[1];
+          result.closest[1] = temp;
+        }
         break;
         
       case QUADBEZIERTO:
-        result = quadQuadDistance(this, other);
+        intersects = quadQuadIntersection(this, other);
+        if (intersects == null) {
+          result = quadQuadClosest(this, other);
+        }
         break;
 
       case CUBICBEZIERTO:
-        result = quadCubicDistance(this, other);
+        intersects = quadCubicIntersection(this, other);
+        if (intersects == null) {
+          result = quadCubicClosest(this, other);
+        }
         break;
       }
       break;
@@ -1767,26 +1786,36 @@ public class RCommand extends RGeomElem
     case CUBICBEZIERTO:
       switch (other.getCommandType()) {
       case LINETO:
-        result = lineCubicDistance(other, this);
-        temp = result[0];
-        result[0] = result[1];
-        result[1] = temp;
+        intersects = lineCubicIntersection(other, this);
+        if (intersects == null) {
+          result = lineCubicClosest(other, this);
+          temp = result.closest[0];
+          result.closest[0] = result.closest[1];
+          result.closest[1] = temp;
+        }
         break;
         
       case QUADBEZIERTO:
-        result = quadCubicDistance(other, this);
-        temp = result[0];
-        result[0] = result[1];
-        result[1] = temp;
+        intersects = quadCubicIntersection(other, this);
+        if (intersects == null) {
+          result = quadCubicClosest(other, this);
+          temp = result.closest[0];
+          result.closest[0] = result.closest[1];
+          result.closest[1] = temp;
+        }
         break;
 
       case CUBICBEZIERTO:
-        result = cubicCubicDistance(this, other);
+        intersects = cubicCubicIntersection(this, other);
+        if (intersects == null) {
+          result = cubicCubicClosest(this, other);
+        }
         break;
       }
       break;
     }
 
+    result.intersects = intersects;
     return result;
   }
 
@@ -1815,8 +1844,8 @@ public class RCommand extends RGeomElem
     
   }
 
-  // TODO: return the distance as well
-  public static RPoint[] lineLineDistance(RCommand c1, RCommand c2) {
+  // TODO: return the closest as well
+  public static RClosest lineLineClosest(RCommand c1, RCommand c2) {
     RPoint a = new RPoint(c1.startPoint);
     RPoint b = new RPoint(c1.endPoint);
     
@@ -1835,21 +1864,29 @@ public class RCommand extends RGeomElem
     float dist1 = p1.norm();
     float dist2 = p2.norm();
 
-    RPoint[] result = new RPoint[2];
+    RClosest result = new RClosest();
+    result.closest = new RPoint[2];
+    result.advancements = new float[2];
     if (dist1 < dist2) {
-      result[0] = p1;
-      result[1] = c;
+      result.closest[0] = p1;
+      result.closest[1] = c;
+      result.distance = dist1;
+      result.advancements[0] = t1;
+      result.advancements[1] = t2;
     } else {
-      result[0] = p2;
-      result[1] = d;
+      result.closest[0] = p2;
+      result.closest[1] = d;
+      result.distance = dist2;
+      result.advancements[0] = t1;
+      result.advancements[1] = t2;
     }
     
     return result;
   }
 
-  public static RPoint[] lineQuadDistance(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] lineCubicDistance(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] quadQuadDistance(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] quadCubicDistance(RCommand c1, RCommand c2) { return null; }
-  public static RPoint[] cubicCubicDistance(RCommand c1, RCommand c2) { return null; }
+  public static RClosest lineQuadClosest(RCommand c1, RCommand c2) { return null; }
+  public static RClosest lineCubicClosest(RCommand c1, RCommand c2) { return null; }
+  public static RClosest quadQuadClosest(RCommand c1, RCommand c2) { return null; }
+  public static RClosest quadCubicClosest(RCommand c1, RCommand c2) { return null; }
+  public static RClosest cubicCubicClosest(RCommand c1, RCommand c2) { return null; }
 }

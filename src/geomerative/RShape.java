@@ -1209,6 +1209,88 @@ public class RShape extends RGeomElem
     return result;
   }
 
+
+  /**
+   * Use this method to get the closest or intersection points of the shape with another shape passed as argument.
+   * @param other  the path with which to check for intersections
+   */  
+  public RClosest getClosest(RShape other) {
+    // TODO: when we will be able to intersect between all
+    //       geometric elements the polygonization will not be necessary
+    RShape shp = new RShape(this);
+    shp.polygonize();
+
+    RShape otherPol = new RShape(other);
+    otherPol.polygonize();
+    return shp.polygonClosestPoints(otherPol);
+  }
+
+
+  RClosest getClosest(RCommand other) {
+    // TODO: when we will be able to intersect between all
+    //       geometric elements the polygonization will not be necessary
+    RShape shp = new RShape(this);
+    shp.polygonize();
+    
+    return shp.polygonClosestPoints(other);
+  }
+  
+  RClosest polygonClosestPoints(RCommand other){
+    int numPaths = countPaths();
+    
+    RClosest result = new RClosest();
+    
+    for(int i=0;i<numPaths;i++){
+      RClosest currResult = paths[i].closestPoints(other);
+      result.update(currResult);
+    }
+
+    for(int i=0;i<countChildren();i++){
+      RClosest currResult = children[i].polygonClosestPoints(other);
+      result.update(currResult);
+    }
+    
+    return result;
+  }
+
+  RClosest polygonClosestPoints(RPath other){
+    int numChildren = countChildren();
+    int numPaths = countPaths();
+    
+    RClosest result = new RClosest();
+    
+    for(int i=0;i<numPaths;i++){
+      RClosest currClosest = paths[i].closestPoints(other);
+      result.update(currClosest);
+    }
+        
+    for(int i=0;i<numChildren;i++){
+      RClosest currClosest = children[i].polygonClosestPoints(other);
+      result.update(currClosest);
+    }
+    
+    return result;
+  }
+
+  RClosest polygonClosestPoints(RShape other){
+    int numChildren = countChildren();
+    int numPaths = countPaths();
+    
+    RClosest result = new RClosest();
+    
+    for(int i=0;i<numPaths;i++){
+      RClosest currClosest = other.polygonClosestPoints(paths[i]);
+      result.update(currClosest);
+    }
+    
+    for(int i=0;i<numChildren;i++){
+      RClosest currClosest = other.polygonClosestPoints(children[i]);
+      result.update(currClosest);
+    }
+    
+    return result;
+  }
+
   /**
    * Use this method to adapt a group of of figures to a shape.
    * @eexample RGroup_adapt

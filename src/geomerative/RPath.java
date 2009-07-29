@@ -349,6 +349,59 @@ public class RPath extends RGeomElem
     return result;
   }
 
+
+  /**
+   * Use this to find the closest or intersection points between this path and a command.
+   * @return RPoint[], the intersection points returned in an array.
+   * */
+  public RClosest closestPoints(RCommand other){
+    int numCommands = countCommands();
+    if(numCommands == 0){
+      return null;
+    }
+    
+    // TODO: get here the max value of an integer
+    float minDist = 100000;
+    
+    RClosest result = new RClosest();
+
+    for(int i=0;i<numCommands;i++){
+      RClosest currResult = commands[i].closestPoints(other);
+      
+      result.update(currResult);
+    }
+    
+    return result;
+  }
+
+  /**
+   * Use this to return the intersection points between two paths. Returns null if no intersection exists.
+   * @return RPoint[], the intersection points returned in an array.
+   * */
+  public RClosest closestPoints(RPath other){
+    int numCommands = countCommands();
+    int numOtherCommands = other.countCommands();
+    
+    if(numCommands == 0){
+      return null;
+    }
+
+    // TODO: get here the max value of an integer
+    float minDist = 100000;
+    
+    RClosest result = new RClosest();
+    
+    for(int j=0;j<numOtherCommands;j++){
+      for(int i=0;i<numCommands;i++){
+        RClosest currResult = commands[i].closestPoints(other.commands[j]);
+        result.update(currResult);
+      }
+    }
+
+    
+    return result;
+  }
+
   
   /**
    * Return a specific point on the curve.  It returns the RPoint for a given advancement parameter t on the curve.
