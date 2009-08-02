@@ -1855,13 +1855,10 @@ public class RCommand extends RGeomElem
     float t2 = closestAdvFrom(c1, d);
 
     RPoint p1 = c1.getPoint(t1);
-    p1.sub(c);
-
     RPoint p2 = c1.getPoint(t2);
-    p2.sub(d);
 
-    float dist1 = p1.norm();
-    float dist2 = p2.norm();
+    float dist1 = p1.dist(c);
+    float dist2 = p2.dist(d);
 
     RClosest result = new RClosest();
     result.closest = new RPoint[2];
