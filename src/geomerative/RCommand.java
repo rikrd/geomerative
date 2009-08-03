@@ -1843,7 +1843,6 @@ public class RCommand extends RGeomElem
 
   }
 
-  // TODO: return the closest as well
   public static RClosest lineLineClosest(RCommand c1, RCommand c2) {
     RPoint c = new RPoint(c2.startPoint);
     RPoint d = new RPoint(c2.endPoint);
