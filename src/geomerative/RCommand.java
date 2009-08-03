@@ -1828,8 +1828,8 @@ public class RCommand extends RGeomElem
     RPoint ab = new RPoint(b);
     ab.sub(a);
 
-    float denom = ab.norm();
-    float epsilon = 1e-9f;
+    float denom = ab.sqrnorm();
+    float epsilon = 1e-19f;
 
     if(denom < epsilon)
       return 0.5f;
@@ -1845,9 +1845,6 @@ public class RCommand extends RGeomElem
 
   // TODO: return the closest as well
   public static RClosest lineLineClosest(RCommand c1, RCommand c2) {
-    RPoint a = new RPoint(c1.startPoint);
-    RPoint b = new RPoint(c1.endPoint);
-
     RPoint c = new RPoint(c2.startPoint);
     RPoint d = new RPoint(c2.endPoint);
 
