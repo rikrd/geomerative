@@ -12,7 +12,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with Geomerative.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -44,7 +44,7 @@ public class RPolygon extends RGeomElem
   public static int defaultDetail = 50;
 
   /**
-   * Array of RContour objects holding the contours of the polygon. 
+   * Array of RContour objects holding the contours of the polygon.
    * @eexample contours
    * @related RContour
    * @related countContours ( )
@@ -52,7 +52,7 @@ public class RPolygon extends RGeomElem
    */
   public RContour[] contours;
   int currentContour = 0;
-  
+
   // ----------------------
   // --- Public Methods ---
   // ----------------------
@@ -61,7 +61,7 @@ public class RPolygon extends RGeomElem
    * Make a copy of the given polygon.
    * @eexample createPolygon
    * @param p  the object of which to make a copy
-   */  
+   */
   public RPolygon(RPolygon p){
     if (p == null){
       return;
@@ -79,7 +79,7 @@ public class RPolygon extends RGeomElem
    * Create a new polygon given an array of points.
    * @eexample createPolygon
    * @param points  the points of the newly created polygon.
-   */    
+   */
   public RPolygon(RPoint[] points){
     this(new RContour(points));
   }
@@ -87,7 +87,7 @@ public class RPolygon extends RGeomElem
   /**
    * Create a new polygon given a contour.
    * @param newcontour  the contour for the new polygon.
-   */    
+   */
   public RPolygon(RContour newcontour){
     this.append(newcontour);
     type = RGeomElem.POLYGON;
@@ -95,14 +95,14 @@ public class RPolygon extends RGeomElem
 
   /**
    * Create an empty polygon.
-   */  
+   */
   public RPolygon(){
     contours = null;
     type = RGeomElem.POLYGON;
   }
-  
+
   /**
-   * Use this method to create a new circle polygon. 
+   * Use this method to create a new circle polygon.
    * @eexample createCircle
    * @param radius  the radius of the circle
    * @param detail  the number of vertices of the polygon
@@ -119,21 +119,21 @@ public class RPolygon extends RGeomElem
     }
     return new RPolygon(points);
   }
-  
+
   static public RPolygon createCircle(float radius, int detail){
     return createCircle(0,0,radius,detail);
   }
-  
+
   static public RPolygon createCircle(float x, float y, float radius){
     return createCircle(x,y,radius,defaultDetail);
   }
-  
+
   static public RPolygon createCircle(float radius){
     return createCircle(0,0,radius,defaultDetail);
   }
-  
+
   /**
-   * Use this method to create a new rectangle polygon. 
+   * Use this method to create a new rectangle polygon.
    * @eexample createRectangle
    * @param x  the upper-left corner x coordinate
    * @param y  the upper-left corner y coordinate
@@ -150,13 +150,13 @@ public class RPolygon extends RGeomElem
     rectangle.addPoint(x,y);
     return rectangle;
   }
-  
+
   static public RPolygon createRectangle(float w, float h){
     return createRectangle(0,0, w, h);
   }
-  
+
   /**
-   * Use this method to create a new starform polygon. 
+   * Use this method to create a new starform polygon.
    * @eexample createStar
    * @param radiusBig  the outter radius of the star polygon
    * @param radiusSmall  the inner radius of the star polygon
@@ -179,13 +179,13 @@ public class RPolygon extends RGeomElem
     }
     return new RPolygon(points);
   }
-  
+
   static public RPolygon createStar(float radiusBig, float radiusSmall, int spikes){
     return createStar(0,0,radiusBig, radiusSmall, spikes);
   }
-  
+
   /**
-   * Use this method to create a new ring polygon. 
+   * Use this method to create a new ring polygon.
    * @eexample createRing
    * @param radiusBig  the outter radius of the ring polygon
    * @param radiusSmall  the inner radius of the ring polygon
@@ -211,19 +211,19 @@ public class RPolygon extends RGeomElem
     ring.addContour(inner);
     return ring;
   }
-  
+
   static public RPolygon createRing(float radiusBig, float radiusSmall, int detail){
     return createRing(0, 0, radiusBig, radiusSmall, detail);
   }
-  
+
   static public RPolygon createRing(float x, float y, float radiusBig, float radiusSmall){
     return createRing(x, y, radiusBig, radiusSmall, defaultDetail);
   }
-  
+
   static public RPolygon createRing(float radiusBig, float radiusSmall){
     return createRing(0, 0, radiusBig, radiusSmall, defaultDetail);
   }
-  
+
   /**
    * Use this method to get the centroid of the element.
    * @eexample RGroup_getCentroid
@@ -247,9 +247,9 @@ public class RPolygon extends RGeomElem
     }
     return null;
   }
-  
+
   /**
-   * Use this method to count the number of contours in the polygon. 
+   * Use this method to count the number of contours in the polygon.
    * @eexample countContours
    * @return int  the number countours in the polygon
    * @related addContour ( )
@@ -258,10 +258,10 @@ public class RPolygon extends RGeomElem
     if(this.contours==null){
       return 0;
     }
-    
+
     return this.contours.length;
   }
-  
+
   /**
    * Add a new contour to the polygon.
    * @eexample addContour
@@ -290,20 +290,20 @@ public class RPolygon extends RGeomElem
   public void addContour(RPoint[] points){
     this.append(new RContour(points));
   }
-  
-  
-  
+
+
+
   /**
-   * Use this method to set the current contour to which append points. 
+   * Use this method to set the current contour to which append points.
    * @eexample addContour
    * @related addPoint ( )
    */
   public void setContour(int indContour){
     this.currentContour = indContour;
   }
-  
+
   /**
-   * Add a new point to the current contour. 
+   * Add a new point to the current contour.
    * @eexample addPoint
    * @param p  the point to be added
    * @related addContour ( )
@@ -317,13 +317,13 @@ public class RPolygon extends RGeomElem
   }
 
   /**
-   * Add a new point to the current contour. 
+   * Add a new point to the current contour.
    * @eexample addPoint
    * @param x  the x coordinate of the point to be added
    * @param y  the y coordinate of the point to be added
    * @related addContour ( )
    * @related setCurrent ( )
-   */  
+   */
   public void addPoint(float x, float y){
     if (contours == null) {
       this.append(new RContour());
@@ -338,7 +338,7 @@ public class RPolygon extends RGeomElem
    * @param p  the point to be added
    * @related addContour ( )
    * @related setCurrent ( )
-   */  
+   */
   public void addPoint(int indContour, RPoint p){
     if (contours == null) {
       this.append(new RContour());
@@ -347,31 +347,31 @@ public class RPolygon extends RGeomElem
   }
 
   /**
-   * Add a new point to the selected contour. 
+   * Add a new point to the selected contour.
    * @eexample addPoint
    * @param indContour  the index of the contour to which the point will be added
    * @param x  the x coordinate of the point to be added
    * @param y  the y coordinate of the point to be added
    * @related addContour ( )
    * @related setCurrent ( )
-   */  
+   */
   public void addPoint(int indContour, float x, float y){
     if (contours == null) {
       this.append(new RContour());
     }
     this.contours[indContour].append(new RPoint(x,y));
   }
-  
+
   public void addClose(){
     if(contours == null){
       return;
     }
-    
+
     contours[contours.length - 1].addClose();
   }
-  
+
   /**
-   * Use this method to create a new mesh from a given polygon. 
+   * Use this method to create a new mesh from a given polygon.
    * @eexample toMesh
    * @return RMesh, the mesh made of tristrips resulting of a tesselation of the polygon
    * @related draw ( )
@@ -380,16 +380,16 @@ public class RPolygon extends RGeomElem
     if ( contours == null ){
       return new RMesh();
     }
-    
+
     RMesh mesh = RClip.polygonToMesh( this );
     if ( mesh == null ) {
       return null;
     }
-    
+
     mesh.setStyle( this ) ;
     return mesh;
   }
-  
+
   public void print(){
     System.out.println("polygon: ");
     for( int i = 0 ; i < countContours() ; i++ )
@@ -425,17 +425,17 @@ public class RPolygon extends RGeomElem
   public RPolygon toPolygon(){
     return new RPolygon(this);
   }
-  
+
   /**
    * @invisible
    */
   public RShape toShape(){
     int numContours = countContours();
-    
+
     RShape result = new RShape();
     for(int i=0;i<numContours;i++){
       RPoint[] newpoints = this.contours[i].getHandles();
-      
+
       if(newpoints != null){
         result.addMoveTo(newpoints[0]);
 
@@ -446,15 +446,15 @@ public class RPolygon extends RGeomElem
         if(contours[i].closed){
           result.addClose();
         }
-        
+
         result.paths[i].setStyle(contours[i]);
       }
     }
-    
+
     result.setStyle(this);
     return result;
   }
-  
+
   /**
    * Use this to return the points of the polygon.  It returns the points in the way of an array of RPoint.
    * @eexample RPolygon_getHandles
@@ -465,7 +465,7 @@ public class RPolygon extends RGeomElem
     if(numContours == 0){
       return null;
     }
-    
+
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numContours;i++){
@@ -484,7 +484,7 @@ public class RPolygon extends RGeomElem
     }
     return result;
   }
-  
+
   /**
    * Use this to return the points of the polygon.  It returns the points in the way of an array of RPoint.
    * @eexample RPolygon_getPoints
@@ -495,7 +495,7 @@ public class RPolygon extends RGeomElem
     if(numContours == 0){
       return null;
     }
-    
+
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numContours;i++){
@@ -514,8 +514,8 @@ public class RPolygon extends RGeomElem
     }
     return result;
   }
-  
-  
+
+
   /**
    * Use this method to get the type of element this is.
    * @eexample RPolygon_getType
@@ -524,9 +524,9 @@ public class RPolygon extends RGeomElem
   public int getType(){
     return type;
   }
-  
+
   /**
-   * Use this method to get the area covered by the polygon. 
+   * Use this method to get the area covered by the polygon.
    * @eexample getArea
    * @return float, the area covered by the polygon
    * @related draw ( )
@@ -552,9 +552,9 @@ public class RPolygon extends RGeomElem
     area = 0.5F*Math.abs(area);
     return area ;
   }
-  
+
   /**
-   * Use this method to draw the polygon. 
+   * Use this method to draw the polygon.
    * @eexample drawPolygon
    * @param g PGraphics, the graphics object on which to draw the polygon
    * @related draw ( )
@@ -572,11 +572,11 @@ public class RPolygon extends RGeomElem
         if(g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
           // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
-          
+
           // Save the information about the current stroke color and turn off
           boolean stroking = g.stroke;
           g.noStroke();
-          
+
           // Save smoothing state and turn off
           boolean smoothing = g.smooth;
           try{
@@ -585,13 +585,13 @@ public class RPolygon extends RGeomElem
             }
           }catch(Exception e){
           }
-          
+
           RMesh tempMesh = this.toMesh();
           tempMesh.draw(g);
-          
+
           // Restore the old stroke color
           if(stroking) g.stroke(g.strokeColor);
-          
+
           // Restore the old smoothing state
           try{
             if(smoothing){
@@ -600,7 +600,7 @@ public class RPolygon extends RGeomElem
           }catch(Exception e){
           }
         }
-        
+
         // Check whether to draw the stroke or not
         if(g.stroke){
           for(int i=0;i<numContours;i++){
@@ -623,16 +623,16 @@ public class RPolygon extends RGeomElem
           saveContext(g);
           setContext(g);
         }
-        
+
         // Check whether to draw the fill or not
         if(g.g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
           // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
-          
+
           // Save the information about the current stroke color and turn off
           boolean stroking = g.g.stroke;
           g.noStroke();
-          
+
           // Save smoothing state and turn off
           boolean smoothing = g.g.smooth;
           try{
@@ -641,14 +641,14 @@ public class RPolygon extends RGeomElem
             }
           }catch(Exception e){
           }
-          
+
           RMesh tempMesh = this.toMesh();
           if(tempMesh != null)
             tempMesh.draw(g);
-          
+
           // Restore the old stroke color
           if(stroking) g.stroke(g.g.strokeColor);
-          
+
           // Restore the old smoothing state
           try{
             if(smoothing){
@@ -657,7 +657,7 @@ public class RPolygon extends RGeomElem
           }catch(Exception e){
           }
         }
-        
+
         // Check whether to draws the stroke or not
         if(g.g.stroke){
           for(int i=0;i<numContours;i++){
@@ -672,7 +672,7 @@ public class RPolygon extends RGeomElem
     }
   }
 
-  
+
   /**
    * Use this method to get the intersection of the given polygon with the polygon passed as atribute.
    * @eexample intersection
@@ -683,9 +683,11 @@ public class RPolygon extends RGeomElem
    * @related diff ( )
    */
   public RPolygon intersection( RPolygon p ){
-    return RClip.intersection( p, this );
+    RPolygon res = RClip.intersection( p, this );
+    res.setStyle(this.getStyle());
+    return res;
   }
-  
+
   /**
    * Use this method to get the union of the given polygon with the polygon passed as atribute.
    * @eexample union
@@ -696,9 +698,11 @@ public class RPolygon extends RGeomElem
    * @related diff ( )
    */
   public RPolygon union( RPolygon p ){
-    return RClip.union( p, this );
+    RPolygon res = RClip.union( p, this );
+    res.setStyle(this.getStyle());
+    return res;
   }
-  
+
   /**
    * Use this method to get the xor of the given polygon with the polygon passed as atribute.
    * @eexample xor
@@ -709,9 +713,11 @@ public class RPolygon extends RGeomElem
    * @related diff ( )
    */
   public RPolygon xor( RPolygon p ){
-    return RClip.xor( p, this );
+    RPolygon res = RClip.xor( p, this );
+    res.setStyle(this.getStyle());
+    return res;
   }
-  
+
   /**
    * Use this method to get the difference of the given polygon with the polygon passed as atribute.
    * @eexample diff
@@ -720,11 +726,13 @@ public class RPolygon extends RGeomElem
    * @related union ( )
    * @related xor ( )
    * @related intersection ( )
-   */	
+   */
   public RPolygon diff( RPolygon p ){
-    return RClip.diff( this, p );
+    RPolygon res = RClip.diff( this, p );
+    res.setStyle(this.getStyle());
+    return res;
   }
-  
+
   /**
    * Use this method to get a rebuilt version of a given polygon by removing extra points and solving intersecting contours or holes.
    * @eexample RPolygon_update
@@ -733,7 +741,7 @@ public class RPolygon extends RGeomElem
    * @related union ( )
    * @related xor ( )
    * @related intersection ( )
-   */	
+   */
   public RPolygon update(){
     return RClip.update( this );
   }
@@ -747,7 +755,7 @@ public class RPolygon extends RGeomElem
     PApplet.println("Feature not yet implemented for this class.");
     return null;
   }
-  
+
   public RPoint[] getTangents(){
     PApplet.println("Feature not yet implemented for this class.");
     return null;
@@ -772,7 +780,7 @@ public class RPolygon extends RGeomElem
     PApplet.println("Feature not yet implemented for this class.");
     return false;
   }
-  
+
   /**
    * Use this method to transform the polygon.
    * @eexample RPolygon_transform
@@ -791,15 +799,15 @@ public class RPolygon extends RGeomElem
   // ----------------------
   // --- Private Methods ---
   // ----------------------
-  
-  
+
+
   /**
    * Remove all of the points.  Creates an empty polygon.
    */
   protected void clear(){
     this.contours = null;
   }
-  
+
   /**
    * Add a point to the first inner polygon.
    */
@@ -809,7 +817,7 @@ public class RPolygon extends RGeomElem
     }
     this.contours[0].append(new RPoint(x,y));
   }
-  
+
   /**
    * Add a point to the first inner polygon.
    */
@@ -819,7 +827,7 @@ public class RPolygon extends RGeomElem
     }
     this.contours[0].append(p);
   }
-  
+
   /**
    * Add an inner polygon to this polygon - assumes that adding polygon does not
    * have any inner polygons.
@@ -834,7 +842,7 @@ public class RPolygon extends RGeomElem
     }
     this.append(c);
   }
-  
+
   /**
    * Add an inner polygon to this polygon - assumes that adding polygon does not
    * have any inner polygons.
@@ -845,16 +853,16 @@ public class RPolygon extends RGeomElem
       }*/
     this.append(c);
   }
-  
+
   /**
    * Return true if the polygon is empty
    */
   protected boolean isEmpty(){
     return (this.contours == null);
   }
-  
+
   /**
-   * Returns the bounding box of the polygon. 
+   * Returns the bounding box of the polygon.
    */
   protected RRectangle getBBox(){
     if( this.contours == null )
@@ -863,12 +871,12 @@ public class RPolygon extends RGeomElem
       }
     else if( this.contours.length == 1 )
       {
-        
+
         float xmin =  Float.MAX_VALUE ;
         float ymin =  Float.MAX_VALUE ;
         float xmax = -Float.MAX_VALUE ;
         float ymax = -Float.MAX_VALUE ;
-        
+
         for( int i = 0 ; i < this.contours[0].points.length ; i++ )
           {
             float x = this.contours[0].points[i].getX();
@@ -878,7 +886,7 @@ public class RPolygon extends RGeomElem
             if( y < ymin ) ymin = y;
             if( y > ymax ) ymax = y;
           }
-        
+
         return new RRectangle( xmin, ymin, (xmax-xmin), (ymax-ymin) );
       }
     else
@@ -886,14 +894,14 @@ public class RPolygon extends RGeomElem
         throw new UnsupportedOperationException("getBounds not supported on complex poly.");
       }
   }
-  
+
   /**
    * Returns the polygon at this index.
    */
   protected RPolygon getInnerPoly( int polyIndex ){
     return new RPolygon(this.contours[polyIndex]);
   }
-  
+
   /**
    * Returns the number of inner polygons - inner polygons are assumed to return one here.
    */
@@ -902,8 +910,8 @@ public class RPolygon extends RGeomElem
       return 0;
     }
     return this.contours.length;
-  }  
-  
+  }
+
   /**
    * Return the number points of the first inner polygon
    */
@@ -916,7 +924,7 @@ public class RPolygon extends RGeomElem
     }
     return this.contours[0].points.length;
   }
-  
+
   /**
    * Return the X value of the point at the index in the first inner polygon
    */
@@ -926,7 +934,7 @@ public class RPolygon extends RGeomElem
     }
     return this.contours[0].points[index].x;
   }
-  
+
   /**
    * Return the Y value of the point at the index in the first inner polygon
    */
@@ -936,7 +944,7 @@ public class RPolygon extends RGeomElem
     }
     return this.contours[0].points[index].y;
   }
-  
+
   /**
    * Return true if this polygon is a hole.  Holes are assumed to be inner polygons of
    * a more complex polygon.
@@ -950,7 +958,7 @@ public class RPolygon extends RGeomElem
       }
     return this.contours[0].isHole ;
   }
-  
+
   /**
    * Set whether or not this polygon is a hole.  Cannot be called on a complex polygon.
    *
@@ -963,7 +971,7 @@ public class RPolygon extends RGeomElem
       }
     this.contours[0].isHole = isHole ;
   }
-  
+
   /**
    * Return true if the given inner polygon is contributing to the set operation.
    * This method should NOT be used outside the Clip algorithm.
@@ -971,7 +979,7 @@ public class RPolygon extends RGeomElem
   protected boolean isContributing( int polyIndex ){
     return this.contours[polyIndex].isContributing;
   }
-  
+
   /**
    * Set whether or not this inner polygon is constributing to the set operation.
    * This method should NOT be used outside the Clip algorithm.
@@ -985,7 +993,7 @@ public class RPolygon extends RGeomElem
     */
     this.contours[polyIndex].isContributing = contributes;
   }
-  
+
   private void append(RContour nextcontour)
   {
     RContour[] newcontours;
