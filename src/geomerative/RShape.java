@@ -505,11 +505,44 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape intersection( RShape p ){
+      int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.intersection( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].intersection(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.intersection( this.toPolygon(),p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
+    */
   }
   
   /**
@@ -522,11 +555,44 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape union( RShape p ){
+    int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.union( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].union(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.union( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
+    */
   }
   
   /**
@@ -539,12 +605,44 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape xor( RShape p ){
+    int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.xor( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].xor(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.xor( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
-
+    */
   }
   
   /**
@@ -557,11 +655,44 @@ public class RShape extends RGeomElem
    * @related intersection ( )
    */	
   public RShape diff( RShape p ){
+    int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.diff( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].diff(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.diff( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
+    */
   }
     
   /**
