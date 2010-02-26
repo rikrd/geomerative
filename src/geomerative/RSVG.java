@@ -12,7 +12,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with Geomerative.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -24,59 +24,158 @@ import processing.xml.*;
 
 /**
  * @extended
- */  
+ */
 public class RSVG
-{    
+{
   public void draw(String filename, PGraphics g)
   {
-    this.toGroup(filename).draw(g);  
+    this.toGroup(filename).draw(g);
   }
-  
+
   public void draw(String filename, PApplet p)
   {
     this.toGroup(filename).draw(p);
   }
-  
+
   public void draw(String filename)
   {
     this.toGroup(filename).draw();
   }
-  
-  
+
+
+  public void saveGroup(String filename, RGroup group) {
+    String svg = "<svg>\n" + groupToString(group) + "</svg>";
+    //String[] splittedSvg = PApplet.split(svg, "\n");
+    //PApplet.saveStrings(filename, splittedSvg);
+  }
+
   public RGroup toGroup(String filename)
   {
     XMLElement svg = new XMLElement(RG.parent(), filename);
     if (!svg.getName().equals("svg")) {
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
-    
+
     return elemToGroup(svg);
   }
-  
+
   public RShape toShape(String filename)
   {
     XMLElement svg = new XMLElement(RG.parent(), filename);
     if (!svg.getName().equals("svg")) {
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
-    
+
     RShape result = elemToCompositeShape(svg);
     result.width = result.getWidth();
     result.height = result.getHeight();
-    
+
     return result;
   }
-  
+
   public RPolygon toPolygon(String filename)
   {
     return toGroup(filename).toPolygon();
   }
-  
+
   public RMesh toMesh(String filename)
   {
     return toGroup(filename).toMesh();
   }
-  
+
+  public String groupToString(RGroup grp) {
+    String result = "";
+    result += "<g ";
+    result += styleToString(grp.getStyle());
+    result += ">\n";
+
+    for(int i=0;i<grp.countElements();i++) {
+      switch(grp.elements[i].getType()){
+      case RGeomElem.GROUP:
+        result += groupToString((RGroup)grp.elements[i]);
+        break;
+
+      case RGeomElem.POLYGON:
+        result += polygonToString((RPolygon)grp.elements[i]);
+        break;
+
+      case RGeomElem.SHAPE:
+        result += shapeToString((RShape)grp.elements[i]);
+        break;
+
+      }
+    }
+
+    result += "</g>\n";
+    return result;
+  }
+
+  public String polygonToString(RPolygon poly) {
+    String result = "";
+    result += shapeToString(poly.toShape());
+    return result;
+  }
+
+  public String shapeToString(RShape shp) {
+    String result = "";
+    result += "<p ";
+    result += styleToString(shp.getStyle());
+    result += "d=\"";
+    for(int i=0; i<shp.countPaths(); i++) {
+      RPath sushp = shp.paths[i];
+      boolean init = true;
+      for ( int j = 0; j < sushp.countCommands(); j++ ) {
+          RCommand cmd = sushp.commands[j];
+
+          if (init) {
+            result += "M" + cmd.startPoint.x + " " + cmd.startPoint.y + " ";
+            init = false;
+          }
+
+          switch( cmd.getCommandType() )
+            {
+            case RCommand.LINETO:
+              result += "M" + cmd.endPoint.x + " " + cmd.endPoint.y + " ";
+              break;
+
+            case RCommand.QUADBEZIERTO:
+              result += "Q" + cmd.controlPoints[0].x + " " + cmd.controlPoints[0].y + cmd.endPoint.x + " " + cmd.endPoint.y + " ";
+              break;
+
+            case RCommand.CUBICBEZIERTO:
+              result += "C" + cmd.controlPoints[0].x + " " + cmd.controlPoints[0].y + " " + cmd.controlPoints[1].x + " " + cmd.controlPoints[1].y + " " + cmd.endPoint.x + " " + cmd.endPoint.y + " ";
+              break;
+            }
+        }
+    }
+
+    result += "\"/>\n";
+    return result;
+  }
+
+  public String styleToString(RStyle style) {
+    String result = " style=\"";
+
+    if (style.fillDef) {
+      if (!style.fill) {
+        result += "fill:none;";
+      } else {
+        result += "fill:#" + PApplet.hex(style.fillColor, 6) + ";";
+      }
+    }
+
+    if (style.strokeDef) {
+      if (!style.stroke) {
+        result += "stroke:none;";
+      } else {
+        result += "stroke:#" + PApplet.hex(style.strokeColor, 6) + ";";
+      }
+    }
+
+    result += "\" ";
+    return result;
+  }
+
   /**
    * @invisible
    */
@@ -95,45 +194,45 @@ public class RSVG
       grp.setStrokeAlpha(255);  // By default in SVG it's 1
       grp.setAlpha(255);  // By default in SVG it's 1F
     }
-    
+
     XMLElement elems[] = elem.getChildren();
     for (int i = 0; i < elems.length; i++) {
       String name = elems[i].getName().toLowerCase();
       XMLElement element = elems[i];
-      
+
       // Parse and create the geometrical element
       RGeomElem geomElem = null;
       if(name.equals("g")){
         geomElem = elemToGroup(element);
-        
+
       }else if (name.equals("path")) {
         geomElem = elemToShape(element);
-        
+
       }else if(name.equals("polygon")){
         geomElem = elemToPolygon(element);
-        
+
       }else if(name.equals("polyline")){
         geomElem = elemToPolyline(element);
-        
+
       }else if(name.equals("circle")){
         geomElem = elemToCircle(element);
-        
+
       }else if(name.equals("ellipse")){
         geomElem = elemToEllipse(element);
-        
+
       }else if(name.equals("rect")){
         geomElem = elemToRect(element);
-        
+
       }else if(name.equals("line")){
         geomElem = elemToLine(element);
-        
+
       }else if(name.equals("defs")){
-        // Do nothing normally we should make a hashmap 
+        // Do nothing normally we should make a hashmap
         // to apply everytime they are called in the actual objects
       }else{
         PApplet.println("Element '" + name + "' not know. Ignoring it.");
       }
-      
+
       // If the geometrical element has been correctly created
       if((geomElem != null)){
         // Transform geometrical element
@@ -142,12 +241,12 @@ public class RSVG
           RMatrix transf = new RMatrix(transformString);
           geomElem.transform(transf);
         }
-        
+
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){
           geomElem.name = element.getStringAttribute("id");
         }
-                
+
         // Get the style for the geometrical element
         if(element.hasAttribute("style")){
           geomElem.setStyle(element.getStringAttribute("style"));
@@ -192,15 +291,15 @@ public class RSVG
         if(element.hasAttribute("opacity")){
           geomElem.setAlpha(element.getStringAttribute("opacity"));
         }
-        
+
         // Get the style for the geometrical element
-        grp.addElement(geomElem);      
+        grp.addElement(geomElem);
       }
     }
 
     // Set the original width and height
     grp.updateOrigParams();
-    
+
     return grp;
   }
 
@@ -222,45 +321,45 @@ public class RSVG
       shp.setStrokeAlpha(255);  // By default in SVG it's 1
       shp.setAlpha(255);  // By default in SVG it's 1F
     }
-    
+
     XMLElement elems[] = elem.getChildren();
     for (int i = 0; i < elems.length; i++) {
       String name = elems[i].getName().toLowerCase();
       XMLElement element = elems[i];
-      
+
       // Parse and create the geometrical element
       RShape geomElem = null;
       if(name.equals("g")){
         geomElem = elemToCompositeShape(element);
-        
+
       }else if (name.equals("path")) {
         geomElem = elemToShape(element);
-        
+
       }else if(name.equals("polygon")){
         geomElem = elemToPolygon(element);
-        
+
       }else if(name.equals("polyline")){
         geomElem = elemToPolyline(element);
-        
+
       }else if(name.equals("circle")){
         geomElem = elemToCircle(element);
-        
+
       }else if(name.equals("ellipse")){
         geomElem = elemToEllipse(element);
-        
+
       }else if(name.equals("rect")){
         geomElem = elemToRect(element);
-        
+
       }else if(name.equals("line")){
         geomElem = elemToLine(element);
-        
+
       }else if(name.equals("defs")){
-        // Do nothing normally we should make a hashmap 
+        // Do nothing normally we should make a hashmap
         // to apply everytime they are called in the actual objects
       }else{
         PApplet.println("Element '" + name + "' not know. Ignoring it.");
       }
-      
+
       // If the geometrical element has been correctly created
       if((geomElem != null)){
         // Transform geometrical element
@@ -269,12 +368,12 @@ public class RSVG
           RMatrix transf = new RMatrix(transformString);
           geomElem.transform(transf);
         }
-        
+
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){
           geomElem.name = element.getStringAttribute("id");
         }
-                
+
         // Get the style for the geometrical element
         if(element.hasAttribute("style")){
           geomElem.setStyle(element.getStringAttribute("style"));
@@ -319,9 +418,9 @@ public class RSVG
         if(element.hasAttribute("opacity")){
           geomElem.setAlpha(element.getStringAttribute("opacity"));
         }
-        
+
         // Get the style for the geometrical element
-        shp.addChild(geomElem);      
+        shp.addChild(geomElem);
       }
     }
 
@@ -329,7 +428,7 @@ public class RSVG
 
     return shp;
   }
-  
+
   /**
    * @invisible
    */
@@ -341,34 +440,34 @@ public class RSVG
 
     return shp;
   }
-  
+
   /**
    * @invisible
    */
   public RShape elemToPolygon(XMLElement elem)
   {
     RShape poly = elemToPolyline(elem);
-    
+
     poly.addClose();
-    
+
     poly.updateOrigParams();
 
-    return poly;    
+    return poly;
   }
-  
+
   /**
    * @invisible
    */
   public RShape elemToRect(XMLElement elem)
   {
-    
+
     RShape shp = getRect(elem.getFloatAttribute("x"), elem.getFloatAttribute("y"), elem.getFloatAttribute("width"), elem.getFloatAttribute("height"));
- 
+
     shp.updateOrigParams();
-    
+
     return shp;
   }
-  
+
   /**
    * @invisible
    */
@@ -380,8 +479,8 @@ public class RSVG
 
     return shp;
   }
-  
-  
+
+
   /**
    * @invisible
    */
@@ -393,8 +492,8 @@ public class RSVG
 
     return shp;
   }
-  
-  
+
+
   /**
    * @invisible
    */
@@ -402,12 +501,12 @@ public class RSVG
   {
     float r = elem.getFloatAttribute("r");
     RShape shp = getEllipse(elem.getFloatAttribute("cx"), elem.getFloatAttribute("cy"), r, r);
-    
-    shp.updateOrigParams();    
+
+    shp.updateOrigParams();
 
     return shp;
   }
-  
+
   /**
    * @invisible
    */
@@ -415,37 +514,37 @@ public class RSVG
   {
     RShape shp = getShape(elem.getStringAttribute("d"));
 
-    shp.updateOrigParams();    
+    shp.updateOrigParams();
 
     return shp;
   }
-  
+
   /**
    * @invisible
    */
   private RShape getRect(float x, float y, float w, float h)
   {
     RShape shp = RShape.createRectangle(x, y, w, h);
-    
+
     shp.updateOrigParams();
 
     return shp;
   }
-  
+
   /**
    * @invisible
    */
   private RShape getLine(float x1, float y1, float x2, float y2)
   {
     RShape shp = new RShape();
-    
+
     shp.addMoveTo(x1, y1);
     shp.addLineTo(x2, y2);
 
     return shp;
   }
-  
-  
+
+
   /**
    * @invisible
    */
@@ -454,7 +553,7 @@ public class RSVG
     // RShape createEllipse takes as input the width and height of the ellipses
     return RShape.createEllipse(cx, cy, rx*2F, ry*2F);
   }
-  
+
   /**
    * @invisible
    */
@@ -498,14 +597,14 @@ public class RSVG
     }
     return poly;
   }
-  
+
   /**
    * @invisible
    */
   private RShape getShape(String s)
   {
     RShape shp = new RShape();
-    
+
     if(s == null){
       return shp;
     }
@@ -533,22 +632,22 @@ public class RSVG
             charline = PApplet.splice(charline,' ',i);
             i ++;
             charline = PApplet.splice(charline,' ',i+1);
-            i ++;      
+            i ++;
             break;
-            
+
           case '-':
             if(charline[i-1] != 'e' && charline[i-1] != 'E'){
               charline=PApplet.splice(charline,' ',i);
               i++;
             }
-            break;            
+            break;
           case ',':
           case '\n':
           case '\r':
           case '\t':
             charline[i] = ' ';
             break;
-            
+
           }
       }
     String formatted = new String(charline);
@@ -563,12 +662,12 @@ public class RSVG
     RPoint relp = new RPoint();
     RPoint refp = new RPoint();
     RPoint strp = new RPoint();
-    
+
     char command = 'a';
 
     for(int i=0;i<tags.length;i++)
       {
-        
+
         char nextChar = tags[i].charAt(0);
         switch(nextChar)
           {
@@ -590,47 +689,47 @@ public class RSVG
             command = nextChar;
             break;
         }
-        
+
         relp.setLocation(0F, 0F);
 
         switch(command)
           {
           case 'm':
             relp.setLocation(curp.x, curp.y);
-          case 'M':            
+          case 'M':
             i = move(shp, curp, relp, refp, strp, tags, i);
             break;
-            
+
           case 'z':
             relp.setLocation(curp.x, curp.y);
           case 'Z':
             shp.addClose();
             break;
-            
+
           case 'c':
             relp.setLocation(curp.x, curp.y);
           case 'C':
             i = curve(shp, curp, relp, refp, strp, tags, i);
             break;
-            
+
           case 's':
             relp.setLocation(curp.x, curp.y);
           case 'S':
             i = smooth(shp, curp, relp, refp, strp, tags, i);
             break;
-            
+
           case 'l':
             relp.setLocation(curp.x, curp.y);
           case 'L':
             i = line(shp, curp, relp, refp, strp, tags, i);
             break;
-            
+
           case 'h':
             relp.setLocation(curp.x, curp.y);
           case 'H':
             i = horizontal(shp, curp, relp, refp, strp, tags, i);
             break;
-            
+
           case 'v':
             relp.setLocation(curp.x, curp.y);
           case 'V':
@@ -639,7 +738,7 @@ public class RSVG
           }
       }
     return shp;
-  }  
+  }
 
   private int move(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
     shp.addMoveTo(PApplet.parseFloat(tags[i])+relp.x, PApplet.parseFloat(tags[i+1])+relp.y);
@@ -672,7 +771,7 @@ public class RSVG
 
     curp.setLocation(PApplet.parseFloat(tags[i])+relp.x, PApplet.parseFloat(tags[i+1])+relp.y);
     refp.setLocation(curp.x, curp.y);
-    return i + 1;        
+    return i + 1;
   }
 
   private int horizontal(RShape shp, RPoint curp, RPoint relp, RPoint refp, RPoint strp, String[] tags, int i){
