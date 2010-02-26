@@ -42,11 +42,16 @@ public class RSVG
     this.toGroup(filename).draw();
   }
 
+  public String fromShape(RShape shape) {
+    String header = "<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg width=\"100%\" height=\"100%\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n";
 
-  public void saveGroup(String filename, RGroup group) {
-    String svg = "<svg>\n" + groupToString(group) + "</svg>";
-    //String[] splittedSvg = PApplet.split(svg, "\n");
-    //PApplet.saveStrings(filename, splittedSvg);
+    return header + shapeToString(shape) + "</svg>";
+  }
+
+  public String fromGroup(RGroup group) {
+    String header = "<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg width=\"100%\" height=\"100%\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n";
+
+    return header + groupToString(group) + "</svg>";
   }
 
   public RGroup toGroup(String filename)
@@ -118,13 +123,20 @@ public class RSVG
 
   public String shapeToString(RShape shp) {
     String result = "";
-    result += "<p ";
+
+    // If it has children it is a group
+    result += "<g ";
     result += styleToString(shp.getStyle());
-    result += "d=\"";
-    for(int i=0; i<shp.countPaths(); i++) {
-      RPath sushp = shp.paths[i];
-      boolean init = true;
-      for ( int j = 0; j < sushp.countCommands(); j++ ) {
+    result += ">\n";
+
+    if (shp.countPaths() > 0) {
+      result += "<path ";
+      result += "d=\"";
+
+      for(int i=0; i<shp.countPaths(); i++) {
+        RPath sushp = shp.paths[i];
+        boolean init = true;
+        for ( int j = 0; j < sushp.countCommands(); j++ ) {
           RCommand cmd = sushp.commands[j];
 
           if (init) {
@@ -135,7 +147,7 @@ public class RSVG
           switch( cmd.getCommandType() )
             {
             case RCommand.LINETO:
-              result += "M" + cmd.endPoint.x + " " + cmd.endPoint.y + " ";
+              result += "L" + cmd.endPoint.x + " " + cmd.endPoint.y + " ";
               break;
 
             case RCommand.QUADBEZIERTO:
@@ -147,9 +159,20 @@ public class RSVG
               break;
             }
         }
+
+        if (sushp.closed) {
+          result += "Z ";
+        }
+      }
+
+      result += "\"/>\n";
     }
 
-    result += "\"/>\n";
+    for (int i=0; i<shp.countChildren(); i++) {
+      result+=shapeToString(shp.children[i]);
+    }
+
+    result += "</g>\n";
     return result;
   }
 
@@ -164,12 +187,67 @@ public class RSVG
       }
     }
 
+    if (style.fillAlphaDef) {
+      result += "fill-opacity:" + style.fillAlpha/255.0f + ";";
+    }
+
     if (style.strokeDef) {
       if (!style.stroke) {
         result += "stroke:none;";
       } else {
         result += "stroke:#" + PApplet.hex(style.strokeColor, 6) + ";";
       }
+    }
+
+    if (style.strokeAlphaDef) {
+      result += "stroke-opacity:" + style.strokeAlpha/255.0f + ";";
+    }
+
+    if (style.strokeWeightDef) {
+      result += "stroke-width:" + style.strokeWeight + ";";
+    }
+
+
+    if(style.strokeCapDef) {
+      result += "stroke-linecap:";
+
+      switch (style.strokeCap) {
+      case RG.PROJECT:
+        result += "butt";
+        break;
+      case RG.ROUND:
+        result += "round";
+        break;
+      case RG.SQUARE:
+        result += "square";
+        break;
+
+      default:
+        break;
+      }
+
+      result += ";";
+    }
+
+    if(style.strokeJoinDef) {
+      result += "stroke-linejoin:";
+
+      switch (style.strokeJoin) {
+      case RG.MITER:
+        result += "miter";
+        break;
+      case RG.ROUND:
+        result += "round";
+        break;
+      case RG.BEVEL:
+        result += "bevel";
+        break;
+
+      default:
+        break;
+      }
+
+      result += ";";
     }
 
     result += "\" ";

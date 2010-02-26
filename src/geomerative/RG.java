@@ -12,7 +12,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with Geomerative.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -29,62 +29,62 @@ public class RG implements PConstants{
    * @invisible
    */
   private static boolean initialized = false;
-  
+
   /**
    * @invisible
-   */  
+   */
   private static PApplet parent;
 
   /**
    * @invisible
-   */  
+   */
   public static boolean ignoreStyles = false;
 
   /**
    * @invisible
-   */  
+   */
   public static boolean useFastClip = true;
 
   /**
-   * The adaptor adapts the shape to a particular shape by adapting each of the groups points.  This can cause deformations of the individual elements in the group.  
+   * The adaptor adapts the shape to a particular shape by adapting each of the groups points.  This can cause deformations of the individual elements in the group.
    */
   public final static int BYPOINT = 0;
-  
+
   /**
    * The adaptor adapts the shape to a particular shape by adapting each of the groups elements positions.  This mantains the proportions of the shapes.
    */
   public final static int BYELEMENTPOSITION = 1;
-  
+
   /**
    * The adaptor adapts the shape to a particular shape by adapting each of the groups elements indices.  This mantains the proportions of the shapes.
    */
   public final static int BYELEMENTINDEX = 2;
-  
+
   /**
    * @invisible
    */
   static int adaptorType = BYELEMENTPOSITION;
-  
+
   /**
    * @invisible
-   */  
+   */
   static float adaptorScale = 1F;
-  
+
   /**
    * @invisible
-   */  
+   */
   static float adaptorLengthOffset = 0F;
 
   /**
    * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.
    */
   public static int ADAPTATIVE = RCommand.ADAPTATIVE;
-  
+
   /**
    * UNIFORMLENGTH segmentator is the slowest segmentator and it segments the curve on segments of equal length.  This can be useful for very specific applications when for example drawing incrementaly a shape with a uniform speed.
-   */  
+   */
   public static int UNIFORMLENGTH = RCommand.UNIFORMLENGTH;
-  
+
   /**
    * UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
    */
@@ -92,7 +92,7 @@ public class RG implements PConstants{
 
   /**
    * @invisible
-   */  
+   */
   public static class LibraryNotInitializedException extends NullPointerException{
     private static final long serialVersionUID = -3710605630786298671L;
 
@@ -103,7 +103,7 @@ public class RG implements PConstants{
 
   /**
    * @invisible
-   */  
+   */
   public static class FontNotLoadedException extends NullPointerException{
     private static final long serialVersionUID = -3710605630786298672L;
 
@@ -114,7 +114,7 @@ public class RG implements PConstants{
 
   /**
    * @invisible
-   */  
+   */
   public static class NoPathInitializedException extends NullPointerException{
     private static final long serialVersionUID = -3710605630786298673L;
 
@@ -140,7 +140,7 @@ public class RG implements PConstants{
     RFont newFntLoader = new RFont(fontFile);
     if (fntLoader == null) fntLoader = newFntLoader;
     return newFntLoader;
-    
+
   }
 
   /**
@@ -180,9 +180,9 @@ public class RG implements PConstants{
 
   public static RShape getText(String text){
     if(fntLoader == null){
-      throw new FontNotLoadedException();      
+      throw new FontNotLoadedException();
     }
-    
+
     return fntLoader.toShape(text);
   }
 
@@ -210,7 +210,7 @@ public class RG implements PConstants{
 
   public static void shape(RShape shp, float x, float y){
     RShape tshp = new RShape(shp);
-    
+
     RMatrix transf = new RMatrix();
     transf.translate(x, y);
     tshp.transform(transf);
@@ -236,10 +236,23 @@ public class RG implements PConstants{
    * Load a shape object from a file.
    * @eexample loadShape
    * @param filename  the SVG file to be loaded.  Must be in the data directory
-   */  
+   */
   public static RShape loadShape(String filename){
     RSVG svgLoader = new RSVG();
-    return svgLoader.toShape(filename);    
+    return svgLoader.toShape(filename);
+  }
+
+  /**
+   * Save a shape object to a file.
+   * @eexample saveShape
+   * @param filename  the SVG file to be saved.
+   * @param shape  the shape to be saved.
+   */
+  public static void saveShape(String filename, RShape shape){
+    RSVG svgSaver = new RSVG();
+    String str = svgSaver.fromShape(shape);
+    String[] strs = PApplet.split(str, "\n");
+    RG.parent().saveStrings(filename, strs);
   }
 
 
@@ -247,23 +260,23 @@ public class RG implements PConstants{
   /**
    * Begin to create a shape.
    * @eexample createShape
-   */  
+   */
   public static void beginShape(){
     shape = new RShape();
   }
 
   /**
    * Begin a new path in the current shape.  Can only be called inside beginShape() and endShape().
-   * @param endMode  if called with RG.CLOSE it closes the current path before starting the new one. 
+   * @param endMode  if called with RG.CLOSE it closes the current path before starting the new one.
    * @eexample createShape
-   */  
+   */
   public static void breakShape(int endMode){
     if (endMode == CLOSE) {
       shape.addClose();
     }
 
     shape.updateOrigParams();
-    
+
     breakShape();
   }
 
@@ -276,7 +289,7 @@ public class RG implements PConstants{
    * @eexample createShape
    * @param x  the x coordinate of the vertex
    * @param y  the y coordinate of the vertex
-   */  
+   */
   public static void vertex(float x, float y){
     if (shape.countPaths() == 0){
       shape.addMoveTo(x, y);
@@ -294,7 +307,7 @@ public class RG implements PConstants{
    * @param cy2  the y coordinate of the second control point
    * @param x  the x coordinate of the end point
    * @param y  the y coordinate of the end point
-   */  
+   */
   public static void bezierVertex(float cx1, float cy1, float cx2, float cy2, float x, float y){
     if (shape.countPaths() == 0){
       throw new NoPathInitializedException();
@@ -328,10 +341,10 @@ public class RG implements PConstants{
     returningGroup.addChild(shape);
 
     shape = null;
-    
+
     returningGroup.updateOrigParams();
 
-    return returningGroup;    
+    return returningGroup;
   }
 
   /**
@@ -339,14 +352,14 @@ public class RG implements PConstants{
    * @eexample getEllipse
    * @param x  x coordinate of the center of the shape
    * @param y  y coordinate of the center of the shape
-   * @param w  width of the ellipse 
+   * @param w  width of the ellipse
    * @param h  height of the ellipse
    * @return RShape, the shape created
    */
   public static RShape getEllipse(float x, float y, float w, float h){
     return RShape.createEllipse(x, y, w, h);
   }
-  
+
   public static RShape getEllipse(float x, float y, float w){
     return getEllipse(x, y, w, w);
   }
@@ -369,14 +382,14 @@ public class RG implements PConstants{
    * @eexample getRect
    * @param x  x coordinate of the top left corner of the shape
    * @param y  y coordinate of the top left of the shape
-   * @param w  width of the rectangle 
+   * @param w  width of the rectangle
    * @param h  height of the rectangle
    * @return RShape, the shape created
    */
   public static RShape getRect(float x, float y, float w, float h){
     return RShape.createRectangle(x, y, w, h);
   }
-  
+
   public static RShape getRect(float x, float y, float w){
     return getRect(x, y, w, w);
   }
@@ -408,8 +421,8 @@ public class RG implements PConstants{
   public static RShape getRing(float x, float y, float widthBig, float widthSmall){
     return RShape.createRing(x, y, widthBig, widthSmall);
   }
-  
-  
+
+
   // Transformation methods
   public static RShape centerIn(RShape grp, PGraphics g, float margin){
     RShape ret = new RShape(grp);
@@ -458,7 +471,7 @@ public class RG implements PConstants{
     ret.polygonize();
     return ret;
   }
-  
+
 
   // State methods
   /**
@@ -468,7 +481,7 @@ public class RG implements PConstants{
     parent = _parent;
     initialized = true;
   }
-  
+
   /**
    * @invisible
    */
@@ -483,7 +496,7 @@ public class RG implements PConstants{
     if(parent == null){
       throw new LibraryNotInitializedException();
     }
-    
+
     return parent;
   }
 
@@ -495,8 +508,8 @@ public class RG implements PConstants{
    * @return RShape, the result of the operation
    * @related diff ( )
    * @related union ( )
-   * @related intersection ( )   
-   * @related xor ( )   
+   * @related intersection ( )
+   * @related xor ( )
    */
   public static RShape diff(RShape a, RShape b){
     return a.diff(b);
@@ -510,8 +523,8 @@ public class RG implements PConstants{
    * @return RShape, the result of the operation
    * @related diff ( )
    * @related union ( )
-   * @related intersection ( )   
-   * @related xor ( )   
+   * @related intersection ( )
+   * @related xor ( )
    */
   public static RShape union(RShape a, RShape b){
     return a.union(b);
@@ -525,8 +538,8 @@ public class RG implements PConstants{
    * @return RShape, the result of the operation
    * @related diff ( )
    * @related union ( )
-   * @related intersection ( )   
-   * @related xor ( )   
+   * @related intersection ( )
+   * @related xor ( )
    */
   public static RShape intersection(RShape a, RShape b){
     return a.intersection(b);
@@ -540,13 +553,13 @@ public class RG implements PConstants{
    * @return RShape, the result of the operation
    * @related diff ( )
    * @related union ( )
-   * @related intersection ( )   
-   * @related xor ( )   
+   * @related intersection ( )
+   * @related xor ( )
    */
   public static RShape xor(RShape a, RShape b){
     return a.xor(b);
   }
-  
+
   /**
    * Ignore the styles of the shapes when drawing and use the processing style methods.
    * @eexample ignoreStyles
@@ -572,7 +585,7 @@ public class RG implements PConstants{
   public static void setAdaptor(int adptorType){
     adaptorType = adptorType;
   }
-  
+
   /**
    * Use this to set the adaptor scaling.  This scales the transformation of the adaptor.
    * @eexample RShape_setAdaptor
@@ -581,7 +594,7 @@ public class RG implements PConstants{
   public static void setAdaptorScale(float adptorScale){
     adaptorScale = adptorScale;
   }
-  
+
   /**
    * Use this to set the adaptor length offset.  This specifies where to start adapting the group to the shape.
    * @eexample RShape_setAdaptorLengthOffset
@@ -596,7 +609,7 @@ public class RG implements PConstants{
 
 
   /**
-   * Use this to set the polygonizer type. 
+   * Use this to set the polygonizer type.
    *
    * @param segmenterMethod  can be RG.ADAPTATIVE, RG.UNIFORMLENGTH or RG.UNIFORMSTEP.
    *
@@ -634,7 +647,7 @@ public class RG implements PConstants{
    * Use this to set the segmentator step for the UNIFORMSTEP segmentator and set the segmentator to UNIFORMSTEP.
    * @eexample setSegmentStep
    * @param step  if a float from +0.0 to 1.0 is passed it's considered as the step, else it's considered as the number of steps.  When a value of 0.0 is used the steps will be calculated automatically depending on an estimation of the length of the curve.  The special value -1 is the same as 0.0 but also turning of the segmentation of lines (faster segmentation).
-   * @related UNIFORMSTEP 
+   * @related UNIFORMSTEP
    * @related polygonize ( )
    */
   public static void setPolygonizerStep(float step){
