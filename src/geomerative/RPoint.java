@@ -12,7 +12,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with Geomerative.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -35,7 +35,7 @@ public class RPoint
    * @related y
    */
   public float x;
-  
+
   /**
    * The y coordinate of the point.
    * @eexample RPoint_y
@@ -43,7 +43,7 @@ public class RPoint
    * @related x
    */
   public float y;
-  
+
   /**
    * Create a new point, given the coordinates.
    * @eexample RPoint_constructor
@@ -52,7 +52,7 @@ public class RPoint
    * @param y  the y coordinate of the new point
    * @related x
    * @related y
-   */ 
+   */
   public RPoint(float x,float y)
   {
     this.x = x;
@@ -71,7 +71,7 @@ public class RPoint
    * @usage Geometry
    * @related x
    * @related y
-   */ 
+   */
   public RPoint()
   {
     x = 0;
@@ -85,13 +85,13 @@ public class RPoint
    * @param p  the point we wish to make a copy of
    * @related x
    * @related y
-   */   
+   */
   public RPoint(RPoint p)
   {
     this.x = p.x;
     this.y = p.y;
   }
-  
+
   /**
    * @invisible
    */
@@ -99,7 +99,7 @@ public class RPoint
   {
     return this.x;
   }
-  
+
   /**
    * @invisible
    */
@@ -107,8 +107,8 @@ public class RPoint
   {
     return this.y;
   }
-  
-  
+
+
   /**
    * @invisible
    */
@@ -117,7 +117,7 @@ public class RPoint
     this.x = nx;
     this.y = ny;
   }
-  
+
   /**
    * Use this to apply a transformation to the point.
    * @eexample RPoint_transform
@@ -131,11 +131,11 @@ public class RPoint
   {
     float tempx = m.m00*x + m.m01*y + m.m02;
     float tempy = m.m10*x + m.m11*y + m.m12;
-    
+
     x = tempx;
     y = tempy;
   }
-  
+
   /**
    * Apply a translation to the point.
    * @eexample RPoint_translate
@@ -160,13 +160,13 @@ public class RPoint
    * @related transform ( )
    * @related rotate ( )
    * @related scale ( )
-   */  
+   */
   public void translate(RPoint t)
   {
     x += t.x;
     y += t.y;
   }
-  
+
   /**
    * Apply a rotation to the point, given the angle and optionally the coordinates of the center of rotation.
    * @eexample RPoint_rotate
@@ -182,16 +182,16 @@ public class RPoint
   {
     float c = (float)Math.cos(angle);
     float s = (float)Math.sin(angle);
-    
+
     x -= vx;
     y -= vy;
-    
+
     float tempx = x;
     float tempy = y;
-    
+
     x = tempx*c - tempy*s;
     y = tempx*s + tempy*c;
-    
+
     x += vx;
     y += vy;
   }
@@ -200,14 +200,14 @@ public class RPoint
   {
     float c = (float)Math.cos(angle);
     float s = (float)Math.sin(angle);
-    
+
     float tempx = x;
     float tempy = y;
-    
+
     x = tempx*c - tempy*s;
     y = tempx*s + tempy*c;
   }
-    
+
   /**
    * Apply a rotation to the point, given the angle and optionally the point of the center of rotation.
    * @eexample RPoint_rotate
@@ -222,20 +222,20 @@ public class RPoint
   {
     float c = (float)Math.cos(angle);
     float s = (float)Math.sin(angle);
-    
+
     x -= v.x;
     y -= v.y;
-    
+
     float tempx = x;
     float tempy = y;
-    
+
     x = tempx*c - tempy*s;
     y = tempx*s + tempy*c;
-    
+
     x += v.x;
     y += v.y;
   }
-  
+
   /**
    * Apply a scaling to the point, given the scaling factors.
    * @eexample RPoint_scale
@@ -251,7 +251,7 @@ public class RPoint
     x *= sx;
     y *= sy;
   }
-  
+
   /**
    * Apply a scaling to the point, given a scaling factor.
    * @eexample RPoint_scale
@@ -266,7 +266,7 @@ public class RPoint
     x *= s;
     y *= s;
   }
-  
+
   /**
    * Apply a scaling to the point, given a scaling vector.
    * @eexample RPoint_scale
@@ -281,8 +281,8 @@ public class RPoint
     x *= s.x;
     y *= s.y;
   }
-  
-  
+
+
   /**
    * Use this to normalize the point. This means that after applying, it's norm will be equal to 1.
    * @eexample RPoint_normalize
@@ -297,7 +297,7 @@ public class RPoint
     float norma = norm();
     if(norma!=0) scale(1/norma);
   }
-  
+
   /**
    * Use this to substract a vector to this point.
    * @eexample RPoint_sub
@@ -312,7 +312,7 @@ public class RPoint
     x -= p.x;
     y -= p.y;
   }
-  
+
   /**
    * Use this to add a vector to this point.
    * @eexample RPoint_add
@@ -327,7 +327,7 @@ public class RPoint
     x += p.x;
     y += p.y;
   }
-  
+
   /**
    * Use this to multiply a vector to this point. This returns a float corresponding to the scalar product of both vectors.
    * @eexample RPoint_mult
@@ -342,7 +342,7 @@ public class RPoint
   {
     return (x * p.x + y * p.y);
   }
-  
+
   /**
    * Use this to perform a cross product of the point with another point.  This returns a RPoint corresponding to the cross product of both vectors.
    * @eexample RPoint_cross
@@ -357,7 +357,7 @@ public class RPoint
   {
     return new RPoint(x * p.y - p.x * y, y * p.x - p.y * x);
   }
-  
+
   /**
    * Use this to obtain the norm of the point.
    * @eexample RPoint_norm
@@ -369,7 +369,19 @@ public class RPoint
   {
     return (float)Math.sqrt(mult(this));
   }
-  
+
+  /**
+   * Use this to obtain the square norm of the point.
+   * @eexample RPoint_norm
+   * @usage Geometry
+   * @return float, the norm of the point
+   * @related angle ( )
+   */
+  public float sqrnorm ()
+  {
+    return (float)mult(this);
+  }
+
   /**
    * Use this to obtain the angle between the vector and another vector
    * @eexample RPoint_angle
@@ -384,7 +396,23 @@ public class RPoint
     float normthis = norm();
     return (float)Math.acos(mult(p)/(normp*normthis));
   }
-  
+
+  /**
+   * Use this to obtain the distance between the vector and another vector
+   * @eexample RPoint_dist
+   * @usage Geometry
+   * @param p  the vector relative to which we want to evaluate the distance
+   * @return float, the distance between the two vectors
+   * @related norm ( )
+   */
+  public float dist (RPoint p)
+  {
+    float dx = (p.x-this.x);
+    float dy = (p.y-this.y);
+    return (float)Math.sqrt(dx*dx + dy*dy);
+  }
+
+
   public void print(){
     System.out.print("("+x+","+y+")\n");
   }

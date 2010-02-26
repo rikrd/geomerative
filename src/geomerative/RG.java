@@ -344,13 +344,24 @@ public class RG implements PConstants{
    * @return RShape, the shape created
    */
   public static RShape getEllipse(float x, float y, float w, float h){
-    RShape ret = new RShape();
-    ret.addChild(RShape.createEllipse(x, y, w, h));
-    return ret;
+    return RShape.createEllipse(x, y, w, h);
   }
   
   public static RShape getEllipse(float x, float y, float w){
     return getEllipse(x, y, w, w);
+  }
+
+  /**
+   * Get a line as a shape object.
+   * @eexample getLine
+   * @param x1  x coordinate of the first point of the line
+   * @param y1  y coordinate of the first point of the line
+   * @param x2  x coordinate of the last point of the line
+   * @param y2  y coordinate of the last point of the line
+   * @return RShape, the shape created
+   */
+  public static RShape getLine(float x1, float y1, float x2, float y2){
+    return RShape.createLine(x1, y1, x2, y2);
   }
 
   /**
@@ -363,9 +374,7 @@ public class RG implements PConstants{
    * @return RShape, the shape created
    */
   public static RShape getRect(float x, float y, float w, float h){
-    RShape ret = new RShape();
-    ret.addChild(RShape.createRectangle(x, y, w, h));
-    return ret;
+    return RShape.createRectangle(x, y, w, h);
   }
   
   public static RShape getRect(float x, float y, float w){
@@ -383,9 +392,7 @@ public class RG implements PConstants{
    * @return RShape, the shape created
    */
   public static RShape getStar(float x, float y, float widthBig, float widthSmall, int spikes){
-    RShape ret = new RShape();
-    ret.addChild(RShape.createStar(x, y, widthBig, widthSmall, spikes));
-    return ret;
+    return RShape.createStar(x, y, widthBig, widthSmall, spikes);
   }
 
 
@@ -399,9 +406,7 @@ public class RG implements PConstants{
    * @return RShape, the shape created
    */
   public static RShape getRing(float x, float y, float widthBig, float widthSmall){
-    RShape ret = new RShape();
-    ret.addChild(RShape.createRing(x, y, widthBig, widthSmall));
-    return ret;
+    return RShape.createRing(x, y, widthBig, widthSmall);
   }
   
   

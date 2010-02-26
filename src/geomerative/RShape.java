@@ -95,6 +95,26 @@ public class RShape extends RGeomElem
   }
 
   /**
+   * Use this method to create a new line. 
+   * @eexample createRing
+   * @param x1  x coordinate of the first point of the line
+   * @param y1  y coordinate of the first point of the line
+   * @param x2  x coordinate of the last point of the line
+   * @param y2  y coordinate of the last point of the line
+   * @return RShape, the ring polygon newly created
+   */
+  static public RShape createLine(float x1, float y1, float x2, float y2){
+    RShape line = new RShape();
+    RPath path = new RPath();
+    
+    RCommand lineCommand = new RCommand(x1, y1, x2, y2);
+    path.addCommand(lineCommand);
+    line.addPath(path);
+    
+    return line;
+  }
+
+  /**
    * Use this method to create a new ring polygon. 
    * @eexample createRing
    * @param x  x coordinate of the center of the shape
@@ -485,11 +505,44 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape intersection( RShape p ){
+      int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.intersection( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].intersection(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.intersection( this.toPolygon(),p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
+    */
   }
   
   /**
@@ -502,11 +555,44 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape union( RShape p ){
+    int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.union( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].union(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.union( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
+    */
   }
   
   /**
@@ -519,12 +605,44 @@ public class RShape extends RGeomElem
    * @related diff ( )
    */
   public RShape xor( RShape p ){
+    int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.xor( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].xor(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.xor( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
-
+    */
   }
   
   /**
@@ -537,11 +655,44 @@ public class RShape extends RGeomElem
    * @related intersection ( )
    */	
   public RShape diff( RShape p ){
+    int numPaths = countPaths();
+    RPolygon ppoly = p.toPolygon();
+
+    RShape result = new RShape();
+    
+    RShape temp = new RShape();
+    for(int i=0; i<numPaths; i++){
+      temp.addPath(this.paths[i]);
+    }
+
+    RPolygon resPolPaths = RClip.diff( temp.toPolygon(), ppoly );
+    if (resPolPaths != null) { 
+      RShape resPaths = resPolPaths.toShape();
+      for(int i=0; i<resPaths.countPaths(); i++){
+        result.addPath(resPaths.paths[i]);
+      }
+    }
+
+    for(int i=0; i<countChildren(); i++){
+      RShape resChildren = this.children[i].diff(p);
+      if (resChildren != null) {
+        result.addChild(resChildren);
+      }
+    }
+    
+    if (result != null) {
+      result.setStyle(this);
+    }
+
+    return result;
+
+    /*
     RPolygon result = RClip.diff( this.toPolygon(), p.toPolygon() );
 
     if (result == null) return null;
 
     return result.toShape();
+    */
   }
     
   /**
@@ -1044,6 +1195,231 @@ public class RShape extends RGeomElem
     
       return result;
     }
+  }
+
+  /**
+   * Use this method to get the intersection points of the shape with another shape passed as argument.
+   * @param other  the path with which to check for intersections
+   */  
+  public RPoint[] getIntersections(RShape other) {
+    // TODO: when we will be able to intersect between all
+    //       geometric elements the polygonization will not be necessary
+    RShape shp = new RShape(this);
+    shp.polygonize();
+
+    RShape otherPol = new RShape(other);
+    otherPol.polygonize();
+    return shp.polygonIntersectionPoints(otherPol);
+  }
+
+
+  RPoint[] getIntersections(RCommand other) {
+    // TODO: when we will be able to intersect between all
+    //       geometric elements the polygonization will not be necessary
+    RShape shp = new RShape(this);
+    shp.polygonize();
+    
+    return shp.polygonIntersectionPoints(other);
+  }
+  
+  RPoint[] polygonIntersectionPoints(RCommand other){
+    int numPaths = countPaths();
+
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    for(int i=0;i<numPaths;i++){
+      RPoint[] newPoints = paths[i].intersectionPoints(other);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
+    for(int i=0;i<countChildren();i++){
+      RPoint[] newPoints = children[i].polygonIntersectionPoints(other);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  RPoint[] polygonIntersectionPoints(RPath other){
+    int numChildren = countChildren();
+    int numPaths = countPaths();
+    
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    
+    for(int i=0;i<numPaths;i++){
+      RPoint[] newPoints = paths[i].intersectionPoints(other);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+        
+    for(int i=0;i<numChildren;i++){
+      RPoint[] newPoints = children[i].polygonIntersectionPoints(other);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
+    return result;
+  }
+
+  RPoint[] polygonIntersectionPoints(RShape other){
+    int numChildren = countChildren();
+    int numPaths = countPaths();
+    
+    RPoint[] result=null;
+    RPoint[] newresult=null;
+    
+    for(int i=0;i<numPaths;i++){
+      RPoint[] newPoints = other.polygonIntersectionPoints(paths[i]);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
+    for(int i=0;i<numChildren;i++){
+      RPoint[] newPoints = other.polygonIntersectionPoints(children[i]);
+      if(newPoints!=null){
+        if(result==null){
+          result = new RPoint[newPoints.length];
+          System.arraycopy(newPoints,0,result,0,newPoints.length);
+        }else{
+          newresult = new RPoint[result.length + newPoints.length];
+          System.arraycopy(result,0,newresult,0,result.length);
+          System.arraycopy(newPoints,0,newresult,result.length,newPoints.length);
+          result = newresult;
+        }
+      }
+    }
+    
+    return result;
+  }
+
+
+  /**
+   * Use this method to get the closest or intersection points of the shape with another shape passed as argument.
+   * @param other  the path with which to check for intersections
+   */  
+  public RClosest getClosest(RShape other) {
+    // TODO: when we will be able to intersect between all
+    //       geometric elements the polygonization will not be necessary
+    RShape shp = new RShape(this);
+    shp.polygonize();
+
+    RShape otherPol = new RShape(other);
+    otherPol.polygonize();
+    return shp.polygonClosestPoints(otherPol);
+  }
+
+
+  RClosest getClosest(RCommand other) {
+    // TODO: when we will be able to intersect between all
+    //       geometric elements the polygonization will not be necessary
+    RShape shp = new RShape(this);
+    shp.polygonize();
+    
+    return shp.polygonClosestPoints(other);
+  }
+  
+  RClosest polygonClosestPoints(RCommand other){
+    int numPaths = countPaths();
+    
+    RClosest result = new RClosest();
+    
+    for(int i=0;i<numPaths;i++){
+      RClosest currResult = paths[i].closestPoints(other);
+      result.update(currResult);
+    }
+
+    for(int i=0;i<countChildren();i++){
+      RClosest currResult = children[i].polygonClosestPoints(other);
+      result.update(currResult);
+    }
+    
+    return result;
+  }
+
+  RClosest polygonClosestPoints(RPath other){
+    int numChildren = countChildren();
+    int numPaths = countPaths();
+    
+    RClosest result = new RClosest();
+    
+    for(int i=0;i<numPaths;i++){
+      RClosest currClosest = paths[i].closestPoints(other);
+      result.update(currClosest);
+    }
+        
+    for(int i=0;i<numChildren;i++){
+      RClosest currClosest = children[i].polygonClosestPoints(other);
+      result.update(currClosest);
+    }
+    
+    return result;
+  }
+
+  RClosest polygonClosestPoints(RShape other){
+    int numChildren = countChildren();
+    int numPaths = countPaths();
+    
+    RClosest result = new RClosest();
+    
+    for(int i=0;i<numPaths;i++){
+      RClosest currClosest = other.polygonClosestPoints(paths[i]);
+      result.update(currClosest);
+    }
+    
+    for(int i=0;i<numChildren;i++){
+      RClosest currClosest = other.polygonClosestPoints(children[i]);
+      result.update(currClosest);
+    }
+    
+    return result;
   }
 
   /**
