@@ -1702,6 +1702,7 @@ public class RCommand extends RGeomElem
     //calculate segment parameter and ensure its within bounds
     float t1 = ((d.x - c.x)*(a.y - c.y) - (d.y - c.y)*(a.x - c.x))/denom;
     float t2 = ((b.x - a.x)*(a.y - c.y) - (b.y - a.y)*(a.x - c.x))/denom;
+    
     if ( t1 < 0.0f || t1 > 1.0f || t2 < 0.0f || t2 > 1.0f )
       return null;
 
@@ -1727,8 +1728,9 @@ public class RCommand extends RGeomElem
   public RClosest closestPoints(RCommand other)
   {
     RClosest result = new RClosest();
+    result.distance = 0;
     RPoint temp;
-    RPoint[] intersects = null;
+
     switch (commandType) {
     case LINETO:
       switch (other.getCommandType()) {
@@ -1844,6 +1846,60 @@ public class RCommand extends RGeomElem
   }
 
   public static RClosest lineLineClosest(RCommand c1, RCommand c2) {
+    RPoint c1b = new RPoint(c1.startPoint);
+    RPoint c1e = new RPoint(c1.endPoint);
+
+    float c2t1 = closestAdvFrom(c2, c1b);
+    float c2t2 = closestAdvFrom(c2, c1e);
+
+    RPoint c2p1 = c2.getPoint(c2t1);
+    RPoint c2p2 = c2.getPoint(c2t2);
+
+    float dist1c2 = c2p1.dist(c1b);
+    float dist2c2 = c2p2.dist(c1e);
+
+    RPoint c2b = new RPoint(c2.startPoint);
+    RPoint c2e = new RPoint(c2.endPoint);
+
+    float c1t1 = closestAdvFrom(c1, c2b);
+    float c1t2 = closestAdvFrom(c1, c2e);
+
+    RPoint c1p1 = c1.getPoint(c1t1);
+    RPoint c1p2 = c1.getPoint(c1t2);
+
+    float dist1c1 = c1p1.dist(c2b);
+    float dist2c1 = c1p2.dist(c2e);
+
+    
+    RClosest result = new RClosest();
+    result.distance = Math.min(Math.min(dist1c2, dist2c2), Math.min(dist1c1, dist2c1));
+    result.closest = new RPoint[2];
+    result.advancements = new float[2];
+
+    if (result.distance == dist1c2) {
+      result.closest[0] = c1b;
+      result.closest[1] = c2p1;
+      result.advancements[0] = 0;
+      result.advancements[1] = c2t1;
+    } else if (result.distance == dist2c2) {
+      result.closest[0] = c1e;
+      result.closest[1] = c2p2;
+      result.advancements[0] = 1;
+      result.advancements[1] = c2t2;
+    } else if (result.distance == dist1c1) {
+      result.closest[0] = c2b;
+      result.closest[1] = c1p1;
+      result.advancements[0] = 0;
+      result.advancements[1] = c1t1;
+    } else /*if (result.distance == dist2c1)*/ {
+      result.closest[0] = c2e;
+      result.closest[1] = c1p2;
+      result.advancements[0] = 1;
+      result.advancements[1] = c1t2;
+    }
+
+
+    /*
     RPoint c = new RPoint(c2.startPoint);
     RPoint d = new RPoint(c2.endPoint);
 
@@ -1872,6 +1928,7 @@ public class RCommand extends RGeomElem
       result.advancements[0] = t1;
       result.advancements[1] = t2;
     }
+    */
 
     return result;
   }
