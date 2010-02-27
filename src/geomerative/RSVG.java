@@ -42,10 +42,22 @@ public class RSVG
     this.toGroup(filename).draw();
   }
 
+  public void saveShape(String filename, RShape shp) {
+    String str = fromShape(shp);
+    String[] strs = PApplet.split(str, "\n");
+    RG.parent().saveStrings(filename, strs);
+  }
+
   public String fromShape(RShape shape) {
     String header = "<?xml version=\"1.0\" standalone=\"no\"?>\n<!DOCTYPE svg PUBLIC \"-//W3C//DTD SVG 1.1//EN\" \"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd\">\n<svg width=\"100%\" height=\"100%\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\">\n";
 
     return header + shapeToString(shape) + "</svg>";
+  }
+
+  public void saveGroup(String filename, RGroup grp) {
+    String str = fromGroup(grp);
+    String[] strs = PApplet.split(str, "\n");
+    RG.parent().saveStrings(filename, strs);
   }
 
   public String fromGroup(RGroup group) {
@@ -53,6 +65,8 @@ public class RSVG
 
     return header + groupToString(group) + "</svg>";
   }
+
+  
 
   public RGroup toGroup(String filename)
   {
