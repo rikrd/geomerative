@@ -68,8 +68,8 @@ public abstract class RGeomElem
    */
   public static final int UNKNOWN = 8;
 
-  float width;
-  float height;
+  public float width;
+  public float height;
   
   // Functions dependent of the type of element
   // They must be overrided

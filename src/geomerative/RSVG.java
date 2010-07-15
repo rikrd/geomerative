@@ -21,6 +21,7 @@ package geomerative;
 
 import processing.core.*;
 import processing.xml.*;
+import java.awt.Toolkit;
 
 /**
  * @extended
@@ -77,6 +78,50 @@ public class RSVG
 
     return elemToGroup(svg);
   }
+  
+  public float unitsToPixels(String units, float originalPxSize) {
+    // TODO: check if it is possible to know the dpi of a given PGraphics or device
+    return unitsToPixels(units, originalPxSize, Toolkit.getDefaultToolkit().getScreenResolution());
+  }
+
+  public float unitsToPixels(String units, float originalPxSize, float dpi) {
+    int chars = 0;
+    float multiplier = 1.0f;
+
+    if (units.endsWith("em")) {
+      chars = 2;
+      multiplier = 1.0f;
+    } else if (units.endsWith("ex")) {
+      chars = 2;
+      multiplier = 1.0f;
+    } else if (units.endsWith("px")) {
+      chars = 2;
+      multiplier = 1.0f;
+    } else if (units.endsWith("pt")) {
+      chars = 2;
+      multiplier = 1.25f;
+    } else if (units.endsWith("pc")) {
+      chars = 2;
+      multiplier = 15f;
+    } else if (units.endsWith("cm")) {
+      chars = 2;
+      multiplier = 35.43307f / 90.0f * dpi;
+    } else if (units.endsWith("mm")) {
+      chars = 2;
+      multiplier = 3.543307f / 90.0f * dpi;
+    } else if (units.endsWith("in")) {
+      chars = 2;
+      multiplier = dpi;
+    } else if (units.endsWith("%")) {
+      chars = 1;
+      multiplier = originalPxSize / 100.0f;
+    } else {
+      chars = 0;
+      multiplier = 1.0f;
+    }
+
+    return Float.valueOf(units.substring(0, units.length()-chars)).floatValue() * multiplier;
+  }
 
   public RShape toShape(String filename)
   {
@@ -86,9 +131,18 @@ public class RSVG
     }
 
     RShape result = elemToCompositeShape(svg);
-    result.width = result.getWidth();
-    result.height = result.getHeight();
 
+    if (svg.hasAttribute("width") && svg.hasAttribute("height")) {
+      String widthStr = svg.getStringAttribute("width").trim();
+      String heightStr = svg.getStringAttribute("height").trim();
+      
+      result.width = unitsToPixels(widthStr, result.getWidth());
+      result.height = unitsToPixels(heightStr, result.getHeight());
+    } else {
+      result.width = result.getWidth();
+      result.height = result.getHeight();
+    }
+    
     return result;
   }
 
