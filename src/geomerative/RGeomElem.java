@@ -70,6 +70,9 @@ public abstract class RGeomElem
 
   public float width;
   public float height;
+
+  float origWidth;
+  float origHeight;
   
   // Functions dependent of the type of element
   // They must be overrided
@@ -360,6 +363,8 @@ public abstract class RGeomElem
     name = p.name;
     width = p.width;
     height = p.height;
+    origWidth = p.origWidth;
+    origHeight = p.origHeight;
 
     style = new RStyle(p.style);
   }
@@ -606,7 +611,7 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public float getOrigHeight(){
-    return height != 0.0 ? height : getHeight();
+    return origHeight != 0.0 ? origHeight : getHeight();
   }
 
   /**
@@ -616,12 +621,12 @@ public abstract class RGeomElem
    * @related getCenter ( )
    */
   public float getOrigWidth(){
-    return width != 0.0 ? width : getWidth();
+    return origWidth != 0.0 ? origWidth : getWidth();
   }
 
   protected void updateOrigParams(){
-    this.width = this.getWidth();
-    this.height = this.getHeight();
+    this.origWidth = this.getWidth();
+    this.origHeight = this.getHeight();
   }
 
   /**

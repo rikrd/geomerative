@@ -142,6 +142,9 @@ public class RSVG
       result.width = result.getWidth();
       result.height = result.getHeight();
     }
+
+    result.origWidth = result.getWidth();
+    result.origHeight = result.getHeight();
     
     return result;
   }
