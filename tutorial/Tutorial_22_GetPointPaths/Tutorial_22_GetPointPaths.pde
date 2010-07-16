@@ -48,11 +48,13 @@ void draw(){
   for(int i = 0; i<pointPaths.length; i++){
     translate(0,0,z);
 
-    beginShape();
-    for(int j = 0; j<pointPaths[i].length; j++){
-      vertex(pointPaths[i][j].x, pointPaths[i][j].y);
+    if (pointPaths[i] != null) {
+      beginShape();
+      for(int j = 0; j<pointPaths[i].length; j++){
+        vertex(pointPaths[i][j].x, pointPaths[i][j].y);
+      }
+      endShape();
     }
-    endShape();
   }
 }
 
