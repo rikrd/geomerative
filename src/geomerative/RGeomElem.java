@@ -68,7 +68,14 @@ public abstract class RGeomElem
    */
   public static final int UNKNOWN = 8;
 
+  /**
+   * Shape document width.
+   */
   public float width;
+
+  /**
+   * Shape document height.
+   */
   public float height;
 
   float origWidth;
