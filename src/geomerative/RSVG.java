@@ -28,6 +28,7 @@ import java.awt.Toolkit;
  */
 public class RSVG
 {
+  
   public void draw(String filename, PGraphics g)
   {
     this.toGroup(filename).draw(g);
@@ -483,7 +484,7 @@ public class RSVG
 
       }else if (name.equals("path")) {
         geomElem = elemToShape(element);
-
+        
       }else if(name.equals("polygon")){
         geomElem = elemToPolygon(element);
 
@@ -805,7 +806,7 @@ public class RSVG
     //PApplet.println("formatted: " + formatted);
     //PApplet.println("tags: ");
     //PApplet.println(tags);
-
+    
     //build points
     RPoint curp = new RPoint();
     RPoint relp = new RPoint();
@@ -814,9 +815,8 @@ public class RSVG
 
     char command = 'a';
 
-    for(int i=0;i<tags.length;i++)
+    for (int i=0;i<tags.length;i++)
       {
-
         char nextChar = tags[i].charAt(0);
         switch(nextChar)
           {
@@ -837,6 +837,12 @@ public class RSVG
           case 'Z':
             command = nextChar;
             break;
+          default:
+            if (command == 'm') {
+              command = 'l';
+            } else if (command == 'M') {
+              command = 'L';
+            }
         }
 
         relp.setLocation(0F, 0F);
