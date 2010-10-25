@@ -1680,7 +1680,7 @@ public class RShape extends RGeomElem
     float[] indAndAdv = new float[2];
 
     indAndAdv[0] = indOfElement;
-    indAndAdv[1] = advOfElement;
+    indAndAdv[1] = RG.parent().constrain(advOfElement, 0.0f, 1.0f);
     
     return indAndAdv;
   }
