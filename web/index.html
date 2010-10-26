@@ -40,6 +40,7 @@ Geomerative
 <div id="intro_content">
 <p>Geomerative is a library for Processing.  It extends 2D geometry operations to facilitate generative geometry. Includes a TrueType font and an SVG interpreters.
 This library exposes the shapes (such as vector drawings or typographies) in a more approchable way.  Geomerative makes it easy to access the paths, the handles and the points, making it easy to develop generative typography and geometry pieces in Processing.</p>
+<p>You may find the old (deprecated) version of Geomerative <a href="http://www.ricardmarxer.com/old_geomerative/documentation">here</a>.</p>
 </div>
 </div>
 
@@ -81,6 +82,7 @@ Geomerative has been used in the following projects:
 </div>
 
 <div id="advanced">
+<!--
 <div id="overview">
 <h1><a href="javascript:animatedcollapse.toggle('overview_content')">Overview</a></h1>
 <div id="overview_content">
@@ -106,7 +108,7 @@ void setup()
     size(400,400);
     smooth();
     
-    RGeomerative.init(this);
+    RG.init(this);
     
     shp = new RShape();
     
@@ -162,7 +164,7 @@ void setup()
 {
     size(400,400);
     
-    RGeomerative.init(this);
+    RG.init(this);
     
     ply = new RPolygon();
     
@@ -205,7 +207,7 @@ void setup()
     size(400,400);
     frameRate( 2 );
     
-    RGeomerative.init(this);
+    RG.init(this);
     
     strokeWeight( 1.2 );
 }
@@ -242,7 +244,7 @@ void setup()
     size(400,400);
     smooth();
     
-    RGeomerative.init(this);
+    RG.init(this);
 
     font = new RFont( "lucon.ttf", 100, RFont.CENTER);
 }
@@ -301,7 +303,7 @@ void setup()
 {
     size(400,400);
     
-    RGeomerative.init(this);
+    RG.init(this);
 
     font = new RFont( "lucon.ttf", 72, RFont.LEFT);
 }
@@ -332,7 +334,7 @@ void setup()
     size(800,800);
     frameRate( 30 );
     
-    RGeomerative.init(this);
+    RG.init(this);
     
     svg = new RSVG( );
 }
@@ -345,7 +347,7 @@ void draw()
 </pre>
 </div>
 </div>
-
+-->
 <div id="tutorials">
 <h1><a href="javascript:animatedcollapse.toggle('tutorials_content')">Tutorials</a></h1>
 <div id="tutorials_content">
