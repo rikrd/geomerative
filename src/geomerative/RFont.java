@@ -107,6 +107,32 @@ public class RFont implements PConstants{
     //System.out.println(scaleFactor);
     //System.out.println(scaleFactorFixed);
   }
+
+  public float getLineSpacing() {
+    // More info at:
+    //    http://fontforge.sourceforge.net/faq.html#linespace
+    //    http://typophile.com/node/13081
+    short unitsPerEm = f.getHeadTable().getUnitsPerEm();
+    System.out.println("UnitsPerEm (emsize): " + unitsPerEm);
+
+    // HHEA table method:
+    float hheaLineGap = (f.getHheaTable().getAscender() - f.getHheaTable().getDescender() + f.getHheaTable().getLineGap()) * this.scaleFactor;
+    System.out.println("HHEA lineGap: " + hheaLineGap);
+
+    // OS2 table typographic line gap method:
+    float os2TypoLineGap = (f.getOS2Table().getTypoAscender() - f.getOS2Table().getTypoDescender() + f.getOS2Table().getTypoLineGap()) * this.scaleFactor;
+    System.out.println("Os2 Typo lineGap: " + os2TypoLineGap);
+
+    // OS2 table win line gap method:
+    float os2WinLineGap = (f.getOS2Table().getWinAscent() + f.getOS2Table().getWinDescent()) * this.scaleFactor;
+    System.out.println("Os2 Win lineGap: " + os2WinLineGap);
+
+    // Automatic calculation
+    float autoLineGap = f.getHeadTable().getUnitsPerEm() * 1.25f * this.scaleFactor;
+    System.out.println("Automatic lineGap: " + autoLineGap);
+
+    return hheaLineGap;
+  }
   
   /**
    * Use this method to reset the alignement of the font. This proprety can take the following values: RFont.LEFT, RFont.CENTER and RFont.RIGHT
