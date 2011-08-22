@@ -1581,7 +1581,7 @@ public class RShape extends RGeomElem
    */
   private void drawPaths(PGraphics g){
     try{
-      Class declaringClass = g.getClass().getMethod("breakShape", null).getDeclaringClass();
+      Class declaringClass = g.getClass().getMethod("breakShape", new Class[0]).getDeclaringClass();
       if(declaringClass == Class.forName("processing.core.PGraphics")){
 
         // The backend does not implement breakShape
@@ -1610,7 +1610,7 @@ public class RShape extends RGeomElem
 
   private void drawPaths(PApplet g){
     try{
-      Class declaringClass = g.g.getClass().getMethod("breakShape", null).getDeclaringClass();
+      Class declaringClass = g.g.getClass().getMethod("breakShape", new Class[0]).getDeclaringClass();
       if(declaringClass == Class.forName("processing.core.PGraphics")){
 
         // The backend does not implement breakShape

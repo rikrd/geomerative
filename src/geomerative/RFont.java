@@ -152,7 +152,7 @@ public class RFont implements PConstants{
    * @invisible
    **/
   public String getFamily(){
-    return f.getNameTable().getRecord(Table.nameFontFamilyName);
+    return f.getNameTable().getRecord(org.apache.batik.svggen.font.table.Table.nameFontFamilyName);
   }
   
   /**
@@ -188,19 +188,19 @@ public class RFont implements PConstants{
     if (forceAscii) {
       // We've been asked to use the ASCII/Macintosh cmap format
       return f.getCmapTable().getCmapFormat(
-                                            Table.platformMacintosh,
-                                            Table.encodingRoman );
+                                            org.apache.batik.svggen.font.table.Table.platformMacintosh,
+                                            org.apache.batik.svggen.font.table.Table.encodingRoman );
     } else {
       short[] platforms = new short[] {
-        Table.platformMicrosoft,
-        Table.platformAppleUnicode,
-        Table.platformMacintosh
+        org.apache.batik.svggen.font.table.Table.platformMicrosoft,
+        org.apache.batik.svggen.font.table.Table.platformAppleUnicode,
+        org.apache.batik.svggen.font.table.Table.platformMacintosh
       };
       short[] encodings = new short[] {
-        Table.encodingUGL,
-        Table.encodingKorean,
-        Table.encodingHebrew,
-        Table.encodingUndefined
+        org.apache.batik.svggen.font.table.Table.encodingUGL,
+        org.apache.batik.svggen.font.table.Table.encodingKorean,
+        org.apache.batik.svggen.font.table.Table.encodingHebrew,
+        org.apache.batik.svggen.font.table.Table.encodingUndefined
       };
       
       CmapFormat cmapFmt;
