@@ -1,3 +1,6 @@
+rev 35:
+ - Patch by Kyle Jennings, use Vector in RCommands instead of RPoint[], this may fix some race conditions
+
 rev 17:
  - fixed the binary shape ops for when the result is null (thanks to ekene ijeoma for spotting it)
  - added a RShape.contains(float x, float y)

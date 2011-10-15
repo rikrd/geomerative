@@ -1,7 +1,7 @@
 
 GEOMERATIVE_VERSION=34
 
-JAVAC_ARGS=-source 1.3 -target 1.1
+JAVAC_ARGS=-source 5 -target 1.5
 CLASSPATH=external/batikfont.jar:"$(PROCESSING_PATH)/lib/core.jar":"$(PROCESSING_PATH)/libraries/xml/library/xml.jar"
 TEST_CLASSPATH=library/geomerative.jar:external/junit.jar:$(CLASSPATH)
 DIST_DIR=distribution/geomerative
@@ -38,7 +38,7 @@ dist: library/geomerative.jar doc
 
         ##  Copy files
 	cp -r examples $(DIST_DIR)
-	cp -r tutorial $(DIST_DIR)
+	#cp -r tutorial $(DIST_DIR)
 	cp -r src $(DIST_DIR)
 
         ##  Zip up
