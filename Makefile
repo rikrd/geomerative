@@ -45,8 +45,10 @@ dist: library/geomerative.jar doc
 	cp -r src $(DIST_DIR)
 
         ##  Zip up
-	rm -f distribution/geomerative-*.zip
-	cd distribution && zip -r geomerative-$(GEOMERATIVE_VERSION).zip .
+	rm -f distribution/geomerative.zip
+	cd distribution && zip -r geomerative.zip .
+	cp library.properties $(DIST_DIR)/../geomerative.txt
+
 
 doc:
 	mkdir -p $(DIST_DIR)
