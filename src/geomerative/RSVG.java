@@ -79,7 +79,7 @@ public class RSVG
   
   public float unitsToPixels(String units, float originalPxSize) {
     // TODO: check if it is possible to know the dpi of a given PGraphics or device
-    return unitsToPixels(units, originalPxSize, Toolkit.getDefaultToolkit().getScreenResolution());
+    return unitsToPixels(units, originalPxSize, 72.0f/*Toolkit.getDefaultToolkit().getScreenResolution()*/);
   }
 
   public float unitsToPixels(String units, float originalPxSize, float dpi) {
@@ -132,8 +132,8 @@ public class RSVG
     RShape result = elemToCompositeShape(svg);
 
     if (svg.hasAttribute("width") && svg.hasAttribute("height")) {
-      String widthStr = svg.getStringAttribute("width").trim();
-      String heightStr = svg.getStringAttribute("height").trim();
+      String widthStr = svg.getString("width").trim();
+      String heightStr = svg.getString("height").trim();
       
       result.width = unitsToPixels(widthStr, result.getWidth());
       result.height = unitsToPixels(heightStr, result.getHeight());
