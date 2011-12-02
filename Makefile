@@ -40,8 +40,8 @@ dist: library/geomerative.jar doc
 	cp HANDBOOK $(DIST_DIR)
 
         ##  Copy files
-	#cp -r examples $(DIST_DIR)
-	cp -r tutorial $(DIST_DIR)/examples
+	cp -r examples $(DIST_DIR)
+	#cp -r tutorial $(DIST_DIR)
 	cp -r src $(DIST_DIR)
 
         ##  Zip up
