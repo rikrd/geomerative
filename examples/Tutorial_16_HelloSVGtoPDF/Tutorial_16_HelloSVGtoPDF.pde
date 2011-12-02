@@ -1,4 +1,3 @@
-import processing.opengl.*;
 import processing.pdf.*;
 import geomerative.*;
 

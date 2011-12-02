@@ -1,5 +1,3 @@
-import processing.xml.*;
-import processing.opengl.*;
 import geomerative.*;
 
 RShape shp;

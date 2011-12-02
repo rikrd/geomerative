@@ -1,4 +1,3 @@
-import processing.opengl.*;
 import geomerative.*;
 
 RShape shp;
@@ -8,7 +7,6 @@ int first = 0;
 void setup(){
   size(600, 600);
   smooth();
-  g.smooth = true; 
 
   // VERY IMPORTANT: Allways initialize the library before using it
   RG.init(this);

@@ -1,4 +1,3 @@
-import processing.opengl.*;
 import geomerative.*;
 
 RCommand curva = new RCommand(0 , 0, -200, -200, 200, -200, 0, -100);
@@ -7,7 +6,6 @@ RCommand[] piezas = new RCommand[2];
 void setup(){
   size(600, 600);
   smooth();
-  g.smooth = true; 
   
   RG.init(this);
   

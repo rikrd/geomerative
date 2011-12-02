@@ -1,10 +1,8 @@
 import geomerative.*;
-import processing.opengl.*;
 
 // Declare the objects we are going to use, so that they are accesible from setup() and from draw()
 RFont f;
 RShape grp;
-RMatrix mat;
 
 void setup(){
   // Initilaize the sketch
@@ -24,12 +22,6 @@ void setup(){
 
   // Enable smoothing
   smooth();
-  
-  // Define a rotation of PI/20 around the center of the first letter
-  mat = new RMatrix();
-  // To get the center of the first letter we must access the first element on the group
-  RPoint centerOfFirstLetter = grp.children[0].getCenter();
-  mat.rotate(PI/20,centerOfFirstLetter);
 }
 
 void draw(){
@@ -39,8 +31,9 @@ void draw(){
   // Set the origin to draw in the middle of the sketch
   translate(width/2, height/2);
   
-  // Transform at each frame the first letter with the transformation we defined before
-  grp.children[0].transform(mat);
+  // Transform at each frame the first letter with a PI/20 radians 
+  // rotation around the center of the first letter's center
+  grp.children[0].rotate(PI/20, grp.children[0].getCenter());
   
   // Draw the group of shapes representing "Hola mundo!" on the PGraphics canvas g (which is the default canvas of the sketch)
   grp.draw();

@@ -1,5 +1,4 @@
 import geomerative.*;
-import processing.opengl.*;
 
 // Declare the objects we are going to use, so that they are accesible from setup() and from draw()
 RFont f;
