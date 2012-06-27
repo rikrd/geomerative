@@ -20,7 +20,7 @@
 package geomerative;
 
 import processing.core.*;
-import processing.xml.*;
+import processing.data.*;
 import java.awt.Toolkit;
 
 /**
@@ -72,7 +72,7 @@ public class RSVG
 
   public RGroup toGroup(String filename)
   {
-    XMLElement svg = new XMLElement(RG.parent(), filename);
+    XML svg = new XML(RG.parent(), filename);
     if (!svg.getName().equals("svg")) {
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
@@ -126,7 +126,7 @@ public class RSVG
 
   public RShape toShape(String filename)
   {
-    XMLElement svg = new XMLElement(RG.parent(), filename);
+    XML svg = new XML(RG.parent(), filename);
     if (!svg.getName().equals("svg")) {
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
@@ -134,8 +134,8 @@ public class RSVG
     RShape result = elemToCompositeShape(svg);
 
     if (svg.hasAttribute("width") && svg.hasAttribute("height")) {
-      String widthStr = svg.getStringAttribute("width").trim();
-      String heightStr = svg.getStringAttribute("height").trim();
+      String widthStr = svg.getString("width").trim();
+      String heightStr = svg.getString("height").trim();
       
       result.width = unitsToPixels(widthStr, result.getWidth());
       result.height = unitsToPixels(heightStr, result.getHeight());
@@ -329,7 +329,7 @@ public class RSVG
   /**
    * @invisible
    */
-  public RGroup elemToGroup(XMLElement elem)
+  public RGroup elemToGroup(XML elem)
   {
     RGroup grp = new RGroup();
 
@@ -345,10 +345,10 @@ public class RSVG
       grp.setAlpha(255);  // By default in SVG it's 1F
     }
 
-    XMLElement elems[] = elem.getChildren();
+    XML elems[] = elem.getChildren();
     for (int i = 0; i < elems.length; i++) {
       String name = elems[i].getName().toLowerCase();
-      XMLElement element = elems[i];
+      XML element = elems[i];
 
       // Parse and create the geometrical element
       RGeomElem geomElem = null;
@@ -387,59 +387,59 @@ public class RSVG
       if((geomElem != null)){
         // Transform geometrical element
         if(element.hasAttribute("transform")){
-          String transformString = element.getStringAttribute("transform");
+          String transformString = element.getString("transform");
           RMatrix transf = new RMatrix(transformString);
           geomElem.transform(transf);
         }
 
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){
-          geomElem.name = element.getStringAttribute("id");
+          geomElem.name = element.getString("id");
         }
 
         // Get the style for the geometrical element
         if(element.hasAttribute("style")){
-          geomElem.setStyle(element.getStringAttribute("style"));
+          geomElem.setStyle(element.getString("style"));
         }
 
         // Get the fill for the geometrical element
         if(element.hasAttribute("fill")){
-          geomElem.setFill(element.getStringAttribute("fill"));
+          geomElem.setFill(element.getString("fill"));
         }
 
         // Get the fill-linejoin for the geometrical element
         if(element.hasAttribute("fill-opacity")){
-          geomElem.setFillAlpha(element.getStringAttribute("fill-opacity"));
+          geomElem.setFillAlpha(element.getString("fill-opacity"));
         }
 
         // Get the stroke for the geometrical element
         if(element.hasAttribute("stroke")){
-          geomElem.setStroke(element.getStringAttribute("stroke"));
+          geomElem.setStroke(element.getString("stroke"));
         }
 
         // Get the stroke-width for the geometrical element
         if(element.hasAttribute("stroke-width")){
-          geomElem.setStrokeWeight(element.getStringAttribute("stroke-width"));
+          geomElem.setStrokeWeight(element.getString("stroke-width"));
         }
 
         // Get the stroke-linecap for the geometrical element
         if(element.hasAttribute("stroke-linecap")){
-          geomElem.setStrokeCap(element.getStringAttribute("stroke-linecap"));
+          geomElem.setStrokeCap(element.getString("stroke-linecap"));
         }
 
         // Get the stroke-linejoin for the geometrical element
         if(element.hasAttribute("stroke-linejoin")){
-          geomElem.setStrokeJoin(element.getStringAttribute("stroke-linejoin"));
+          geomElem.setStrokeJoin(element.getString("stroke-linejoin"));
         }
 
         // Get the stroke-linejoin for the geometrical element
         if(element.hasAttribute("stroke-opacity")){
-          geomElem.setStrokeAlpha(element.getStringAttribute("stroke-opacity"));
+          geomElem.setStrokeAlpha(element.getString("stroke-opacity"));
         }
 
         // Get the opacity for the geometrical element
         if(element.hasAttribute("opacity")){
-          geomElem.setAlpha(element.getStringAttribute("opacity"));
+          geomElem.setAlpha(element.getString("opacity"));
         }
 
         // Get the style for the geometrical element
@@ -456,7 +456,7 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToCompositeShape(XMLElement elem)
+  public RShape elemToCompositeShape(XML elem)
   {
     RShape shp = new RShape();
 
@@ -472,10 +472,10 @@ public class RSVG
       shp.setAlpha(255);  // By default in SVG it's 1F
     }
 
-    XMLElement elems[] = elem.getChildren();
+    XML elems[] = elem.getChildren();
     for (int i = 0; i < elems.length; i++) {
       String name = elems[i].getName().toLowerCase();
-      XMLElement element = elems[i];
+      XML element = elems[i];
 
       // Parse and create the geometrical element
       RShape geomElem = null;
@@ -514,59 +514,59 @@ public class RSVG
       if((geomElem != null)){
         // Transform geometrical element
         if(element.hasAttribute("transform")){
-          String transformString = element.getStringAttribute("transform");
+          String transformString = element.getString("transform");
           RMatrix transf = new RMatrix(transformString);
           geomElem.transform(transf);
         }
 
         // Get the id for the geometrical element
         if(element.hasAttribute("id")){
-          geomElem.name = element.getStringAttribute("id");
+          geomElem.name = element.getString("id");
         }
 
         // Get the style for the geometrical element
         if(element.hasAttribute("style")){
-          geomElem.setStyle(element.getStringAttribute("style"));
+          geomElem.setStyle(element.getString("style"));
         }
 
         // Get the fill for the geometrical element
         if(element.hasAttribute("fill")){
-          geomElem.setFill(element.getStringAttribute("fill"));
+          geomElem.setFill(element.getString("fill"));
         }
 
         // Get the fill-linejoin for the geometrical element
         if(element.hasAttribute("fill-opacity")){
-          geomElem.setFillAlpha(element.getStringAttribute("fill-opacity"));
+          geomElem.setFillAlpha(element.getString("fill-opacity"));
         }
 
         // Get the stroke for the geometrical element
         if(element.hasAttribute("stroke")){
-          geomElem.setStroke(element.getStringAttribute("stroke"));
+          geomElem.setStroke(element.getString("stroke"));
         }
 
         // Get the stroke-width for the geometrical element
         if(element.hasAttribute("stroke-width")){
-          geomElem.setStrokeWeight(element.getStringAttribute("stroke-width"));
+          geomElem.setStrokeWeight(element.getString("stroke-width"));
         }
 
         // Get the stroke-linecap for the geometrical element
         if(element.hasAttribute("stroke-linecap")){
-          geomElem.setStrokeCap(element.getStringAttribute("stroke-linecap"));
+          geomElem.setStrokeCap(element.getString("stroke-linecap"));
         }
 
         // Get the stroke-linejoin for the geometrical element
         if(element.hasAttribute("stroke-linejoin")){
-          geomElem.setStrokeJoin(element.getStringAttribute("stroke-linejoin"));
+          geomElem.setStrokeJoin(element.getString("stroke-linejoin"));
         }
 
         // Get the stroke-linejoin for the geometrical element
         if(element.hasAttribute("stroke-opacity")){
-          geomElem.setStrokeAlpha(element.getStringAttribute("stroke-opacity"));
+          geomElem.setStrokeAlpha(element.getString("stroke-opacity"));
         }
 
         // Get the opacity for the geometrical element
         if(element.hasAttribute("opacity")){
-          geomElem.setAlpha(element.getStringAttribute("opacity"));
+          geomElem.setAlpha(element.getString("opacity"));
         }
 
         // Get the style for the geometrical element
@@ -582,9 +582,9 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToPolyline(XMLElement elem)
+  public RShape elemToPolyline(XML elem)
   {
-    RShape shp = getPolyline(elem.getStringAttribute("points").trim());
+    RShape shp = getPolyline(elem.getString("points").trim());
 
     shp.updateOrigParams();
 
@@ -594,7 +594,7 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToPolygon(XMLElement elem)
+  public RShape elemToPolygon(XML elem)
   {
     RShape poly = elemToPolyline(elem);
 
@@ -608,10 +608,10 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToRect(XMLElement elem)
+  public RShape elemToRect(XML elem)
   {
 
-    RShape shp = getRect(elem.getFloatAttribute("x"), elem.getFloatAttribute("y"), elem.getFloatAttribute("width"), elem.getFloatAttribute("height"));
+    RShape shp = getRect(elem.getFloat("x"), elem.getFloat("y"), elem.getFloat("width"), elem.getFloat("height"));
 
     shp.updateOrigParams();
 
@@ -621,22 +621,9 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToLine(XMLElement elem)
+  public RShape elemToLine(XML elem)
   {
-    RShape shp = getLine(elem.getFloatAttribute("x1"), elem.getFloatAttribute("y1"), elem.getFloatAttribute("x2"), elem.getFloatAttribute("y2"));
-
-    shp.updateOrigParams();
-
-    return shp;
-  }
-
-
-  /**
-   * @invisible
-   */
-  public RShape elemToEllipse(XMLElement elem)
-  {
-    RShape shp = getEllipse(elem.getFloatAttribute("cx"), elem.getFloatAttribute("cy"), elem.getFloatAttribute("rx"), elem.getFloatAttribute("ry"));
+    RShape shp = getLine(elem.getFloat("x1"), elem.getFloat("y1"), elem.getFloat("x2"), elem.getFloat("y2"));
 
     shp.updateOrigParams();
 
@@ -647,10 +634,23 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToCircle(XMLElement elem)
+  public RShape elemToEllipse(XML elem)
   {
-    float r = elem.getFloatAttribute("r");
-    RShape shp = getEllipse(elem.getFloatAttribute("cx"), elem.getFloatAttribute("cy"), r, r);
+    RShape shp = getEllipse(elem.getFloat("cx"), elem.getFloat("cy"), elem.getFloat("rx"), elem.getFloat("ry"));
+
+    shp.updateOrigParams();
+
+    return shp;
+  }
+
+
+  /**
+   * @invisible
+   */
+  public RShape elemToCircle(XML elem)
+  {
+    float r = elem.getFloat("r");
+    RShape shp = getEllipse(elem.getFloat("cx"), elem.getFloat("cy"), r, r);
 
     shp.updateOrigParams();
 
@@ -660,9 +660,9 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToShape(XMLElement elem)
+  public RShape elemToShape(XML elem)
   {
-    RShape shp = getShape(elem.getStringAttribute("d"));
+    RShape shp = getShape(elem.getString("d"));
 
     shp.updateOrigParams();
 

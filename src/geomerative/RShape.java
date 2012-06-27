@@ -1905,7 +1905,7 @@ public class RShape extends RGeomElem
               }
           }
           if(i < (numPaths - 1)){
-            g.breakShape();
+            //g.breakShape();
           }
 
         }
@@ -1943,7 +1943,7 @@ public class RShape extends RGeomElem
               }
           }
           if(i < (numPaths - 1)){
-            g.breakShape();
+            //g.breakShape();
           }
 
         }

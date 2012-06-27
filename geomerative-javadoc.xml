@@ -11,7 +11,7 @@
   
   <path id="processing-core">
     <fileset dir="${env.PROCESSING_PATH}">
-      <include name="lib/core.jar"/>
+      <include name="core.jar"/>
     </fileset>
   </path>
   
