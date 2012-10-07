@@ -20,6 +20,7 @@
 package geomerative;
 
 import processing.core.*;
+import processing.data.*;
 
 /**
  * @extended
@@ -69,7 +70,15 @@ public class RSVG
 
   public RGroup toGroup(String filename)
   {
-    XML svg = new XML(RG.parent(), filename);
+    XML svg = null;
+    try{
+       svg = new XML(RG.parent(), filename);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    if (svg == null) return new RGroup();
+    
     if (!svg.getName().equals("svg")) {
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
@@ -123,7 +132,15 @@ public class RSVG
 
   public RShape toShape(String filename)
   {
-    XML svg = new XML(RG.parent(), filename);
+      XML svg = null;
+    try{
+       svg = new XML(RG.parent(), filename);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    if (svg == null) return new RShape();
+
     if ( !svg.getName().equals("svg") )
 	{
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");

@@ -2,7 +2,7 @@
 GEOMERATIVE_VERSION=35
 
 JAVAC_ARGS=-source 1.3 -target 1.1
-CLASSPATH=external/batikfont.jar:"$(PROCESSING2_PATH)/core/library/core.jar"
+CLASSPATH=external/batikfont.jar:"$(PROCESSING2_PATH)/core/library/core.jar":"$(PROCESSING2_PATH)/libraries/xml/library/xml.jar"
 TEST_CLASSPATH=library/geomerative.jar:external/junit.jar:$(CLASSPATH)
 DIST_DIR=distribution/geomerative
 
@@ -16,7 +16,7 @@ library/geomerative.jar: src/geomerative/*.java
 	javac $(JAVAC_ARGS) src/geomerative/*.java -d build -cp $(CLASSPATH)
 	cp external/batikfont.jar library/geomerative.jar
 	jar uvf library/geomerative.jar -C build geomerative
-
+	
 
 test: library/geomerative.jar test/geomerative/*.java
 	mkdir -p build/test
@@ -30,23 +30,26 @@ dist: library/geomerative.jar doc
 	##  Copy library.properties
 	cp library.properties $(DIST_DIR)
 
-        ##  Copy libs
+	##  Copy libs
 	cp library/geomerative.jar $(DIST_DIR)/library
 	cp external/batikfont.jar $(DIST_DIR)/library
 
-        ##  Copy docs
+	##  Copy docs
 	cp README $(DIST_DIR)
 	cp COPYING $(DIST_DIR)
 	cp HANDBOOK $(DIST_DIR)
 
-        ##  Copy files
+	##  Copy files
 	cp -r examples $(DIST_DIR)
 	#cp -r tutorial $(DIST_DIR)
 	cp -r src $(DIST_DIR)
 
-        ##  Zip up
-	rm -f distribution/geomerative-*.zip
-	cd distribution && zip -r geomerative-$(GEOMERATIVE_VERSION).zip .
+	##  Zip up
+	rm -f distribution/geomerative.zip
+	cd distribution && zip -r geomerative.zip .
+	cp library.properties $(DIST_DIR)/../geomerative.txt
+
+	mkdir -p $(DIST_DIR)/library
 
 doc:
 	mkdir -p $(DIST_DIR)

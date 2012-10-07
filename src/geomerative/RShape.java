@@ -1884,6 +1884,7 @@ public class RShape extends RGeomElem
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numPaths;i++){
+          g.beginContour();
           RPath path = paths[i];
           closed |= path.closed;
           for(int j = 0; j < path.countCommands(); j++ ){
@@ -1904,10 +1905,7 @@ public class RShape extends RGeomElem
                 break;
               }
           }
-          if(i < (numPaths - 1)){
-            g.breakShape();
-          }
-
+          g.endContour();
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
@@ -1922,6 +1920,8 @@ public class RShape extends RGeomElem
         boolean closed = false;
         g.beginShape();
         for(int i=0;i<numPaths;i++){
+                  g.beginContour();
+
           RPath path = paths[i];
           closed |= path.closed;
           for(int j = 0; j < path.countCommands(); j++ ){
@@ -1942,9 +1942,8 @@ public class RShape extends RGeomElem
                 break;
               }
           }
-          if(i < (numPaths - 1)){
-            g.breakShape();
-          }
+          g.endContour();
+
 
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
