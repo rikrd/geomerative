@@ -2,7 +2,7 @@
 GEOMERATIVE_VERSION=35
 
 JAVAC_ARGS=-source 1.3 -target 1.1
-CLASSPATH=external/batikfont.jar:"$(PROCESSING2_PATH)/processing/core/core.jar"
+CLASSPATH=external/batikfont.jar:"$(PROCESSING2_PATH)/core/library/core.jar"
 TEST_CLASSPATH=library/geomerative.jar:external/junit.jar:$(CLASSPATH)
 DIST_DIR=distribution/geomerative
 
