@@ -1580,6 +1580,7 @@ public class RShape extends RGeomElem
    * @param g PGraphics, the graphics object on which to draw the shape
    */
   private void drawPaths(PGraphics g){
+    /*
     try{
       Class declaringClass = g.getClass().getMethod("breakShape", new Class[0]).getDeclaringClass();
       if(declaringClass == Class.forName("processing.core.PGraphics")){
@@ -1606,9 +1607,12 @@ public class RShape extends RGeomElem
       drawUsingInternalTesselator(g);
 
     }
+    */
+    drawUsingBreakShape(g);    
   }
 
   private void drawPaths(PApplet g){
+    /*
     try{
       Class declaringClass = g.g.getClass().getMethod("breakShape", new Class[0]).getDeclaringClass();
       if(declaringClass == Class.forName("processing.core.PGraphics")){
@@ -1636,6 +1640,8 @@ public class RShape extends RGeomElem
       drawUsingInternalTesselator(g);
     
     }
+    */
+    drawUsingBreakShape(g);
   }
   
   // ----------------------
@@ -1882,9 +1888,11 @@ public class RShape extends RGeomElem
     if(numPaths!=0){
       if(isIn(g)){
         boolean closed = false;
+        boolean useContours = (numPaths>1);
         g.beginShape();
         for(int i=0;i<numPaths;i++){
-          g.beginContour();
+          if (useContours) g.beginContour();
+          
           RPath path = paths[i];
           closed |= path.closed;
           for(int j = 0; j < path.countCommands(); j++ ){
@@ -1905,7 +1913,8 @@ public class RShape extends RGeomElem
                 break;
               }
           }
-          g.endContour();
+          if (useContours) g.endContour();
+          
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
@@ -1918,9 +1927,10 @@ public class RShape extends RGeomElem
     if(numPaths!=0){
       if(isIn(g)){
         boolean closed = false;
+        boolean useContours = (numPaths>1);
         g.beginShape();
         for(int i=0;i<numPaths;i++){
-                  g.beginContour();
+          if (useContours) g.beginContour();
 
           RPath path = paths[i];
           closed |= path.closed;
@@ -1942,8 +1952,7 @@ public class RShape extends RGeomElem
                 break;
               }
           }
-          g.endContour();
-
+          if (useContours) g.endContour();
 
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);

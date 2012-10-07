@@ -89,6 +89,8 @@ public class RG implements PConstants{
    * UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
    */
   public static int UNIFORMSTEP = RCommand.UNIFORMSTEP;
+  
+  static int dpi = 72;
 
   /**
    * @invisible
@@ -498,6 +500,21 @@ public class RG implements PConstants{
     }
 
     return parent;
+  }
+  
+  /**
+   * @invisible
+   */
+  protected static int dpi() {
+    return dpi;
+  }
+  
+  /**
+   * Use this to set the resolution of the display.  This specifies the Dots Per Inch of the display.
+   * @param _dpi  the dots per inch of the display
+   * */
+  public static void setDpi(int _dpi) {
+    dpi = _dpi;
   }
 
   /**

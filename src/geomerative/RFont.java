@@ -19,7 +19,6 @@
 
 package geomerative;
 import processing.core.*;
-import java.awt.Toolkit;
 
 import org.apache.batik.svggen.font.*;
 import org.apache.batik.svggen.font.table.*;
@@ -101,7 +100,7 @@ public class RFont implements PConstants{
    */
   public void setSize(int size){
     short unitsPerEm = f.getHeadTable().getUnitsPerEm();
-    int resolution = Toolkit.getDefaultToolkit().getScreenResolution();
+    int resolution = RG.dpi();
     this.scaleFactor = ((float)size * (float)resolution) / (72F * (float)unitsPerEm);
     //this.scaleFactorFixed = (int)(this.scaleFactor * 65536F);
     //System.out.println(scaleFactor);
