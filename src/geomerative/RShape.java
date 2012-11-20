@@ -1892,50 +1892,39 @@ public class RShape extends RGeomElem
         g.beginShape();
         RG.parent().println("beginShape();");
         for(int i=0;i<numPaths;i++){
-          if (useContours) {
+          if (useContours && i>0) {
             g.beginContour();
             RG.parent().println("beginContour();");
           }
           
           RPath path = paths[i];
           closed |= path.closed;
-          //RPoint first = null;
+
           for(int j = 0; j < path.countCommands(); j++ ){
             RPoint[] pnts = path.commands[j].getHandles();
             if(j==0){
-              //first = pnts[0];
               g.vertex(pnts[0].x, pnts[0].y);
-              RG.parent().println("vertex(" + pnts[0].x + ", " + pnts[0].y+");");
             }
             switch( path.commands[j].getCommandType() )
               {
               case RCommand.LINETO:
                 g.vertex( pnts[1].x, pnts[1].y );
-                RG.parent().println("vertex(" + pnts[1].x + ", " + pnts[1].y+");");
                 break;
               case RCommand.QUADBEZIERTO:
                 g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[2].x, pnts[2].y );
-                RG.parent().println("bezierVertex(" + pnts[1].x + ", " + pnts[1].y + ", " + pnts[2].x + ", " + pnts[2].y +  ", " + pnts[2].x + ", " + pnts[2].y + ");");
                 break;
               case RCommand.CUBICBEZIERTO:
                 g.bezierVertex( pnts[1].x, pnts[1].y, pnts[2].x, pnts[2].y, pnts[3].x, pnts[3].y );
-                RG.parent().println("bezierVertex(" + pnts[1].x + ", " + pnts[1].y + ", " + pnts[2].x + ", " + pnts[2].y +  ", " + pnts[3].x + ", " + pnts[3].y + ");");
                 break;
               }
           }
-          /*
-          if (path.closed && first != null) {
-            g.vertex(first.x, first.y);
-          }
-          */
-          if (useContours) {
+
+          if (useContours && i>0) {
             g.endContour();
-            RG.parent().println("endContour();");
           }
           
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
-        RG.parent().println("endShape(" + (closed ? "CLOSE" : "OPEN") + ");");
 
       }
     }
@@ -1949,7 +1938,7 @@ public class RShape extends RGeomElem
         boolean useContours = (numPaths>1);
         g.beginShape();
         for(int i=0;i<numPaths;i++){
-          if (useContours) g.beginContour();
+          if (useContours && i>0) g.beginContour();
 
           RPath path = paths[i];
           closed |= path.closed;
@@ -1958,10 +1947,6 @@ public class RShape extends RGeomElem
           for(int j = 0; j < path.countCommands(); j++ ){
             RPoint[] pnts = path.commands[j].getHandles();
             if (j==0) {
-              /*
-              firstx = pnts[0].x;
-              firsty = pnts[0].y;
-              */
               g.vertex(pnts[0].x, pnts[0].y);
             }
             switch( path.commands[j].getCommandType() )
@@ -1977,12 +1962,7 @@ public class RShape extends RGeomElem
                 break;
               }
           }
-          /*
-          if (path.closed && path.countCommands()>0) {
-              g.vertex(firstx, firsty);
-          }
-          */
-          if (useContours) {
+          if (useContours && i>0) {
               g.endContour();
           }
 
