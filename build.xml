@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<project name="geomerative" default="build">
+  
+  <target name="build" description="Build geomerative.jar">
+    <property environment="env"/>
+    <fail unless="env.PROCESSING2_PATH"
+          message="Please use the environment variable PROCESSING2_PATH to indicate where the Processing source code is.  (the required directory 'processing' may be nested within another directory called 'processing', and the source code needs to be built)"/>
+    <available file="${env.PROCESSING2_PATH}/core/library/core.jar"  property="core.found"/>
+    <fail unless="core.found" message="${env.PROCESSING2_PATH}/core/library/core.jar not found"/>
+    <mkdir dir="build"/>
+    <mkdir dir="library"/>
+    <path id="ClassPathForGeomerative">
+      <pathelement location="external/batikfont.jar"/>
+      <pathelement location="${env.PROCESSING2_PATH}/core/library/core.jar"/>
+      <pathelement location="${env.PROCESSING2_PATH}/libraries/xml/library/xml.jar"/>
+    </path>
+    <javac
+        source="1.3"
+        target="1.1"
+        srcdir="src/geomerative/"
+        destdir="build"
+        classpathref="ClassPathForGeomerative"
+        includeantruntime="false"/>
+    <copy
+        file="external/batikfont.jar"
+        toFile="library/geomerative.jar"
+        overwrite="true"/>
+    <jar
+        destfile="library/geomerative.jar"
+        update="true"
+        basedir="build/geomerative"/>
+  </target>
+  
+  <target name="clean" description="Clean out the build and library directories">
+    <delete dir="build" />
+    <delete dir="library" />
+  </target>
+
+</project>      
+
