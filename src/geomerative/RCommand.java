@@ -211,7 +211,7 @@ public class RCommand extends RGeomElem
   }
 
   /**
-   * Create a QUADBEZIERTO command object with specific start, control and end points.
+   * Create a QUADBEZIERTO command object with specific start, control and end point coordinates.
    * @param sp  the start point of the command to be created
    * @param cp1  the first control point of the command to be created
    * @param ep  the end point of the command to be created
@@ -238,7 +238,7 @@ public class RCommand extends RGeomElem
 
 
   /**
-   * Create a CUBICBEZIERTO command object with specific start, controls and end point coordinates.
+   * Create a CUBICBEZIERTO command object with specific start, control and end point coordinates.
    * @param sp  the start point of the command to be created
    * @param cp1  the first control point of the command to be created
    * @param cp2  the second control point of the command to be created
@@ -253,7 +253,7 @@ public class RCommand extends RGeomElem
   }
 
   /**
-   * Create a CUBICBEZIERTO command object with specific start, controls and end point coordinates.
+   * Create a CUBICBEZIERTO command object with specific start, control and end point coordinates.
    * @param spx  the x coordinate of the start point of the command to be created
    * @param spy  the y coordinate of the start point of the command to be created
    * @param cp1x  the x coordinate of the first control point of the command to be created
@@ -818,7 +818,7 @@ public class RCommand extends RGeomElem
   /**
    * Returns two commands resulting of splitting the command.
    * @eexample split
-   * @param t  the advancement on the curve where command should be splitted.
+   * @param t  the advancement on the curve where command should be split.
    * @return RPoint[], the tangent vectors returned in an array.
    * */
   public RCommand[] split(float t){

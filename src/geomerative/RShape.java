@@ -21,7 +21,7 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * RShape is a reduced interface for creating, holding and drawing complex Shapes. Shapes are groups of one or more paths (RPath).  Shapes can be selfintersecting and can contain holes.  This interface also allows you to transform shapes into polygons by segmenting the curves forming the shape.
+ * RShape is a reduced interface for creating, holding and drawing complex shapes. Shapes are groups of one or more paths (RPath).  Shapes can be selfintersecting and can contain holes.  This interface also allows you to transform shapes into polygons by segmenting the curves forming the shape.
  * @eexample RShape
  * @usage Geometry
  * @related RPath
@@ -119,7 +119,7 @@ public class RShape extends RGeomElem
    * @eexample createRing
    * @param x  x coordinate of the center of the shape
    * @param y  y coordinate of the center of the shape
-   * @param widthBig  the outter width of the ring polygon
+   * @param widthBig  the outer width of the ring polygon
    * @param widthSmall  the inner width of the ring polygon
    * @return RShape, the ring polygon newly created
    */
@@ -137,7 +137,7 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new starform polygon. 
    * @eexample createStar
-   * @param widthBig  the outter width of the star polygon
+   * @param widthBig  the outer width of the star polygon
    * @param widthSmall  the inner width of the star polygon
    * @param spikes  the amount of spikes on the star polygon
    * @return RShape, the starform polygon newly created
@@ -251,9 +251,8 @@ public class RShape extends RGeomElem
   }
   
   /**
-   * Use this method to count the number of paths in the polygon. 
+   * Use this method to count the number of paths in the shape. 
    * @eexample countPaths
-   * @return int, the number countours in the polygon.
    * @related addPath ( )
    */
   public int countPaths(){
@@ -431,7 +430,7 @@ public class RShape extends RGeomElem
   /**
    * Use this method to create a new mesh from a given polygon. 
    * @eexample toMesh
-   * @return RMesh, the mesh made of tristrips resulting of a tesselation of the polygonization followd by tesselation of the shape.
+   * @return RMesh, the mesh made of tristrips resulting of a tesselation of the polygonization followed by tesselation of the shape.
    * @related draw ( )
    */
   public RMesh toMesh(){
@@ -496,7 +495,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this method to get the intersection of the given polygon with the polygon passed as atribute.
+   * Use this method to get the intersection of this polygon with the polygon passed in as a parameter.
    * @eexample intersection
    * @param p RShape, the polygon with which to perform the intersection
    * @return RShape, the intersection of the two polygons
@@ -546,7 +545,7 @@ public class RShape extends RGeomElem
   }
   
   /**
-   * Use this method to get the union of the given polygon with the polygon passed as atribute.
+   * Use this method to get the union of this polygon with the polygon passed in as a parameter.
    * @eexample union
    * @param p RShape, the polygon with which to perform the union
    * @return RShape, the union of the two polygons
@@ -596,7 +595,7 @@ public class RShape extends RGeomElem
   }
   
   /**
-   * Use this method to get the xor of the given polygon with the polygon passed as atribute.
+   * Use this method to get the xor of this polygon with the polygon passed in as a parameter.
    * @eexample xor
    * @param p RShape, the polygon with which to perform the xor
    * @return RShape, the xor of the two polygons
@@ -646,7 +645,7 @@ public class RShape extends RGeomElem
   }
   
   /**
-   * Use this method to get the difference of the given polygon with the polygon passed as atribute.
+   * Use this method to get the difference between this polygon and the polygon passed in as a parameter.
    * @eexample diff
    * @param p RShape, the polygon with which to perform the difference
    * @return RShape, the difference of the two polygons
@@ -696,7 +695,7 @@ public class RShape extends RGeomElem
   }
     
   /**
-   * Use this to return the start, control and end points of the shape.  It returns the points in the way of an array of RPoint.
+   * Use this to return the start, control and end points of the shape.  It returns the points as an array of RPoint.
    * @eexample RShape_getHandles
    * @return RPoint[], the start, control and end points returned in an array.
    * */
@@ -739,7 +738,7 @@ public class RShape extends RGeomElem
   }
   
   /**
-   * Use this to return a point on the curve given a certain advancement.  It returns the point in the way of an RPoint.
+   * Use this to return a point on the curve given a certain advancement.  It returns the point as an RPoint.
    * @eexample RShape_getPoints
    * @return RPoint[], the point on the curve.
    * */
@@ -756,7 +755,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this to return the points on the curve of the shape.  It returns the point in the way of an RPoint.
+   * Use this to return the points on the curve of the shape.  It returns the points as an array of RPoint.
    * @eexample RShape_getPoints
    * @return RPoint[], the points returned in an array.
    * */
@@ -800,7 +799,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this to return a point on the curve given a certain advancement.  It returns the point in the way of an RPoint.
+   * Use this to return a point on the curve given a certain advancement.  It returns the point as an RPoint.
    * @eexample RShape_getTangents
    * @return RPoint[], the point on the curve.
    * */
@@ -819,8 +818,8 @@ public class RShape extends RGeomElem
 
   /**
    * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the shape.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-   * @param x  the X coordinate of the point for which to test containement.
-   * @param y  the Y coordinate of the point for which to test containement.
+   * @param x  the X coordinate of the point for which to test containment.
+   * @param y  the Y coordinate of the point for which to test containment.
    * @return boolean, true if the point is in the path.
    * */
   public boolean contains(float x, float y){
@@ -829,7 +828,7 @@ public class RShape extends RGeomElem
 
   /**
    * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the shape.  Implementation taken from: http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-   * @param p  the point for which to test containement..
+   * @param p  the point for which to test containment.
    * @return boolean, true if the point is in the path.
    * */
   public boolean contains(RPoint p){
@@ -879,7 +878,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this to return the points on the curve of the shape.  It returns the point in the way of an RPoint.
+   * Use this to return the points on the curve of the shape.  It returns the point as an RPoint.
    * @eexample RShape_getTangents
    * @return RPoint[], the points returned in an array.
    * */
@@ -921,7 +920,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this to return the points of each path of the group.  It returns the points in the way of an array of array of RPoint.
+   * Use this to return the points of each path of the group.  It returns the points as an array of arrays of RPoint.
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
@@ -1198,7 +1197,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this method to get the intersection points of the shape with another shape passed as argument.
+   * Use this method to get the points of intersection between this shape and another shape passed in as a parameter.
    * @param other  the path with which to check for intersections
    */  
   public RPoint[] getIntersections(RShape other) {

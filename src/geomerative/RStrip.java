@@ -107,7 +107,7 @@ public class RStrip
   /**
    * Use this method to get the bounding box of the strip. 
    * @eexample getBounds
-   * @return RContour, the bounding box of the strip in the form of a fourpoint contour
+   * @return RContour, the bounding box of the strip in the form of a four-point contour
    * @related draw ( )
    */
   public RContour getBounds(){
@@ -135,7 +135,7 @@ public class RStrip
   }
   
   /**
-   * Use this to get the vertices of the strip.  It returns the points in the way of an array of RPoint.
+   * Use this to get the vertices of the strip.  It returns the points as an array of RPoint.
    * @eexample RStrip_getHandles
    * @return RPoint[], the vertices returned in an array.
    * */
@@ -144,7 +144,7 @@ public class RStrip
   }
   
   /**
-   * Use this to get the vertices of the strip.  It returns the points in the way of an array of RPoint.
+   * Use this to get the vertices of the strip.  It returns the points as an array of RPoint.
    * @eexample RStrip_getPoints
    * @return RPoint[], the vertices returned in an array.
    * */

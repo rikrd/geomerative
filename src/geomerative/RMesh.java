@@ -21,7 +21,7 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * RMesh is a reduced interface for creating, holding and drawing meshes. Meshes are a group of tiangle strips (RStrip).
+ * RMesh is a reduced interface for creating, holding and drawing meshes. A mesh is a group of triangular strips (RStrip).
  * @eexample RMesh
  * @usage Geometry
  * @related RStrip
@@ -227,7 +227,7 @@ public class RMesh extends RGeomElem
   }		
   
   /**
-   * Use this to get the vertices of the mesh.  It returns the points in the way of an array of RPoint.
+   * Use this to get the vertices of the mesh.  It returns the points as an array of RPoint.
    * @eexample RMesh_getHandles
    * @return RPoint[], the vertices returned in an array.
    * */
@@ -257,7 +257,7 @@ public class RMesh extends RGeomElem
   }
   
   /**
-   * Use this to get the vertices of the mesh.  It returns the points in the way of an array of RPoint.
+   * Use this to get the vertices of the mesh.  It returns the points as an array of RPoint.
    * @eexample RMesh_getPoints
    * @return RPoint[], the vertices returned in an array.
    * */
