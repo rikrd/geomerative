@@ -51,7 +51,7 @@
     <delete dir="${DIST_DIR}" />
   </target>
 
-  <target name="doc" depends="build" description="A javadoc extraction of documentation from comments in the code.">
+  <target name="doc" depends="build" description="A javadoc extraction of documentation from in code comments.">
     <mkdir dir="${DIST_DIR}"/>
     <delete dir="${DIST_DIR}/documentation"/>
     <ant antfile="geomerative-javadoc.xml"/>
@@ -66,7 +66,7 @@
     <java classname="geomerative.ClipTest" classpathref="RUN_TEST_CLASSPATH"/>
   </target>
 
-  <target name="dist" depends="doc" description="Zips up all the files to prepare Geomerative for distribution.">
+  <target name="dist" depends="doc" description="Zips up all the files to prepare Geomerative for distribution">
 
     <mkdir dir="${DIST_DIR}/library"/>
 
@@ -97,15 +97,28 @@
     The location where Processing is built to is platform dependent.  Since this is mediated by
     Processing's own ant scripts it should be possible to move that logic here.
 
-    For now however, there is just this build target for installing Geomerative
-    in the right place for a Windows build of Processing to make use of it.
-    I would expect creating similar build targets for other platforms would be dead easy.
+    For now however, there is just a per-Operating System build target for installing Geomerative.
+    (I have no way of testing the macosx one)
   -->
-  <target name="install-win" depends="build" description="Copies geomerative.jar for use in a Windows build of Processing.">
+  <target name="install-windows" depends="build" description="Copies geomerative.jar for use in Windows build of Processing.">
     <mkdir dir="${env.PROCESSING2_PATH}/build/windows/work/modes/java/libraries/geomerative/library"/>
     <copy
         file="library/geomerative.jar"
         toFile="${env.PROCESSING2_PATH}/build/windows/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        overwrite="true"/>
+  </target>
+  <target name="install-linux" depends="build" description="Copies geomerative.jar for use in Linux build of Processing.">
+    <mkdir dir="${env.PROCESSING2_PATH}/build/linux/work/modes/java/libraries/geomerative/library"/>
+    <copy
+        file="library/geomerative.jar"
+        toFile="${env.PROCESSING2_PATH}/build/linux/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        overwrite="true"/>
+  </target>
+  <target name="install-macosx" depends="build" description="Copies geomerative.jar for use in MacOSX build of Processing">
+    <mkdir dir="${env.PROCESSING2_PATH}/build/macosx/work/modes/java/libraries/geomerative/library"/>
+    <copy
+        file="library/geomerative.jar"
+        toFile="${env.PROCESSING2_PATH}/build/macosx/work/modes/java/libraries/geomerative/library/geomerative.jar"
         overwrite="true"/>
   </target>
 
