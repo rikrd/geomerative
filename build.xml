@@ -1,0 +1,126 @@
+<?xml version="1.0" ?>
+<project name="geomerative" default="build">
+
+  <property environment="env"/>
+  <property name="DIST_DIR" value="distribution/geomerative"/>
+
+  <path id="CLASSPATH">
+    <pathelement location="external/batikfont.jar"/>
+    <pathelement location="${env.PROCESSING2_PATH}/core/library/core.jar"/>
+    <pathelement location="${env.PROCESSING2_PATH}/libraries/xml/library/xml.jar"/>
+  </path>
+
+  <path id="TEST_CLASSPATH">
+    <pathelement location="library/geomerative.jar"/>
+    <pathelement location="external/junit.jar"/>
+    <path refid="CLASSPATH"/>
+  </path>
+
+  <path id="RUN_TEST_CLASSPATH">
+    <pathelement location="build/test"/>
+    <path refid="TEST_CLASSPATH"/>
+  </path>
+  
+  <target name="build" description="Build geomerative.jar">
+    <fail unless="env.PROCESSING2_PATH"
+          message="Please use the environment variable PROCESSING2_PATH to indicate where the Processing source code is.  (the required directory 'processing' may be nested within another directory called 'processing', and the source code needs to be built)"/>
+    <available file="${env.PROCESSING2_PATH}/core/library/core.jar"  property="core.found"/>
+    <fail unless="core.found" message="${env.PROCESSING2_PATH}/core/library/core.jar not found"/>
+    <mkdir dir="build"/>
+    <mkdir dir="library"/>
+    <javac
+        source="1.3"
+        target="1.1"
+        srcdir="src/geomerative/"
+        destdir="build"
+        classpathref="CLASSPATH"
+        includeantruntime="false"/>
+    <copy
+        file="external/batikfont.jar"
+        toFile="library/geomerative.jar"
+        overwrite="true"/>
+    <jar
+        destfile="library/geomerative.jar"
+        update="true"
+        basedir="build"/>
+  </target>
+  
+  <target name="clean" description="Clean out the build and library directories.">
+    <delete dir="build" />
+    <delete dir="library" />
+    <delete dir="${DIST_DIR}" />
+  </target>
+
+  <target name="doc" depends="build" description="A javadoc extraction of documentation from in code comments.">
+    <mkdir dir="${DIST_DIR}"/>
+    <delete dir="${DIST_DIR}/documentation"/>
+    <ant antfile="geomerative-javadoc.xml"/>
+    <copy toDir="${DIST_DIR}">
+      <fileset dir="documentation"/>
+    </copy>
+  </target>
+  
+  <target name="test" depends="build" description="Runs some JUnit tests on the build of Geomerative.">
+    <mkdir dir="build/test"/>
+    <javac srcdir="test/geomerative" destdir="build/test" classpathref="TEST_CLASSPATH" includeantruntime="false"/>
+    <java classname="geomerative.ClipTest" classpathref="RUN_TEST_CLASSPATH"/>
+  </target>
+
+  <target name="dist" depends="doc" description="Zips up all the files to prepare Geomerative for distribution">
+
+    <mkdir dir="${DIST_DIR}/library"/>
+
+    <!-- Copy library.properties -->
+    <copy file="library.properties" toDir="${DIST_DIR}"/>
+
+    <!-- Copy libs -->
+    <copy file="library/geomerative.jar" toDir="${DIST_DIR}/library"/>
+    <copy file="external/batikfont.jar" toDir="${DIST_DIR}/library"/>
+
+    <!-- Copy docs -->
+    <copy file="README" toDir="${DIST_DIR}"/>
+    <copy file="COPYING" toDir="${DIST_DIR}"/>
+    <copy file="HANDBOOK" toDir="${DIST_DIR}"/>
+
+    <!-- Copy dirs -->
+    <copy toDir="${DIST_DIR}"><fileset dir="examples"/></copy>
+    <copy toDir="${DIST_DIR}"><fileset dir="src"/></copy>
+
+    <!-- Zip up -->
+    <delete file="distribution/geomerative.zip"/>
+    <zip basedir="distribution" destfile="distribution/geomerative.zip"/>
+    <copy file="library.properties" toFile="distribution/geomerative.txt"/>
+
+  </target>
+
+  <!--
+    The location where Processing is built to is platform dependent.  Since this is mediated by
+    Processing's own ant scripts it should be possible to move that logic here.
+
+    For now however, there is just a per-Operating System build target for installing Geomerative.
+    (I have no way of testing the macosx one)
+  -->
+  <target name="install-windows" depends="build" description="Copies geomerative.jar for use in Windows build of Processing.">
+    <mkdir dir="${env.PROCESSING2_PATH}/build/windows/work/modes/java/libraries/geomerative/library"/>
+    <copy
+        file="library/geomerative.jar"
+        toFile="${env.PROCESSING2_PATH}/build/windows/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        overwrite="true"/>
+  </target>
+  <target name="install-linux" depends="build" description="Copies geomerative.jar for use in Linux build of Processing.">
+    <mkdir dir="${env.PROCESSING2_PATH}/build/linux/work/modes/java/libraries/geomerative/library"/>
+    <copy
+        file="library/geomerative.jar"
+        toFile="${env.PROCESSING2_PATH}/build/linux/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        overwrite="true"/>
+  </target>
+  <target name="install-macosx" depends="build" description="Copies geomerative.jar for use in MacOSX build of Processing">
+    <mkdir dir="${env.PROCESSING2_PATH}/build/macosx/work/modes/java/libraries/geomerative/library"/>
+    <copy
+        file="library/geomerative.jar"
+        toFile="${env.PROCESSING2_PATH}/build/macosx/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        overwrite="true"/>
+  </target>
+
+</project>      
+

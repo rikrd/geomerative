@@ -22,7 +22,7 @@ import processing.core.*;
 
 
 /**
- * RGroup is a holder for a group of geometric element that can be drawn and transformed, such as Shapes, Polygons or Meshes.
+ * RGroup is a holder for a group of geometric elements that can be drawn and transformed, such as shapes, polygons or meshes.
  * @usage geometry
  * @extended
  */
@@ -198,7 +198,7 @@ public class RGroup extends RGeomElem
   }
   
   /**
-   * Use this method to get a new group whose elements are the corresponding Meshes of the elemnts in the current group.  This can be used for increasing performance in exchange of losing abstraction.
+   * Use this method to get a new group whose elements are the corresponding meshes of the elements in the current group.  This can be used for increasing performance in exchange of losing abstraction.
    * @eexample RGroup_toMeshGroup
    * @return RGroup, the new group made of RMeshes
    * @related toPolygonGroup ( )
@@ -213,7 +213,7 @@ public class RGroup extends RGeomElem
   }
   
   /**
-   * Use this method to get a new group whose elements are the corresponding Polygons of the elemnts in the current group.  At this moment there is no implementation for transforming aMesh to a Polygon so applying this method to groups holding Mesh elements will generate an exception.
+   * Use this method to get a new group whose elements are the corresponding polygons of the elements in the current group.  At this moment there is no implementation for transforming a mesh to a polygon so applying this method to groups holding mesh elements will generate an exception.
    * @eexample RGroup_toPolygonGroup
    * @return RGroup, the new group made of RPolygons
    * @related toMeshGroup ( )
@@ -235,7 +235,7 @@ public class RGroup extends RGeomElem
   }
   
   /**
-   * Use this method to get a new group whose elements are all the corresponding Shapes of the elemnts in the current group.  At this moment there is no implementation for transforming a Mesh or a Polygon to a Shape so applying this method to groups holding Mesh or Polygon elements will generate an exception.
+   * Use this method to get a new group whose elements are all the corresponding shapes of the elements in the current group.  At this moment there is no implementation for transforming a mesh or a polygon to a shape so applying this method to groups holding mesh or polygon elements will generate an exception.
    * @eexample RGroup_toShapeGroup
    * @return RGroup, the new group made of RShapes
    * @related toMeshGroup ( )
@@ -307,7 +307,7 @@ public class RGroup extends RGeomElem
   }
   
   /**
-   * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
+   * Use this to return the points of the group.  It returns the points as an array of RPoint.
    * @eexample RGroup_getHandles
    * @return RPoint[], the points returned in an array.
    * */
@@ -345,7 +345,7 @@ public class RGroup extends RGeomElem
   }
 
   /**
-   * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
+   * Use this to return the points of the group.  It returns the points as an array of RPoint.
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
@@ -385,7 +385,7 @@ public class RGroup extends RGeomElem
   }
 
   /**
-   * Use this to return the points of the group.  It returns the points in the way of an array of RPoint.
+   * Use this to return the points of the group.  It returns the points as an array of RPoint.
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
@@ -415,7 +415,7 @@ public class RGroup extends RGeomElem
   }
 
   /**
-   * Use this to return the points of each path of the group.  It returns the points in the way of an array of array of RPoint.
+   * Use this to return the points of each path of the group.  It returns the points as an array of arrays of RPoint.
    * @eexample RGroup_getPoints
    * @return RPoint[], the points returned in an array.
    * */
@@ -496,7 +496,7 @@ public class RGroup extends RGeomElem
 
   /**
    * Use this to return a specific tangent on the curve.  It returns true if the point passed as a parameter is inside the group.
-   * @param p  the point for which to test containement..
+   * @param p  the point for which to test containment..
    * @return boolean, true if the point is in the path.
    * */
   public boolean contains(RPoint p){
