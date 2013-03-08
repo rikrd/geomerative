@@ -1889,11 +1889,9 @@ public class RShape extends RGeomElem
         boolean closed = false;
         boolean useContours = (numPaths>1);
         g.beginShape();
-        RG.parent().println("beginShape();");
         for(int i=0;i<numPaths;i++){
           if (useContours && i>0) {
             g.beginContour();
-            RG.parent().println("beginContour();");
           }
           
           RPath path = paths[i];

@@ -134,7 +134,7 @@ public class RSVG
   {
       XML svg = null;
     try{
-       svg = new XML(filename);
+       svg = RG.parent().loadXML(filename);
     } catch (Exception e) {
         e.printStackTrace();
     }
