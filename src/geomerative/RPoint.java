@@ -299,7 +299,7 @@ public class RPoint
   }
 
   /**
-   * Use this to substract a vector to this point.
+   * Use this to subtract a vector from this point.
    * @eexample RPoint_sub
    * @usage Geometry
    * @param p  the vector to substract

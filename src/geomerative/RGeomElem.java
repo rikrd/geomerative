@@ -22,7 +22,7 @@ import processing.core.*;
 
 
 /**
- * RGeomElem is an interface to any Geometric element that can be drawn and transformed, such as Shapes, Polygons or Meshes.
+ * RGeomElem is an interface to any geometric element that can be drawn and transformed, such as shapes, polygons or meshes.
  * @extended
  */
 public abstract class RGeomElem
@@ -110,7 +110,7 @@ public abstract class RGeomElem
   public abstract boolean contains(RPoint p);
 
   /**
-   * Use this method to test if the shape contains another shape. 
+   * Use this method to test if the shape contains all the points of another shape. 
    * @eexample contains
    * @return boolean, true if the shape contains all the points of the other shape
    * @related containsBounds ( )
@@ -145,7 +145,7 @@ public abstract class RGeomElem
   }
 
   /**
-   * Use this method to test if the shape contains the handles of another shape. This method is faster than contains(), but the results might not perfect.
+   * Use this method to test if the shape contains the handles of another shape. This method is faster than contains(), but the results might not be perfect.
    * @eexample contains
    * @return boolean, true if the shape contains all the handles of the other shape
    * @related containsBounds ( )
@@ -211,7 +211,7 @@ public abstract class RGeomElem
   }
 
   /**
-   * Use this method to test if the shape intersects the handles of another shape. This method is faster than intersects(), but the results might not perfect.
+   * Use this method to test if the shape intersects the handles of another shape. This method is faster than intersects(), but the results might not be perfect.
    * @eexample intersects
    * @return boolean, true if the shape intersects all the handles of the other shape
    * @related intersectsBounds ( )
@@ -389,9 +389,9 @@ public abstract class RGeomElem
   }
 
   /**
-   * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
+   * Use this to return arclengths of each command on the curve.
    * @eexample getCurveLength
-   * @return float[], the arclengths of each command of the path.
+   * @return float[], the arclengths of each command on the curve.
    * */
   public float[] getCurveLengths(){
     /* If the cache with the commands lengths is empty, we fill it up */
@@ -403,7 +403,7 @@ public abstract class RGeomElem
   }
   
   /**
-   * Use this to return the points on the curve.  It returns the points in the way of an array of RPoint.
+   * Use this to return the length of the curve.
    * @eexample getCurveLength
    * @return float, the arclength of the path.
    * */
@@ -467,7 +467,7 @@ public abstract class RGeomElem
   /**
    * Use this method to get the bounding box of the element. 
    * @eexample getBounds
-   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
+   * @return RRectangle, the bounding box of the element in the form of a four-point contour
    * @related getCenter ( )
    */
   public RRectangle getBounds(){
@@ -508,7 +508,7 @@ public abstract class RGeomElem
   /**
    * Use this method to get the points of the bounding box of the element. 
    * @eexample getBounds
-   * @return RRectangle, the bounding box of the element in the form of a fourpoint contour
+   * @return RRectangle, the bounding box of the element in the form of a four-point contour
    * @related getCenter ( )
    */
   public RPoint[] getBoundsPoints(){
@@ -516,9 +516,8 @@ public abstract class RGeomElem
   }  
 
   /**
-   * Use this method to get the (top left position) of the element. 
+   * Use this method to get the top left position of the element. 
    * @eexample getX
-   * @return float, the x coordinate of the element
    * @related getTopRight ( )
    * @related getBottomLeft ( )
    * @related getBottomRight ( )
@@ -533,9 +532,8 @@ public abstract class RGeomElem
 
 
   /**
-   * Use this method to get the (top left position) of the element. 
+   * Use this method to get the top right position of the element. 
    * @eexample getX
-   * @return float, the x coordinate of the element
    * @related getTopRight ( )
    * @related getBottomLeft ( )
    * @related getBottomRight ( )
@@ -550,9 +548,8 @@ public abstract class RGeomElem
 
 
   /**
-   * Use this method to get the (top left position) of the element. 
+   * Use this method to get the bottom left position of the element. 
    * @eexample getX
-   * @return float, the x coordinate of the element
    * @related getTopRight ( )
    * @related getBottomLeft ( )
    * @related getBottomRight ( )
@@ -567,9 +564,8 @@ public abstract class RGeomElem
 
 
   /**
-   * Use this method to get the (top left position) of the element. 
+   * Use this method to get the bottom right position of the element. 
    * @eexample getX
-   * @return float, the x coordinate of the element
    * @related getTopRight ( )
    * @related getBottomLeft ( )
    * @related getBottomRight ( )
@@ -584,7 +580,7 @@ public abstract class RGeomElem
 
 
   /**
-   * Use this method to get the x (left side position) of the element. 
+   * Use this method to get the x (left side) position of the element. 
    * @eexample getX
    * @return float, the x coordinate of the element
    * @related getY ( )
@@ -598,7 +594,7 @@ public abstract class RGeomElem
   }
 
   /**
-   * Use this method to get the y (left side position) of the element. 
+   * Use this method to get the y position of the element. 
    * @eexample getY
    * @return float, the y coordinate of the element
    * @related getY ( )
@@ -612,7 +608,7 @@ public abstract class RGeomElem
   }
 
   /**
-   * Use this method to get the origianl height of the element. 
+   * Use this method to get the original height of the element. 
    * @eexample getOrigHeight
    * @return float, the original height of the element before applying any transformations
    * @related getCenter ( )
@@ -622,7 +618,7 @@ public abstract class RGeomElem
   }
 
   /**
-   * Use this method to get the origianl width of the element. 
+   * Use this method to get the original width of the element. 
    * @eexample getOrigWidth
    * @return float, the original width of the element before applying any transformations
    * @related getCenter ( )

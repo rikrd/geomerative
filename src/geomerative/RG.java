@@ -22,7 +22,7 @@ import processing.core.*;
 
 /**
  * RG is a static class containing all the states, modes, etc..
- * Most uses of Geomerative is done by calling RG methods. e.g.  RShape s = RG.getEllipse(30, 40, 80, 80)
+ * Geomerative is mostly used by calling RG methods. e.g.  RShape s = RG.getEllipse(30, 40, 80, 80)
  */
 public class RG implements PConstants{
   /**
@@ -76,7 +76,7 @@ public class RG implements PConstants{
   static float adaptorLengthOffset = 0F;
 
   /**
-   * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.
+   * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have polygons and meshes with the fewest possible vertices.
    */
   public static int ADAPTATIVE = RCommand.ADAPTATIVE;
 
@@ -578,7 +578,7 @@ public class RG implements PConstants{
   }
 
   /**
-   * Ignore the styles of the shapes when drawing and use the processing style methods.
+   * Ignore the styles of the shapes when drawing and use the Processing style methods.
    * @eexample ignoreStyles
    * @param value  value to which the ignoreStyles state should be set
    */
