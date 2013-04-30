@@ -1,5 +1,5 @@
 
-GEOMERATIVE_VERSION=38
+GEOMERATIVE_VERSION=39
 
 JAVAC_ARGS=-source 1.3 -target 1.1
 CLASSPATH=external/batikfont.jar:"$(PROCESSING2_PATH)/core/library/core.jar":"$(PROCESSING2_PATH)/libraries/xml/library/xml.jar"
