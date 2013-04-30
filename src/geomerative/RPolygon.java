@@ -877,6 +877,11 @@ public class RPolygon extends RGeomElem
         float xmax = -Float.MAX_VALUE ;
         float ymax = -Float.MAX_VALUE ;
 
+        if ( this.contours[0].points == null )
+          {
+            return new RRectangle();
+          }
+        
         for( int i = 0 ; i < this.contours[0].points.length ; i++ )
           {
             float x = this.contours[0].points[i].getX();
