@@ -477,24 +477,28 @@ public abstract class RGeomElem
     float ymin = Float.POSITIVE_INFINITY ;
 
     RPoint[] points = getHandles();
-
+    
     if(points!=null){
       for(int i=0;i<points.length;i++){
         float tempx = points[i].x;
         float tempy = points[i].y;
+        
         if( tempx < xmin )
           {
             xmin = tempx;
           }
-        else if( tempx > xmax )
+          
+        if( tempx > xmax )
           {
             xmax = tempx;
           }
+          
         if( tempy < ymin )
           {
-          ymin = tempy;
+            ymin = tempy;
           }
-       else if( tempy > ymax )
+          
+        if( tempy > ymax )
           {
             ymax = tempy;
           }

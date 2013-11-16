@@ -148,19 +148,19 @@ public class RSVG
 
     RShape result = elemToCompositeShape(svg);
 
+    result.origWidth = result.getWidth();
+    result.origHeight = result.getHeight();
+
     if (svg.hasAttribute("width") && svg.hasAttribute("height")) {
       String widthStr = svg.getString("width").trim();
       String heightStr = svg.getString("height").trim();
-      
-      result.width = unitsToPixels(widthStr, result.getWidth());
-      result.height = unitsToPixels(heightStr, result.getHeight());
+            
+      result.width = unitsToPixels(widthStr, result.origWidth);
+      result.height = unitsToPixels(heightStr, result.origHeight);
     } else {
-      result.width = result.getWidth();
-      result.height = result.getHeight();
+      result.width = result.origWidth;
+      result.height = result.origHeight;
     }
-
-    result.origWidth = result.getWidth();
-    result.origHeight = result.getHeight();
     
     return result;
   }
