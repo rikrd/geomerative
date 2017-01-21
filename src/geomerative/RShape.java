@@ -1734,7 +1734,7 @@ public class RShape extends RGeomElem
         boolean strokeBefore = g.stroke;
         int strokeColorBefore = g.strokeColor;
         float strokeWeightBefore = g.strokeWeight;      
-        boolean smoothBefore = g.smooth;
+        //boolean smoothBefore = g.smooth;
         boolean fillBefore = g.fill;
         int fillColorBefore = g.fillColor;
 
@@ -1747,12 +1747,13 @@ public class RShape extends RGeomElem
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
           // NOTE: there's currently no way of drawing the outline of a mesh, since no information is kept about what vertices are at the edge
 
+           /*
           // This is here because when rendering meshes we get unwanted lines between the triangles
           g.noStroke();
           try{
             g.noSmooth();
           }catch(Exception e){}
-          
+           */
           RMesh tempMesh = this.toMesh();
           tempMesh.draw(g);
           
@@ -1761,12 +1762,12 @@ public class RShape extends RGeomElem
           if(!strokeBefore){
             g.noStroke();
           }
-          
+          /*
           try{
             if(smoothBefore){
               g.smooth();
             }
-          }catch(Exception e){}
+          }catch(Exception e){}*/
         }
         
         // Check whether to draw the stroke
@@ -1809,7 +1810,7 @@ public class RShape extends RGeomElem
         boolean strokeBefore = p.g.stroke;
         int strokeColorBefore = p.g.strokeColor;
         float strokeWeightBefore = p.g.strokeWeight;      
-        boolean smoothBefore = p.g.smooth;
+        boolean smoothBefore = false;//p.g.smooth;
         boolean fillBefore = p.g.fill;
         int fillColorBefore = p.g.fillColor;
 
@@ -1826,9 +1827,10 @@ public class RShape extends RGeomElem
 
           // This is here because when rendering meshes we get unwanted lines between the triangles
           p.noStroke();
+          /*
           try{
             p.noSmooth();
-          }catch(Exception e){}
+          }catch(Exception e){}*/
           
           RMesh tempMesh = this.toMesh();
           if ( tempMesh != null ){
@@ -1842,11 +1844,11 @@ public class RShape extends RGeomElem
             p.noStroke();
           }
           
-          try{
+          /*try{
             if(smoothBefore){
               p.smooth();
             }
-          }catch(Exception e){}
+          }catch(Exception e){}*/
         }
         
         

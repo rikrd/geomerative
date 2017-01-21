@@ -577,6 +577,7 @@ public class RPolygon extends RGeomElem
           boolean stroking = g.stroke;
           g.noStroke();
 
+            /*
           // Save smoothing state and turn off
           boolean smoothing = g.smooth;
           try{
@@ -585,6 +586,7 @@ public class RPolygon extends RGeomElem
             }
           }catch(Exception e){
           }
+            */
 
           RMesh tempMesh = this.toMesh();
           tempMesh.draw(g);
@@ -592,6 +594,7 @@ public class RPolygon extends RGeomElem
           // Restore the old stroke color
           if(stroking) g.stroke(g.strokeColor);
 
+            /*
           // Restore the old smoothing state
           try{
             if(smoothing){
@@ -599,6 +602,7 @@ public class RPolygon extends RGeomElem
             }
           }catch(Exception e){
           }
+          */
         }
 
         // Check whether to draw the stroke or not
@@ -633,6 +637,7 @@ public class RPolygon extends RGeomElem
           boolean stroking = g.g.stroke;
           g.noStroke();
 
+           /*
           // Save smoothing state and turn off
           boolean smoothing = g.g.smooth;
           try{
@@ -641,7 +646,7 @@ public class RPolygon extends RGeomElem
             }
           }catch(Exception e){
           }
-
+            */
           RMesh tempMesh = this.toMesh();
           if(tempMesh != null)
             tempMesh.draw(g);
@@ -649,6 +654,7 @@ public class RPolygon extends RGeomElem
           // Restore the old stroke color
           if(stroking) g.stroke(g.g.strokeColor);
 
+            /*
           // Restore the old smoothing state
           try{
             if(smoothing){
@@ -656,6 +662,7 @@ public class RPolygon extends RGeomElem
             }
           }catch(Exception e){
           }
+          */
         }
 
         // Check whether to draws the stroke or not
