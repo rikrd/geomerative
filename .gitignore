@@ -4,4 +4,4 @@ build
 distribution
 documentation
 library
-*~
+*~.DS_Store

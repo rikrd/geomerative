@@ -12,7 +12,7 @@
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-    
+
     You should have received a copy of the GNU General Public License
     along with Geomerative.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,9 +32,9 @@ public class RShape extends RGeomElem
    * @invisible
    */
   public int type = RGeomElem.SHAPE;
-  
+
   /**
-   * Array of RPath objects holding the paths of the polygon. 
+   * Array of RPath objects holding the paths of the polygon.
    * @eexample paths
    * @related RPath
    * @related countPaths ( )
@@ -49,7 +49,7 @@ public class RShape extends RGeomElem
   // ----------------------
   // --- Public Methods ---
   // ----------------------
-  
+
   /**
    * Use this method to create a new empty shape.
    * @eexample RShape
@@ -57,7 +57,7 @@ public class RShape extends RGeomElem
   public RShape(){
     type = RGeomElem.SHAPE;
   }
-  
+
   public RShape(RPath newpath){
     this.append(newpath);
     type = RGeomElem.SHAPE;
@@ -70,7 +70,7 @@ public class RShape extends RGeomElem
 
   public RShape(RPoint[][] points){
     if(points == null) return;
-    
+
     RPath[] newpaths = new RPath[points.length];
     for(int i=0; i<points.length; i++){
       newpaths[i] = new RPath(points[i]);
@@ -79,12 +79,12 @@ public class RShape extends RGeomElem
     this.paths = newpaths;
     type = RGeomElem.SHAPE;
   }
-  
+
   public RShape(RShape s){
     for(int i=0;i<s.countPaths();i++){
       this.append(new RPath(s.paths[i]));
     }
-    
+
     for(int i=0;i<s.countChildren();i++){
       this.appendChild(new RShape(s.children[i]));
     }
@@ -95,7 +95,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this method to create a new line. 
+   * Use this method to create a new line.
    * @eexample createRing
    * @param x1  x coordinate of the first point of the line
    * @param y1  y coordinate of the first point of the line
@@ -106,16 +106,16 @@ public class RShape extends RGeomElem
   static public RShape createLine(float x1, float y1, float x2, float y2){
     RShape line = new RShape();
     RPath path = new RPath();
-    
+
     RCommand lineCommand = new RCommand(x1, y1, x2, y2);
     path.addCommand(lineCommand);
     line.addPath(path);
-    
+
     return line;
   }
 
   /**
-   * Use this method to create a new ring polygon. 
+   * Use this method to create a new ring polygon.
    * @eexample createRing
    * @param x  x coordinate of the center of the shape
    * @param y  y coordinate of the center of the shape
@@ -127,7 +127,7 @@ public class RShape extends RGeomElem
     RShape ring = new RShape();
     RShape outer = RShape.createCircle(x, y, widthBig);
     RShape inner = RShape.createCircle(x, y, -widthSmall);
-    
+
     ring.addPath(outer.paths[0]);
     ring.addPath(inner.paths[0]);
 
@@ -135,7 +135,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this method to create a new starform polygon. 
+   * Use this method to create a new starform polygon.
    * @eexample createStar
    * @param widthBig  the outer width of the star polygon
    * @param widthSmall  the inner width of the star polygon
@@ -155,12 +155,12 @@ public class RShape extends RGeomElem
     }
 
     star.addClose();
-    
+
     return star;
   }
-  
+
   /**
-   * Use this method to create a new circle shape. 
+   * Use this method to create a new circle shape.
    * @eexample createRectangle
    * @param x  the x position of the rectangle
    * @param y  the y position of the rectangle
@@ -177,9 +177,9 @@ public class RShape extends RGeomElem
     rect.addLineTo(x, y);
     return rect;
   }
-  
+
   /**
-   * Use this method to create a new elliptical shape. 
+   * Use this method to create a new elliptical shape.
    * @eexample createEllipse
    * @param x  the x position of the ellipse
    * @param y  the y position of the ellipse
@@ -206,7 +206,7 @@ public class RShape extends RGeomElem
   static public RShape createCircle(float x, float y, float d){
     return createEllipse(x, y, d, d);
   }
-  
+
   /**
    *
    * Extracts a shape by its name. The shape is returned as an RShape object, or null is returned if no shape with the name has been found.
@@ -225,7 +225,7 @@ public class RShape extends RGeomElem
 
     return null;
   }
-  
+
   /**
    * Use this method to get the centroid of the element.
    * @eexample RGroup_getCentroid
@@ -249,9 +249,9 @@ public class RShape extends RGeomElem
     }
     return null;
   }
-  
+
   /**
-   * Use this method to count the number of paths in the shape. 
+   * Use this method to count the number of paths in the shape.
    * @eexample countPaths
    * @related addPath ( )
    */
@@ -259,7 +259,7 @@ public class RShape extends RGeomElem
     if(this.paths==null){
       return 0;
     }
-    
+
     return this.paths.length;
   }
 
@@ -268,10 +268,10 @@ public class RShape extends RGeomElem
     if(this.children==null){
       return 0;
     }
-    
+
     return this.children.length;
   }
-  
+
   /**
    * Use this method to add a new shape.  The paths of the shape we are adding will simply be added to the current shape.
    * @eexample addShape
@@ -285,7 +285,7 @@ public class RShape extends RGeomElem
       this.append(s.paths[i]);
     }
   }
-  
+
   /**
    * Use this method to create a new path.  The first point of the new path will be set to (0,0).  Use addMoveTo ( ) in order to add a new path with a different first point.
    * @eexample addPath
@@ -300,18 +300,18 @@ public class RShape extends RGeomElem
   public void addPath(){
     this.append(new RPath());
   }
-  
+
 
   public void addChild(){
     this.appendChild(new RShape());
   }
-  
+
   public void addChild(RShape s){
     this.appendChild(s);
   }
-  
+
   /**
-   * Use this method to set the current path. 
+   * Use this method to set the current path.
    * @eexample setPath
    * @related addMoveTo ( )
    * @related addLineTo ( )
@@ -322,7 +322,7 @@ public class RShape extends RGeomElem
   public void setPath(int indPath){
     this.currentPath = indPath;
   }
-  
+
   /**
    * Use this method to add a new moveTo command to the shape.  The command moveTo acts different to normal commands, in order to make a better analogy to its borthers classes Polygon and Mesh.  MoveTo creates a new path in the shape.  It's similar to adding a new contour to a polygon.
    * @eexample addMoveTo
@@ -347,7 +347,7 @@ public class RShape extends RGeomElem
   public void addMoveTo(RPoint p){
     addMoveTo(p.x, p.y);
   }
-  
+
   /**
    * Use this method to add a new lineTo command to the current path.  This will add a line from the last point added to the point passed as argument.
    * @eexample addLineTo
@@ -369,7 +369,7 @@ public class RShape extends RGeomElem
   public void addLineTo(RPoint p){
     addLineTo(p.x, p.y);
   }
-  
+
   /**
    * Use this method to add a new quadTo command to the current path.  This will add a quadratic bezier from the last point added with the control and ending points passed as arguments.
    * @eexample addQuadTo
@@ -393,7 +393,7 @@ public class RShape extends RGeomElem
   public void addQuadTo(RPoint p1, RPoint p2){
     addQuadTo(p1.x, p1.y, p2.x, p2.y);
   }
-  
+
   /**
    * Use this method to add a new bezierTo command to the current path.  This will add a cubic bezier from the last point added with the control and ending points passed as arguments.
    * @eexample addArcTo
@@ -419,16 +419,16 @@ public class RShape extends RGeomElem
   public void addBezierTo(RPoint p1, RPoint p2, RPoint p3){
     addBezierTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
   }
-  
+
   public void addClose(){
     if (paths == null) {
       this.append(new RPath());
     }
     this.paths[currentPath].addClose();
   }
-  
+
   /**
-   * Use this method to create a new mesh from a given polygon. 
+   * Use this method to create a new mesh from a given polygon.
    * @eexample toMesh
    * @return RMesh, the mesh made of tristrips resulting of a tesselation of the polygonization followed by tesselation of the shape.
    * @related draw ( )
@@ -436,9 +436,9 @@ public class RShape extends RGeomElem
   public RMesh toMesh(){
     return toPolygon().toMesh();
   }
-  
+
   /**
-   * Use this method to create a new polygon from a given shape. 
+   * Use this method to create a new polygon from a given shape.
    * @eexample toPolygon
    * @return RPolygon, the polygon resulting of the segmentation of the commands in each path.
    * @related draw ( )
@@ -446,9 +446,9 @@ public class RShape extends RGeomElem
   public RPolygon toPolygon ( )
   {
     int numPnts = this.countPaths();
-    
+
     RPolygon poly = new RPolygon();
-    
+
     if ( this.children != null )
       {
         for ( int i = 0; i < this.children.length; i++ )
@@ -460,7 +460,7 @@ public class RShape extends RGeomElem
               }
           }
       }
-    
+
     for ( int i = 0; i < numPnts; i++ )
       {
         RPoint[] pnts = this.paths[i].getPoints();
@@ -469,24 +469,24 @@ public class RShape extends RGeomElem
         c.setStyle( this.paths[i] );
         poly.addContour(c);
       }
-    
+
     return poly;
   }
 
 
   public void polygonize(){
     int numPaths = countPaths();
-    
+
     for(int i=0;i<numPaths;i++){
       this.paths[i].polygonize();
     }
-    
+
     for(int i=0;i<countChildren();i++){
       this.children[i].polygonize();
     }
   }
 
-  
+
   /**
    * @invisible
    */
@@ -508,14 +508,14 @@ public class RShape extends RGeomElem
     RPolygon ppoly = p.toPolygon();
 
     RShape result = new RShape();
-    
+
     RShape temp = new RShape();
     for(int i=0; i<numPaths; i++){
       temp.addPath(this.paths[i]);
     }
 
     RPolygon resPolPaths = RClip.intersection( temp.toPolygon(), ppoly );
-    if (resPolPaths != null) { 
+    if (resPolPaths != null) {
       RShape resPaths = resPolPaths.toShape();
       for(int i=0; i<resPaths.countPaths(); i++){
         result.addPath(resPaths.paths[i]);
@@ -528,7 +528,7 @@ public class RShape extends RGeomElem
         result.addChild(resChildren);
       }
     }
-    
+
     if (result != null) {
       result.setStyle(this);
     }
@@ -543,7 +543,7 @@ public class RShape extends RGeomElem
     return result.toShape();
     */
   }
-  
+
   /**
    * Use this method to get the union of this polygon with the polygon passed in as a parameter.
    * @eexample union
@@ -558,14 +558,14 @@ public class RShape extends RGeomElem
     RPolygon ppoly = p.toPolygon();
 
     RShape result = new RShape();
-    
+
     RShape temp = new RShape();
     for(int i=0; i<numPaths; i++){
       temp.addPath(this.paths[i]);
     }
 
     RPolygon resPolPaths = RClip.union( temp.toPolygon(), ppoly );
-    if (resPolPaths != null) { 
+    if (resPolPaths != null) {
       RShape resPaths = resPolPaths.toShape();
       for(int i=0; i<resPaths.countPaths(); i++){
         result.addPath(resPaths.paths[i]);
@@ -578,7 +578,7 @@ public class RShape extends RGeomElem
         result.addChild(resChildren);
       }
     }
-    
+
     if (result != null) {
       result.setStyle(this);
     }
@@ -593,7 +593,7 @@ public class RShape extends RGeomElem
     return result.toShape();
     */
   }
-  
+
   /**
    * Use this method to get the xor of this polygon with the polygon passed in as a parameter.
    * @eexample xor
@@ -608,14 +608,14 @@ public class RShape extends RGeomElem
     RPolygon ppoly = p.toPolygon();
 
     RShape result = new RShape();
-    
+
     RShape temp = new RShape();
     for(int i=0; i<numPaths; i++){
       temp.addPath(this.paths[i]);
     }
 
     RPolygon resPolPaths = RClip.xor( temp.toPolygon(), ppoly );
-    if (resPolPaths != null) { 
+    if (resPolPaths != null) {
       RShape resPaths = resPolPaths.toShape();
       for(int i=0; i<resPaths.countPaths(); i++){
         result.addPath(resPaths.paths[i]);
@@ -628,7 +628,7 @@ public class RShape extends RGeomElem
         result.addChild(resChildren);
       }
     }
-    
+
     if (result != null) {
       result.setStyle(this);
     }
@@ -643,7 +643,7 @@ public class RShape extends RGeomElem
     return result.toShape();
     */
   }
-  
+
   /**
    * Use this method to get the difference between this polygon and the polygon passed in as a parameter.
    * @eexample diff
@@ -652,20 +652,20 @@ public class RShape extends RGeomElem
    * @related union ( )
    * @related xor ( )
    * @related intersection ( )
-   */	
+   */
   public RShape diff( RShape p ){
     int numPaths = countPaths();
     RPolygon ppoly = p.toPolygon();
 
     RShape result = new RShape();
-    
+
     RShape temp = new RShape();
     for(int i=0; i<numPaths; i++){
       temp.addPath(this.paths[i]);
     }
 
     RPolygon resPolPaths = RClip.diff( temp.toPolygon(), ppoly );
-    if (resPolPaths != null) { 
+    if (resPolPaths != null) {
       RShape resPaths = resPolPaths.toShape();
       for(int i=0; i<resPaths.countPaths(); i++){
         result.addPath(resPaths.paths[i]);
@@ -678,7 +678,7 @@ public class RShape extends RGeomElem
         result.addChild(resChildren);
       }
     }
-    
+
     if (result != null) {
       result.setStyle(this);
     }
@@ -693,7 +693,7 @@ public class RShape extends RGeomElem
     return result.toShape();
     */
   }
-    
+
   /**
    * Use this to return the start, control and end points of the shape.  It returns the points as an array of RPoint.
    * @eexample RShape_getHandles
@@ -701,7 +701,7 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getHandles(){
     int numPaths = countPaths();
-    
+
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numPaths;i++){
@@ -736,7 +736,7 @@ public class RShape extends RGeomElem
 
     return result;
   }
-  
+
   /**
    * Use this to return a point on the curve given a certain advancement.  It returns the point as an RPoint.
    * @eexample RShape_getPoints
@@ -762,7 +762,7 @@ public class RShape extends RGeomElem
   public RPoint[] getPoints(){
     int numPaths = countPaths();
 
-    RCommand.segmentAccOffset = RCommand.segmentOffset;    
+    RCommand.segmentAccOffset = RCommand.segmentOffset;
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numPaths;i++){
@@ -794,7 +794,7 @@ public class RShape extends RGeomElem
         }
       }
     }
-    
+
     return result;
   }
 
@@ -842,29 +842,29 @@ public class RShape extends RGeomElem
 
     float ymin = bbox.getMinY();
     float ymax = bbox.getMaxY();
-    
+
     if( (testx < xmin) || (testx > xmax) || (testy < ymin) || (testy > ymax)){
       return false;
     }
 
     // Test for containment in shape
     RPoint[][] pointpaths = getPointsInPaths();
-    
+
     if(pointpaths == null){
       return false;
     }
-    
+
     RPoint[] verts = pointpaths[0];
     for(int k=1;k<pointpaths.length;k++){
       verts = (RPoint[])RG.parent().append(verts, new RPoint(0F, 0F));
       verts = (RPoint[])RG.parent().concat(verts, pointpaths[k]);
     }
     verts = (RPoint[])RG.parent().append(verts, new RPoint(0F, 0F));
-    
+
     if(verts == null){
       return false;
     }
-    
+
     int nvert = verts.length;
     int i, j = 0;
     boolean c = false;
@@ -884,7 +884,7 @@ public class RShape extends RGeomElem
    * */
   public RPoint[] getTangents(){
     int numPaths = countPaths();
-    
+
     RPoint[] result=null;
     RPoint[] newresult=null;
     for(int i=0;i<numPaths;i++){
@@ -901,7 +901,7 @@ public class RShape extends RGeomElem
         }
       }
     }
-    
+
     for(int i=0;i<countChildren();i++){
       RPoint[] newPoints = children[i].getTangents();
       if(newPoints!=null){
@@ -926,7 +926,7 @@ public class RShape extends RGeomElem
    * */
   public RPoint[][] getPointsInPaths(){
     int numPaths = countPaths();
-    
+
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numPaths;i++){
@@ -959,12 +959,12 @@ public class RShape extends RGeomElem
       }
     }
 
-    return result;    
+    return result;
   }
 
   public RPoint[][] getHandlesInPaths(){
     int numPaths = countPaths();
-    
+
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numPaths;i++){
@@ -996,8 +996,8 @@ public class RShape extends RGeomElem
         }
       }
     }
-    
-    return result;    
+
+    return result;
   }
 
   public RPoint[][] getTangentsInPaths(){
@@ -1005,7 +1005,7 @@ public class RShape extends RGeomElem
     if(numPaths == 0){
       return null;
     }
-    
+
     RPoint[][] result=null;
     RPoint[][] newresult=null;
     for(int i=0;i<numPaths;i++){
@@ -1038,14 +1038,14 @@ public class RShape extends RGeomElem
       }
     }
 
-    return result;    
+    return result;
   }
-  
+
   public RShape[] splitPaths(float t){
     RShape[] result = new RShape[2];
     result[0] = new RShape();
     result[1] = new RShape();
-    
+
     for(int i=0; i<countPaths(); i++){
       RPath[] splittedPaths = paths[i].split(t);
       if(splittedPaths != null){
@@ -1061,7 +1061,7 @@ public class RShape extends RGeomElem
         result[1].addChild(splittedPaths[1]);
       }
     }
-    
+
     result[0].setStyle(this);
     result[1].setStyle(this);
     return result;
@@ -1086,7 +1086,7 @@ public class RShape extends RGeomElem
     }else{
       children[indOfElement - countPaths()].insertHandle(advOfElement);
     }
-    
+
     // Clear the cache
     lenCurves = null;
     lenCurve = -1F;
@@ -1103,12 +1103,12 @@ public class RShape extends RGeomElem
     if((t == 0F) || (t == 1F)){
       return;
     }
-    
+
     int numPaths = countPaths();
     if(numPaths == 0){
       return;
     }
-    
+
     for( int i = 0 ; i < numPaths; i++ ) {
       paths[i].insertHandleInPaths(t);
     }
@@ -1116,7 +1116,7 @@ public class RShape extends RGeomElem
     // Clear the cache
     lenCurves = null;
     lenCurve = -1F;
-    
+
     return;
   }
 
@@ -1125,7 +1125,7 @@ public class RShape extends RGeomElem
     result[0] = new RShape();
     result[1] = new RShape();
 
-    if(t == 0.0F){ 
+    if(t == 0.0F){
       result[0] = new RShape();
       result[0].setStyle(this);
 
@@ -1134,31 +1134,31 @@ public class RShape extends RGeomElem
 
       return result;
     }
-    
+
     if(t == 1.0F){
       result[0] = new RShape(this);
       result[0].setStyle(this);
-    
+
       result[1] = new RShape();
       result[1].setStyle(this);
 
       return result;
     }
-    
+
     float[] indAndAdv = indAndAdvAt(t);
     int indOfElement = (int)(indAndAdv[0]);
     float advOfElement = indAndAdv[1];
-    
+
     if ( indOfElement < countPaths() ){
       RPath[] splittedShapes = paths[indOfElement].split(advOfElement);
-      
+
       result[0] = new RShape();
       for(int i = 0; i<indOfElement; i++){
         result[0].addPath(new RPath(paths[i]));
       }
       result[0].addPath(new RPath(splittedShapes[0]));
       result[0].setStyle(this);
-      
+
       result[1] = new RShape();
       result[1].addPath(new RPath(splittedShapes[1]));
       for(int i = indOfElement + 1; i < countPaths(); i++){
@@ -1169,7 +1169,7 @@ public class RShape extends RGeomElem
         result[1].appendChild(new RShape(this.children[i]));
       }
       result[1].setStyle(this);
-    
+
       return result;
     }else{
       indOfElement -= countPaths();
@@ -1183,15 +1183,15 @@ public class RShape extends RGeomElem
       RShape[] splittedChild = children[indOfElement].split(advOfElement);
       result[0].addChild(new RShape(splittedChild[0]));
       result[1].addChild(new RShape(splittedChild[1]));
-      
-      // Add the elements after the cut point    
+
+      // Add the elements after the cut point
       for(int i=indOfElement+1; i<countChildren(); i++){
         result[1].addChild(new RShape(children[i]));
       }
 
       result[0].setStyle(this);
       result[1].setStyle(this);
-    
+
       return result;
     }
   }
@@ -1199,7 +1199,7 @@ public class RShape extends RGeomElem
   /**
    * Use this method to get the points of intersection between this shape and another shape passed in as a parameter.
    * @param other  the path with which to check for intersections
-   */  
+   */
   public RPoint[] getIntersections(RShape other) {
     // TODO: when we will be able to intersect between all
     //       geometric elements the polygonization will not be necessary
@@ -1217,10 +1217,10 @@ public class RShape extends RGeomElem
     //       geometric elements the polygonization will not be necessary
     RShape shp = new RShape(this);
     shp.polygonize();
-    
+
     return shp.polygonIntersectionPoints(other);
   }
-  
+
   RPoint[] polygonIntersectionPoints(RCommand other){
     int numPaths = countPaths();
 
@@ -1262,10 +1262,10 @@ public class RShape extends RGeomElem
   RPoint[] polygonIntersectionPoints(RPath other){
     int numChildren = countChildren();
     int numPaths = countPaths();
-    
+
     RPoint[] result=null;
     RPoint[] newresult=null;
-    
+
     for(int i=0;i<numPaths;i++){
       RPoint[] newPoints = paths[i].intersectionPoints(other);
       if(newPoints!=null){
@@ -1280,7 +1280,7 @@ public class RShape extends RGeomElem
         }
       }
     }
-        
+
     for(int i=0;i<numChildren;i++){
       RPoint[] newPoints = children[i].polygonIntersectionPoints(other);
       if(newPoints!=null){
@@ -1295,17 +1295,17 @@ public class RShape extends RGeomElem
         }
       }
     }
-    
+
     return result;
   }
 
   RPoint[] polygonIntersectionPoints(RShape other){
     int numChildren = countChildren();
     int numPaths = countPaths();
-    
+
     RPoint[] result=null;
     RPoint[] newresult=null;
-    
+
     for(int i=0;i<numPaths;i++){
       RPoint[] newPoints = other.polygonIntersectionPoints(paths[i]);
       if(newPoints!=null){
@@ -1320,7 +1320,7 @@ public class RShape extends RGeomElem
         }
       }
     }
-    
+
     for(int i=0;i<numChildren;i++){
       RPoint[] newPoints = other.polygonIntersectionPoints(children[i]);
       if(newPoints!=null){
@@ -1335,7 +1335,7 @@ public class RShape extends RGeomElem
         }
       }
     }
-    
+
     return result;
   }
 
@@ -1343,7 +1343,7 @@ public class RShape extends RGeomElem
   /**
    * Use this method to get the closest or intersection points of the shape with another shape passed as argument.
    * @param other  the path with which to check for intersections
-   */  
+   */
   public RClosest getClosest(RShape other) {
     // TODO: when we will be able to intersect between all
     //       geometric elements the polygonization will not be necessary
@@ -1361,15 +1361,15 @@ public class RShape extends RGeomElem
     //       geometric elements the polygonization will not be necessary
     RShape shp = new RShape(this);
     shp.polygonize();
-    
+
     return shp.polygonClosestPoints(other);
   }
-  
+
   RClosest polygonClosestPoints(RCommand other){
     int numPaths = countPaths();
-    
+
     RClosest result = new RClosest();
-    
+
     for(int i=0;i<numPaths;i++){
       RClosest currResult = paths[i].closestPoints(other);
       result.update(currResult);
@@ -1379,45 +1379,45 @@ public class RShape extends RGeomElem
       RClosest currResult = children[i].polygonClosestPoints(other);
       result.update(currResult);
     }
-    
+
     return result;
   }
 
   RClosest polygonClosestPoints(RPath other){
     int numChildren = countChildren();
     int numPaths = countPaths();
-    
+
     RClosest result = new RClosest();
-    
+
     for(int i=0;i<numPaths;i++){
       RClosest currClosest = paths[i].closestPoints(other);
       result.update(currClosest);
     }
-        
+
     for(int i=0;i<numChildren;i++){
       RClosest currClosest = children[i].polygonClosestPoints(other);
       result.update(currClosest);
     }
-    
+
     return result;
   }
 
   RClosest polygonClosestPoints(RShape other){
     int numChildren = countChildren();
     int numPaths = countPaths();
-    
+
     RClosest result = new RClosest();
-    
+
     for(int i=0;i<numPaths;i++){
       RClosest currClosest = other.polygonClosestPoints(paths[i]);
       result.update(currClosest);
     }
-    
+
     for(int i=0;i<numChildren;i++){
       RClosest currClosest = other.polygonClosestPoints(children[i]);
       result.update(currClosest);
     }
-    
+
     return result;
   }
 
@@ -1430,7 +1430,7 @@ public class RShape extends RGeomElem
     RRectangle c = this.getBounds();
     float xmin = c.getMinX();
     float xmax = c.getMaxX();
-    
+
     int numChildren = countChildren();
 
     switch(RG.adaptorType){
@@ -1440,14 +1440,14 @@ public class RShape extends RGeomElem
         for(int k=0;k<ps.length;k++){
           float px = ps[k].x;
           float py = ps[k].y;
-          
+
           float t = ((px-xmin)/(xmax-xmin) + lngthOffset) % 1.001F;
           float amp = (py);
-          
+
           RPoint tg = shp.getTangent(t);
           RPoint p = shp.getPoint(t);
           float angle = (float)Math.atan2(tg.y, tg.x) - (float)Math.PI/2F;
-          
+
           ps[k].x = p.x + wght*amp*(float)Math.cos(angle);
           ps[k].y = p.y + wght*amp*(float)Math.sin(angle);
         }
@@ -1457,23 +1457,23 @@ public class RShape extends RGeomElem
       for(int i=0;i<numChildren;i++){
         RShape elem = this.children[i];
         RRectangle elemc = elem.getBounds();
-        
+
         float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
         float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
         float t = ((float)i/(float)numChildren + lngthOffset ) % 1F;
-        
+
         RPoint tg = shp.getTangent(t);
         RPoint p = shp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
-        
+
         RPoint pletter = new RPoint(px,py);
         p.sub(pletter);
-        
+
         RMatrix mtx = new RMatrix();
         mtx.translate(p);
         mtx.rotate(angle,pletter);
         mtx.scale(wght,pletter);
-        
+
         elem.transform(mtx);
       }
       break;
@@ -1482,32 +1482,32 @@ public class RShape extends RGeomElem
       for(int i=0;i<numChildren;i++){
         RShape elem = this.children[i];
         RRectangle elemc = elem.getBounds();
-        
+
         float px = (elemc.bottomRight.x + elemc.topLeft.x) / 2F;
         float py = (elemc.bottomRight.y - elemc.topLeft.y) / 2F;
         float t = ((px-xmin)/(xmax-xmin) + lngthOffset ) % 1F;
-        
+
         RPoint tg = shp.getTangent(t);
         RPoint p = shp.getPoint(t);
         float angle = (float)Math.atan2(tg.y, tg.x);
-        
+
         RPoint pletter = new RPoint(px,py);
         p.sub(pletter);
-        
+
         RMatrix mtx = new RMatrix();
         mtx.translate(p);
         mtx.rotate(angle,pletter);
         mtx.scale(wght,pletter);
-        
+
         elem.transform(mtx);
       }
       break;
-      
+
     default:
       throw new RuntimeException("Unknown adaptor type : "+RG.adaptorType+". The method RG.setAdaptor() only accepts RG.BYPOINT or RG.BYELEMENT as parameter values.");
     }
   }
-  
+
   public void adapt(RShape shp) throws RuntimeException{
     adapt(shp, RG.adaptorScale, RG.adaptorLengthOffset);
   }
@@ -1520,7 +1520,7 @@ public class RShape extends RGeomElem
   public int getType(){
     return type;
   }
-  
+
   public void print(){
     System.out.println("paths [count " + this.countPaths() + "]: ");
     for(int i=0;i<countPaths();i++)
@@ -1538,7 +1538,7 @@ public class RShape extends RGeomElem
       }
 
   }
-  
+
   public void draw(PGraphics g){
     if(!RG.ignoreStyles){
       saveContext(g);
@@ -1574,7 +1574,7 @@ public class RShape extends RGeomElem
   }
 
   /**
-   * Use this method to draw the shape. 
+   * Use this method to draw the shape.
    * @eexample drawShape
    * @param g PGraphics, the graphics object on which to draw the shape
    */
@@ -1589,13 +1589,13 @@ public class RShape extends RGeomElem
         // such as when recording to a PDF from a OPENGL backend
         //drawUsingBreakShape(g);
         drawUsingInternalTesselator(g);
-        
+
       }else{
 
         // The backend does implement breakShape
         drawUsingBreakShape(g);
       }
-    }catch(NoSuchMethodException e){   
+    }catch(NoSuchMethodException e){
 
       // The backend does implement breakShape
       drawUsingInternalTesselator(g);
@@ -1607,7 +1607,7 @@ public class RShape extends RGeomElem
 
     }
     */
-    drawUsingBreakShape(g);    
+    drawUsingBreakShape(g);
   }
 
   private void drawPaths(PApplet g){
@@ -1619,30 +1619,30 @@ public class RShape extends RGeomElem
         // The backend does not implement breakShape
         // HACK: Drawing twice, so that it also works on backends that support breakShape
         // such as when recording to a PDF from a OPENGL backend
-        //drawUsingBreakShape(g);    
+        //drawUsingBreakShape(g);
         drawUsingInternalTesselator(g);
-      
+
       }else{
-      
+
         // The backend does implement breakShape
-        drawUsingBreakShape(g);        
-      
+        drawUsingBreakShape(g);
+
       }
-    }catch(NoSuchMethodException e){   
-      
+    }catch(NoSuchMethodException e){
+
       // The backend does implement breakShape
       drawUsingInternalTesselator(g);
-    
+
     }catch(ClassNotFoundException e){
 
       // The backend does implement breakShape
       drawUsingInternalTesselator(g);
-    
+
     }
     */
     drawUsingBreakShape(g);
   }
-  
+
   // ----------------------
   // --- Private Methods ---
   // ----------------------
@@ -1653,14 +1653,14 @@ public class RShape extends RGeomElem
     for(int i=0;i<countPaths();i++){
       lenCurves[i] = paths[i].getCurveLength();
       lenCurve += lenCurves[i];
-    }  
+    }
 
     for(int i=0;i<countChildren();i++){
       lenCurves[i + countPaths()] = children[i].getCurveLength();
       lenCurve += lenCurves[i + countPaths()];
     }
   }
-  
+
   private float[] indAndAdvAt(float t){
     int indOfElement = 0;
     float[] lengthsCurves = getCurveLengths();
@@ -1669,27 +1669,27 @@ public class RShape extends RGeomElem
     /* Calculate the amount of advancement t mapped to each command */
     /* We use a simple algorithm where we give to each command the same amount of advancement */
     /* A more useful way would be to give to each command an advancement proportional to the length of the command */
-    
+
     float accumulatedAdvancement = lengthsCurves[indOfElement] / lengthCurve;
     float prevAccumulatedAdvancement = 0F;
-    
+
     /* Find in what command the advancement point is  */
     while(t > accumulatedAdvancement){
       indOfElement++;
       prevAccumulatedAdvancement = accumulatedAdvancement;
       accumulatedAdvancement += (lengthsCurves[indOfElement] / lengthCurve);
     }
-    
+
     float advOfElement = (t-prevAccumulatedAdvancement) / (lengthsCurves[indOfElement] / lengthCurve);
 
     float[] indAndAdv = new float[2];
 
     indAndAdv[0] = indOfElement;
     indAndAdv[1] = RG.parent().constrain(advOfElement, 0.0f, 1.0f);
-    
+
     return indAndAdv;
   }
-  
+
 
   private void appendChild(RShape nextshape)
   {
@@ -1706,8 +1706,8 @@ public class RShape extends RGeomElem
     }
     this.children = newshapes;
   }
-  
-  
+
+
   private void append(RPath nextpath)
   {
     RPath[] newpaths;
@@ -1726,22 +1726,22 @@ public class RShape extends RGeomElem
 
   private void drawUsingInternalTesselator(PGraphics g){
     int numPaths = countPaths();
-    
+
     if(numPaths!=0){
       if(isIn(g)) {
 
         // Save the information about the current context
         boolean strokeBefore = g.stroke;
         int strokeColorBefore = g.strokeColor;
-        float strokeWeightBefore = g.strokeWeight;      
-        boolean smoothBefore = g.smooth;
+        float strokeWeightBefore = g.strokeWeight;
+        int smoothBefore = g.smooth;
         boolean fillBefore = g.fill;
         int fillColorBefore = g.fillColor;
 
         // By default always drawy with an ADAPTATIVE segmentator
         int lastSegmentator = RCommand.segmentType;
         RCommand.setSegmentator(RCommand.ADAPTATIVE);
-        
+
         // Check whether to draw the fill or not
         if(g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke or make it the same color as the fill
@@ -1752,23 +1752,23 @@ public class RShape extends RGeomElem
           try{
             g.noSmooth();
           }catch(Exception e){}
-          
+
           RMesh tempMesh = this.toMesh();
           tempMesh.draw(g);
-          
+
           // Restore the old context
           g.stroke(strokeColorBefore);
           if(!strokeBefore){
             g.noStroke();
           }
-          
+
           try{
-            if(smoothBefore){
+            if(smoothBefore > 0){
               g.smooth();
             }
           }catch(Exception e){}
         }
-        
+
         // Check whether to draw the stroke
         g.noFill();
         if(!strokeBefore){
@@ -1777,7 +1777,7 @@ public class RShape extends RGeomElem
           g.stroke(g.fillColor);
           g.strokeWeight(1F);
         }
-          
+
         for(int i=0;i<numPaths;i++){
           paths[i].draw(g);
         }
@@ -1793,7 +1793,7 @@ public class RShape extends RGeomElem
         if(!strokeBefore){
           g.noStroke();
         }
-        
+
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
       }
@@ -1802,21 +1802,21 @@ public class RShape extends RGeomElem
 
   private void drawUsingInternalTesselator(PApplet p){
     int numPaths = countPaths();
-    
+
     if(numPaths!=0){
       if(isIn(p)) {
         // Save the information about the current context
         boolean strokeBefore = p.g.stroke;
         int strokeColorBefore = p.g.strokeColor;
-        float strokeWeightBefore = p.g.strokeWeight;      
-        boolean smoothBefore = p.g.smooth;
+        float strokeWeightBefore = p.g.strokeWeight;
+        int smoothBefore = p.g.smooth;
         boolean fillBefore = p.g.fill;
         int fillColorBefore = p.g.fillColor;
 
         // By default always drawy with an ADAPTATIVE segmentator
         int lastSegmentator = RCommand.segmentType;
         RCommand.setSegmentator(RCommand.ADAPTATIVE);
-        
+
         // Check whether to draw the fill or not
         if(p.g.fill){
           // Since we are drawing the different tristrips we must turn off the stroke
@@ -1829,42 +1829,42 @@ public class RShape extends RGeomElem
           try{
             p.noSmooth();
           }catch(Exception e){}
-          
+
           RMesh tempMesh = this.toMesh();
           if ( tempMesh != null ){
             tempMesh.draw(p);
           }
-          
+
           // Restore the old context
           p.stroke(strokeColorBefore);
           p.strokeWeight(strokeWeightBefore);
           if(!strokeBefore){
             p.noStroke();
           }
-          
+
           try{
-            if(smoothBefore){
+            if(smoothBefore > 0){
               p.smooth();
             }
           }catch(Exception e){}
         }
-        
-        
+
+
         // Check whether to draw the stroke
         p.noFill();
-        if((smoothBefore && fillBefore) || strokeBefore){
+        if((smoothBefore > 0 && fillBefore) || strokeBefore){
           if(!strokeBefore){
             // If there is no stroke to draw
-            // we will still draw one the color 
+            // we will still draw one the color
             // of the fill in order to have antialiasing
             p.stroke(fillColorBefore);
             p.strokeWeight(1F);
           }
-          
+
           for(int i=0;i<numPaths;i++){
             paths[i].draw(p);
           }
-          
+
           // Restore the old context
           if(fillBefore){
             p.fill(fillColorBefore);
@@ -1875,13 +1875,13 @@ public class RShape extends RGeomElem
             p.noStroke();
           }
         }
-        
+
         // Restore the user set segmentator
         RCommand.setSegmentator(lastSegmentator);
       }
     }
   }
-  
+
   private void drawUsingBreakShape(PGraphics g){
     int numPaths = countPaths();
     if(numPaths!=0){
@@ -1893,7 +1893,7 @@ public class RShape extends RGeomElem
           if (useContours && i>0) {
             g.beginContour();
           }
-          
+
           RPath path = paths[i];
           closed |= path.closed;
 
@@ -1919,14 +1919,14 @@ public class RShape extends RGeomElem
           if (useContours && i>0) {
             g.endContour();
           }
-          
+
         }
         g.endShape(closed ? PConstants.CLOSE : PConstants.OPEN);
 
       }
     }
   }
-  
+
   private void drawUsingBreakShape(PApplet g){
     int numPaths = countPaths();
     if(numPaths!=0){

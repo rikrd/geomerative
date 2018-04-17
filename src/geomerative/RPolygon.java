@@ -578,9 +578,9 @@ public class RPolygon extends RGeomElem
           g.noStroke();
 
           // Save smoothing state and turn off
-          boolean smoothing = g.smooth;
+          int smoothing = g.smooth;
           try{
-            if(smoothing){
+            if(smoothing > 0){
               g.noSmooth();
             }
           }catch(Exception e){
@@ -594,7 +594,7 @@ public class RPolygon extends RGeomElem
 
           // Restore the old smoothing state
           try{
-            if(smoothing){
+            if(smoothing > 0){
               g.smooth();
             }
           }catch(Exception e){
@@ -634,9 +634,9 @@ public class RPolygon extends RGeomElem
           g.noStroke();
 
           // Save smoothing state and turn off
-          boolean smoothing = g.g.smooth;
+          int smoothing = g.g.smooth;
           try{
-            if(smoothing){
+            if(smoothing > 0){
               g.noSmooth();
             }
           }catch(Exception e){
@@ -651,7 +651,7 @@ public class RPolygon extends RGeomElem
 
           // Restore the old smoothing state
           try{
-            if(smoothing){
+            if(smoothing > 0){
               g.smooth();
             }
           }catch(Exception e){
@@ -881,7 +881,7 @@ public class RPolygon extends RGeomElem
           {
             return new RRectangle();
           }
-        
+
         for( int i = 0 ; i < this.contours[0].points.length ; i++ )
           {
             float x = this.contours[0].points[i].getX();
