@@ -19,13 +19,12 @@
 
 package geomerative;
 import processing.core.*;
-import java.awt.Toolkit;
 
 import org.apache.batik.svggen.font.*;
 import org.apache.batik.svggen.font.table.*;
 
 /**
- * RShape is a reduced interface for creating, holding and drawing text from TrueType Font files. It's a basic interpreter of TrueType fonts enabling to access any String in the form of a group of shapes.  Enabling us in this way to acces their geometry.
+ * RShape is a reduced interface for creating, holding and drawing text from TrueType Font files. It's a basic interpreter of TrueType fonts enabling to access any String in the form of a group of shapes.  Enabling us in this way to access their geometry.
  * @eexample RFont
  * @usage Geometry
  * @related RGroup
@@ -46,7 +45,7 @@ public class RFont implements PConstants{
   public int size = DEFAULT_SIZE;
   
   /**
-   * The alignement of the font. This proprety can take the following values: RFont.LEFT, RFont.CENTER and RFont.RIGHT
+   * The alignment of the font. This property can take the following values: RFont.LEFT, RFont.CENTER and RFont.RIGHT
    * @eexample align
    * @related setAlign ( )
    * @related RFont
@@ -64,7 +63,7 @@ public class RFont implements PConstants{
   
   
   /**
-   * The constructor of the RFont object.  Use this in order to create a Font with which we will be able to draw and obtain outlines of text.
+   * The constructor of the RFont object.  Use this in order to create a font with which we will be able to draw and obtain outlines of text.
    * @eexample RFont
    * @param fontPath String, the name of the TrueType Font file which should be situated in the data folder of the sketch.
    * @param size int, the point size of the font in points.
@@ -101,7 +100,7 @@ public class RFont implements PConstants{
    */
   public void setSize(int size){
     short unitsPerEm = f.getHeadTable().getUnitsPerEm();
-    int resolution = Toolkit.getDefaultToolkit().getScreenResolution();
+    int resolution = RG.dpi();
     this.scaleFactor = ((float)size * (float)resolution) / (72F * (float)unitsPerEm);
     //this.scaleFactorFixed = (int)(this.scaleFactor * 65536F);
     //System.out.println(scaleFactor);
@@ -135,7 +134,7 @@ public class RFont implements PConstants{
   }
   
   /**
-   * Use this method to reset the alignement of the font. This proprety can take the following values: RFont.LEFT, RFont.CENTER and RFont.RIGHT
+   * Use this method to reset the alignment of the font. This property can take the following values: RFont.LEFT, RFont.CENTER and RFont.RIGHT
    * @eexample setAlign
    * @param align int, this can only take the following values: RFont.LEFT, RFont.CENTER and RFont.RIGHT.
    * @related align
@@ -143,7 +142,7 @@ public class RFont implements PConstants{
    */
   public void setAlign(int align) throws RuntimeException{
     if(align!=LEFT && align!=CENTER && align!=RIGHT){
-      throw new RuntimeException("Alignement unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
+      throw new RuntimeException("Alignment unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
     }
     this.align = align;
   }
@@ -152,7 +151,7 @@ public class RFont implements PConstants{
    * @invisible
    **/
   public String getFamily(){
-    return f.getNameTable().getRecord(Table.nameFontFamilyName);
+    return f.getNameTable().getRecord(org.apache.batik.svggen.font.table.Table.nameFontFamilyName);
   }
   
   /**
@@ -188,19 +187,19 @@ public class RFont implements PConstants{
     if (forceAscii) {
       // We've been asked to use the ASCII/Macintosh cmap format
       return f.getCmapTable().getCmapFormat(
-                                            Table.platformMacintosh,
-                                            Table.encodingRoman );
+                                            org.apache.batik.svggen.font.table.Table.platformMacintosh,
+                                            org.apache.batik.svggen.font.table.Table.encodingRoman );
     } else {
       short[] platforms = new short[] {
-        Table.platformMicrosoft,
-        Table.platformAppleUnicode,
-        Table.platformMacintosh
+        org.apache.batik.svggen.font.table.Table.platformMicrosoft,
+        org.apache.batik.svggen.font.table.Table.platformAppleUnicode,
+        org.apache.batik.svggen.font.table.Table.platformMacintosh
       };
       short[] encodings = new short[] {
-        Table.encodingUGL,
-        Table.encodingKorean,
-        Table.encodingHebrew,
-        Table.encodingUndefined
+        org.apache.batik.svggen.font.table.Table.encodingUGL,
+        org.apache.batik.svggen.font.table.Table.encodingKorean,
+        org.apache.batik.svggen.font.table.Table.encodingHebrew,
+        org.apache.batik.svggen.font.table.Table.encodingUndefined
       };
       
       CmapFormat cmapFmt;
@@ -280,7 +279,7 @@ public class RFont implements PConstants{
     }
     
     if(align!=LEFT && align!=CENTER && align!=RIGHT){
-      throw new RuntimeException("Alignement unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
+      throw new RuntimeException("Alignment unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
     }
     
     RRectangle r;
@@ -359,7 +358,7 @@ public class RFont implements PConstants{
     }
     
     if(align!=LEFT && align!=CENTER && align!=RIGHT){
-      throw new RuntimeException("Alignement unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
+      throw new RuntimeException("Alignment unknown.  The only accepted values are: RFont.LEFT, RFont.CENTER and RFont.RIGHT");
     }
     
     RRectangle r;

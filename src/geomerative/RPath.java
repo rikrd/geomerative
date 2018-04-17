@@ -21,7 +21,7 @@ package geomerative ;
 import processing.core.*;
 
 /**
- * RPath is a reduced interface for creating, holding and drawing contours. Paths are ordered lists of commands (RCommand) which define the outlines of Shapes.  Paths can be self-intersecting.
+ * RPath is a reduced interface for creating, holding and drawing contours. Paths are ordered lists of commands (RCommand) which define the outlines of shapes.  Paths can be self-intersecting.
  * @eexample RPath
  * @usage Geometry
  * @related RCommand

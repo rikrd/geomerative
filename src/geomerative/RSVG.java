@@ -21,14 +21,12 @@ package geomerative;
 
 import processing.core.*;
 import processing.data.*;
-import java.awt.Toolkit;
 
 /**
  * @extended
  */
 public class RSVG
 {
-  
   public void draw(String filename, PGraphics g)
   {
     this.toGroup(filename).draw(g);
@@ -72,7 +70,15 @@ public class RSVG
 
   public RGroup toGroup(String filename)
   {
-    XML svg = new XML(RG.parent(), filename);
+    XML svg = null;
+    try{
+       svg = RG.parent().loadXML(filename);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    if (svg == null) return new RGroup();
+    
     if (!svg.getName().equals("svg")) {
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
@@ -82,7 +88,7 @@ public class RSVG
   
   public float unitsToPixels(String units, float originalPxSize) {
     // TODO: check if it is possible to know the dpi of a given PGraphics or device
-    return unitsToPixels(units, originalPxSize, Toolkit.getDefaultToolkit().getScreenResolution());
+    return unitsToPixels(units, originalPxSize, 72.0f/*Toolkit.getDefaultToolkit().getScreenResolution()*/);
   }
 
   public float unitsToPixels(String units, float originalPxSize, float dpi) {
@@ -126,26 +132,35 @@ public class RSVG
 
   public RShape toShape(String filename)
   {
-    XML svg = new XML(RG.parent(), filename);
-    if (!svg.getName().equals("svg")) {
+      XML svg = null;
+    try{
+       svg = RG.parent().loadXML(filename);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    
+    if (svg == null) return new RShape();
+
+    if ( !svg.getName().equals("svg") )
+	{
       throw new RuntimeException("root is not <svg>, it's <" + svg.getName() + ">");
     }
 
     RShape result = elemToCompositeShape(svg);
 
+    result.origWidth = result.getWidth();
+    result.origHeight = result.getHeight();
+
     if (svg.hasAttribute("width") && svg.hasAttribute("height")) {
       String widthStr = svg.getString("width").trim();
       String heightStr = svg.getString("height").trim();
-      
-      result.width = unitsToPixels(widthStr, result.getWidth());
-      result.height = unitsToPixels(heightStr, result.getHeight());
+            
+      result.width = unitsToPixels(widthStr, result.origWidth);
+      result.height = unitsToPixels(heightStr, result.origHeight);
     } else {
-      result.width = result.getWidth();
-      result.height = result.getHeight();
+      result.width = result.origWidth;
+      result.height = result.origHeight;
     }
-
-    result.origWidth = result.getWidth();
-    result.origHeight = result.getHeight();
     
     return result;
   }
@@ -456,12 +471,13 @@ public class RSVG
   /**
    * @invisible
    */
-  public RShape elemToCompositeShape(XML elem)
+  public RShape elemToCompositeShape( XML elem )
   {
     RShape shp = new RShape();
 
     // Set the defaults SVG styles for the root
-    if(elem.getName().toLowerCase().equals("svg")){
+    if (elem.getName().toLowerCase().equals("svg"))
+    {
       shp.setFill(0);  // By default in SVG it's black
       shp.setFillAlpha(255);  // By default in SVG it's 1
       shp.setStroke(false);  // By default in SVG it's none
@@ -473,8 +489,14 @@ public class RSVG
     }
 
     XML elems[] = elem.getChildren();
-    for (int i = 0; i < elems.length; i++) {
-      String name = elems[i].getName().toLowerCase();
+
+    for (int i = 0; i < elems.length; i++) 
+	{
+		
+      String name = elems[i].getName();
+	  if ( name == null ) continue;
+	
+	  name = name.toLowerCase();
       XML element = elems[i];
 
       // Parse and create the geometrical element
@@ -484,7 +506,7 @@ public class RSVG
 
       }else if (name.equals("path")) {
         geomElem = elemToShape(element);
-        
+
       }else if(name.equals("polygon")){
         geomElem = elemToPolygon(element);
 
@@ -719,7 +741,7 @@ public class RSVG
         switch(charline[i])
           {
           case '-':
-            if(i>0 && charline[i-1] != 'e' && charline[i-1] != 'E'){
+            if(charline[i-1] != 'e' && charline[i-1] != 'E'){
               charline=PApplet.splice(charline,' ',i);
               i++;
             }

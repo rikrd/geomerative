@@ -22,7 +22,7 @@ import processing.core.*;
 
 
 /**
- * RPolygon is a reduced interface for creating, holding and drawing complex polygons. Polygons are groups of one or more contours (RContour).  This interface allows to perform binary operations (difference, xor, union and intersection) on polygons.
+ * RPolygon is a reduced interface for creating, holding and drawing complex polygons. Polygons are groups of one or more contours (RContour).  This interface allows us to perform binary operations (difference, xor, union and intersection) on polygons.
  * @eexample RPolygon
  * @usage Geometry
  * @related RContour
@@ -78,7 +78,7 @@ public class RPolygon extends RGeomElem
   /**
    * Create a new polygon given an array of points.
    * @eexample createPolygon
-   * @param points  the points of the newly created polygon.
+   * @param points  the points for the new polygon.
    */
   public RPolygon(RPoint[] points){
     this(new RContour(points));
@@ -251,7 +251,7 @@ public class RPolygon extends RGeomElem
   /**
    * Use this method to count the number of contours in the polygon.
    * @eexample countContours
-   * @return int  the number countours in the polygon
+   * @return int  the number contours in the polygon
    * @related addContour ( )
    */
   public int countContours(){
@@ -674,7 +674,7 @@ public class RPolygon extends RGeomElem
 
 
   /**
-   * Use this method to get the intersection of the given polygon with the polygon passed as atribute.
+   * Use this method to get the intersection of this polygon with the polygon passed in as a parameter.
    * @eexample intersection
    * @param p RPolygon, the polygon with which to perform the intersection
    * @return RPolygon, the intersection of the two polygons
@@ -689,7 +689,7 @@ public class RPolygon extends RGeomElem
   }
 
   /**
-   * Use this method to get the union of the given polygon with the polygon passed as atribute.
+   * Use this method to get the union of this polygon with the polygon passed in as a parameter.
    * @eexample union
    * @param p RPolygon, the polygon with which to perform the union
    * @return RPolygon, the union of the two polygons
@@ -704,7 +704,7 @@ public class RPolygon extends RGeomElem
   }
 
   /**
-   * Use this method to get the xor of the given polygon with the polygon passed as atribute.
+   * Use this method to get the xor of this polygon with the polygon passed in as a parameter.
    * @eexample xor
    * @param p RPolygon, the polygon with which to perform the xor
    * @return RPolygon, the xor of the two polygons
@@ -719,7 +719,7 @@ public class RPolygon extends RGeomElem
   }
 
   /**
-   * Use this method to get the difference of the given polygon with the polygon passed as atribute.
+   * Use this method to get the difference between this polygon and the polygon passed in as a parameter.
    * @eexample diff
    * @param p RPolygon, the polygon with which to perform the difference
    * @return RPolygon, the difference of the two polygons
@@ -877,6 +877,11 @@ public class RPolygon extends RGeomElem
         float xmax = -Float.MAX_VALUE ;
         float ymax = -Float.MAX_VALUE ;
 
+        if ( this.contours[0].points == null )
+          {
+            return new RRectangle();
+          }
+        
         for( int i = 0 ; i < this.contours[0].points.length ; i++ )
           {
             float x = this.contours[0].points[i].getX();

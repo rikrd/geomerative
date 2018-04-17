@@ -19,7 +19,6 @@
 
 package geomerative ;
 import processing.core.*;
-import java.util.Vector;
 
 /**
  * @extended
@@ -36,7 +35,7 @@ public class RCommand extends RGeomElem
   public RPoint endPoint;
   int commandType;
 
-  Vector<RPoint> curvePoints; // RPoint[] curvePoints;
+  RPoint[] curvePoints;
 
   /**
    * @invisible
@@ -212,7 +211,7 @@ public class RCommand extends RGeomElem
   }
 
   /**
-   * Create a QUADBEZIERTO command object with specific start, control and end points.
+   * Create a QUADBEZIERTO command object with specific start, control and end point coordinates.
    * @param sp  the start point of the command to be created
    * @param cp1  the first control point of the command to be created
    * @param ep  the end point of the command to be created
@@ -239,7 +238,7 @@ public class RCommand extends RGeomElem
 
 
   /**
-   * Create a CUBICBEZIERTO command object with specific start, controls and end point coordinates.
+   * Create a CUBICBEZIERTO command object with specific start, control and end point coordinates.
    * @param sp  the start point of the command to be created
    * @param cp1  the first control point of the command to be created
    * @param cp2  the second control point of the command to be created
@@ -254,7 +253,7 @@ public class RCommand extends RGeomElem
   }
 
   /**
-   * Create a CUBICBEZIERTO command object with specific start, controls and end point coordinates.
+   * Create a CUBICBEZIERTO command object with specific start, control and end point coordinates.
    * @param spx  the x coordinate of the start point of the command to be created
    * @param spy  the y coordinate of the start point of the command to be created
    * @param cp1x  the x coordinate of the first control point of the command to be created
@@ -486,7 +485,6 @@ public class RCommand extends RGeomElem
 
 
     RPoint[] result = null;
-    Vector<RPoint> resultVector = null;
     switch(segmentType){
     case ADAPTATIVE:
       switch(commandType){
@@ -498,13 +496,13 @@ public class RCommand extends RGeomElem
 
       case QUADBEZIERTO:
         quadBezierAdaptative();
-        resultVector = curvePoints;
+        result = curvePoints;
         curvePoints = null;
         break;
 
       case CUBICBEZIERTO:
         cubicBezierAdaptative();
-        resultVector = curvePoints;
+        result = curvePoints;
         curvePoints = null;
         break;
       }
@@ -514,19 +512,19 @@ public class RCommand extends RGeomElem
       switch(commandType){
       case LINETO:
         lineUniformLength();
-        resultVector = curvePoints;
+        result = curvePoints;
         curvePoints = null;
         break;
 
       case QUADBEZIERTO:
         quadBezierUniformLength();
-        resultVector = curvePoints;
+        result = curvePoints;
         curvePoints = null;
         break;
 
       case CUBICBEZIERTO:
         cubicBezierUniformLength();
-        resultVector = curvePoints;
+        result = curvePoints;
         curvePoints = null;
         break;
       }
@@ -537,7 +535,7 @@ public class RCommand extends RGeomElem
       case LINETO:
         if(segmentLines){
           lineUniformStep();
-          resultVector = curvePoints;
+          result = curvePoints;
           curvePoints = null;
         }else{
           result = new RPoint[2];
@@ -548,13 +546,13 @@ public class RCommand extends RGeomElem
 
       case QUADBEZIERTO:
         quadBezierUniformStep();
-        resultVector = curvePoints;
+        result = curvePoints;
         curvePoints = null;
         break;
 
       case CUBICBEZIERTO:
         cubicBezierUniformStep();
-        resultVector = curvePoints;
+        result = curvePoints;
         curvePoints = null;
         break;
       }
@@ -566,7 +564,6 @@ public class RCommand extends RGeomElem
       restoreSegmentatorContext();
     }
 
-    if( resultVector != null ) result = resultVector.toArray(new RPoint[0]);
     return result;
   }
 
@@ -821,7 +818,7 @@ public class RCommand extends RGeomElem
   /**
    * Returns two commands resulting of splitting the command.
    * @eexample split
-   * @param t  the advancement on the curve where command should be splitted.
+   * @param t  the advancement on the curve where command should be split.
    * @return RPoint[], the tangent vectors returned in an array.
    * */
   public RCommand[] split(float t){
@@ -1619,9 +1616,6 @@ public class RCommand extends RGeomElem
 
   private void addCurvePoint(RPoint nextcurvepoint)
   {
-    if( curvePoints == null ) curvePoints = new Vector<RPoint>();
-    curvePoints.add(nextcurvepoint);
-    /*
     RPoint[] newcurvePoints;
     if(curvePoints==null){
       newcurvePoints = new RPoint[1];
@@ -1632,7 +1626,6 @@ public class RCommand extends RGeomElem
       newcurvePoints[curvePoints.length]=nextcurvepoint;
     }
     this.curvePoints=newcurvePoints;
-    */
   }
 
   public RPoint[] intersectionPoints(RCommand other)

@@ -87,7 +87,7 @@ public class RContour extends RGeomElem
   /**
    * Use this method to draw the contour. 
    * @eexample drawContour
-   * @param g PGraphics, the graphics object on which to draw the mesh
+   * @param g PGraphics, the graphics object on which to draw the contour
    */
   public void draw(PGraphics g){
     int numPoints = countPoints();

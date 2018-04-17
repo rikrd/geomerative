@@ -10,8 +10,9 @@
   </path>
   
   <path id="processing-core">
-    <fileset dir="${env.PROCESSING_PATH}">
-      <include name="core.jar"/>
+    <fileset dir="${env.PROCESSING2_PATH}">
+      <include name="core/library/core.jar"/>
+      <include name="libraries/xml/library/xml.jar"/>
     </fileset>
   </path>
   

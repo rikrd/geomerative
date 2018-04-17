@@ -22,7 +22,7 @@ import processing.core.*;
 
 /**
  * RG is a static class containing all the states, modes, etc..
- * Most uses of Geomerative is done by calling RG methods. e.g.  RShape s = RG.getEllipse(30, 40, 80, 80)
+ * Geomerative is mostly used by calling RG methods. e.g.  RShape s = RG.getEllipse(30, 40, 80, 80)
  */
 public class RG implements PConstants{
   /**
@@ -76,7 +76,7 @@ public class RG implements PConstants{
   static float adaptorLengthOffset = 0F;
 
   /**
-   * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have Polygons and Meshes with the fewest possible vertices.
+   * ADAPTATIVE segmentator minimizes the number of segments avoiding perceptual artifacts like angles or cusps.  Use this in order to have polygons and meshes with the fewest possible vertices.
    */
   public static int ADAPTATIVE = RCommand.ADAPTATIVE;
 
@@ -89,6 +89,8 @@ public class RG implements PConstants{
    * UNIFORMSTEP segmentator is the fastest segmentator and it segments the curve based on a constant value of the step of the curve parameter, or on the number of segments wanted.  This can be useful when segmpointsentating very often a Shape or when we know the amount of segments necessary for our specific application.
    */
   public static int UNIFORMSTEP = RCommand.UNIFORMSTEP;
+  
+  static int dpi = 72;
 
   /**
    * @invisible
@@ -499,6 +501,21 @@ public class RG implements PConstants{
 
     return parent;
   }
+  
+  /**
+   * @invisible
+   */
+  protected static int dpi() {
+    return dpi;
+  }
+  
+  /**
+   * Use this to set the resolution of the display.  This specifies the Dots Per Inch of the display.
+   * @param _dpi  the dots per inch of the display
+   * */
+  public static void setDpi(int _dpi) {
+    dpi = _dpi;
+  }
 
   /**
    * Binary difference between two shapes.
@@ -561,7 +578,7 @@ public class RG implements PConstants{
   }
 
   /**
-   * Ignore the styles of the shapes when drawing and use the processing style methods.
+   * Ignore the styles of the shapes when drawing and use the Processing style methods.
    * @eexample ignoreStyles
    * @param value  value to which the ignoreStyles state should be set
    */

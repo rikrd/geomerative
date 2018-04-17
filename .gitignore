@@ -4,6 +4,4 @@ build
 distribution
 documentation
 library
-
-# Mac files
-.DS_Store
+*~

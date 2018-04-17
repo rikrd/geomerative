@@ -9,20 +9,20 @@ public class HelloSplittingShapesTest extends TestCase
     
     public void setUp() {
       PApplet applet = new PApplet();
-      RGeomerative.init(applet);
+      RG.init(applet);
       RSVG svgLoader = new RSVG();
       // need to be in the geomerative directory for this to work
       poly = svgLoader.toGroup("./tutorial/Tutorial_13_HelloSplittingShapes/data/bot1.svg").toPolygon();        
     }
     
     public void testOldMeshing() {
-      RGeomerative.useFastClip = false;
+      RG.useFastClip = false;
       RMesh mesh = RClip.polygonToMesh(poly);
       assertNotNull(mesh);
     }
 
     public void testNewMeshing() {
-      RGeomerative.useFastClip = true;
+      RG.useFastClip = true;
       RMesh mesh = RClip.polygonToMesh(poly);
       assertNotNull(mesh);
     }
