@@ -163,14 +163,18 @@ public abstract class RGeomElem
    * @related containsBounds ( )
    * @related containsHandles ( )
    */
-  public boolean contains(RPoint[] ps) {
-    boolean contains = false;
-    if(ps != null){
-      for(int i=0; i < ps.length; i++) {
-        contains &= this.contains(ps[i]);
-      }
-    }
-    return contains;
+  public boolean contains(RPoint[] pts) {
+          if (pts.length == 0) {
+            return false;
+        }
+        boolean inside = true;
+        for (RPoint pt : pts) {
+            if (!contains(pt)) {
+                inside = false;
+                break;
+            }
+        }
+        return inside;
   }
 
   
