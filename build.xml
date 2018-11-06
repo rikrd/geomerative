@@ -6,8 +6,8 @@
 
   <path id="CLASSPATH">
     <pathelement location="external/batikfont.jar"/>
-    <pathelement location="${env.PROCESSING2_PATH}/core/library/core.jar"/>
-    <pathelement location="${env.PROCESSING2_PATH}/libraries/xml/library/xml.jar"/>
+    <pathelement location="${env.PROCESSING_PATH}/core/library/core.jar"/>
+    <pathelement location="${env.PROCESSING_PATH}/libraries/xml/library/xml.jar"/>
   </path>
 
   <path id="TEST_CLASSPATH">
@@ -22,15 +22,15 @@
   </path>
   
   <target name="build" description="Build geomerative.jar">
-    <fail unless="env.PROCESSING2_PATH"
-          message="Please use the environment variable PROCESSING2_PATH to indicate where the Processing source code is.  (the required directory 'processing' may be nested within another directory called 'processing', and the source code needs to be built)"/>
-    <available file="${env.PROCESSING2_PATH}/core/library/core.jar"  property="core.found"/>
-    <fail unless="core.found" message="${env.PROCESSING2_PATH}/core/library/core.jar not found"/>
+    <fail unless="env.PROCESSING_PATH"
+          message="Please use the environment variable PROCESSING_PATH to indicate where the Processing source code is.  (the required directory 'processing' may be nested within another directory called 'processing', and the source code needs to be built)"/>
+    <available file="${env.PROCESSING_PATH}/core/library/core.jar"  property="core.found"/>
+    <fail unless="core.found" message="${env.PROCESSING_PATH}/core/library/core.jar not found"/>
     <mkdir dir="build"/>
     <mkdir dir="library"/>
     <javac
-        source="1.3"
-        target="1.1"
+        source="6"
+        target="1.6"
         srcdir="src/geomerative/"
         destdir="build"
         classpathref="CLASSPATH"
@@ -101,24 +101,24 @@
     (I have no way of testing the macosx one)
   -->
   <target name="install-windows" depends="build" description="Copies geomerative.jar for use in Windows build of Processing.">
-    <mkdir dir="${env.PROCESSING2_PATH}/build/windows/work/modes/java/libraries/geomerative/library"/>
+    <mkdir dir="${env.PROCESSING_PATH}/build/windows/work/modes/java/libraries/geomerative/library"/>
     <copy
         file="library/geomerative.jar"
-        toFile="${env.PROCESSING2_PATH}/build/windows/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        toFile="${env.PROCESSING_PATH}/build/windows/work/modes/java/libraries/geomerative/library/geomerative.jar"
         overwrite="true"/>
   </target>
   <target name="install-linux" depends="build" description="Copies geomerative.jar for use in Linux build of Processing.">
-    <mkdir dir="${env.PROCESSING2_PATH}/build/linux/work/modes/java/libraries/geomerative/library"/>
+    <mkdir dir="${env.PROCESSING_PATH}/build/linux/work/modes/java/libraries/geomerative/library"/>
     <copy
         file="library/geomerative.jar"
-        toFile="${env.PROCESSING2_PATH}/build/linux/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        toFile="${env.PROCESSING_PATH}/build/linux/work/modes/java/libraries/geomerative/library/geomerative.jar"
         overwrite="true"/>
   </target>
   <target name="install-macosx" depends="build" description="Copies geomerative.jar for use in MacOSX build of Processing">
-    <mkdir dir="${env.PROCESSING2_PATH}/build/macosx/work/modes/java/libraries/geomerative/library"/>
+    <mkdir dir="${env.PROCESSING_PATH}/build/macosx/work/modes/java/libraries/geomerative/library"/>
     <copy
         file="library/geomerative.jar"
-        toFile="${env.PROCESSING2_PATH}/build/macosx/work/modes/java/libraries/geomerative/library/geomerative.jar"
+        toFile="${env.PROCESSING_PATH}/build/macosx/work/modes/java/libraries/geomerative/library/geomerative.jar"
         overwrite="true"/>
   </target>
 
