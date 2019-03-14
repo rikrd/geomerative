@@ -741,7 +741,7 @@ public class RSVG
         switch(charline[i])
           {
           case '-':
-            if(charline[i-1] != 'e' && charline[i-1] != 'E'){
+            if(i>0 && charline[i-1] != 'e' && charline[i-1] != 'E'){
               charline=PApplet.splice(charline,' ',i);
               i++;
             }
